@@ -1,0 +1,3 @@
+#!/bin/bash
+
+GDK_BACKEND=x11 /usr/bin/electron4 --app /usr/lib/authy/app.asar

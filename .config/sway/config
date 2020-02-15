@@ -1,0 +1,313 @@
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+set $gnome-schema org.gnome.desktop.interface
+
+exec_always {
+    gsettings set $gnome-schema gtk-theme 'Arc-Dark'
+    gsettings set $gnome-schema icon-theme 'Paper-Mono-Dark'
+    gsettings set $gnome-schema cursor-theme 'Paper'
+    gsettings set $gnome-schema cursor-size 50
+    gsettings set $gnome-schema font-name 'Victor Mono SemiBold 20'
+}
+
+set $mod Mod4
+set $alt Mod1
+
+# exec /home/igneo676/.bin/mail-checker
+# exec nightshift -l 39.0315533:-94.4954291 -d -m wayland
+
+exec xrdb -merge ~/.Xresources
+
+exec swayidle \
+    timeout 490 '/home/igneo676/.bin/swaylock-wrapper' \
+    timeout 500 'swaymsg "output * dpms off"' \
+       resume 'swaymsg "output * dpms on"' \
+    before-sleep '/home/igneo676/.bin/swaylock-wrapper'
+
+output * bg ~/Wallpapers/MK1-Dark.png fill
+# output * bg ~/Wallpapers/the_big_one_by_grivetart-d7mrqvp.jpg fill
+# output * bg ~/Wallpapers/Dragon_Fire_Fantasy_4813x4018.jpg fill
+output eDP-1 scale 1
+
+exec libinput-gestures-setup start
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+# bindsym $mod+Return exec mlterm
+# bindsym $mod+Return exec /home/igneo676/.bin/restraint
+bindsym $mod+Return exec kitty
+
+# kill focused window
+bindsym $mod+q kill
+
+# start dmenu (a program launcher)
+# bindcode 225 exec rofi -modi combi -show combi -combi-modi run,drun -fullscreen 
+bindcode 225 exec PATH=$PATH:$HOME/.bin rofi -fullscreen -modi combi -show combi -combi-modi run,drun
+bindsym $mod+F9 exec PATH=$PATH:$HOME/.bin rofi -fullscreen -modi combi -show combi -combi-modi run,drun
+bindsym $mod+d exec PATH=$PATH:$HOME/.bin rofi -fullscreen -modi combi -show combi -combi-modi run,drun
+
+# kitty --start-as fullscreen zsh -c "compgen -c | sort -u | fzf | xargs -r swaymsg -t command exec" 
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+$alt+f fullscreen
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+p focus parent
+
+# focus the child container
+bindsym $mod+c focus child
+
+# switch to workspace
+bindsym $mod+1 workspace "1: Browser"
+bindsym $mod+2 workspace "2: Chat"
+bindsym $mod+3 workspace "3: Terminal"
+bindsym $mod+4 workspace "4: Emulator"
+bindsym $mod+5 workspace "5: Code"
+bindsym $mod+6 workspace "6: Code"
+bindsym $mod+7 workspace "7: Code"
+bindsym $mod+8 workspace "8: Code"
+bindsym $mod+9 workspace "9: Code"
+bindsym $mod+0 workspace "10: Code"
+bindsym Mod1+Control+Right workspace next
+bindsym Mod1+Control+Left workspace prev
+workspace_auto_back_and_forth yes
+bindsym $mod+z workspace back_and_forth
+bindsym $mod+Shift+z move container to workspace back_and_forth
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number "1: Browser"
+bindsym $mod+Shift+2 move container to workspace number "2: Chat"
+bindsym $mod+Shift+3 move container to workspace number "3: Terminal"
+bindsym $mod+Shift+4 move container to workspace number "4: Emulator"
+bindsym $mod+Shift+5 move container to workspace number "5: Code"
+bindsym $mod+Shift+6 move container to workspace number "6: Code"
+bindsym $mod+Shift+7 move container to workspace number "7: Code"
+bindsym $mod+Shift+8 move container to workspace number "8: Code"
+bindsym $mod+Shift+9 move container to workspace number "9: Code"
+bindsym $mod+Shift+0 move container to workspace number "10: Code"
+
+#Custom Keybindings
+
+# bindsym XF86MonBrightnessUp --no-startup-id exec brightnessctl s +10%
+# bindsym XF86MonBrightnessDown --no-startup-id exec brightnessctl s 10%-
+bindsym $mod+w exec --no-startup-id firefox-developer-edition
+# bindsym $mod+f exec --no-startup-id caja
+bindsym $mod+f exec --no-startup-id "kitty -e ranger ~/"
+bindsym Print exec /home/igneo676/.bin/screenshot
+bindsym $mod+m move scratchpad
+bindsym $mod+n scratchpad show
+
+#Make sure these windows behave as they should
+for_window [class="Android SDK Manager" instance="Android SDK Manager"] floating enable
+
+for_window [class="Cb-exit" instance="cb-exit"] floating enable
+for_window [class="Cb-exit" instance="cb-exit"] border none
+
+for_window [class="Pidgin" instance="Pidgin"] floating enable
+
+for_window [title="win0" instance="sun-awt-X11-XWindowPeer"] floating enable
+
+for_window [class="rofi"] floating enable
+# for_window [name="Emulator"] floating enable
+
+for_window [class="Pinentry"] floating enable
+for_window [title="OpenSnitch"] floating enable
+
+for_window [class="scrcpy"] floating enable
+assign [class="scrcpy"] 4: Emulator
+
+for_window [instance="crx_gaedmjdfmmahhbjefcbgaolhhanlaolb"] floating enable
+for_window [class="Google-chrome" instance="crx_nckgahadagoaajjgafhacjanaoiihapd"] floating enable
+for_window [class="chrome_app_list"] floating enable
+
+for_window [app_id="^launcher$"] floating enable, border none
+for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, border none
+
+assign [class="Pidgin"] 2: Chat
+
+default_border pixel
+#Hide border if 1 window
+hide_edge_borders both
+# reload the configuration file
+bindsym $mod+Shift+c exec swaymsg reload
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exit
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+
+bindsym $mod+r mode resize
+
+input "1739:30381:DLL0665:01_06CB:76AD_Touchpad" {
+  accel_profile flat
+  middle_emulation enabled
+  dwt enabled
+  pointer_accel 0.2
+  tap enabled
+  click_method clickfinger
+}
+
+input "1739:52619:SYNA8004:00_06CB:CD8B_Touchpad" {
+  accel_profile flat
+  middle_emulation enabled
+  dwt enabled
+  pointer_accel 0.2
+  tap enabled
+  click_method clickfinger
+}
+
+input "1:1:AT_Translated_Set_2_keyboard" {
+  repeat_delay 250
+  repeat_rate 25
+  xkb_options ctrl:nocaps
+}
+
+input "7185:45133:Input_Club_Infinity_Ergodox/QMK" {
+  repeat_delay 250
+  repeat_rate 25
+}
+
+input "65261:4871:ErgoDox_EZ_ErgoDox_EZ" {
+  repeat_delay 250
+  repeat_rate 25
+}
+
+input "65261:0:Donnie_West_crystal_dactyl_handwired" {
+  repeat_delay 250
+  repeat_rate 25
+}
+
+input "7185:45133:Input_Club_Infinity_Ergodox/QMK_Keyboard" {
+  repeat_delay 250
+  repeat_rate 25
+}
+
+input "65261:24672:Cartel_Contra" {
+  repeat_delay 250
+  repeat_rate 25
+}
+
+input "65261:24672:OLKB_Planck" {
+  repeat_delay 250
+  repeat_rate 25
+}
+
+input "1452:782:Dr_Money_Handsomesons's_Domination_Pad" {
+  accel_profile flat
+  middle_emulation enabled
+  dwt enabled
+  pointer_accel 0.2
+  tap enabled
+  click_method clickfinger
+}
+
+
+# Resize Containers, Vim-style                            ($mod+Control+[hjkl])
+bindsym $mod+Control+j resize grow height 5 px or 5 ppt
+bindsym $mod+Control+k resize shrink height 5 px or 5 ppt
+bindsym $mod+Control+l resize grow width 5 px or 5 ppt
+bindsym $mod+Control+h resize shrink width 5 px or 5 ppt
+
+bindsym $mod+Control+Up resize grow height 5 px or 5 ppt
+bindsym $mod+Control+Down resize shrink height 5 px or 5 ppt
+bindsym $mod+Control+Right resize grow width 5 px or 5 ppt
+bindsym $mod+Control+Left resize shrink width 5 px or 5 ppt
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+  position top
+  status_command i3blocks
+  font pango:Victor Mono SemiBold 24
+  pango_markup enabled
+  # strip_workspace_numbers yes
+
+  colors {
+    separator #33859d
+    background #0c1014
+    statusline #599caa
+    focused_workspace #081f2d #081f2d #d3ebe9
+    active_workspace #093748 #093748 #d3ebe9
+    inactive_workspace #0c1014 #0c1014 #aea79f
+    urgent_workspace #c33027 #c33027 #d3ebe9
+
+  }
+}
+
+# exec xfce4-volumed-pulse
+# exec pasystray
+# exec rescuetime
+# exec blueman-applet
+# exec eventd
+exec mako
+exec sudo -u igneo676 udiskie
+# exec opensnitch-ui
+bindsym Control+Shift+space exec ~/.bin/clearNotifications.sh
+
+bindsym XF86PowerOff exec systemctl poweroff
+
+bindsym XF86AudioLowerVolume exec ~/.bin/soundDown.sh
+bindsym XF86AudioRaiseVolume exec ~/.bin/soundUp.sh
+bindsym XF86AudioMute exec ~/.bin/mute.sh
+bindsym XF86MonBrightnessDown exec ~/.bin/brightnessDown.sh
+bindsym XF86MonBrightnessUp exec ~/.bin/brightnessUp.sh
+bindsym XF86AudioMicMute exec ~/.bin/togglemicrophone.sh
+# Chrome special flags and others set in /etc/profiles.d/variables.sh like the following: --touch-devices=2 --force-device-scale-factor=2

@@ -1,0 +1,9 @@
+#!/bin/bash
+while true; do
+  ev=`inotifywait -e create -e moved_to ~/.mail/*/*/new 2> /dev/null`
+  pa=${ev/ */}
+  f="$pa/${ev/* /}"
+  bo=${pa/\/new/}
+  bo=${bo/*.mail\//}
+  notify-send -t 12000  "New mail in $bo" "`grep -m 1 ^From: $f`\n`grep -m 1 ^Subject: $f`"
+done

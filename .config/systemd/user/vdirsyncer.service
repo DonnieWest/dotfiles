@@ -1,0 +1,6 @@
+[Unit]
+Description=Contacts and Calendar synchronization service
+
+[Service]
+Type=oneshot
+ExecStart=/home/igneo676/.bin/vdirsyncer-guard

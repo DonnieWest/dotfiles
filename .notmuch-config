@@ -1,0 +1,15 @@
+[database]
+path=/home/igneo676/.mail
+[user]
+name=Gmail
+primary_email=igneo676@gmail.com
+[new]
+tags=new
+ignore=
+[search]
+exclude_tags=deleted;spam;
+[maildir]
+synchronize_flags=true
+[crypto]
+gpg_path=gpg"
+

@@ -1,0 +1,15 @@
+# vim: filetype=muttrc
+
+set from = "me@donniewest.com"
+
+set folder = "/home/igneo676/.mail/me@donniewest.com"
+folder-hook $folder 'source /home/igneo676/.config/mutt/accounts/me@donniewest.com.muttrc'
+
+mailboxes ="=== Fastmail ===" "=INBOX" "=Archive" "=Drafts" "=Sent" "=Spam" "=Trash" 
+
+set sendmail = "msmtp -a $from"
+
+set spoolfile = "+INBOX"
+set record = "+Sent"
+set postponed = "+Drafts"
+set trash = "+Trash"

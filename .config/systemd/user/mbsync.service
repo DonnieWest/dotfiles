@@ -1,0 +1,7 @@
+[Unit]
+Description=Mailbox synchronization service
+
+[Service]
+Type=oneshot
+ExecStart=/home/igneo676/.bin/mbsync-guard
+ExecStartPost=/usr/bin/notmuch new

@@ -1,0 +1,22 @@
+defaults
+auth  on
+tls  on
+tls_trust_file  /etc/ssl/certs/ca-certificates.crt
+#logfile  /home/igneo676/msmtp.log
+
+account igneo676@gmail.com
+host smtp.gmail.com
+port 587
+from igneo676@gmail.com
+user igneo676@gmail.com
+passwordeval "pass mailwizard-igneo676@gmail.com"
+
+
+account me@donniewest.com
+host smtp.fastmail.com
+port 465
+from me@donniewest.com
+user me@donniewest.com
+passwordeval "pass mailwizard-me@donniewest.com"
+tls_starttls off
+

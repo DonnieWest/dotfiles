@@ -1,0 +1,7 @@
+text/plain; $EDITOR %s ;
+text/html; mwopen %s ; nametemplate=%s.html
+text/html; w3m -I %{charset} -T text/html; copiousoutput;
+image/*; mwimage %s ; copiousoutput
+video/*; setsid mpv --quiet %s &; copiousoutput
+application/pdf; mwopen %s ;
+application/pgp-encrypted; gpg -d '%s'; copiousoutput;

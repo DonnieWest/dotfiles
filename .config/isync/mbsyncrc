@@ -1,0 +1,46 @@
+IMAPStore igneo676@gmail.com-remote
+Host imap.gmail.com
+Port  993
+User igneo676@gmail.com
+PassCmd "pass mailwizard-igneo676@gmail.com"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+MaildirStore igneo676@gmail.com-local
+Subfolders Verbatim
+Path /home/igneo676/.mail/igneo676@gmail.com/
+Inbox /home/igneo676/.mail/igneo676@gmail.com/INBOX
+
+Channel igneo676@gmail.com
+Expunge Both
+Master :igneo676@gmail.com-remote:
+Slave :igneo676@gmail.com-local:
+Patterns * !"_/*" !"[Gmail]" !"[Gmail]/All Mail"
+Create Both
+SyncState *
+MaxMessages 0
+# End mailwizard profile
+
+IMAPStore me@donniewest.com-remote
+Host imap.fastmail.com
+Port  993
+User me@donniewest.com
+PassCmd "pass mailwizard-me@donniewest.com"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+MaildirStore me@donniewest.com-local
+Subfolders Verbatim
+Path /home/igneo676/.mail/me@donniewest.com/
+Inbox /home/igneo676/.mail/me@donniewest.com/INBOX
+
+Channel me@donniewest.com
+Expunge Both
+Master :me@donniewest.com-remote:
+Slave :me@donniewest.com-local:
+Patterns * !"_/*" !"[Gmail]" !"[Gmail]/All Mail"
+Create Both
+SyncState *
+MaxMessages 0
+# End mailwizard profile
+

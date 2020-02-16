@@ -1,0 +1,16 @@
+[calendars]
+
+[[calendarlocal]]
+path = ~/.calendars/fastmail/*
+type = discover
+
+[[contactslocal]]
+path = ~/.calendars/fastmail/*
+type = discover
+
+[locale]
+timeformat = %I:%M %p
+dateformat = %m/%d/%Y
+longdateformat = %m/%d/%Y
+datetimeformat = %m/%d/%Y %I:%M %p
+longdatetimeformat = %m/%d/%Y %I:%M %p

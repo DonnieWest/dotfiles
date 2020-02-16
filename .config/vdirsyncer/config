@@ -1,0 +1,38 @@
+[general]
+status_path = "~/.calendars/status"
+
+[pair calendar_sync]
+a = "calendar"
+b = "calendarlocal"
+collections = ["3327e9b8-79f6-4096-905d-0004cf5943a7", "4b20fed1-0468-44d3-bda1-ed9fc3b738a0", "533784f5-2a6a-435c-9692-4071796f269f", "58d64ca4-f812-4410-a61b-1f9659b09ec9", "614ed47b-da36-418c-96dc-d7236d6fb7fd", "89761ff5-a0d2-471d-896f-2b460556e9db", "95c341ca-9a88-4693-b099-fbd2c97dbd0b", "Default", "cb794164-1972-437f-bcbf-df4d9f965b23", "ff8798db-a5da-4553-bac3-f852f16b71b7" ]
+conflict_resolution = "a wins"
+metadata = ["color"]
+
+[storage calendar]
+type = "caldav"
+url = "https://caldav.fastmail.com/"
+username = "me@donniewest.com"
+password.fetch = ["command", "/usr/bin/pass", "mailwizard-me@donniewest.com"]
+
+[storage calendarlocal]
+type = "filesystem"
+path = "~/.calendars/fastmail"
+fileext = ".ics"
+
+[pair contacts_sync]
+a = "contacts"
+b = "contactslocal"
+collections = ["3327e9b8-79f6-4096-905d-0004cf5943a7", "4b20fed1-0468-44d3-bda1-ed9fc3b738a0", "533784f5-2a6a-435c-9692-4071796f269f", "58d64ca4-f812-4410-a61b-1f9659b09ec9", "614ed47b-da36-418c-96dc-d7236d6fb7fd", "89761ff5-a0d2-471d-896f-2b460556e9db", "95c341ca-9a88-4693-b099-fbd2c97dbd0b", "Default", "cb794164-1972-437f-bcbf-df4d9f965b23", "ff8798db-a5da-4553-bac3-f852f16b71b7" ]
+conflict_resolution = "a wins"
+metadata = ["color"]
+
+[storage contacts]
+type = "carddav"
+url = "https://carddav.fastmail.com/"
+username = "me@donniewest.com"
+password.fetch = ["command", "/usr/bin/pass", "mailwizard-me@donniewest.com"]
+
+[storage contactslocal]
+type = "filesystem"
+path = "~/.calendars/fastmail"
+fileext = ".vcf"

@@ -1,0 +1,18 @@
+! ------------------------------------------------------------------------------
+! ROFI Color theme
+! ------------------------------------------------------------------------------
+rofi.color-enabled: true
+rofi.color-window: #0a0f14, #0a0f14, #091f2e
+rofi.color-normal: #0a0f14, #c1c1c1, #0a0f14, #394249, #ffffff
+rofi.color-active: #0a0f14, #98d1ce, #0a0f14, #98d1ce, #ffffff
+rofi.color-urgent: #0a0f14, #ff1844, #0a0f14, #394249, #ff1844
+rofi.lines: 10
+rofi.eh: 2
+rofi.width: 200
+rofi.padding:   300
+rofi.opacity:   100
+rofi.bw: 0
+rofi.terminal: kitty
+rofi.glob: true
+rofi.tokenize: false
+rofi.font: Victor Mono SemiBold 30

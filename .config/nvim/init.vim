@@ -240,6 +240,8 @@ set termguicolors
 set inccommand=split
 set mouse=a
 
+au FocusGained * :checktime
+
 nnoremap <F2> :MundoToggle<CR>
 
 augroup dirvish_config

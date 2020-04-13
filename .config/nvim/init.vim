@@ -753,6 +753,14 @@ let g:OmniSharp_server_stdio = 1
 
 let g:sharpenup_create_mappings = 0
 
+let g:neoformat_xml_prettier = {
+            \ 'exe': 'prettier',
+            \ 'args': ['--stdin', '--stdin-filepath', '"%:p"'],
+            \ 'stdin': 1,
+            \ }
+
+let g:neoformat_enabled_xml = ['prettier']
+
 augroup lightline_integration
   autocmd!
   autocmd User OmniSharpStarted,OmniSharpReady,OmniSharpStopped call lightline#update()

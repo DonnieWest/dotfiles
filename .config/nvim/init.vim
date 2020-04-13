@@ -79,6 +79,7 @@ Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'tpope/vim-db'
+Plug 'puremourning/vimspector'
 
 Plug 'Shougo/context_filetype.vim'
 Plug 'kassio/neoterm'

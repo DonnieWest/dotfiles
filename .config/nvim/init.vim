@@ -388,6 +388,7 @@ nmap ga <Plug>(EasyAlign)
 nnoremap <silent> gk :call Dasht([expand('<cword>'), expand('<cWORD>')])<Return>
 let g:dasht_filetype_docsets = {} " filetype => list of docset name regexp
 let g:dasht_filetype_docsets['javascript'] = ['React', 'React_Native', 'Sequelize']
+let g:dasht_filetype_docsets['kotlin'] = ['Android']
 
 set completefunc=autoprogramming#complete
 
@@ -663,6 +664,7 @@ let g:lightline#ale#indicator_ok       = ''
 let g:lightline#bufferline#enable_devicons = 1
 let g:lightline#bufferline#show_number  = 0
 let g:lightline#bufferline#shorten_path = 1
+" let g:lightline#bufferline#filename_modifier = ':t'
 
 " Ripped out of https://github.com/derekprior/vim-trimmer/blob/master/plugin/vim-trimmer.vim
 if !exists("g:trimmer_blacklist")

@@ -682,17 +682,28 @@ endfunction
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 
 autocmd CursorHold *.js,*.jsx,*.kt :ALEHover
-nnoremap <silent> <C-]> :ALEGoToDefinition<CR>
+
+" nnoremap <silent> <C-]> :ALEGoToDefinition<CR>
 nnoremap <silent> <M-Return> :ALEFix<CR>
 
-nnoremap <silent> gd    :ALEGoToTypeDefinition<CR>
-nnoremap <silent> K     :ALEDetail<CR>
-nnoremap <silent> gD    :ALESymbolSearch<CR>
-nnoremap <silent> <c-k> :ALEDetail<CR>
-nnoremap <silent> 1gD   :ALEGoToTypeDefinition<CR>
-nnoremap <silent> gr    :ALEFindReferences<CR>
+" nnoremap <silent> gd    :ALEGoToTypeDefinition<CR>
+" nnoremap <silent> K     :ALEDetail<CR>
+" nnoremap <silent> gD    :ALESymbolSearch<CR>
+" nnoremap <silent> <c-k> :ALEDetail<CR>
+" nnoremap <silent> 1gD   :ALEGoToTypeDefinition<CR>
+" nnoremap <silent> gr    :ALEFindReferences<CR>
 
 
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <Leader>r <cmd>lua vim.lsp.buf.rename()<CR>
 
 function! GutentagsFilter(path) abort
     if fnamemodify(a:path, ':e') == 'java'
@@ -849,7 +860,7 @@ augroup END
 "XML completion based on CTags
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-autocmd FileType kotlin nnoremap <buffer> <C-]> LspDefinition<CR>
+" autocmd FileType kotlin nnoremap <buffer> <C-]> LspDefinition<CR>
 let g:ale_kotlin_languageserver_executable = '/home/igneo676/.config/nvim/plugged/kotlin-language-server/server/build/install/server/bin/kotlin-language-server'
 
 let g:ale_java_javalsp_executable = '/home/igneo676/.config/nvim/plugged/java-language-server/dist/mac/bin/launcher'
@@ -948,9 +959,27 @@ let g:clipboard = {
       \   'cache_enabled': 1,
       \ }
 
+
 lua << EOF
-require'nvim_lsp'.rls.setup{}
+require'nvim_lsp'.rust_analyzer.setup{}
 require'nvim_lsp'.gopls.setup{}
+require'nvim_lsp'.kotlin_language_server.setup{
+  cmd = { "/home/igneo676/.config/nvim/plugged/kotlin-language-server/server/build/install/server/bin/kotlin-language-server" };
+  settings = {
+    kotlin = {
+      compiler = {
+        jvm = {
+          target = "1.8";
+        }
+      };
+    };
+  }
+}
+
+vim.api.nvim_command [[autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()]]
+vim.api.nvim_command [[autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]]
+vim.api.nvim_command [[autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()]]
+
 EOF
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#lsp#get_source_options({}))

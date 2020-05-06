@@ -210,6 +210,7 @@ export STEAM_RUNTIME=0
 export EDITOR="nvim"
 
 export JAVA_HOME="/usr/lib/jvm/default"
+export STUDIO_JDK="/usr/lib/jvm/default"
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=red"
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
@@ -368,4 +369,3 @@ launchAPK() {
 }
 
 alias git=hub
-

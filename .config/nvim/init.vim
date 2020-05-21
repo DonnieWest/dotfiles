@@ -39,7 +39,6 @@ Plug 'Valloric/ListToggle'
 Plug 'Yggdroot/indentLine'
 Plug 'pgdouyon/vim-evanesco'
 Plug 'kana/vim-operator-user'
-Plug 'machakann/vim-highlightedyank'
 Plug 'kshenoy/vim-signature'
 Plug 'Firef0x/PKGBUILD.vim'
 Plug 'ekalinin/Dockerfile.vim'
@@ -58,10 +57,9 @@ Plug 'haishanh/night-owl.vim'
 " Plug 'edkolev/tmuxline.vim'
 Plug 'luochen1990/rainbow'
 Plug 'chrisbra/Colorizer'
-
-
 Plug 'justinmk/nvim-repl'
 Plug 'christoomey/vim-run-interactive'
+Plug 'axvr/photon.vim'
 
 " Generic IDE features
 
@@ -80,6 +78,7 @@ Plug 'prabirshrestha/async.vim'
 Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'tpope/vim-db'
 Plug 'puremourning/vimspector'
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 
 Plug 'Shougo/context_filetype.vim'
 Plug 'kassio/neoterm'
@@ -556,7 +555,7 @@ hi ESearchMatch ctermfg=black ctermbg=white guifg=#000000 guibg=#E6E6FA
 
 tnoremap <Esc> <C-\><C-n>
 
-let g:highlightedyank_highlight_duration = 100
+au TextYankPost * silent! lua require'vim.highlight'.on_yank("IncSearch", 100)
 
 autocmd User Startified setlocal buftype=
 let g:startify_bookmarks = [
@@ -753,6 +752,7 @@ call jspretmpl#register_tag('/* GraphQL */ ', 'graphql')
 autocmd FileType javascript JsPreTmpl
 autocmd FileType javascript.jsx JsPreTmpl
 
+let g:ale_kotlin_ktlint_options = '-aF --experimental'
 let g:ale_lint_on_enter = 1
 let g:ale_virtualtext_cursor = 1
 let g:ale_fixers = {'javascript': ['prettier_eslint'], 'rust': ['rustfmt'], 'kotlin': ['ktlint']}

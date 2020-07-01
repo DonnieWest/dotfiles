@@ -236,7 +236,7 @@ c.colors.webpage.prefers_color_scheme_dark = True
 # `colors.webpage.darkmode.threshold.background` to 205.  - "With
 # selective inversion of everything": Combines the two variants   above.
 # Type: Bool
-c.colors.webpage.darkmode.enabled = False
+c.colors.webpage.darkmode.enabled = True
 
 # Default font families to use. Whenever "default_family" is used in a
 # font setting, it's replaced with the fonts listed here. If set to an
@@ -249,3 +249,4 @@ config.bind('<Ctrl+Del>', 'tab-close')
 config.bind('<Ctrl+Left>', 'tab-prev')
 config.bind('<Ctrl+Right>', 'tab-next')
 config.bind('t', 'open -t about:blank')
+config.bind('x', 'tab-close')

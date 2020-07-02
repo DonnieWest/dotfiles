@@ -1,0 +1,8 @@
+width=1920
+height=1080
+mode=drun,run
+term=kitty
+colors=colors
+allow_markup=true
+allow_images=true
+image_size=20

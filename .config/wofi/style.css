@@ -1,0 +1,57 @@
+window {
+  background: rgba(12, 16, 20, 0.8);
+  font-size: 40px;
+  font-family: Victor Mono SemiBold;
+  text-align: center;
+}
+
+#input {
+  margin: 10px;
+  border: none;
+  background: transparent;
+}
+
+
+#img {
+  margin-right: 3px;
+  margin-left: 3px;
+}
+
+#entry:selected {
+  background: #d8dee9;
+  border-radius: 0;
+}
+
+#img:selected {
+  background: transparent;
+}
+
+#input input {
+  background: transparent;
+}
+
+#inner-box {
+  margin: 5px;
+  border: none;
+  text-align: center;
+}
+
+#outer-box {
+  margin: 5px auto;
+  border: none;
+}
+
+#scroll {
+  margin: 5px;
+  border: none;
+  text-align: center;
+}
+
+#entry:selected {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+#text {
+  margin: 5px;
+  border: none;
+}

@@ -318,14 +318,14 @@ findAlias() {
   PS4='+%x:%I>' zsh -i -x -c '' |& grep $1
 }
 
-launch-emulator() {
-  emulator=$(ls ~/.android/avd | grep avd | sed 's/\.avd//g' | fzf)
-  if [ "x$emulator" != "x" ]
-  then
-    echo "Launching $emulator"
-    QT_QPA_PLATFORM=xcb emulator @$emulator &!
-  fi
-}
+# launch-emulator() {
+#   emulator=$(ls ~/.android/avd | grep avd | sed 's/\.avd//g' | fzf)
+#   if [ "x$emulator" != "x" ]
+#   then
+#     echo "Launching $emulator"
+#     QT_QPA_PLATFORM=xcb emulator @$emulator &!
+#   fi
+# }
 
 unmount_drives() {
   local drive
@@ -338,34 +338,73 @@ unmount_drives() {
 }
 
 connectToDevice() {
-  device=$(adb devices | tail -n +2 | fzf | awk '{ print $1 }')
-  scrcpy -s $device &!
+  adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 -m | awk '{ print $1 }' | while read device; do
+    scrcpy --always-on-top -s $device -p $(python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()') &!
+  done
 }
 
 launchEmulator() {
-  avd=$(avdmanager list avd | grep "Name:" | awk '{ print $2 }')
-  if [ "x$avd" != "x" ]
-  then
-    emulator "@${avd%.*}" &!
-  else
-    echo "Failed to launch Emulator"
-  fi
+  avdmanager list avd | grep "Name:" | awk '{ print $2 }' | fzf -m | while read emulator; do
+    emulator "@${emulator%.*}" 1>/dev/null 2>/dev/null &!
+  done
+}
+
+recordAndroidDevice() {
+  adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 -m | awk '{ print $1 }' | while read device; do
+    adb -s $device shell screenrecord /sdcard/$device.mp4
+    adb -s $device pull /sdcard/$device.mp4 ./
+  done
 }
 
 launchAPK() {
   ./gradlew assembleDebug
-  device=$(adb devices -l | tail -n +2 | awk '{ print $1, $5 }' | fzf | sed -e 's/model://g' | awk '{ print $1 }')
-  if [ "x$device" != "x" ]
-  then
+  adb devices -l | tail -n +2 | sed '/^\s*$/d' | awk '{ print $1, $5 }' | sed -e 's/model://g' | awk '{ print $1 }'  | fzf -1 -m | while read device; do
     adb -s $device install-multiple -r -d $(find ./ -name "*.apk" | tr "\n" " " | tr "//" "/")
-    appId=$(rg 'applicationId "' | awk '{ print $3 }' | sed -e "s/\"//g")
-    if [ "x$appId" != "x" ]
+
+    apk=$(find ./*/build/** -name "app-debug.apk")
+
+    mainId=$(apkanalyzer manifest print $apk | xmlstarlet sel -t -c "///activity[intent-filter/action[@android:name='android.intent.action.MAIN']]" | xmlstarlet sel -t -c "string(//*[local-name()='activity']/@android:name)")
+
+    appId=$(apkanalyzer manifest application-id $apk)
+
+    if [ "$appId/$mainId" != "/" ]
     then
-      adb -s $device shell monkey -p "$appId.debug" 1
+      adb -s $device shell am start -n $appId/$mainId -a android.intent.action.MAIN -c android.intent.category.LAUNCHER
     fi
-  else
-    echo "No device selected"
-  fi
+  done
 }
 
+launchReleaseAPK() {
+  ./gradlew assembleRelease
+  adb devices -l | tail -n +2 | sed '/^\s*$/d' | awk '{ print $1, $5 }' | sed -e 's/model://g' | awk '{ print $1 }'  | fzf -1 -m | while read device; do
+    adb -s $device install-multiple -r -d $(find ./ -name "*.apk" | tr "\n" " " | tr "//" "/")
+    appId=$(grep -r --include=\*.{gradle,kts} 'applicationId "' ./ | awk '{ print $3 }' | sed -e "s/\"//g")
+
+    if [ "x$appId" == "x" ]
+    then
+      appId=$(grep -r --include=\*.{gradle,kts} 'applicationId' ./ | awk '{ print $4 }' | sed -e "s/\"//g")
+    fi
+
+    if [ "x$appId" != "x" ]
+    then
+      adb -s $device shell monkey -p "$appId" 1 2>/dev/null >/dev/null
+    fi
+  done
+}
+
+watchCalendar() {
+  while true; do clear ; gcalcli calw --no-military --noweekend --details description ; sleep 600s; done
+}
+
+watchGithub() {
+  while true; do clear; gh pr status; gh issue status; sleep 600s; done
+}
+
+logsForDevice() {
+  device=$(adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 | awk '{ print $1 }') && pidcat -s $device --current
+}
+
+pushwebsite() {
+  pushover --title "Website" --url "$1" --message "$1"
+}
 alias git=hub

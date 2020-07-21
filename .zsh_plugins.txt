@@ -1,15 +1,16 @@
 zsh-users/zsh-history-substring-search
 zsh-users/zsh-completions
-zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-autosuggestions
+zdharma/fast-syntax-highlighting
+mafredri/zsh-async
+
 wfxr/forgit
-lukechilds/zsh-better-npm-completion
-gradle/gradle-completion
 walesmd/caniuse.plugin.zsh
 jsahlen/tmux-vim-integration.plugin.zsh
-robbyrussell/oh-my-zsh path:plugins/docker path:plugins/adb path:plugins/extract
-chrisands/zsh-yarn-completion
-mafredri/zsh-async
-# gretzky/n.zsh
 laggardkernel/git-ignore
-zsh-users/zsh-autosuggestions
 woefe/git-prompt.zsh
+
+lukechilds/zsh-better-npm-completion
+chrisands/zsh-yarn-completion
+robbyrussell/oh-my-zsh path:plugins/docker path:plugins/adb path:plugins/gradle path:plugins/extract
+unixorn/docker-helpers.zshplugin

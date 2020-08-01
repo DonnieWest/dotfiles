@@ -994,6 +994,58 @@ require'nvim_lsp'.rust_analyzer.setup{
   }
 }
 require'nvim_lsp'.gopls.setup{}
+require'nvim_lsp'.jsonls.setup{
+  settings = {
+    json = {
+      schemas = {
+        {
+          description = 'TypeScript compiler configuration file',
+          fileMatch = {'tsconfig.json', 'tsconfig.*.json'},
+          url = 'http://json.schemastore.org/tsconfig'
+        },
+        {
+          description = 'NPM package.json',
+          fileMatch = {'package.json'},
+          url = 'http://json.schemastore.org/package'
+        },
+        {
+          description = 'Lerna config',
+          fileMatch = {'lerna.json'},
+          url = 'http://json.schemastore.org/lerna'
+        },
+        {
+          description = 'Babel configuration',
+          fileMatch = {'.babelrc.json', '.babelrc', 'babel.config.json'},
+          url = 'http://json.schemastore.org/lerna'
+        },
+        {
+          description = 'ESLint config',
+          fileMatch = {'.eslintrc.json', '.eslintrc'},
+          url = 'http://json.schemastore.org/eslintrc'
+        },
+        {
+          description = 'Bucklescript config',
+          fileMatch = {'bsconfig.json'},
+          url = 'https://bucklescript.github.io/bucklescript/docson/build-schema.json'
+        },
+        {
+          description = 'Prettier config',
+          fileMatch = {'.prettierrc', '.prettierrc.json', 'prettier.config.json'},
+          url = 'http://json.schemastore.org/prettierrc'
+        }
+      };
+    };
+    jsonls = {
+      textDocument = {
+        completion = {
+          completionItem = {
+            snippetSupport = true;
+          };
+        };
+      };
+    };
+  }
+}
 require'nvim_lsp'.kotlin_language_server.setup{
   cmd = { "/home/igneo676/.config/nvim/plugged/kotlin-language-server/server/build/install/server/bin/kotlin-language-server" };
   settings = {

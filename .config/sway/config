@@ -312,4 +312,10 @@ bindsym XF86AudioMute exec ~/.bin/mute.sh
 bindsym XF86MonBrightnessDown exec ~/.bin/brightnessDown.sh
 bindsym XF86MonBrightnessUp exec ~/.bin/brightnessUp.sh
 bindsym XF86AudioMicMute exec ~/.bin/togglemicrophone.sh
+
+# pause / play / next / previous
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
 # Chrome special flags and others set in /etc/profiles.d/variables.sh like the following: --touch-devices=2 --force-device-scale-factor=2

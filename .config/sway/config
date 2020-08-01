@@ -284,13 +284,12 @@ bar {
 
   colors {
     separator #33859d
-    background #0c1014
+    background #0a0f14
     statusline #599caa
     focused_workspace #081f2d #081f2d #d3ebe9
     active_workspace #093748 #093748 #d3ebe9
-    inactive_workspace #0c1014 #0c1014 #aea79f
+    inactive_workspace #0a0f14 #0a0f14 #26a98b
     urgent_workspace #c33027 #c33027 #d3ebe9
-
   }
 }
 

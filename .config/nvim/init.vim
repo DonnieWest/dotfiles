@@ -904,6 +904,9 @@ let g:rubycomplete_rails = 1
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 
+" Rust
+let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
+
 
 highlight htmlArg cterm=italic
 highlight Comment cterm=italic
@@ -977,7 +980,19 @@ let g:clipboard = {
 
 
 lua << EOF
-require'nvim_lsp'.rust_analyzer.setup{}
+require'nvim_lsp'.rust_analyzer.setup{
+  settings = {
+    rust_analyzer = {
+      textDocument = {
+        completion = {
+          completionItem = {
+            snippetSupport = true;
+          };
+        };
+      };
+    };
+  }
+}
 require'nvim_lsp'.gopls.setup{}
 require'nvim_lsp'.kotlin_language_server.setup{
   cmd = { "/home/igneo676/.config/nvim/plugged/kotlin-language-server/server/build/install/server/bin/kotlin-language-server" };

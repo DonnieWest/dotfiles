@@ -1,0 +1,20 @@
+[user]
+	name = Donnie West
+	email = me@donniewest.com
+	# signingkey = EDADD24E208C4B87
+	signingkey = 11CB0F19F704947F
+[push]
+	default = matching
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	conflicted = !nvim +Conflicted
+[color]
+  ui = auto
+[commit]
+	gpgsign = true
+[core]
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[pull]
+	rebase = true
+[rebase]
+	autostash = true

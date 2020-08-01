@@ -191,6 +191,13 @@ Plug 'nickspoons/vim-sharpenup'
 " Go Plugins
 Plug 'fatih/vim-go'
 
+" SQL
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-completion'
+Plug 'kristijanhusak/vim-dadbod-ui'
+Plug 'yami-beta/asyncomplete-omni.vim'
+
+
 
 call plug#end()
 
@@ -309,6 +316,13 @@ let g:javascript_tsserver_use_global = 1
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
     \ 'priority': 10,
     \ }))
+
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
+  \ 'name': 'omni',
+  \ 'whitelist': ['sql', 'sq'],
+  \ 'completor': function('vim_dadbod_completion#omni')
+  \  }))
 
 let g:ale_completion_tsserver_autoimport = 1
 let g:ale_hover_to_preview = 0

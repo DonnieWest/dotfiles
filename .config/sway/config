@@ -41,7 +41,8 @@ floating_modifier $mod
 # start a terminal
 # bindsym $mod+Return exec mlterm
 # bindsym $mod+Return exec /home/igneo676/.bin/restraint
-bindsym $mod+Return exec kitty
+# bindsym $mod+Return exec kitty
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+q kill

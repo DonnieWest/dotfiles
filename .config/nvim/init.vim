@@ -571,7 +571,7 @@ hi ESearchMatch ctermfg=black ctermbg=white guifg=#000000 guibg=#E6E6FA
 
 tnoremap <Esc> <C-\><C-n>
 
-au TextYankPost * silent! lua require'vim.highlight'.on_yank("IncSearch", 100)
+au TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=100}
 
 autocmd User Startified setlocal buftype=
 let g:startify_bookmarks = [

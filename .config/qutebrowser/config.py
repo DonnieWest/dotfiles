@@ -13,6 +13,11 @@
 # Uncomment this to still load settings configured via autoconfig.yml
 # config.load_autoconfig()
 
+# Aliases for commands. The keys of the given dictionary are the
+# aliases, while the values are the commands they map to.
+# Type: Dict
+c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript /Users/donniewest/.qutebrowser/userscripts/qute-bitwarden -d choose', 'readable': 'spawn --userscript /Users/donniewest/.qutebrowser/userscripts/readability-js', 'mpv': 'spawn --userscript /Users/donniewest/.qutebrowser/userscripts/view_in_mpv'}
+
 # Always restore open sites when qutebrowser is reopened.
 # Type: Bool
 c.auto_save.session = True
@@ -333,5 +338,8 @@ config.bind('<Ctrl+Left>', 'tab-prev')
 config.bind('<Ctrl+Right>', 'tab-next')
 config.bind('j', 'repeat 3 scroll down')
 config.bind('k', 'repeat 3 scroll up')
+config.unbind('d')
 config.bind('t', 'open -t about:blank')
 config.bind('x', 'tab-close')
+config.bind('F', 'hint all tab-bg')
+config.bind(';b', 'hint all tab')

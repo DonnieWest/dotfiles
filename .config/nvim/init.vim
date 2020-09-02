@@ -98,6 +98,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'justinmk/vim-gtfo'
 Plug 'sunaku/vim-dasht'
 Plug 'liuchengxu/vim-which-key'
+Plug 'nvim-lua/diagnostic-nvim'
 Plug 'DonnieWest/asyncomplete_neovim_lsp'
 Plug 'liuchengxu/vista.vim'
 Plug 'neovim/nvim-lsp'
@@ -316,7 +317,6 @@ let g:javascript_tsserver_use_global = 1
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
     \ 'priority': 10,
     \ }))
-
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
   \ 'name': 'omni',
@@ -698,17 +698,6 @@ autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 
 autocmd CursorHold *.js,*.jsx,*.kt :ALEHover
 
-" nnoremap <silent> <C-]> :ALEGoToDefinition<CR>
-nnoremap <silent> <M-Return> :ALEFix<CR>
-
-" nnoremap <silent> gd    :ALEGoToTypeDefinition<CR>
-" nnoremap <silent> K     :ALEDetail<CR>
-" nnoremap <silent> gD    :ALESymbolSearch<CR>
-" nnoremap <silent> <c-k> :ALEDetail<CR>
-" nnoremap <silent> 1gD   :ALEGoToTypeDefinition<CR>
-" nnoremap <silent> gr    :ALEFindReferences<CR>
-
-
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
@@ -775,9 +764,8 @@ let g:ale_kotlin_ktlint_options = '-aF --experimental'
 let g:ale_lint_on_enter = 1
 let g:ale_virtualtext_cursor = 1
 let g:ale_fixers = {'javascript': ['prettier_eslint'], 'rust': ['rustfmt'], 'kotlin': ['ktlint']}
-" let g:ale_linters = {'javascript': ['eslint', 'tsserver'], 'cs': ['OmniSharp'], 'java': ['android', 'javalsp', 'intellijserver'], 'kotlin': ['android', 'ktlint', 'intellijserver'], 'xml': ['intellijserver']}
-" let g:ale_linters = {'javascript': ['eslint', 'tsserver'], 'cs': ['OmniSharp'], 'java': ['android', 'javalsp'], 'kotlin': ['android', 'ktlint', 'languageserver'], 'python': ['flake8', 'mypy', 'pylint', 'pyls'], 'rust': ['rls', 'cargo']}
 let g:ale_linters = {'javascript': ['eslint', 'tsserver'], 'cs': ['OmniSharp'], 'java': ['android'], 'kotlin': ['android', 'ktlint'], 'python': ['flake8', 'mypy', 'pylint', 'pyls'], 'rust': ['cargo']}
+" let g:ale_linters = {'javascript': ['eslint', 'tsserver'], 'cs': ['OmniSharp'], 'java': ['android', 'javalsp'], 'kotlin': ['android', 'ktlint', 'languageserver'], 'python': ['flake8', 'mypy', 'pylint', 'pyls'], 'rust': ['rls', 'cargo']}
 let g:ale_fix_on_save = 1
 
 " Fetch semantic type/interface/identifier names on BufEnter and highlight them
@@ -879,7 +867,6 @@ augroup END
 "XML completion based on CTags
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-" autocmd FileType kotlin nnoremap <buffer> <C-]> LspDefinition<CR>
 let g:ale_kotlin_languageserver_executable = '/home/igneo676/.config/nvim/plugged/kotlin-language-server/server/build/install/server/bin/kotlin-language-server'
 
 let g:ale_java_javalsp_executable = '/home/igneo676/.config/nvim/plugged/java-language-server/dist/mac/bin/launcher'
@@ -985,9 +972,23 @@ let g:clipboard = {
       \   'cache_enabled': 1,
       \ }
 
+let g:diagnostic_insert_delay = 1
+let g:diagnostic_enable_virtual_text = 1
+autocmd CursorHold * lua vim.lsp.util.show_line_diagnostics()
 
 lua << EOF
-require'nvim_lsp'.rust_analyzer.setup{
+
+local nvim_lsp = require'nvim_lsp'
+local diagnostic = require'diagnostic'
+local nvim_command = vim.api.nvim_command
+
+local on_attach = function(client, bufnr)
+  diagnostic.on_attach(client, bufnr)
+  nvim_command('autocmd CursorHold <buffer> lua vim.lsp.util.show_line_diagnostics()')
+end
+
+nvim_lsp.rust_analyzer.setup{
+  on_attach = on_attach;
   settings = {
     rust_analyzer = {
       textDocument = {
@@ -1000,8 +1001,11 @@ require'nvim_lsp'.rust_analyzer.setup{
     };
   }
 }
-require'nvim_lsp'.gopls.setup{}
-require'nvim_lsp'.jsonls.setup{
+nvim_lsp.gopls.setup{
+  on_attach = on_attach;
+}
+nvim_lsp.jsonls.setup{
+  on_attach = on_attach;
   settings = {
     json = {
       schemas = {
@@ -1053,8 +1057,12 @@ require'nvim_lsp'.jsonls.setup{
     };
   }
 }
-require'nvim_lsp'.kotlin_language_server.setup{
+nvim_lsp.kotlin_language_server.setup{
   cmd = { "/home/igneo676/.config/nvim/plugged/kotlin-language-server/server/build/install/server/bin/kotlin-language-server" };
+  log_level = vim.lsp.protocol.MessageType.Log;
+  root_dir = nvim_lsp.util.root_pattern("settings.gradle.kts") or nvim_lsp.util.root_pattern("settings.gradle");
+  message_level = vim.lsp.protocol.MessageType.Log;
+  on_attach = on_attach;
   settings = {
     kotlin = {
       compiler = {

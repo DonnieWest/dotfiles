@@ -23,7 +23,9 @@ c.auto_save.session = True
 # AppCache. Note that with QtWebKit, only `all` and `never` are
 # supported as per-domain values. Setting `no-3rdparty` or `no-
 # unknown-3rdparty` per-domain on QtWebKit will have the same effect as
-# `all`.
+# `all`. If this setting is used with URL patterns, the pattern gets
+# applied to the origin/first party URL of the page making the request,
+# not the request URL.
 # Type: String
 # Valid values:
 #   - all: Accept all cookies.
@@ -38,7 +40,9 @@ config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
 # AppCache. Note that with QtWebKit, only `all` and `never` are
 # supported as per-domain values. Setting `no-3rdparty` or `no-
 # unknown-3rdparty` per-domain on QtWebKit will have the same effect as
-# `all`.
+# `all`. If this setting is used with URL patterns, the pattern gets
+# applied to the origin/first party URL of the page making the request,
+# not the request URL.
 # Type: String
 # Valid values:
 #   - all: Accept all cookies.
@@ -134,6 +138,12 @@ config.set('content.images', True, 'chrome-devtools://*')
 # Load images automatically in web pages.
 # Type: Bool
 config.set('content.images', True, 'devtools://*')
+
+# Allow JavaScript to read from or write to the clipboard. With
+# QtWebEngine, writing the clipboard as response to a user interaction
+# is always allowed.
+# Type: Bool
+c.content.javascript.can_access_clipboard = True
 
 # Enable JavaScript.
 # Type: Bool
@@ -233,7 +243,7 @@ c.tabs.new_position.related = 'last'
 # not apply properly if max_width is smaller than the minimum size of
 # tab contents, or smaller than tabs.min_width.
 # Type: Int
-c.tabs.max_width = 512
+c.tabs.max_width = 256
 
 # Hide the window decoration.  This setting requires a restart on
 # Wayland.
@@ -242,7 +252,7 @@ c.window.hide_decoration = False
 
 # Default zoom level.
 # Type: Perc
-c.zoom.default = '200%'
+c.zoom.default = '100%'
 
 # Background color of the statusbar.
 # Type: QssColor
@@ -315,11 +325,13 @@ c.fonts.default_family = 'Victor Mono SemiBold'
 # either a float value with a "pt" suffix, or an integer value with a
 # "px" suffix.
 # Type: String
-c.fonts.default_size = '20pt'
+c.fonts.default_size = '10pt'
 
 # Bindings for normal mode
 config.bind('<Ctrl+Del>', 'tab-close')
 config.bind('<Ctrl+Left>', 'tab-prev')
 config.bind('<Ctrl+Right>', 'tab-next')
+config.bind('j', 'repeat 3 scroll down')
+config.bind('k', 'repeat 3 scroll up')
 config.bind('t', 'open -t about:blank')
 config.bind('x', 'tab-close')

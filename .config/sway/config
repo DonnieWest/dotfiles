@@ -127,8 +127,8 @@ bindsym $mod+Shift+0 move container to workspace number "10: Code"
 
 # bindsym XF86MonBrightnessUp --no-startup-id exec brightnessctl s +10%
 # bindsym XF86MonBrightnessDown --no-startup-id exec brightnessctl s 10%-
-bindsym $mod+w exec --no-startup-id firefox-developer-edition
-# bindsym $mod+w exec --no-startup-id qutebrowser
+# bindsym $mod+w exec --no-startup-id firefox-developer-edition
+bindsym $mod+w exec --no-startup-id qutebrowser
 # bindsym $mod+f exec --no-startup-id caja
 bindsym $mod+f exec --no-startup-id "kitty -e ranger ~/"
 bindsym Print exec /home/igneo676/.bin/screenshot

@@ -768,6 +768,9 @@ call jspretmpl#register_tag('/* GraphQL */ ', 'graphql')
 autocmd FileType javascript JsPreTmpl
 autocmd FileType javascript.jsx JsPreTmpl
 
+autocmd FileType kotlin setlocal shiftwidth=4
+autocmd FileType kotlin setlocal softtabstop=4
+autocmd FileType kotlin setlocal tabstop=4
 let g:ale_kotlin_ktlint_options = '-aF --experimental'
 let g:ale_lint_on_enter = 1
 let g:ale_virtualtext_cursor = 1

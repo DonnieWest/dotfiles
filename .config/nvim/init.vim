@@ -898,6 +898,10 @@ let g:neoformat_kotlin_ktlint = {
             \ 'stdin': 1,
             \ }
 
+call tcomment#type#Define('kotlin',       tcomment#GetLineC('// %s'))
+call tcomment#type#Define('kotlin_block', g:tcomment#block_fmt_c   )
+call tcomment#type#Define('kotlin_inline', g:tcomment#inline_fmt_c )
+
 let java_highlight_functions = 'style'
 let java_highlight_all = 1
 let java_highlight_debug = 1

@@ -218,7 +218,7 @@ set softtabstop=2
 set tabstop=2
 set magic
 set noshowmode
-set completeopt=noinsert,menuone,noselect
+set completeopt=noinsert,menuone,noselect,longest
 set shiftround
 set autoread
 set whichwrap+=<,>,h,l,[,]

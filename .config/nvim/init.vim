@@ -324,7 +324,7 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
   \ 'completor': function('vim_dadbod_completion#omni')
   \  }))
 
-let g:ale_completion_tsserver_autoimport = 1
+let g:ale_completion_autoimport = 1
 let g:ale_hover_to_preview = 0
 let g:ale_set_balloons = 1
 let g:ale_rename_tsserver_find_in_comments = 1

@@ -106,6 +106,7 @@ Plug 'neovim/nvim-lsp'
 " Appearance
 
 Plug 'thiagoalessio/rainbow_levels.vim'
+Plug 'norcalli/nvim-colorizer.lua'
 
 " Formatters
 Plug 'sbdchd/neoformat'
@@ -136,7 +137,6 @@ Plug 'samuelsimoes/vim-jsx-utils'
 Plug 'alampros/vim-react-keywords'
 Plug 'jparise/vim-graphql'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-Plug 'ap/vim-css-color'
 Plug 'mvolkmann/vim-react'
 Plug 'mvolkmann/vim-js-arrow-function'
 Plug 'PsychoLlama/further.vim'
@@ -977,6 +977,7 @@ let g:diagnostic_enable_virtual_text = 1
 autocmd CursorHold * lua vim.lsp.util.show_line_diagnostics()
 
 lua << EOF
+require'colorizer'.setup();
 
 local nvim_lsp = require'nvim_lsp'
 local diagnostic = require'diagnostic'

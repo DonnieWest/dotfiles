@@ -48,6 +48,7 @@ Plug 'keith/swift.vim'
 
 " UI
 Plug 'whatyouhide/vim-gotham'
+Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'mhartington/oceanic-next'
 Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'
@@ -62,6 +63,9 @@ Plug 'justinmk/nvim-repl'
 Plug 'christoomey/vim-run-interactive'
 Plug 'axvr/photon.vim'
 
+Plug 'norcalli/nvim.lua'
+Plug 'norcalli/nvim-base16.lua'
+
 " Generic IDE features
 
 Plug 'simnalamburt/vim-mundo'
@@ -75,6 +79,9 @@ Plug 'LeafCage/echos.vim'
 
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
+Plug 'tsufeki/asyncomplete-fuzzy-match', {
+    \ 'do': 'cargo build --release',
+    \ }
 Plug 'prabirshrestha/async.vim'
 Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'tpope/vim-db'
@@ -87,9 +94,13 @@ Plug 'kassio/neoterm'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/telescope.nvim'
+
 Plug 'mhinz/vim-grepper'
 Plug 'dense-analysis/ale'
-Plug 'pgdouyon/vim-accio'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'metakirby5/codi.vim'
@@ -98,10 +109,13 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'justinmk/vim-gtfo'
 Plug 'sunaku/vim-dasht'
 Plug 'liuchengxu/vim-which-key'
-Plug 'nvim-lua/diagnostic-nvim'
 Plug 'DonnieWest/asyncomplete_neovim_lsp'
 Plug 'liuchengxu/vista.vim'
-Plug 'neovim/nvim-lsp'
+
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/diagnostic-nvim'
+Plug 'nvim-lua/lsp-status.nvim'
+Plug 'tjdevries/lsp_extensions.nvim'
 
 " Appearance
 
@@ -249,6 +263,7 @@ set secure
 set termguicolors
 set inccommand=split
 set mouse=a
+set updatetime=300
 
 au FocusGained * :checktime
 
@@ -519,7 +534,7 @@ endfunction
 
 command! FilesWithIcon :call Fzf_dev()
 
-nnoremap <C-p> :FilesWithIcon<ENTER>
+nnoremap <C-p> :lua require'telescope.builtin'.find_files{}<ENTER>
 if has('nvim')
   aug fzf_setup
     au!
@@ -538,7 +553,7 @@ command! -bang -nargs=* Rg
 
 runtime plugin/grepper.vim
 let g:grepper.rg.grepprg .= ' -i'
-nnoremap \ :GrepperRg 
+nnoremap \ :lua require'telescope.builtin'.live_grep{}<CR>
 
 " Map ,t to search for my Todos
 map <LEADER>t :GrepperRg TODO: <CR>
@@ -563,8 +578,6 @@ autocmd VimResized * :wincmd =
 
 nnoremap <Leader>fr :%s/
 xnoremap <Leader>fr :s/
-autocmd FileType esearch nnoremap <buffer> <Leader>fr :ESubstitute/
-autocmd FileType esearch xnoremap <buffer> <Leader>fr :ESubstitute/
 call esearch#map('<leader>ff', 'esearch')
 call esearch#map('<leader>fw', 'esearch-word-under-cursor')
 hi ESearchMatch ctermfg=black ctermbg=white guifg=#000000 guibg=#E6E6FA
@@ -620,6 +633,11 @@ endfunction
 " you can add the following line to your vimrc 
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
+function! LspStatus() abort
+  let status = luaeval('require("lsp-status").status()')
+  return trim(status)
+endfunction
+
 let g:lightline = {
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' },
@@ -634,19 +652,21 @@ let g:lightline = {
       \   'right': [ [ 'lineinfo' ],
       \              [ 'percent' ],
       \              ['gradle_project', 'gradle_running', 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
+      \              [ 'lsp_status' ],
       \              [ 'fileformat', 'fileencoding', 'filetype' ],
       \              ['sharpenup']
       \            ]
       \ },
       \ 'inactive': {
-      \   'right': [['lineinfo'], ['percent'], ['sharpenup']]
+      \   'right': [['lineinfo'], ['percent'], ['sharpenup'], ['lsp_status']]
       \ },
       \ 'component': {
       \   'sharpenup': sharpenup#statusline#Build()
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
-      \   'method': 'NearestMethodOrFunction'
+      \   'method': 'NearestMethodOrFunction',
+      \   'lsp_status': 'LspStatus'
       \ },
       \ 'component_expand': {
       \   'buffers': 'lightline#bufferline#buffers',
@@ -976,15 +996,33 @@ let g:diagnostic_insert_delay = 1
 let g:diagnostic_enable_virtual_text = 1
 autocmd CursorHold * lua vim.lsp.util.show_line_diagnostics()
 
+autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment" }
+
 lua << EOF
 require'colorizer'.setup();
 
 local nvim_lsp = require'nvim_lsp'
 local diagnostic = require'diagnostic'
 local nvim_command = vim.api.nvim_command
+local lsp_status = require('lsp-status')
+
+-- use LSP SymbolKinds themselves as the kind labels
+local kind_labels_mt = {__index = function(_, k) return k end}
+local kind_labels = {}
+setmetatable(kind_labels, kind_labels_mt)
+
+lsp_status.register_progress()
+lsp_status.config({
+  kind_labels = kind_labels,
+  -- the default is a wide codepoint which breaks absolute and relative
+  -- line counts if placed before airline's Z section
+  status_symbol = "",
+})
 
 local on_attach = function(client, bufnr)
   diagnostic.on_attach(client, bufnr)
+  lsp_status.on_attach(client, bufnr)
   nvim_command('autocmd CursorHold <buffer> lua vim.lsp.util.show_line_diagnostics()')
 end
 
@@ -1058,6 +1096,7 @@ nvim_lsp.jsonls.setup{
     };
   }
 }
+
 nvim_lsp.kotlin_language_server.setup{
   cmd = { "/home/igneo676/.config/nvim/plugged/kotlin-language-server/server/build/install/server/bin/kotlin-language-server" };
   log_level = vim.lsp.protocol.MessageType.Log;
@@ -1078,6 +1117,25 @@ nvim_lsp.kotlin_language_server.setup{
 vim.api.nvim_command [[autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()]]
 vim.api.nvim_command [[autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]]
 vim.api.nvim_command [[autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()]]
+
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "all",     -- one of "all", "language", or a list of languages
+  refactor = {
+    highlight_definitions = { enable = true },
+  },
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+  },
+  refactor = {
+    highlight_current_scope = { enable = true },
+    smart_rename = {
+      enable = true,
+      keymaps = {
+        smart_rename = "grr",
+      },
+    },
+  },
+}
 
 EOF
 

@@ -39,6 +39,9 @@ format_mem = "{Mug}G / {MTg}G"
 block = "sound"
 
 [[block]]
+block = "battery"
+
+[[block]]
 block = "time"
 interval = 60
 format = "%m-%d-%Y %l:%M %p"

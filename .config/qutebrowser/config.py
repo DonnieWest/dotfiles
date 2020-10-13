@@ -16,7 +16,7 @@
 # Aliases for commands. The keys of the given dictionary are the
 # aliases, while the values are the commands they map to.
 # Type: Dict
-c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript /Users/donniewest/.qutebrowser/userscripts/qute-bitwarden -d choose', 'readable': 'spawn --userscript /Users/donniewest/.qutebrowser/userscripts/readability-js', 'mpv': 'spawn --userscript /Users/donniewest/.qutebrowser/userscripts/view_in_mpv'}
+c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/qute-bitwarden', 'mpv': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/view_in_mpv', 'pushwebsite': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/pushwebsite'}
 
 # Always restore open sites when qutebrowser is reopened.
 # Type: Bool
@@ -317,7 +317,7 @@ c.colors.webpage.prefers_color_scheme_dark = True
 # `colors.webpage.darkmode.threshold.background` to 205.  - "With
 # selective inversion of everything": Combines the two variants   above.
 # Type: Bool
-c.colors.webpage.darkmode.enabled = True
+c.colors.webpage.darkmode.enabled = False
 
 # Default font families to use. Whenever "default_family" is used in a
 # font setting, it's replaced with the fonts listed here. If set to an
@@ -333,13 +333,14 @@ c.fonts.default_family = 'Victor Mono SemiBold'
 c.fonts.default_size = '10pt'
 
 # Bindings for normal mode
+config.bind(';b', 'hint all tab')
 config.bind('<Ctrl+Del>', 'tab-close')
 config.bind('<Ctrl+Left>', 'tab-prev')
 config.bind('<Ctrl+Right>', 'tab-next')
+config.bind('F', 'hint all tab-bg')
+config.unbind('d')
+config.bind('dd', 'tab-close')
 config.bind('j', 'repeat 3 scroll down')
 config.bind('k', 'repeat 3 scroll up')
-config.unbind('d')
 config.bind('t', 'open -t about:blank')
 config.bind('x', 'tab-close')
-config.bind('F', 'hint all tab-bg')
-config.bind(';b', 'hint all tab')

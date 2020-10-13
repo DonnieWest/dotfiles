@@ -278,7 +278,7 @@ bindsym $mod+Control+Left resize shrink width 5 px or 5 ppt
 # finds out, if available)
 bar {
   position top
-  status_command i3blocks
+  status_command i3status-rs
   font pango:Victor Mono SemiBold 24
   pango_markup enabled
   # strip_workspace_numbers yes

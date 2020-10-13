@@ -1,0 +1,44 @@
+icons = "awesome5"
+[theme]
+name = "solarized-dark"
+[theme.overrides]
+idle_bg = "#0a0f14"
+separator_bg = "#0a0f14"
+idle_fg = "#d3ebe9"
+info_bg = "#0a0f14"
+info_fg = "#d3ebe9"
+good_bg = "#0a0f14"
+good_fg = "#d3ebe9"
+warning_bg = "#0a0f14"
+warning_fg = "#d3ebe9"
+critical_bg = "#dc322f"
+critical_fg = "#d3ebe9"
+separator = "\ue0b2"
+
+[[block]]
+block = "bluetooth"
+mac = "C8:91:9A:B1:F9:97"
+label = " MX Master Mouse"
+
+[[block]]
+block = "net"
+device = "wlan0"
+# format = "{ssid} {signal_strength} {ip}"
+ip = true
+speed_down = false
+speed_up = false
+ssid = true
+signal_strength = true
+
+[[block]]
+block = "memory"
+display_type = "memory"
+format_mem = "{Mug}G / {MTg}G"
+
+[[block]]
+block = "sound"
+
+[[block]]
+block = "time"
+interval = 60
+format = "%m-%d-%Y %l:%M %p"

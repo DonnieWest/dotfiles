@@ -203,6 +203,9 @@ Plug 'justinmk/vim-syntax-extra'
 Plug 'OmniSharp/omnisharp-vim'
 Plug 'nickspoons/vim-sharpenup'
 
+" Zig Plugins
+Plug 'ziglang/zig.vim'
+
 " Go Plugins
 Plug 'fatih/vim-go'
 
@@ -1026,6 +1029,10 @@ local on_attach = function(client, bufnr)
   nvim_command('autocmd CursorHold <buffer> lua vim.lsp.util.show_line_diagnostics()')
 end
 
+nvim_lsp.tsserver.setup{
+  on_attach = on_attach;
+}
+
 nvim_lsp.rust_analyzer.setup{
   on_attach = on_attach;
   settings = {
@@ -1041,6 +1048,9 @@ nvim_lsp.rust_analyzer.setup{
   }
 }
 nvim_lsp.gopls.setup{
+  on_attach = on_attach;
+}
+nvim_lsp.zls.setup{
   on_attach = on_attach;
 }
 nvim_lsp.jsonls.setup{

@@ -212,7 +212,7 @@ input "1739:52619:SYNA8004:00_06CB:CD8B_Touchpad" {
   accel_profile adaptive
   middle_emulation enabled
   dwt enabled
-  # pointer_accel 1
+  pointer_accel 0.5
   tap enabled
   click_method clickfinger
 }

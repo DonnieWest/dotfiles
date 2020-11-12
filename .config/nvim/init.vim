@@ -87,7 +87,6 @@ Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'tpope/vim-db'
 " Plug 'puremourning/vimspector'
 Plug 'mfussenegger/nvim-dap'
-Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 
 Plug 'Shougo/context_filetype.vim'
 Plug 'kassio/neoterm'
@@ -556,7 +555,7 @@ command! -bang -nargs=* Rg
 
 runtime plugin/grepper.vim
 let g:grepper.rg.grepprg .= ' -i'
-nnoremap \ :lua require'telescope.builtin'.live_grep{}<CR>
+nnoremap \ :GrepperRg 
 
 " Map ,t to search for my Todos
 map <LEADER>t :GrepperRg TODO: <CR>
@@ -684,7 +683,7 @@ let g:lightline = {
       \ },
       \ 'component_type': {
       \   'buffers': 'tabsel',
-      \   'gradle_erros': 'error',
+      \   'gradle_errors': 'error',
       \   'gradle_warnings': 'warning',
       \   'gradle_running': 'left',
       \   'gradle_project': 'right',

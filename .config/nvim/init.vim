@@ -1002,8 +1002,6 @@ let g:diagnostic_enable_virtual_text = 1
 autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
 \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment" }
 
-autocmd BufEnter * lua require'completion'.on_attach()
-
 lua << EOF
 require'colorizer'.setup();
 

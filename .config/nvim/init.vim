@@ -788,7 +788,7 @@ let g:ale_kotlin_ktlint_options = '-aF --experimental'
 let g:ale_lint_on_enter = 1
 let g:ale_virtualtext_cursor = 1
 let g:ale_fixers = {'javascript': ['prettier_eslint'], 'rust': ['rustfmt'], 'kotlin': ['ktlint']}
-let g:ale_linters = {'javascript': ['eslint', 'tsserver'], 'cs': ['OmniSharp'], 'java': ['android'], 'kotlin': ['android', 'ktlint'], 'python': ['flake8', 'mypy', 'pylint', 'pyls'], 'rust': ['cargo']}
+let g:ale_linters = {'javascript': ['eslint'], 'cs': ['OmniSharp'], 'java': ['android'], 'kotlin': ['android', 'ktlint'], 'python': ['flake8', 'mypy', 'pylint', 'pyls'], 'rust': ['cargo']}
 " let g:ale_linters = {'javascript': ['eslint', 'tsserver'], 'cs': ['OmniSharp'], 'java': ['android', 'javalsp'], 'kotlin': ['android', 'ktlint', 'languageserver'], 'python': ['flake8', 'mypy', 'pylint', 'pyls'], 'rust': ['rls', 'cargo']}
 let g:ale_fix_on_save = 1
 

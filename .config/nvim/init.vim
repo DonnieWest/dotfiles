@@ -109,7 +109,6 @@ Plug 'DonnieWest/asyncomplete_neovim_lsp'
 Plug 'liuchengxu/vista.vim'
 
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/diagnostic-nvim'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'tjdevries/lsp_extensions.nvim'
 
@@ -1003,12 +1002,32 @@ let g:diagnostic_enable_virtual_text = 1
 autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
 \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment" }
 
+autocmd BufEnter * lua require'completion'.on_attach()
+
 lua << EOF
 require'colorizer'.setup();
 
 local nvim_lsp = require'lspconfig'
 local nvim_command = vim.api.nvim_command
 local lsp_status = require('lsp-status')
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    -- This will disable virtual text, like doing:
+    -- let g:diagnostic_enable_virtual_text = 0
+    virtual_text = false,
+
+    -- This is similar to:
+    -- let g:diagnostic_show_sign = 1
+    -- To configure sign display,
+    --  see: ":help vim.lsp.diagnostic.set_signs()"
+    signs = true,
+
+    -- This is similar to:
+    -- "let g:diagnostic_insert_delay = 1"
+    update_in_insert = false,
+  }
+)
 
 -- use LSP SymbolKinds themselves as the kind labels
 local kind_labels_mt = {__index = function(_, k) return k end}
@@ -1049,9 +1068,10 @@ nvim_lsp.rust_analyzer.setup{
 nvim_lsp.gopls.setup{
   on_attach = on_attach;
 }
-nvim_lsp.zls.setup{
-  on_attach = on_attach;
-}
+--- nvim_lsp.zls.setup{
+---  cmd = {"zls"};
+---  on_attach = on_attach;
+--- }
 nvim_lsp.jsonls.setup{
   on_attach = on_attach;
   settings = {
@@ -1129,20 +1149,11 @@ nvim_lsp.kotlin_language_server.setup{
 
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "all",     -- one of "all", "language", or a list of languages
-  refactor = {
-    highlight_definitions = { enable = true },
-  },
   highlight = {
     enable = true,              -- false will disable the whole extension
   },
-  refactor = {
-    highlight_current_scope = { enable = true },
-    smart_rename = {
-      enable = true,
-      keymaps = {
-        smart_rename = "grr",
-      },
-    },
+  indent = {
+    enable = true
   },
 }
 

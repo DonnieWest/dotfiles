@@ -216,6 +216,15 @@ c.content.pdfjs = True
 #   - ask
 config.set('content.register_protocol_handler', False, 'https://calendar.google.com?cid=%25s')
 
+# Allow websites to register protocol handlers via
+# `navigator.registerProtocolHandler`.
+# Type: BoolAsk
+# Valid values:
+#   - true
+#   - false
+#   - ask
+config.set('content.register_protocol_handler', False, 'https://mail.google.com?extsrc=mailto&url=%25s')
+
 # Where to show the downloaded files.
 # Type: VerticalPosition
 # Valid values:

@@ -237,7 +237,7 @@ export PATH="$PATH:$HOME/go/bin"
 
 sn() {
   local version
-  version=$(curl --silent https://api.github.com/repos/nodejs/node/tags?per_page=100 | jq ".[] | .name" | tr -d "\""  | fzf)
+  version=$(n lsr --all  | fzf)
   if [ "x$version" != "x" ]
   then
     echo "Switching to Node $version"

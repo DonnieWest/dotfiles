@@ -339,7 +339,7 @@ unmount_drives() {
 
 connectToDevice() {
   adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 -m | awk '{ print $1 }' | while read device; do
-    scrcpy --always-on-top -s $device -p $(python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()') &!
+    scrcpy -s $device -p $(python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()') &!
   done
 }
 

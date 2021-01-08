@@ -212,6 +212,12 @@ Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'yami-beta/asyncomplete-omni.vim'
 
 
+" Clojure
+Plug 'tpope/vim-classpath', {'for': 'clojure'}
+Plug 'tpope/vim-salve', {'for': 'clojure'}
+Plug 'tpope/vim-fireplace', {'for': 'clojure'}
+Plug 'liquidz/vim-iced', {'for': 'clojure'}
+Plug 'liquidz/vim-iced-asyncomplete', {'for': 'clojure'}
 
 call plug#end()
 

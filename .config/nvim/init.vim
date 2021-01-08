@@ -79,9 +79,6 @@ Plug 'LeafCage/echos.vim'
 
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
-Plug 'tsufeki/asyncomplete-fuzzy-match', {
-    \ 'do': 'cargo build --release',
-    \ }
 Plug 'prabirshrestha/async.vim'
 Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'tpope/vim-db'

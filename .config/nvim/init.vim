@@ -996,7 +996,6 @@ let g:clipboard = {
 
 let g:diagnostic_insert_delay = 1
 let g:diagnostic_enable_virtual_text = 1
-autocmd CursorHold * lua vim.lsp.util.show_line_diagnostics()
 
 autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
 \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment" }
@@ -1004,8 +1003,7 @@ autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
 lua << EOF
 require'colorizer'.setup();
 
-local nvim_lsp = require'nvim_lsp'
-local diagnostic = require'diagnostic'
+local nvim_lsp = require'lspconfig'
 local nvim_command = vim.api.nvim_command
 local lsp_status = require('lsp-status')
 
@@ -1023,9 +1021,8 @@ lsp_status.config({
 })
 
 local on_attach = function(client, bufnr)
-  diagnostic.on_attach(client, bufnr)
   lsp_status.on_attach(client, bufnr)
-  nvim_command('autocmd CursorHold <buffer> lua vim.lsp.util.show_line_diagnostics()')
+  nvim_command('autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()')
 end
 
 nvim_lsp.tsserver.setup{
@@ -1123,9 +1120,9 @@ nvim_lsp.kotlin_language_server.setup{
   }
 }
 
-vim.api.nvim_command [[autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()]]
-vim.api.nvim_command [[autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]]
-vim.api.nvim_command [[autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()]]
+-- vim.api.nvim_command [[autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()]]
+-- vim.api.nvim_command [[autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]]
+-- vim.api.nvim_command [[autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()]]
 
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "all",     -- one of "all", "language", or a list of languages

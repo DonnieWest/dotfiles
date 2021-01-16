@@ -20,6 +20,8 @@ set $alt Mod1
 
 exec xrdb -merge ~/.Xresources
 
+exec wlsunset -l 39.099724 -L -94.578331
+
 exec swayidle \
     timeout 490 '/home/igneo676/.bin/swaylock-wrapper' \
     timeout 500 'swaymsg "output * dpms off"' \

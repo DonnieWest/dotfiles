@@ -10,8 +10,8 @@
 #   qute://help/configuring.html
 #   qute://help/settings.html
 
-# Uncomment this to still load settings configured via autoconfig.yml
-# config.load_autoconfig()
+# Change the argument to True to still load settings configured via autoconfig.yml
+config.load_autoconfig(False)
 
 # Aliases for commands. The keys of the given dictionary are the
 # aliases, while the values are the commands they map to.
@@ -323,26 +323,9 @@ c.colors.tabs.pinned.selected.odd.bg = '#093748'
 # Type: QtColor
 c.colors.tabs.pinned.selected.even.bg = '#093748'
 
-# Background color for webpages if unset (or empty to use the theme's
-# color).
-# Type: QtColor
-c.colors.webpage.bg = 'black'
-
 # Force `prefers-color-scheme: dark` colors for websites.
 # Type: Bool
 c.colors.webpage.prefers_color_scheme_dark = True
-
-# Render all web contents using a dark theme. Example configurations
-# from Chromium's `chrome://flags`:  - "With simple HSL/CIELAB/RGB-based
-# inversion": Set   `colors.webpage.darkmode.algorithm` accordingly.  -
-# "With selective image inversion": Set
-# `colors.webpage.darkmode.policy.images` to `smart`.  - "With selective
-# inversion of non-image elements": Set
-# `colors.webpage.darkmode.threshold.text` to 150 and
-# `colors.webpage.darkmode.threshold.background` to 205.  - "With
-# selective inversion of everything": Combines the two variants   above.
-# Type: Bool
-c.colors.webpage.darkmode.enabled = True
 
 # Default font families to use. Whenever "default_family" is used in a
 # font setting, it's replaced with the fonts listed here. If set to an

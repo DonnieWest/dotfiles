@@ -210,13 +210,22 @@ Plug 'kristijanhusak/vim-dadbod-completion'
 Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'yami-beta/asyncomplete-omni.vim'
 
-
 " Clojure
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+Plug 'tpope/vim-fireplace'
+Plug 'Olical/conjure', {'tag': 'v4.11.0'}
+
 Plug 'tpope/vim-classpath', {'for': 'clojure'}
 Plug 'tpope/vim-salve', {'for': 'clojure'}
 Plug 'tpope/vim-fireplace', {'for': 'clojure'}
 Plug 'liquidz/vim-iced', {'for': 'clojure'}
 Plug 'liquidz/vim-iced-asyncomplete', {'for': 'clojure'}
+
+Plug 'clojure-vim/async-clj-omni'
+Plug 'clojure-vim/clojure.vim'
+Plug 'clojure-vim/async-clj-highlight'
+Plug 'luochen1990/rainbow'
 
 call plug#end()
 
@@ -342,6 +351,12 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
   \ 'whitelist': ['sql', 'sq'],
   \ 'completor': function('vim_dadbod_completion#omni')
   \  }))
+
+au User asyncomplete_setup call asyncomplete#register_source({
+    \ 'name': 'async_clj_omni',
+    \ 'whitelist': ['clojure'],
+    \ 'completor': function('async_clj_omni#sources#complete'),
+    \ })
 
 let g:ale_completion_autoimport = 1
 let g:ale_hover_to_preview = 0
@@ -1046,6 +1061,10 @@ local on_attach = function(client, bufnr)
 end
 
 nvim_lsp.tsserver.setup{
+  on_attach = on_attach;
+}
+
+nvim_lsp.clojure_lsp.setup{
   on_attach = on_attach;
 }
 

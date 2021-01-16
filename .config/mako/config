@@ -1,9 +1,11 @@
 font=Dank Mono 24
 background-color=#0a0f14aa
-margin=0
-border-size=1
+margin=40,20
+padding=25
+border-size=0
 border-color=#0a0f14aa
 default-timeout=4000
 max-visible=5
 width=600
 height=300
+border-radius=20

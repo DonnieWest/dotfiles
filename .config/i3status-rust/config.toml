@@ -31,6 +31,7 @@ format_mem = "{Mug}G / {MTg}G"
 
 [[block]]
 block = "sound"
+driver = "auto"
 
 [[block]]
 block = "battery"

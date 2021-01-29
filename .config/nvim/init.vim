@@ -214,7 +214,7 @@ Plug 'yami-beta/asyncomplete-omni.vim'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-fireplace'
-Plug 'Olical/conjure', {'tag': 'v4.11.0'}
+Plug 'Olical/conjure', {'tag': 'v4.13.0'}
 
 Plug 'tpope/vim-classpath', {'for': 'clojure'}
 Plug 'tpope/vim-salve', {'for': 'clojure'}

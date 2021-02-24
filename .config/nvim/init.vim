@@ -14,6 +14,7 @@ call plug#begin()
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-dispatch'
+Plug 'radenling/vim-dispatch-neovim'
 Plug 'tpope/vim-tbone'
 Plug 'duggiefresh/vim-easydir'
 Plug 'tpope/vim-eunuch'

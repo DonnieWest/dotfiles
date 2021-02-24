@@ -211,21 +211,22 @@ Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'yami-beta/asyncomplete-omni.vim'
 
 " Clojure
-Plug 'guns/vim-sexp'
-Plug 'tpope/vim-sexp-mappings-for-regular-people'
-Plug 'tpope/vim-fireplace'
-Plug 'Olical/conjure', {'tag': 'v4.13.0'}
+Plug 'guns/vim-sexp', {'for': 'clojure'}
+Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
 
-Plug 'tpope/vim-classpath', {'for': 'clojure'}
-Plug 'tpope/vim-salve', {'for': 'clojure'}
-Plug 'tpope/vim-fireplace', {'for': 'clojure'}
-Plug 'liquidz/vim-iced', {'for': 'clojure'}
-Plug 'liquidz/vim-iced-asyncomplete', {'for': 'clojure'}
+Plug 'Olical/conjure', {'tag': 'v4.14.1'}
+Plug 'dmac/vim-cljfmt', {'for': 'clojure'}
 
-Plug 'clojure-vim/async-clj-omni'
-Plug 'clojure-vim/clojure.vim'
-Plug 'clojure-vim/async-clj-highlight'
-Plug 'luochen1990/rainbow'
+Plug 'clojure-vim/clojure.vim', {'for': 'clojure'}
+Plug 'clojure-vim/async-clj-highlight', {'for': 'clojure'}
+Plug 'luochen1990/rainbow', {'for': 'clojure'}
+
+" Fennel, technically
+Plug 'Olical/aniseed', { 'tag': 'v3.15.0' }
+Plug 'bakpakin/fennel.vim'
+
+" Hy
+Plug 'hylang/vim-hy'
 
 call plug#end()
 

@@ -218,6 +218,8 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
 Plug 'Olical/conjure', {'tag': 'v4.14.1'}
 Plug 'dmac/vim-cljfmt', {'for': 'clojure'}
 
+Plug 'thecontinium/asyncomplete-conjure.vim'
+
 Plug 'clojure-vim/clojure.vim', {'for': 'clojure'}
 Plug 'clojure-vim/async-clj-highlight', {'for': 'clojure'}
 Plug 'luochen1990/rainbow', {'for': 'clojure'}
@@ -354,11 +356,19 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
   \ 'completor': function('vim_dadbod_completion#omni')
   \  }))
 
-au User asyncomplete_setup call asyncomplete#register_source({
-    \ 'name': 'async_clj_omni',
-    \ 'whitelist': ['clojure'],
-    \ 'completor': function('async_clj_omni#sources#complete'),
-    \ })
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#conjure#get_source_options({
+    \ 'name': 'conjure',
+    \ 'allowlist': ['clojure'],
+    \ 'completor': function('asyncomplete#sources#conjure#completor'),
+    \ }))
+
+let g:conjure#log#hud#enabled = v:true
+let g:conjure#log#hud#height = 0.95
+
+autocmd FileType clojure nnoremap <silent> gd    <cmd>:ConjureDefWord<CR>
+autocmd FileType clojure nnoremap <silent> <c-]> <cmd>:ConjureDefWord<CR>
+autocmd FileType clojure nnoremap <silent> K     <cmd>:ConjureDocWord<CR>
+autocmd FileType clojure nnoremap <silent> gD    <cmd>:ConjureCljViewSource<CR>
 
 let g:ale_completion_autoimport = 1
 let g:ale_hover_to_preview = 0
@@ -1068,6 +1078,7 @@ nvim_lsp.tsserver.setup{
 
 nvim_lsp.clojure_lsp.setup{
   on_attach = on_attach;
+  -- cmd = {"/home/igneo676/Code/typescript-language-server/server/lib/cli.js", "--stdio", "--detailed-completions"};
 }
 
 nvim_lsp.rust_analyzer.setup{

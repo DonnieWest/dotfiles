@@ -223,6 +223,7 @@ export PATH="$ANDROID_HOME/emulator:$PATH"
 export PATH="$ANDROID_HOME/platform-tools:$PATH"
 export PATH="$ANDROID_HOME/tools/bin:$PATH"
 
+export PATH="$PATH:$HOME/.config/graalvm/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$HOME/.config/n/bin:$PATH"
 export PATH="$HOME/.config/npm/bin:$PATH"

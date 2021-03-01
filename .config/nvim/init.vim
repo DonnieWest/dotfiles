@@ -333,21 +333,18 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
     \ 'name': 'file',
     \ 'whitelist': ['*'],
-    \ 'priority': 10,
     \ 'completor': function('asyncomplete#sources#file#completor')
     \ }))
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#Verdin#get_source_options({
     \ 'name': 'Verdin',
     \ 'whitelist': ['vim'],
-    \ 'priority': 10,
     \ 'completor': function('asyncomplete#sources#Verdin#completor')
     \ }))
 
 let g:javascript_tsserver_use_global = 1
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
-    \ 'priority': 10,
     \ }))
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({

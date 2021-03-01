@@ -215,7 +215,7 @@ Plug 'yami-beta/asyncomplete-omni.vim'
 Plug 'guns/vim-sexp', {'for': 'clojure'}
 Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
 
-Plug 'Olical/conjure', {'tag': 'v4.14.1'}
+Plug 'Olical/conjure', {'tag': 'v4.15.0'}
 Plug 'dmac/vim-cljfmt', {'for': 'clojure'}
 
 Plug 'thecontinium/asyncomplete-conjure.vim'
@@ -225,7 +225,7 @@ Plug 'clojure-vim/async-clj-highlight', {'for': 'clojure'}
 Plug 'luochen1990/rainbow', {'for': 'clojure'}
 
 " Fennel, technically
-Plug 'Olical/aniseed', { 'tag': 'v3.15.0' }
+Plug 'Olical/aniseed', { 'tag': 'v3.16.0' }
 Plug 'bakpakin/fennel.vim'
 
 " Hy
@@ -363,7 +363,7 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
     \ }))
 
 let g:conjure#log#hud#enabled = v:true
-let g:conjure#log#hud#height = 0.95
+let g:conjure#log#hud#height = 0.2
 
 autocmd FileType clojure nnoremap <silent> gd    <cmd>:ConjureDefWord<CR>
 autocmd FileType clojure nnoremap <silent> <c-]> <cmd>:ConjureDefWord<CR>
@@ -1074,10 +1074,6 @@ end
 
 nvim_lsp.tsserver.setup{
   on_attach = on_attach;
-}
-
-nvim_lsp.clojure_lsp.setup{
-  on_attach = on_attach;
   -- cmd = {"/home/igneo676/Code/typescript-language-server/server/lib/cli.js", "--stdio", "--detailed-completions"};
 }
 
@@ -1181,6 +1177,7 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = "all",     -- one of "all", "language", or a list of languages
   highlight = {
     enable = true,              -- false will disable the whole extension
+    disable = { "clojure", "kotlin" },  -- list of language that will be disabled
   },
   indent = {
     enable = true

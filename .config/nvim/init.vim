@@ -221,8 +221,10 @@ Plug 'dmac/vim-cljfmt', {'for': 'clojure'}
 Plug 'thecontinium/asyncomplete-conjure.vim'
 
 Plug 'clojure-vim/clojure.vim', {'for': 'clojure'}
+Plug 'clojure-vim/vim-jack-in', {'for': 'clojure'}
 Plug 'clojure-vim/async-clj-highlight', {'for': 'clojure'}
 Plug 'luochen1990/rainbow', {'for': 'clojure'}
+
 
 " Fennel, technically
 Plug 'Olical/aniseed', { 'tag': 'v3.16.0' }

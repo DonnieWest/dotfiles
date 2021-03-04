@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+/home/igneo676/.bin/pushover --title "Website" --url "$QUTE_URL" --message "$QUTE_URL" --priority -1

@@ -8,6 +8,7 @@ endif
 let g:python_host_prog = '/usr/bin/python2'
 let g:python3_host_prog = '/usr/bin/python3'
 let g:node_host_prog = '/home/igneo676/bin/neovim-node-host'
+
 call plug#begin()
 
 "Generic Plugins
@@ -89,7 +90,6 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'Shougo/context_filetype.vim'
 Plug 'kassio/neoterm'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 Plug 'nvim-lua/popup.nvim'
@@ -169,17 +169,8 @@ Plug 'georgewfraser/java-language-server', { 'do': './scripts/link_mac.sh' }
 Plug 'donniewest/kotlin-vim'
 Plug 'fwcd/kotlin-language-server', { 'do': './gradlew :server:installDist' }
 
-" Ruby
-Plug 'vim-ruby/vim-ruby'
-
 "VIMScript Plugins
 Plug 'machakann/vim-Verdin'
-
-" Rust
-
-Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
-Plug 'mhinz/vim-crates'
 
 "Markdown/Octopress Plugins
 
@@ -187,10 +178,6 @@ Plug 'rhysd/vim-grammarous'
 Plug 'junegunn/goyo.vim'
 Plug 'jxnblk/vim-mdx-js'
 Plug 'gabrielelana/vim-markdown'
-" Plug 'junegunn/limelight.vim'
-" Plug 'Juev/vim-jekyll'
-" Plug 'tpope/vim-liquid'
-
 
 " C Based plugins
 Plug 'justinmk/vim-syntax-extra'
@@ -198,9 +185,6 @@ Plug 'justinmk/vim-syntax-extra'
 " C# Based Plugins
 Plug 'OmniSharp/omnisharp-vim'
 Plug 'nickspoons/vim-sharpenup'
-
-" Zig Plugins
-Plug 'ziglang/zig.vim'
 
 " Go Plugins
 Plug 'fatih/vim-go'
@@ -212,21 +196,21 @@ Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'yami-beta/asyncomplete-omni.vim'
 
 " Clojure
-Plug 'guns/vim-sexp', {'for': 'clojure'}
-Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': 'clojure'}
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
 
 Plug 'Olical/conjure', {'tag': 'v4.15.0'}
-Plug 'dmac/vim-cljfmt', {'for': 'clojure'}
+Plug 'dmac/vim-cljfmt'
 
 Plug 'thecontinium/asyncomplete-conjure.vim'
 
-Plug 'clojure-vim/clojure.vim', {'for': 'clojure'}
-Plug 'clojure-vim/vim-jack-in', {'for': 'clojure'}
-Plug 'clojure-vim/async-clj-highlight', {'for': 'clojure'}
-Plug 'luochen1990/rainbow', {'for': 'clojure'}
+Plug 'clojure-vim/clojure.vim'
+Plug 'clojure-vim/vim-jack-in'
+Plug 'clojure-vim/async-clj-highlight'
+Plug 'luochen1990/rainbow'
 
 
-" Fennel, technically
+" Fennel
 Plug 'Olical/aniseed', { 'tag': 'v3.16.0' }
 Plug 'bakpakin/fennel.vim'
 
@@ -235,58 +219,29 @@ Plug 'hylang/vim-hy'
 
 call plug#end()
 
+let g:aniseed#env = v:true
+
 set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-set hidden
-set number
-set wrapscan
-set incsearch
-set ignorecase
-set smartcase
-set infercase
-set showmatch
-set autowrite
-set shiftround
 set shiftwidth=2
-set expandtab
 set softtabstop=2
 set tabstop=2
-set magic
-set noshowmode
 set completeopt=noinsert,menuone,noselect,longest
-set shiftround
-set autoread
 set whichwrap+=<,>,h,l,[,]
 set background=dark
 let mapleader=","
 set scrolloff=10
 nnoremap U :redo<cr>
-set undofile
 set undodir=~/.vim/undodir
-set nobackup
-set nowb
-set noswapfile
 set shortmess+=cI
-set showcmd
 set laststatus=2
 set diffopt+=vertical
 nnoremap ! :!
 nnoremap ; :
-set splitbelow
-set splitright
-set ttimeoutlen=50
 set tags=.tags,./tags,tags;
 set nofoldenable    " disable folding
 set list listchars=tab:»·,trail:·,nbsp:·
-set exrc
-set secure
-set termguicolors
-set inccommand=split
-set mouse=a
-set updatetime=300
 
 au FocusGained * :checktime
-
-nnoremap <F2> :MundoToggle<CR>
 
 augroup dirvish_config
   autocmd!
@@ -308,8 +263,6 @@ autocmd BufWritePost * :GitGutter
 autocmd User ALELintPost :GitGutter
 autocmd User VimagitLeaveCommit :GitGutterAll
 autocmd User VimagitUpdateFile :GitGutterAll
-
-
 
 nnoremap <leader>ri :RunInInteractiveShell<space>
 
@@ -334,13 +287,13 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
     \ 'name': 'file',
-    \ 'whitelist': ['*'],
+    \ 'allowlist': ['*'],
     \ 'completor': function('asyncomplete#sources#file#completor')
     \ }))
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#Verdin#get_source_options({
     \ 'name': 'Verdin',
-    \ 'whitelist': ['vim'],
+    \ 'allowlist': ['vim'],
     \ 'completor': function('asyncomplete#sources#Verdin#completor')
     \ }))
 
@@ -351,61 +304,22 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
   \ 'name': 'omni',
-  \ 'whitelist': ['sql', 'sq'],
+  \ 'allowlist': ['sql', 'sq'],
   \ 'completor': function('vim_dadbod_completion#omni')
   \  }))
 
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#conjure#get_source_options({
     \ 'name': 'conjure',
-    \ 'allowlist': ['clojure'],
+    \ 'allowlist': ['clojure', 'fennel'],
     \ 'completor': function('asyncomplete#sources#conjure#completor'),
     \ }))
 
-let g:conjure#log#hud#enabled = v:true
-let g:conjure#log#hud#height = 0.2
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#lsp#get_source_options({}))
 
 autocmd FileType clojure nnoremap <silent> gd    <cmd>:ConjureDefWord<CR>
 autocmd FileType clojure nnoremap <silent> <c-]> <cmd>:ConjureDefWord<CR>
 autocmd FileType clojure nnoremap <silent> K     <cmd>:ConjureDocWord<CR>
 autocmd FileType clojure nnoremap <silent> gD    <cmd>:ConjureCljViewSource<CR>
-
-let g:ale_completion_autoimport = 1
-let g:ale_hover_to_preview = 0
-let g:ale_set_balloons = 1
-let g:ale_rename_tsserver_find_in_comments = 1
-let g:ale_rename_tsserver_find_in_comments = 1
-let g:ale_completion_tsserver_remove_items_without_detail = 1
-let ale_completion_tsserver_remove_warnings = 1
-let g:ale_hover_to_popup = 1
-
-let g:ale_completion_symbols = {
-\ 'text': '',
-\ 'method': '',
-\ 'function': '',
-\ 'constructor': '',
-\ 'field': '',
-\ 'variable': '',
-\ 'class': '',
-\ 'interface': '',
-\ 'module': '',
-\ 'property': '',
-\ 'unit': 'unit',
-\ 'value': 'val',
-\ 'enum': '',
-\ 'keyword': 'keyword',
-\ 'snippet': '',
-\ 'color': 'color',
-\ 'file': '',
-\ 'reference': 'ref',
-\ 'folder': '',
-\ 'enum member': '',
-\ 'constant': '',
-\ 'struct': '',
-\ 'event': 'event',
-\ 'operator': '',
-\ 'type_parameter': 'type param',
-\ '<default>': 'v'
-\ }
 
 
 let g:asyncomplete_completion_symbols = {
@@ -437,7 +351,6 @@ let g:asyncomplete_completion_symbols = {
 \ '*': 'v'
 \ }
 
-let g:javascript_tsserver_use_global = 1
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -810,13 +723,6 @@ autocmd FileType javascript.jsx JsPreTmpl
 autocmd FileType kotlin setlocal shiftwidth=4
 autocmd FileType kotlin setlocal softtabstop=4
 autocmd FileType kotlin setlocal tabstop=4
-let g:ale_kotlin_ktlint_options = '-aF --experimental'
-let g:ale_lint_on_enter = 1
-let g:ale_virtualtext_cursor = 1
-let g:ale_fixers = {'javascript': ['prettier_eslint'], 'rust': ['rustfmt'], 'kotlin': ['ktlint']}
-let g:ale_linters = {'javascript': ['eslint'], 'cs': ['OmniSharp'], 'java': ['android'], 'kotlin': ['android', 'ktlint'], 'python': ['flake8', 'mypy', 'pylint', 'pyls'], 'rust': ['cargo']}
-" let g:ale_linters = {'javascript': ['eslint', 'tsserver'], 'cs': ['OmniSharp'], 'java': ['android', 'javalsp'], 'kotlin': ['android', 'ktlint', 'languageserver'], 'python': ['flake8', 'mypy', 'pylint', 'pyls'], 'rust': ['rls', 'cargo']}
-let g:ale_fix_on_save = 1
 
 " Fetch semantic type/interface/identifier names on BufEnter and highlight them
 let g:OmniSharp_highlight_types = 1
@@ -917,10 +823,6 @@ augroup END
 "XML completion based on CTags
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-let g:ale_kotlin_languageserver_executable = '/home/igneo676/.config/nvim/plugged/kotlin-language-server/server/build/install/server/bin/kotlin-language-server'
-
-let g:ale_java_javalsp_executable = '/home/igneo676/.config/nvim/plugged/java-language-server/dist/mac/bin/launcher'
-
 let g:neoformat_java_googleformatter = {
             \ 'exe': 'google-java-format',
             \ 'args': ['-'],
@@ -942,15 +844,6 @@ call tcomment#type#Define('kotlin_inline', g:tcomment#inline_fmt_c )
 let java_highlight_functions = 'style'
 let java_highlight_all = 1
 let java_highlight_debug = 1
-
-" Ruby
-let g:rubycomplete_rails = 1
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-
-" Rust
-let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
-
 
 highlight htmlArg cterm=italic
 highlight Comment cterm=italic
@@ -1029,8 +922,6 @@ autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
 \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment" }
 
 lua << EOF
-require'colorizer'.setup();
-
 local nvim_lsp = require'lspconfig'
 local nvim_command = vim.api.nvim_command
 local lsp_status = require('lsp-status')
@@ -1076,27 +967,10 @@ nvim_lsp.tsserver.setup{
   -- cmd = {"/home/igneo676/Code/typescript-language-server/server/lib/cli.js", "--stdio", "--detailed-completions"};
 }
 
-nvim_lsp.rust_analyzer.setup{
-  on_attach = on_attach;
-  settings = {
-    rust_analyzer = {
-      textDocument = {
-        completion = {
-          completionItem = {
-            snippetSupport = true;
-          };
-        };
-      };
-    };
-  }
-}
 nvim_lsp.gopls.setup{
   on_attach = on_attach;
 }
---- nvim_lsp.zls.setup{
----  cmd = {"zls"};
----  on_attach = on_attach;
---- }
+
 nvim_lsp.jsonls.setup{
   on_attach = on_attach;
   settings = {
@@ -1185,15 +1059,3 @@ require'nvim-treesitter.configs'.setup {
 
 EOF
 
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#lsp#get_source_options({}))
-
-" let g:lsp_log_verbose = 1
-" let g:lsp_log_file = expand('~/vim-lsp.log')
-
-" for asyncomplete.vim log
-" let g:asyncomplete_log_file = expand('~/asyncomplete.log')
-" let g:LanguageClient_loggingFile = expand('~/LanguageClient.log')
-" let g:LanguageClient_loggingLevel = 'DEBUG'
-" let $NVIM_NODE_LOG_FILE='nvim-node.log'
-" let $NVIM_NODE_LOG_LEVEL='warn'
-" let $NVIM_NODE_HOST_DEBUG=1

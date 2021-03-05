@@ -143,6 +143,8 @@ bindsym $mod+n scratchpad show
 #Make sure these windows behave as they should
 for_window [class="Android SDK Manager" instance="Android SDK Manager"] floating enable
 
+for_window [app_id="firefoxdeveloperedition" title="Firefox Developer Edition — Sharing Indicator"] floating enable
+
 for_window [class="Cb-exit" instance="cb-exit"] floating enable
 for_window [class="Cb-exit" instance="cb-exit"] border none
 
@@ -202,6 +204,15 @@ mode "resize" {
 
 
 bindsym $mod+r mode resize
+
+input "1452:636:bcm5974" {
+  accel_profile flat
+  middle_emulation enabled
+  dwt enabled
+  pointer_accel 1
+  tap enabled
+  click_method clickfinger
+}
 
 input "1739:30381:DLL0665:01_06CB:76AD_Touchpad" {
   accel_profile flat

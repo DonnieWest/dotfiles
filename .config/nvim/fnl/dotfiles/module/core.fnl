@@ -36,5 +36,3 @@
 (nvim.ex.set :termguicolors)
 (nvim.ex.set :noswapfile)
 (nvim.ex.set :nobackup)
-(nvim.ex.set :spell)
-(nvim.ex.set :list)

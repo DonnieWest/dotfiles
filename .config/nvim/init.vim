@@ -225,7 +225,6 @@ set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
-set completeopt=noinsert,menuone,noselect,longest
 set whichwrap+=<,>,h,l,[,]
 set background=dark
 let mapleader=","
@@ -240,8 +239,8 @@ nnoremap ; :
 set tags=.tags,./tags,tags;
 set nofoldenable    " disable folding
 set list listchars=tab:»·,trail:·,nbsp:·
-
-au FocusGained * :checktime
+"Generic wildignores
+set wildignore+=*/log/*,*/.git/*,**/*.pyc
 
 augroup dirvish_config
   autocmd!
@@ -267,9 +266,6 @@ autocmd User VimagitUpdateFile :GitGutterAll
 nnoremap <leader>ri :RunInInteractiveShell<space>
 
 let g:signify_vcs_list = [ 'git' ]
-
-"Generic wildignores
-set wildignore+=*/log/*,*/.git/*,**/*.pyc
 
 let g:closetag_xhtml_filenames = '*.xhtml,*.js,*.tsx'
 
@@ -308,17 +304,6 @@ let g:asterisk#keeppos = 1
 let g:ag_working_path_mode="r"
 "Use unix clipboard
 set clipboard+=unnamedplus
-
-" Some default colorschemes I like
-" colorscheme darkburn
-colorscheme gotham
-" let g:oceanic_next_terminal_bold = 1
-" let g:oceanic_next_terminal_italic = 1
-" colorscheme OceanicNext
-
-"Gimme a colored column for lines that are too long
-highlight ColorColumn ctermbg=blue
-call matchadd('ColorColumn', '\%81v', 100)
 
 " Split window Vertically
 nmap <leader>v :vsp<cr>
@@ -375,39 +360,6 @@ let g:neosnippet#snippets_directory='~/Code/react-snippets'
 set conceallevel=2
 set concealcursor=niv
 
-function! Fzf_dev()
-  function! s:files()
-    let files = split(system($FZF_DEFAULT_COMMAND), '\n')
-    return s:prepend_icon(files)
-  endfunction
-
-  function! s:prepend_icon(candidates)
-    let result = []
-    for candidate in a:candidates
-      let filename = fnamemodify(candidate, ':p:t')
-      let icon = WebDevIconsGetFileTypeSymbol(filename, isdirectory(filename))
-      call add(result, printf("%s %s", icon, candidate))
-    endfor
-
-    return result
-  endfunction
-
-  function! s:edit_file(item)
-    let parts = split(a:item, ' ')
-    let file_path = get(parts, 1, '')
-    execute 'silent e' file_path
-  endfunction
-
-  call fzf#run({
-        \ 'source': <sid>files(),
-        \ 'sink':   function('s:edit_file'),
-        \ 'options': '-m -x +s',
-        \ 'down':    '40%' })
-endfunction
-
-
-command! FilesWithIcon :call Fzf_dev()
-
 nnoremap <C-p> :lua require'telescope.builtin'.find_files{}<ENTER>
 if has('nvim')
   aug fzf_setup
@@ -415,15 +367,6 @@ if has('nvim')
     au TermOpen term://*FZF tnoremap <silent> <buffer><nowait> <esc> <c-c>
   aug END
 end
-
-
-" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
 
 runtime plugin/grepper.vim
 let g:grepper.rg.grepprg .= ' -i'
@@ -443,12 +386,6 @@ autocmd BufReadPost *
   \ if line("'\"") > 0 && line("'\"") <= line("$") |
   \ exe "normal g`\"" |
   \ endif
-
-"Automatically load .vimrc changes
-au BufWritePost init.vim so $MYVIMRC
-
-" Automatically resize vim when terminal or tmux pane resized
-autocmd VimResized * :wincmd =
 
 nnoremap <Leader>fr :%s/
 xnoremap <Leader>fr :s/
@@ -723,32 +660,6 @@ let java_highlight_functions = 'style'
 let java_highlight_all = 1
 let java_highlight_debug = 1
 
-highlight htmlArg cterm=italic
-highlight Comment cterm=italic
-highlight Type    cterm=italic
-highlight Keywords cterm=italic
-highlight xmlAttrib cterm=italic ctermfg=214
-highlight jsxAttrib cterm=italic
-highlight Statement cterm=italic
-highlight Keyword cterm=italic
-highlight Constant cterm=italic
-highlight Boolean cterm=italic
-highlight ktInclude cterm=italic
-highlight Type cterm=italic
-
-highlight htmlArg gui=italic
-highlight Comment gui=italic
-highlight Type    gui=italic
-highlight Keywords gui=italic
-highlight xmlAttrib gui=italic ctermfg=214
-highlight jsxAttrib gui=italic
-highlight Statement gui=italic
-highlight Keyword gui=italic
-highlight Constant gui=italic
-highlight Boolean gui=italic
-highlight ktInclude gui=italic
-highlight Type gui=italic
-
 let g:rainbow_levels = [
     \{'ctermbg': 232, 'guibg': '#080808'},
     \{'ctermbg': 233, 'guibg': '#121212'},
@@ -822,33 +733,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
--- use LSP SymbolKinds themselves as the kind labels
-local kind_labels_mt = {__index = function(_, k) return k end}
-local kind_labels = {}
-setmetatable(kind_labels, kind_labels_mt)
-
-lsp_status.register_progress()
-lsp_status.config({
-  kind_labels = kind_labels,
-  -- the default is a wide codepoint which breaks absolute and relative
-  -- line counts if placed before airline's Z section
-  status_symbol = "",
-})
-
-local on_attach = function(client, bufnr)
-  lsp_status.on_attach(client, bufnr)
-  nvim_command('autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()')
-end
-
-nvim_lsp.tsserver.setup{
-  on_attach = on_attach;
-  -- cmd = {"/home/igneo676/Code/typescript-language-server/server/lib/cli.js", "--stdio", "--detailed-completions"};
-}
-
-nvim_lsp.gopls.setup{
-  on_attach = on_attach;
-}
-
 nvim_lsp.jsonls.setup{
   on_attach = on_attach;
   settings = {
@@ -920,20 +804,33 @@ nvim_lsp.kotlin_language_server.setup{
   }
 }
 
--- vim.api.nvim_command [[autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()]]
--- vim.api.nvim_command [[autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]]
--- vim.api.nvim_command [[autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()]]
-
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all",     -- one of "all", "language", or a list of languages
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = { "clojure", "kotlin" },  -- list of language that will be disabled
-  },
-  indent = {
-    enable = true
-  },
-}
-
 EOF
 
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'allowlist': ['*'],
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#Verdin#get_source_options({
+    \ 'name': 'Verdin',
+    \ 'allowlist': ['vim'],
+    \ 'completor': function('asyncomplete#sources#Verdin#completor')
+    \ }))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
+    \ }))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
+  \ 'name': 'omni',
+  \ 'allowlist': ['sql', 'sq'],
+  \ 'completor': function('vim_dadbod_completion#omni')
+  \  }))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#conjure#get_source_options({
+    \ 'name': 'conjure',
+    \ 'allowlist': ['clojure', 'fennel'],
+    \ 'completor': function('asyncomplete#sources#conjure#completor'),
+    \ }))
+
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#lsp#get_source_options({}))

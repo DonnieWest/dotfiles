@@ -1,5 +1,6 @@
 (module dotfiles.module.plugin.asyncomplete
-  {require {nvim aniseed.nvim}})
+  {require {nvim aniseed.nvim
+            nu aniseed.nvim.util}})
 
 (set nvim.g.asyncomplete_completion_symbols
      {:text ""
@@ -29,22 +30,29 @@
       :type_parameter "type param"
       :* "v"})
 
-; imap <C-x><C-o> <Plug>(asyncomplete_force_refresh)
-; autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+(nvim.ex.set "completeopt=noinsert,menuone,noselect,longest")
+(nvim.set_keymap :n :<C-x><C-o> "<Plug>(asycomplete_force_refresh)" {})
+(nvim.ex.autocmd_ :CompleteDone "*" "if pumvisible() == 0 | pclose | endif")
+
+; (nvim.ex.autocmd :User "call RegisterAsyncompleteSources()<cr>")
 ;
-; au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-;     \ 'name': 'file',
-;     \ 'allowlist': ['*'],
-;     \ 'completor': function('asyncomplete#sources#file#completor')
-;     \ }))
+; (nu.fn-bridge
+;   :RegisterAsyncompleteSources
+;   :dotfiles.module.plugin.asyncomplete :asyncomplete-register-sources)
 ;
+; (defn asyncomplete-register-sources []
+;   (nvim.fn.asyncomplete#register_source
+;     (nvim.fn.asyncomplete#sources#file#get_source_options
+;       [:name "file"
+;        :allowlist ["*"]
+;        :completor nvim.fn.asyncomplete#sources#file#completor]))
+;   (nvim.fn.asyncomplete#register_source (nvim.fn.asyncomplete#sources#lsp#get_source_options))
+;   (nvim.fn.asyncomplete#register_source (nvim.fn.asyncomplete#sources#ale#get_source_options)))
+
 ; au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#Verdin#get_source_options({
 ;     \ 'name': 'Verdin',
 ;     \ 'allowlist': ['vim'],
 ;     \ 'completor': function('asyncomplete#sources#Verdin#completor')
-;     \ }))
-;
-; au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
 ;     \ }))
 ;
 ; au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
@@ -58,5 +66,3 @@
 ;     \ 'allowlist': ['clojure', 'fennel'],
 ;     \ 'completor': function('asyncomplete#sources#conjure#completor'),
 ;     \ }))
-;
-; au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#lsp#get_source_options({}))

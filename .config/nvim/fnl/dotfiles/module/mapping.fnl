@@ -11,8 +11,7 @@
 (nvim.set_keymap :n :<space> :<nop> {:noremap true})
 (set nvim.g.mapleader ",")
 
-;; Delete hidden buffers.
-(noremap :n :<leader>bo ":call DeleteHiddenBuffers()<cr>")
+(noremap :n :<leader><space> ":call StripTrailingWhitespace()<cr>")
 
 (nu.fn-bridge
   :StripTrailingWhitespace
@@ -25,7 +24,8 @@
     (nvim.command "%s#\\($\\n\\s*\\)\\+\\%$##e")
     (nvim.fn.setpos "." pos)))
 
-(noremap :n :<leader><space> ":call StripTrailingWhitespace()<cr>")
+;; Delete hidden buffers.
+(noremap :n :<leader>bo ":call DeleteHiddenBuffers()<cr>")
 
 (nu.fn-bridge
   :DeleteHiddenBuffers

@@ -36,3 +36,7 @@
 (nvim.ex.set :termguicolors)
 (nvim.ex.set :noswapfile)
 (nvim.ex.set :nobackup)
+
+(nvim.ex.autocmd :BufWritePost :init.vim "so $MYVIMRC")
+(nvim.ex.autocmd :VimResized ":windcmd =")
+(nvim.ex.autocmd :FocusGained :* ":checktime")

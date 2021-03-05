@@ -32,6 +32,9 @@ c.qt.force_platform = 'wayland'
 # Type: Bool
 c.qt.highdpi = True
 
+c.qt.args = [ "enable-webrtc-pipewire-capturer" ]
+
+
 # Always restore open sites when qutebrowser is reopened. Without this
 # option set, `:wq` (`:quit --save`) needs to be used to save open tabs
 # (and restore them), while quitting qutebrowser in any other way will

@@ -3,36 +3,29 @@
             nu aniseed.nvim.util
             core aniseed.core}})
 
-(defn- noremap [mode from to]
+(defn noremap [mode from to]
   "Sets a mapping with {:noremap true}."
   (nvim.set_keymap mode from to {:noremap true}))
 
 ;; Generic mapping configuration.
 (nvim.set_keymap :n :<space> :<nop> {:noremap true})
-(set nvim.g.mapleader " ")
-(set nvim.g.maplocalleader ",")
-
-;; jk escape sequences.
-(noremap :i :jk :<esc>)
-(noremap :c :jk :<c-c>)
-(noremap :t :jk :<c-\><c-n>)
-
-;; Spacemacs style leader mappings.
-(noremap :n :<leader>wm ":tab sp<cr>")
-(noremap :n :<leader>wc ":only<cr>")
-(noremap :n :<leader>bd ":bdelete!<cr>")
-(noremap :n :<leader>to ":tabonly<cr>")
-(noremap :n :<leader>sw ":mksession! .quicksave.vim<cr>")
-(noremap :n :<leader>sr ":source .quicksave.vim<cr>")
+(set nvim.g.mapleader ",")
 
 ;; Delete hidden buffers.
 (noremap :n :<leader>bo ":call DeleteHiddenBuffers()<cr>")
 
-;; Correct to first spelling suggestion.
-(noremap :n :<leader>zz ":normal! 1z=<cr>")
+(nu.fn-bridge
+  :StripTrailingWhitespace
+  :dotfiles.module.mapping :strip-trailing-whitespace)
 
-;; Trim trialing whitespace.
-(noremap :n :<leader>bt ":%s/\\s\\+$//e<cr>")
+(defn strip-trailing-whitespace []
+  (let [pos (nvim.fn.getpos ".")]
+    (nvim.command "%s/\\s\\+$//e")
+    (nvim.command "%s/\\n\\{3,}/\\r\\r/e")
+    (nvim.command "%s#\\($\\n\\s*\\)\\+\\%$##e")
+    (nvim.fn.setpos "." pos)))
+
+(noremap :n :<leader><space> ":call StripTrailingWhitespace()<cr>")
 
 (nu.fn-bridge
   :DeleteHiddenBuffers

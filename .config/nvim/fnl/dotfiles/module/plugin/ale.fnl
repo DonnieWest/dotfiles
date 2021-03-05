@@ -1,5 +1,6 @@
 (module dotfiles.module.plugin.ale
-  {require {nvim aniseed.nvim}})
+  {require {nvim aniseed.nvim
+            nu aniseed.nvim.util}})
 
 (set nvim.g.ale_linters
   {:javascript [:eslint]
@@ -58,5 +59,4 @@
       :event "event"
       :operator ""
       :type_parameter "type param"
-      :<default> "v"
-      })
+      :<default> "v"})

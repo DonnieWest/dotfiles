@@ -271,86 +271,17 @@ let g:signify_vcs_list = [ 'git' ]
 "Generic wildignores
 set wildignore+=*/log/*,*/.git/*,**/*.pyc
 
-nnoremap <leader><space> :call Strip_trailing_whitespace()<CR>
-let g:neoformat_enabled_javascript = ['prettiereslint']
-let g:neoformat_enabled_typescript = ['prettier']
-nnoremap <leader>fm :Neoformat<CR>
-
 let g:closetag_xhtml_filenames = '*.xhtml,*.js,*.tsx'
 
 " This will make the list of non closing tags case sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
 let g:closetag_emptyTags_caseSensitive = 1
 let g:closetag_shortcut = '>'
 
-imap <C-x><C-o> <Plug>(asyncomplete_force_refresh)
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'allowlist': ['*'],
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#Verdin#get_source_options({
-    \ 'name': 'Verdin',
-    \ 'allowlist': ['vim'],
-    \ 'completor': function('asyncomplete#sources#Verdin#completor')
-    \ }))
-
-let g:javascript_tsserver_use_global = 1
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
-    \ }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
-  \ 'name': 'omni',
-  \ 'allowlist': ['sql', 'sq'],
-  \ 'completor': function('vim_dadbod_completion#omni')
-  \  }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#conjure#get_source_options({
-    \ 'name': 'conjure',
-    \ 'allowlist': ['clojure', 'fennel'],
-    \ 'completor': function('asyncomplete#sources#conjure#completor'),
-    \ }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#lsp#get_source_options({}))
 
 autocmd FileType clojure nnoremap <silent> gd    <cmd>:ConjureDefWord<CR>
 autocmd FileType clojure nnoremap <silent> <c-]> <cmd>:ConjureDefWord<CR>
 autocmd FileType clojure nnoremap <silent> K     <cmd>:ConjureDocWord<CR>
 autocmd FileType clojure nnoremap <silent> gD    <cmd>:ConjureCljViewSource<CR>
-
-
-let g:asyncomplete_completion_symbols = {
-\ 'text': '',
-\ 'method': '',
-\ 'function': '',
-\ 'constructor': '',
-\ 'field': '',
-\ 'variable': '',
-\ 'class': '',
-\ 'interface': '',
-\ 'module': '',
-\ 'property': '',
-\ 'unit': 'unit',
-\ 'value': 'val',
-\ 'enum': '',
-\ 'keyword': 'keyword',
-\ 'snippet': '',
-\ 'color': 'color',
-\ 'file': '',
-\ 'reference': 'ref',
-\ 'folder': '',
-\ 'enum member': '',
-\ 'constant': '',
-\ 'struct': '',
-\ 'event': 'event',
-\ 'operator': '',
-\ 'type_parameter': 'type param',
-\ '*': 'v'
-\ }
-
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -534,10 +465,6 @@ let g:startify_bookmarks = [
             \ { 'c': '~/.config/nvim/init.vim' },
             \ ]
 
-"Make TComment work as I expect
-noremap <leader>/ :TComment <CR>
-vmap <leader>/ :TCommentBlock<CR>
-
 let g:tmux_navigator_no_mappings = 1
 
 
@@ -635,31 +562,8 @@ let g:lightline = {
       \ },
       \ }
 
-let g:lightline#ale#indicator_checking = ''
-let g:lightline#ale#indicator_warnings = ''
-let g:lightline#ale#indicator_errors   = ''
-let g:lightline#ale#indicator_ok       = ''
-let g:lightline#bufferline#enable_devicons = 1
-let g:lightline#bufferline#show_number  = 0
-let g:lightline#bufferline#shorten_path = 1
-" let g:lightline#bufferline#filename_modifier = ':t'
-
-" Ripped out of https://github.com/derekprior/vim-trimmer/blob/master/plugin/vim-trimmer.vim
-if !exists("g:trimmer_blacklist")
-  let g:trimmer_blacklist = []
-endif
-
-function! Strip_trailing_whitespace()
-  let l:pos = getpos(".")
-  %s/\s\+$//e
-  %s/\n\{3,}/\r\r/e
-  %s#\($\n\s*\)\+\%$##e
-  call setpos(".", l:pos)
-endfunction
-
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 
-autocmd CursorHold *.js,*.jsx,*.kt :ALEHover
 
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
@@ -729,14 +633,6 @@ let g:OmniSharp_highlight_types = 1
 let g:OmniSharp_server_stdio = 1
 
 let g:sharpenup_create_mappings = 0
-
-let g:neoformat_xml_prettier = {
-            \ 'exe': 'prettier',
-            \ 'args': ['--stdin', '--stdin-filepath', '"%:p"'],
-            \ 'stdin': 1,
-            \ }
-
-let g:neoformat_enabled_xml = ['prettier']
 
 augroup lightline_integration
   autocmd!
@@ -822,24 +718,6 @@ augroup END
 
 "XML completion based on CTags
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-let g:neoformat_java_googleformatter = {
-            \ 'exe': 'google-java-format',
-            \ 'args': ['-'],
-            \ 'stdin': 1,
-            \ }
-
-let g:neoformat_enabled_java = ['googleformatter']
-
-let g:neoformat_kotlin_ktlint = {
-            \ 'exe': 'ktlint',
-            \ 'args': ['-F', '-a', '--stdin'],
-            \ 'stdin': 1,
-            \ }
-
-call tcomment#type#Define('kotlin',       tcomment#GetLineC('// %s'))
-call tcomment#type#Define('kotlin_block', g:tcomment#block_fmt_c   )
-call tcomment#type#Define('kotlin_inline', g:tcomment#inline_fmt_c )
 
 let java_highlight_functions = 'style'
 let java_highlight_all = 1

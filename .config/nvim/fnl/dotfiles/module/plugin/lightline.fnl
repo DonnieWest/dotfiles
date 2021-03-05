@@ -20,6 +20,14 @@
 (bridge :LightlineFilename :filename)
 (bridge :LightlineReadonly :readonly)
 
+(set nvim.g.lightline#ale#indicator_checking "")
+(set nvim.g.lightline#ale#indicator_warnings "")
+(set nvim.g.lightline#ale#indicator_errors  "")
+(set nvim.g.lightline#ale#indicator_ok "")
+(set nvim.g.lightline#bufferline#enable_devicons 1)
+(set nvim.g.lightline#bufferline#show_number 0)
+(set nvim.g.lightline#bufferline#shorten_path 1)
+
 ; (set nvim.g.lightline
 ;      {:colorscheme :default
 ;       :component_function {:filename :LightlineFilename

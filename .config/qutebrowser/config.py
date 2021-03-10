@@ -18,6 +18,13 @@ config.load_autoconfig(False)
 # Type: Dict
 c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/qute-bitwarden', 'mpv': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/view_in_mpv', 'pushwebsite': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/pushwebsite'}
 
+# Additional arguments to pass to Qt, without leading `--`. With
+# QtWebEngine, some Chromium arguments (see
+# https://peter.sh/experiments/chromium-command-line-switches/ for a
+# list) will work.
+# Type: List of String
+c.qt.args = ['enable-webrtc-pipewire-capturer', 'enable-gpu-rasterization', 'ignore-gpu-blacklist', 'enable-accelerated-video-decode']
+
 # Force a Qt platform to use. This sets the `QT_QPA_PLATFORM`
 # environment variable and is useful to force using the XCB plugin when
 # running QtWebEngine on Wayland.
@@ -31,9 +38,6 @@ c.qt.force_platform = 'wayland'
 # set font sizes and the `zoom.default` setting.
 # Type: Bool
 c.qt.highdpi = True
-
-c.qt.args = [ "enable-webrtc-pipewire-capturer" ]
-
 
 # Always restore open sites when qutebrowser is reopened. Without this
 # option set, `:wq` (`:quit --save`) needs to be used to save open tabs

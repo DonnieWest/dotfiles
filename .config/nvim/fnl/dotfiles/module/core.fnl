@@ -30,6 +30,8 @@
 (set nvim.o.splitbelow true)
 (set nvim.o.splitright true)
 
+(set nvim.wo.number true)
+
 (nvim.ex.set :nowb)
 (nvim.ex.set :nofoldenable)
 (nvim.ex.set :noshowmode)

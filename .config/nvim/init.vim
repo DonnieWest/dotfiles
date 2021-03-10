@@ -79,8 +79,7 @@ Plug 'mg979/vim-visual-multi'
 
 Plug 'LeafCage/echos.vim'
 
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-file.vim'
+Plug 'hrsh7th/nvim-compe'
 Plug 'prabirshrestha/async.vim'
 Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'tpope/vim-db'
@@ -106,7 +105,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'justinmk/vim-gtfo'
 Plug 'sunaku/vim-dasht'
 Plug 'liuchengxu/vim-which-key'
-Plug 'DonnieWest/asyncomplete_neovim_lsp'
 Plug 'liuchengxu/vista.vim'
 
 Plug 'neovim/nvim-lspconfig'
@@ -193,7 +191,6 @@ Plug 'fatih/vim-go'
 Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-completion'
 Plug 'kristijanhusak/vim-dadbod-ui'
-Plug 'yami-beta/asyncomplete-omni.vim'
 
 " Clojure
 Plug 'guns/vim-sexp'
@@ -202,7 +199,7 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'Olical/conjure', {'tag': 'v4.15.0'}
 Plug 'dmac/vim-cljfmt'
 
-Plug 'thecontinium/asyncomplete-conjure.vim'
+Plug 'tami5/compe-conjure'
 
 Plug 'clojure-vim/clojure.vim'
 Plug 'clojure-vim/vim-jack-in'
@@ -355,7 +352,6 @@ imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 imap <expr><TAB> pumvisible() ? "\<C-n>" : (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>") 
 imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
-let g:neosnippet#snippets_directory='~/Code/react-snippets'
 " Conceal neosnippet markers
 set conceallevel=2
 set concealcursor=niv
@@ -803,34 +799,4 @@ nvim_lsp.kotlin_language_server.setup{
     };
   }
 }
-
 EOF
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'allowlist': ['*'],
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#Verdin#get_source_options({
-    \ 'name': 'Verdin',
-    \ 'allowlist': ['vim'],
-    \ 'completor': function('asyncomplete#sources#Verdin#completor')
-    \ }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
-    \ }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
-  \ 'name': 'omni',
-  \ 'allowlist': ['sql', 'sq'],
-  \ 'completor': function('vim_dadbod_completion#omni')
-  \  }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#conjure#get_source_options({
-    \ 'name': 'conjure',
-    \ 'allowlist': ['clojure', 'fennel'],
-    \ 'completor': function('asyncomplete#sources#conjure#completor'),
-    \ }))
-
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#lsp#get_source_options({}))

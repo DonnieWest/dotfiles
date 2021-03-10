@@ -155,6 +155,7 @@ for_window [title="win0" instance="sun-awt-X11-XWindowPeer"] floating enable
 for_window [class="rofi"] floating enable
 # for_window [name="Emulator"] floating enable
 
+for_window [class="scrcpy"] floating disable
 for_window [class="Pinentry"] floating enable
 for_window [title="OpenSnitch"] floating enable
 

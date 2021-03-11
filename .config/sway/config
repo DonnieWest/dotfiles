@@ -37,7 +37,7 @@ output * bg ~/Wallpapers/armed_society_wallpaper.png fill
 output eDP-1 scale 1
 
 exec libinput-gestures-setup start
-exec alsactl --file ~/.config/asound.state restore
+# exec alsactl --file ~/.config/asound.state restore
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod

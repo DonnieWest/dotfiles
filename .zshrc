@@ -410,6 +410,3 @@ pushwebsite() {
   pushover --title "Website" --url "$1" --message "$1"
 }
 alias git=hub
-
-alias 'docker-compose'='podman-compose'
-

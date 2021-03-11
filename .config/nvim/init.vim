@@ -82,7 +82,6 @@ Plug 'LeafCage/echos.vim'
 Plug 'hrsh7th/nvim-compe'
 Plug 'prabirshrestha/async.vim'
 Plug 'kristijanhusak/vim-carbon-now-sh'
-Plug 'tpope/vim-db'
 " Plug 'puremourning/vimspector'
 Plug 'mfussenegger/nvim-dap'
 

@@ -8,6 +8,9 @@
 (set nvim.o.ttimeoutlen 50)
 (set nvim.o.timeoutlen 500)
 (set nvim.o.inccommand :split)
+(set nvim.o.background :dark)
+(set nvim.o.scrolloff 10)
+(set nvim.o.laststatus 2)
 
 (set nvim.o.hidden true)
 (set nvim.o.number true)
@@ -42,3 +45,4 @@
 (nvim.ex.autocmd :BufWritePost :init.vim "so $MYVIMRC")
 (nvim.ex.autocmd :VimResized ":windcmd =")
 (nvim.ex.autocmd :FocusGained :* ":checktime")
+(nvim.ex.autocmd :TextYankPost :* "lua vim.highlight.on_yank { higroup=\"IncSearch\", timeout=100}")

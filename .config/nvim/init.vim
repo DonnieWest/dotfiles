@@ -97,8 +97,6 @@ Plug 'nvim-lua/telescope.nvim'
 
 Plug 'mhinz/vim-grepper'
 Plug 'dense-analysis/ale'
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
 Plug 'metakirby5/codi.vim'
 
 Plug 'editorconfig/editorconfig-vim'
@@ -122,7 +120,6 @@ Plug 'sbdchd/neoformat'
 "Git plugins
 Plug 'jreybert/vimagit'
 Plug 'airblade/vim-gitgutter'
-" Plug 'mhinz/vim-signify' "Good for other VCS other than GIT
 Plug 'tpope/vim-fugitive'
 Plug 'christoomey/vim-conflicted'
 Plug 'junegunn/gv.vim'
@@ -223,18 +220,14 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 set whichwrap+=<,>,h,l,[,]
-set background=dark
 let mapleader=","
-set scrolloff=10
 nnoremap U :redo<cr>
 set undodir=~/.vim/undodir
 set shortmess+=cI
-set laststatus=2
 set diffopt+=vertical
 nnoremap ! :!
 nnoremap ; :
 set tags=.tags,./tags,tags;
-set nofoldenable    " disable folding
 set list listchars=tab:»·,trail:·,nbsp:·
 "Generic wildignores
 set wildignore+=*/log/*,*/.git/*,**/*.pyc
@@ -260,10 +253,6 @@ autocmd User ALELintPost :GitGutter
 autocmd User VimagitLeaveCommit :GitGutterAll
 autocmd User VimagitUpdateFile :GitGutterAll
 
-nnoremap <leader>ri :RunInInteractiveShell<space>
-
-let g:signify_vcs_list = [ 'git' ]
-
 let g:closetag_xhtml_filenames = '*.xhtml,*.js,*.tsx'
 
 " This will make the list of non closing tags case sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
@@ -286,8 +275,6 @@ nnoremap <silent> gk :call Dasht([expand('<cword>'), expand('<cWORD>')])<Return>
 let g:dasht_filetype_docsets = {} " filetype => list of docset name regexp
 let g:dasht_filetype_docsets['javascript'] = ['React', 'React_Native', 'Sequelize']
 let g:dasht_filetype_docsets['kotlin'] = ['Android']
-
-set completefunc=autoprogramming#complete
 
 " Use RipGrep instead of Grep
 if executable("rg")
@@ -339,23 +326,6 @@ let g:esearch = {
   \ 'use':        ['visual', 'hlsearch', 'last'],
   \}
 
-" Plugin key-mappings.
-" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-let g:neosnippet#enable_completed_snippet = 1
-
-" SuperTab like snippets behavior.
-" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-imap <expr><TAB> pumvisible() ? "\<C-n>" : (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>") 
-imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-
-" Conceal neosnippet markers
-set conceallevel=2
-set concealcursor=niv
-
 nnoremap <C-p> :lua require'telescope.builtin'.find_files{}<ENTER>
 if has('nvim')
   aug fzf_setup
@@ -390,8 +360,6 @@ call esearch#map('<leader>fw', 'esearch-word-under-cursor')
 hi ESearchMatch ctermfg=black ctermbg=white guifg=#000000 guibg=#E6E6FA
 
 tnoremap <Esc> <C-\><C-n>
-
-au TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=100}
 
 autocmd User Startified setlocal buftype=
 let g:startify_bookmarks = [
@@ -429,12 +397,6 @@ let g:sharpenup_statusline_opts = { 'Highlight': 0 }
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
-
-" By default vista.vim never run if you don't call it explicitly.
-"
-" If you want to show the nearest function in your statusline automatically,
-" you can add the following line to your vimrc 
-autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 function! LspStatus() abort
   let status = luaeval('require("lsp-status").status()')

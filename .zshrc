@@ -235,6 +235,7 @@ export PATH="$PATH":"$HOME/.pub-cache/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
 export PATH="$PATH:$HOME/.dotnet/tools"
 export PATH="$PATH:$HOME/go/bin"
+export PATH="$HOME/.luarocks/bin:$PATH"
 
 sn() {
   local version

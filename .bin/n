@@ -9,9 +9,6 @@
 log() {
   printf "  ${SGR_CYAN}%10s${SGR_RESET} : ${SGR_FAINT}%s${SGR_RESET}\n" "$1" "$2"
 }
-trace_log() {
-  >&2 log "$1" "$2"
-}
 
 #
 # Exit with the given <msg ...>
@@ -52,7 +49,7 @@ function n_grep() {
 # Setup and state
 #
 
-VERSION="7.0.1"
+VERSION="7.1.0"
 
 N_PREFIX="${N_PREFIX-/usr/local}"
 N_PREFIX=${N_PREFIX%/}
@@ -115,6 +112,9 @@ fi
 
 # Set by set_active_node
 g_active_node=
+
+# set by various lookups to allow mixed logging and return value from function, especially for engine and node
+g_target_node=
 
 ACTIVATE=true
 ARCH=
@@ -326,26 +326,28 @@ Usage: n [options] [COMMAND] [args]
 
 Commands:
 
-  n                              Display downloaded node versions and install selection
-  n latest                       Install the latest node release (downloading if necessary)
-  n lts                          Install the latest LTS node release (downloading if necessary)
-  n <version>                    Install node <version> (downloading if necessary)
+  n                              Display downloaded Node.js versions and install selection
+  n latest                       Install the latest Node.js release (downloading if necessary)
+  n lts                          Install the latest LTS Node.js release (downloading if necessary)
+  n <version>                    Install Node.js <version> (downloading if necessary)
+  n install <version>            Install Node.js <version> (downloading if necessary)
+  n run <version> [args ...]     Execute downloaded Node.js <version> with [args ...]
   n run <version> [args ...]     Execute downloaded node <version> with [args ...]
   n which <version>              Output path for downloaded node <version>
   n exec <vers> <cmd> [args...]  Execute command with modified PATH, so downloaded node <version> and npm first
   n rm <version ...>             Remove the given downloaded version(s)
   n prune                        Remove all downloaded versions except the installed version
-  n --latest                     Output the latest node version available
-  n --lts                        Output the latest LTS node version available
+  n --latest                     Output the latest Node.js version available
+  n --lts                        Output the latest LTS Node.js version available
   n ls                           Output downloaded versions
   n ls-remote [version]          Output matching versions available for download
-  n uninstall                    Remove the installed node and npm
+  n uninstall                    Remove the installed Node.js
 
 Options:
 
   -V, --version         Output version of n
   -h, --help            Display help information
-  -p, --preserve        Preserve npm and npx during install of node (requires rsync)
+  -p, --preserve        Preserve npm and npx during install of Node.js
   -q, --quiet           Disable curl output (if available)
   -d, --download        Download only
   -a, --arch            Override system architecture
@@ -355,13 +357,14 @@ Options:
 
 Aliases:
 
-  which: bin
-  run: use, as
+  install: i
+  latest: current
   ls: list
   lsr: ls-remote
-  rm: -
   lts: stable
-  latest: current
+  rm: -
+  run: use, as
+  which: bin
 
 Versions:
 
@@ -375,7 +378,7 @@ Versions:
     auto              Read version from file: .n-node-version, .node-version, .nvmrc, or package.json
     engine            Read version from package.json
     boron, carbon     Codenames for release streams
-    lts_latest        node support aliases
+    lts_latest        Node.js support aliases
 
     and nightly, rc/10 et al
 
@@ -601,6 +604,19 @@ disable_pax_mprotect() {
 }
 
 #
+# clean_copy_folder <source> <target>
+#
+
+clean_copy_folder() {
+  local source="$1"
+  local target="$2"
+  if [[ -d "${source}" ]]; then
+    rm -rf "${target}"
+    cp -fR "${source}" "${target}"
+  fi
+}
+
+#
 # Activate <version>
 #
 
@@ -608,26 +624,51 @@ activate() {
   local version="$1"
   local dir="$CACHE_DIR/$version"
   local original_node="$(command -v node)"
+  local installed_node="${N_PREFIX}/bin/node"
 
-  # Remove old npm to avoid potential issues with simple overwrite.
-  if [[ -z "${N_PRESERVE_NPM}" && -d "$dir/lib/node_modules/npm" ]]; then
-    if test -d "$N_PREFIX/lib/node_modules/npm"; then
-      rm -rf "$N_PREFIX/lib/node_modules/npm"
-    fi
+  # Ideally we would just copy from cache to N_PREFIX, but there are some complications
+  # - various linux versions use symlinks for folders in /usr/local and also error when copy folder onto symlink
+  # - we have used cp for years, so keep using it for backwards compatibility (instead of say rsync)
+  # - we allow preserving npm
+  # - we want to be somewhat robust to changes in tarball contents, so use find instead of hard-code expected subfolders
+  #
+  # This code was purist and concises for a long time.
+  # Now twice as much code, but using same code path for all uses, and supporting more setups.
+
+  # Copy lib before bin so symlink targets exist.
+  # lib
+  mkdir -p "$N_PREFIX/lib"
+  # Copy everything except node_modules.
+  find "$dir/lib" -mindepth 1 -maxdepth 1 \! -name node_modules -exec cp -fR "{}" "$N_PREFIX/lib" \;
+  if [[ -z "${N_PRESERVE_NPM}" ]]; then
+    mkdir -p "$N_PREFIX/lib/node_modules"
+    # Copy just npm, skipping possible added global modules after download. Clean copy to avoid version change problems.
+    clean_copy_folder "$dir/lib/node_modules/npm" "$N_PREFIX/lib/node_modules/npm"
   fi
+
+  # bin
+  mkdir -p "$N_PREFIX/bin"
   # Remove old node to avoid potential problems with firewall getting confused on Darwin by overwrite.
   rm -f "$N_PREFIX/bin/node"
-  # Copy (lib before bin to avoid error messages on Darwin when cp over dangling link)
-  for subdir in lib bin include share; do
-    if [[ -n "${N_PRESERVE_NPM}" ]]; then
-      rsync --recursive --archive --keep-dirlinks --exclude=npm --exclude=npx "${dir}/${subdir}" "${N_PREFIX}"
-    elif test -L "$N_PREFIX/$subdir"; then
-      find "$dir/$subdir" -mindepth 1 -maxdepth 1 -exec cp -fR "{}" "$N_PREFIX/$subdir" \;
-    else
-      cp -fR "$dir/$subdir" "$N_PREFIX"
-    fi
-  done
-  local installed_node="${N_PREFIX}/bin/node"
+  # Copy just node, in case user has installed global npm modules into cache.
+  cp -f "$dir/bin/node" "$N_PREFIX/bin"
+  [[ -e "$dir/bin/node-waf" ]] && cp -f "$dir/bin/node-waf" "$N_PREFIX/bin" # v0.8.x
+  if [[ -z "${N_PRESERVE_NPM}" ]]; then
+    [[ -e "$dir/bin/npm" ]] && cp -fR "$dir/bin/npm" "$N_PREFIX/bin"
+    [[ -e "$dir/bin/npx" ]] && cp -fR "$dir/bin/npx" "$N_PREFIX/bin"
+  fi
+
+  # include
+  mkdir -p "$N_PREFIX/include"
+  find "$dir/include" -mindepth 1 -maxdepth 1 -exec cp -fR "{}" "$N_PREFIX/include" \;
+
+  # share
+  mkdir -p "$N_PREFIX/share"
+  # Copy everything except man, at it is a symlink on some Linux (e.g. archlinux).
+  find "$dir/share" -mindepth 1 -maxdepth 1 \! -name man -exec cp -fR "{}" "$N_PREFIX/share" \;
+  mkdir -p "$N_PREFIX/share/man"
+  find "$dir/share/man" -mindepth 1 -maxdepth 1 -exec cp -fR "{}" "$N_PREFIX/share/man" \;
+
   disable_pax_mprotect "${installed_node}"
 
   local active_node="$(command -v node)"
@@ -663,7 +704,8 @@ activate() {
 install() {
   [[ -z "$1" ]] && abort "version required"
   local version
-  version="$(display_latest_resolved_version "$1")" || return 2
+  get_latest_resolved_version "$1" || return 2
+  version="${g_target_node}"
   [[ -n "${version}" ]] || abort "no version found for '$1'"
   update_mirror_settings_for_version "$1"
   update_xz_settings_for_version "${version}"
@@ -759,7 +801,8 @@ function remove_versions() {
   [[ -z "$1" ]] && abort "version(s) required"
   while [[ $# -ne 0 ]]; do
     local version
-    version="$(display_latest_resolved_version "$1")" || break
+    get_latest_resolved_version "$1" || break
+    version="${g_target_node}"
     if [[ -n "${version}" ]]; then
       update_mirror_settings_for_version "$1"
       local dir="${CACHE_DIR}/${g_mirror_folder_name}/${version}"
@@ -799,7 +842,8 @@ function prune_cache() {
 function find_cached_version() {
   [[ -z "$1" ]] && abort "version required"
   local version
-  version="$(display_latest_resolved_version "$1")" || exit 1
+  get_latest_resolved_version "$1" || exit 1
+  version="${g_target_node}"
   [[ -n "${version}" ]] || abort "no version found for '$1'"
 
   update_mirror_settings_for_version "$1"
@@ -941,35 +985,39 @@ function tarball_url() {
 }
 
 #
-# Synopsis: display_file_node_version filename
+# Synopsis: get_file_node_version filename
+# Sets g_target_node
 #
 
-function display_file_node_version() {
+function get_file_node_version() {
+  g_target_node=
   local filepath="$1"
-  trace_log "found" "${filepath}"
+  log "found" "${filepath}"
   # read returns a non-zero status but does still work if there is no line ending
   local version
   <"${filepath}" read -r version
   # trim possible trailing \d from a Windows created file
   version="${version%%[[:space:]]}"
-  trace_log "read" "${version}"
-  echo "${version}"
+  log "read" "${version}"
+  g_target_node="${version}"
 }
 
 #
-# Synopsis: display_package_engine_version
+# Synopsis: get_package_engine_version\
+# Sets g_target_node
 #
 
-function display_package_engine_version() {
+function get_package_engine_version() {
+  g_target_node=
   local filepath="$1"
-  trace_log "found" "${filepath}"
+  log "found" "${filepath}"
   command -v node &> /dev/null || abort "an active version of node is required to read 'engines' from package.json"
   local range
   range="$(node -e "package = require('${filepath}'); if (package && package.engines && package.engines.node) console.log(package.engines.node)")"
-  trace_log "read" "${range}"
+  log "read" "${range}"
   if [[ -z "${range}" || "*" == "${range}" ]]; then
-    trace_log "target" "current"
-    echo "current"
+    log "target" "current"
+    g_target_node="current"
     return
   fi
 
@@ -983,29 +1031,31 @@ function display_package_engine_version() {
       \~) [[ "${version}" =~ ^([0-9]+\.[0-9]+)\.[0-9]+$ ]] && version="${BASH_REMATCH[1]}" ;;
       ^) [[ "${version}" =~ ^([0-9]+) ]] && version="${BASH_REMATCH[1]}" ;;
     esac
-    trace_log "target" "${version}"
+    log "target" "${version}"
   else
     command -v npx &> /dev/null || abort "an active version of npx is required to use complex 'engine' ranges from package.json"
-    trace_log "resolving" "${range}"
+    log "resolving" "${range}"
     local version_per_line="$(n lsr --all)"
     local versions_one_line=$(echo "${version_per_line}" | tr '\n' ' ')
     # Using semver@7 so works with older versions of node.
     # shellcheck disable=SC2086
     version=$(npm_config_yes=true npx --quiet semver@7 -r "${range}" ${versions_one_line} | tail -n 1)
   fi
-  echo "${version}"
+  g_target_node="${version}"
 }
 
 #
-# Synopsis: display_nvmrc_version
+# Synopsis: get_nvmrc_version
+# Sets g_target_node
 #
 
-function display_nvmrc_version() {
+function get_nvmrc_version() {
+  g_target_node=
   local filepath="$1"
-  trace_log "found" "${filepath}"
+  log "found" "${filepath}"
   local version
   <"${filepath}" read -r version
-  trace_log "read" "${version}"
+  log "read" "${version}"
   # Translate from nvm aliases
   case "${version}" in
     lts/\*) version="lts" ;;
@@ -1013,20 +1063,22 @@ function display_nvmrc_version() {
     node) version="current" ;;
     *) ;;
   esac
-  echo "${version}"
+  g_target_node="${version}"
 }
 
 #
-# Synopsis: display_engine_version [error-message]
+# Synopsis: get_engine_version [error-message]
+# Sets g_target_node
 #
 
-function display_engine_version() {
+function get_engine_version() {
+  g_target_node=
   local error_message="${1-package.json not found}"
   local parent
   parent="${PWD}"
   while [[ -n "${parent}" ]]; do
     if [[ -e "${parent}/package.json" ]]; then
-      display_package_engine_version "${parent}/package.json"
+      get_package_engine_version "${parent}/package.json"
     else
       parent=${parent%/*}
       continue
@@ -1037,20 +1089,22 @@ function display_engine_version() {
 }
 
 #
-# Synopsis: display_auto_version
+# Synopsis: get_auto_version
+# Sets g_target_node
 #
 
-function display_auto_version() {
+function get_auto_version() {
+  g_target_node=
   # Search for a version control file first
   local parent
   parent="${PWD}"
   while [[ -n "${parent}" ]]; do
     if [[ -e "${parent}/.n-node-version" ]]; then
-      display_file_node_version "${parent}/.n-node-version"
+      get_file_node_version "${parent}/.n-node-version"
     elif [[ -e "${parent}/.node-version" ]]; then
-      display_file_node_version "${parent}/.node-version"
+      get_file_node_version "${parent}/.node-version"
     elif [[ -e "${parent}/.nvmrc" ]]; then
-      display_nvmrc_version "${parent}/.nvmrc"
+      get_nvmrc_version "${parent}/.nvmrc"
     else
       parent=${parent%/*}
       continue
@@ -1058,29 +1112,34 @@ function display_auto_version() {
     break
   done
   # Fallback to package.json
-  [[ -n "${parent}" ]] || display_engine_version "no file found for auto version (.n-node-version, .node-version, .nvmrc, or package.json)"
+  [[ -n "${parent}" ]] || get_engine_version "no file found for auto version (.n-node-version, .node-version, .nvmrc, or package.json)"
 }
+
 #
-# Synopsis: display_latest_resolved_version version
+# Synopsis: get_latest_resolved_version version
+# Sets g_target_node
 #
 
-function display_latest_resolved_version() {
+function get_latest_resolved_version() {
+  g_target_node=
   local version=${1}
   # auto and engine make sense for local use and not much for ls-remote, so handled here rather than display_remote_versions
   if [[ "${version}" = "auto" ]]; then
-    version="$(display_auto_version)" || return 2
+    get_auto_version || return 2
+    version="${g_target_node}"
   fi
   if [[ "${version}" = "engine" ]]; then
-    version="$(display_engine_version)" || return 2
+    get_engine_version || return 2
+    version="${g_target_node}"
   fi
   simple_version=${version#node/} # Only place supporting node/ [sic]
   if is_exact_numeric_version "${simple_version}"; then
     # Just numbers, already resolved, no need to lookup first.
     simple_version="${simple_version#v}"
-    echo "${simple_version}"
+    g_target_node="${simple_version}"
   else
     # Complicated recognising exact version, KISS and lookup.
-    N_MAX_REMOTE_MATCHES=1 display_remote_versions "$version"
+    g_target_node=$(N_MAX_REMOTE_MATCHES=1 display_remote_versions "$version")
   fi
 }
 
@@ -1093,7 +1152,6 @@ function display_latest_resolved_version() {
 
 display_remote_index() {
   local index_url="${g_mirror_url}/index.tab"
-  echo "index_url is ${index_url}"
   # tail to remove header line
   do_get_index "${index_url}" | tail -n +2 | cut -f 1,3,10
   if [[ "${PIPESTATUS[0]}" -ne 0 ]]; then
@@ -1277,13 +1335,6 @@ function show_diagnostics() {
     command -v wget && wget --version
   else
     echo_red "Neither curl nor wget found. Need one of them for downloads."
-  fi
-
-  printf "\nrsync:\n"
-  if command -v rsync &> /dev/null; then
-    command -v rsync && rsync --version
-  else
-    printf "rsync not found. (Needed for preserving npm during install.)\n"
   fi
 
   printf "\nuname\n"
@@ -1477,7 +1528,7 @@ else
       lsr|ls-remote|list-remote) shift; display_remote_versions "$1"; exit ;;
       uninstall) uninstall_installed; exit ;;
       i|install) shift; install "$1"; exit ;;
-      N_TEST_DISPLAY_LATEST_RESOLVED_VERSION) shift; display_latest_resolved_version "$1"; exit ;;
+      N_TEST_DISPLAY_LATEST_RESOLVED_VERSION) shift; get_latest_resolved_version "$1" > /dev/null; echo "${g_target_node}"; exit ;;
       *) install "$1"; exit ;;
     esac
     shift

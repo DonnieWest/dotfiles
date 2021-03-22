@@ -109,6 +109,9 @@ Plug 'liuchengxu/vista.vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'tjdevries/lsp_extensions.nvim'
+Plug 'RishabhRD/popfix'
+Plug 'RishabhRD/nvim-lsputils'
+Plug 'kosayoda/nvim-lightbulb'
 
 " Appearance
 
@@ -673,6 +676,17 @@ lua << EOF
 local nvim_lsp = require'lspconfig'
 local nvim_command = vim.api.nvim_command
 local lsp_status = require('lsp-status')
+
+vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
+vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
+
+vim.cmd [[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {

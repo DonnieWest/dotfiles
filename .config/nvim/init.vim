@@ -124,6 +124,7 @@ Plug 'sbdchd/neoformat'
 
 "Git plugins
 Plug 'jreybert/vimagit'
+Plug 'TimUntersberger/neogit'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'christoomey/vim-conflicted'

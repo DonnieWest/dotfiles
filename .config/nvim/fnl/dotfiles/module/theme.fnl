@@ -5,8 +5,16 @@
 
 (treesitter.setup
   {:ensure_installed "all"
+   :refactor {:smart_rename {:keymaps {:goto_definition "gnd"
+                                       :list_definitions "gnD"
+                                       :list_definitions_toc "gO"
+                                       :goto_next_usage "<a-*>"
+                                       :goto_previous_usage "<a-#>"}
+                             :enable true}
+              :highlight_definitions {:enable true}}
+   :rainbow {:enable true}
    :highlight {:enable true
-               :disable ["clojure" "kotlin" "java"]}
+               :disable ["java"]}
    :indent {:enable true}})
 
 (defn colorscheme-fixes []

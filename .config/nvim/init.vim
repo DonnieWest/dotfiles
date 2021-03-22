@@ -51,6 +51,8 @@ Plug 'keith/swift.vim'
 " UI
 Plug 'whatyouhide/vim-gotham'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'p00f/nvim-ts-rainbow'
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
 Plug 'mhartington/oceanic-next'
 Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'

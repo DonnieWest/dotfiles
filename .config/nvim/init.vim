@@ -26,6 +26,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/vim-easy-align'
 Plug 'idanarye/vim-vebugger', { 'branch': 'develop' }
 Plug 'justinmk/vim-sneak'
+Plug 'phaazon/hop.nvim' " Easymotion / sneak alternative?
 
 " VIM Quirks fixes
 Plug 'lervag/file-line'

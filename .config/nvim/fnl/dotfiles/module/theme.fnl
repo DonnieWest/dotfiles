@@ -5,11 +5,10 @@
 
 (treesitter.setup
   {:ensure_installed "all"
-   :refactor {:smart_rename {:keymaps {:goto_definition "gnd"
-                                       :list_definitions "gnD"
-                                       :list_definitions_toc "gO"
-                                       :goto_next_usage "<a-*>"
-                                       :goto_previous_usage "<a-#>"}
+   :refactor {:smart_rename {:keymaps {:goto_definition "<c-]>"
+                                       :list_definitions "gD"
+                                       :goto_next_usage "<Leader>n"
+                                       :goto_previous_usage "<Leader>N"}
                              :enable true}
               :highlight_definitions {:enable true}}
    :rainbow {:enable true}

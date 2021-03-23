@@ -56,7 +56,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'mgee/lightline-bufferline'
 Plug 'maximbaz/lightline-ale'
 Plug 'luochen1990/rainbow'
-Plug 'chrisbra/Colorizer'
 Plug 'justinmk/nvim-repl'
 Plug 'christoomey/vim-run-interactive'
 Plug 'axvr/photon.vim'
@@ -85,12 +84,13 @@ Plug 'nvim-lua/telescope.nvim'
 
 Plug 'mhinz/vim-grepper'
 Plug 'dense-analysis/ale'
-Plug 'metakirby5/codi.vim'
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'justinmk/vim-gtfo'
 Plug 'liuchengxu/vim-which-key'
 Plug 'liuchengxu/vista.vim'
+
+" LSP Features
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp-status.nvim'

@@ -102,7 +102,6 @@ Plug 'metakirby5/codi.vim'
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'justinmk/vim-gtfo'
-Plug 'sunaku/vim-dasht'
 Plug 'liuchengxu/vim-which-key'
 Plug 'liuchengxu/vista.vim'
 
@@ -264,11 +263,6 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
-
-nnoremap <silent> gk :call Dasht([expand('<cword>'), expand('<cWORD>')])<Return>
-let g:dasht_filetype_docsets = {} " filetype => list of docset name regexp
-let g:dasht_filetype_docsets['javascript'] = ['React', 'React_Native', 'Sequelize']
-let g:dasht_filetype_docsets['kotlin'] = ['Android']
 
 " Use RipGrep instead of Grep
 if executable("rg")

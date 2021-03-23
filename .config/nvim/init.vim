@@ -122,7 +122,6 @@ Plug 'norcalli/nvim-colorizer.lua'
 Plug 'sbdchd/neoformat'
 
 "Git plugins
-Plug 'jreybert/vimagit'
 Plug 'TimUntersberger/neogit'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -251,12 +250,8 @@ let g:indentLine_enabled = 0
 
 " Allow gitgutter on large files
 let g:gitgutter_max_signs=10000
-let g:magit_discard_untracked_do_delete=1
-let g:magit_refresh_gitgutter=1
 autocmd BufWritePost * :GitGutter
 autocmd User ALELintPost :GitGutter
-autocmd User VimagitLeaveCommit :GitGutterAll
-autocmd User VimagitUpdateFile :GitGutterAll
 
 let g:closetag_xhtml_filenames = '*.xhtml,*.js,*.tsx'
 

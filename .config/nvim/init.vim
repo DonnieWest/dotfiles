@@ -24,8 +24,6 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-projectionist'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/vim-easy-align'
-Plug 'idanarye/vim-vebugger', { 'branch': 'develop' }
-Plug 'justinmk/vim-sneak'
 Plug 'phaazon/hop.nvim' " Easymotion / sneak alternative?
 
 " VIM Quirks fixes
@@ -38,7 +36,6 @@ Plug 'ynkdir/vim-vimlparser'
 Plug 'tpope/vim-unimpaired'
 Plug 'airblade/vim-rooter'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'Valloric/ListToggle'
 Plug 'Yggdroot/indentLine'
 Plug 'pgdouyon/vim-evanesco'
@@ -47,21 +44,17 @@ Plug 'kshenoy/vim-signature'
 Plug 'Firef0x/PKGBUILD.vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'blueyed/vim-diminactive'
-Plug 'keith/swift.vim'
 
 " UI
 Plug 'whatyouhide/vim-gotham'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'p00f/nvim-ts-rainbow'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
-Plug 'mhartington/oceanic-next'
 Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'
 Plug 'itchyny/lightline.vim'
 Plug 'mgee/lightline-bufferline'
 Plug 'maximbaz/lightline-ale'
-Plug 'haishanh/night-owl.vim'
-" Plug 'edkolev/tmuxline.vim'
 Plug 'luochen1990/rainbow'
 Plug 'chrisbra/Colorizer'
 Plug 'justinmk/nvim-repl'
@@ -79,15 +72,10 @@ Plug 'tomtom/tcomment_vim'
 Plug 'mbbill/undotree'
 Plug 'justinmk/vim-dirvish'
 
-Plug 'LeafCage/echos.vim'
-
 Plug 'hrsh7th/nvim-compe'
-Plug 'prabirshrestha/async.vim'
-Plug 'kristijanhusak/vim-carbon-now-sh'
 " Plug 'puremourning/vimspector'
 Plug 'mfussenegger/nvim-dap'
 
-Plug 'Shougo/context_filetype.vim'
 Plug 'kassio/neoterm'
 Plug 'ludovicchabant/vim-gutentags'
 
@@ -126,7 +114,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'christoomey/vim-conflicted'
 Plug 'junegunn/gv.vim'
 Plug 'tpope/vim-rhubarb'
-Plug 'lambdalisue/gina.vim'
 "vim-rhubarb variables set in ~/.rhubarb_credentials
 
 "HTML and CSS Plugins
@@ -137,7 +124,6 @@ Plug 'mattn/emmet-vim'
 Plug 'AndrewRadev/tagalong.vim'
 
 "Javascript Plugins
-Plug 'jungomi/vim-mdnquery'
 Plug 'pangloss/vim-javascript'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'samuelsimoes/vim-jsx-utils'

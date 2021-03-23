@@ -1,11 +1,23 @@
 (module dotfiles.module.core
         {require {nvim aniseed.nvim
+                  mapping dotfiles.module.mapping
                   lsp lspconfig
                   lightbulb nvim-lightbulb
                   lsp-status lsp-status
                   lsp-code-action lsputil.codeAction
                   lsp-symbols lsputil.symbols
                   lsp-locations lsputil.locations}})
+
+(mapping.noremap :n :gd     "<cmd>lua vim.lsp.buf.declaration()<CR>")
+(mapping.noremap :n "<c-]>" "<cmd>lua vim.lsp.buf.definition()<CR>")
+(mapping.noremap :n :K      "<cmd>lua vim.lsp.buf.hover()<CR>")
+(mapping.noremap :n :gD     "<cmd>lua vim.lsp.buf.implementation()<CR>")
+(mapping.noremap :n :<c-k>  "<cmd>lua vim.lsp.buf.signature_help()<CR>")
+(mapping.noremap :n :1gD    "<cmd>lua vim.lsp.buf.type_definition()<CR>")
+(mapping.noremap :n :gr     "<cmd>lua vim.lsp.buf.references()<CR>")
+(mapping.noremap :n :g0     "<cmd>lua vim.lsp.buf.document_symbol()<CR>")
+(mapping.noremap :n :gW     "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>")
+(mapping.noremap :n :<Leader>r "<cmd>lua vim.lsp.buf.rename()<CR>")
 
 (def nvim_command vim.api.nvim_command)
 (defn on-attach [client bufnr]

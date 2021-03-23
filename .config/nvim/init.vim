@@ -217,6 +217,7 @@ set tags=.tags,./tags,tags;
 set list listchars=tab:»·,trail:·,nbsp:·
 "Generic wildignores
 set wildignore+=*/log/*,*/.git/*,**/*.pyc
+set showtabline=2
 
 augroup dirvish_config
   autocmd!
@@ -355,8 +356,6 @@ nnoremap <silent> <C-W>k    :TmuxNavigateUp<CR>
 nnoremap <silent> <C-W>j    :TmuxNavigateDown<CR>
 nnoremap <silent> <C-W>h    :TmuxNavigateLeft<CR>
 nnoremap <silent> <C-W>l    :TmuxNavigateRight<CR>
-
-set showtabline=2
 
 let g:sharpenup_statusline_opts = { 'Highlight': 0 }
 

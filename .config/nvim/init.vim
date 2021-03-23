@@ -638,5 +638,3 @@ let g:clipboard = {
       \   'cache_enabled': 1,
       \ }
 
-let g:diagnostic_insert_delay = 1
-let g:diagnostic_enable_virtual_text = 1

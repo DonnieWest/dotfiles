@@ -32,7 +32,15 @@
   (_: hi :xmlAttrib :cterm=italic :ctermfg=214)
   (_: hi :jsxAttrib :cterm=italic)
   (_: hi :ktInclude :cterm=italic)
-  (_: hi :ColorColumn :ctermbg=blue))
+  (_: hi :ColorColumn :ctermbg=blue)
+
+  (_: hi :NeogitDiffAdd :guifg=LightGray :guibg=DarkGreen)
+  (_: hi :NeogitDiffDelete :guifg=DarkGray :guibg=DarkRed)
+  (_: hi :NeogitDiffAddHighlight :guifg=LightGray :guibg=DarkGreen)
+  (_: hi :NeogitDiffDeleteHighlight :guifg=DarkGray :guibg=DarkRed)
+  (nvim.ex.highlight :link :NeogitDiffContextHighlight :CursorLine)
+  (nvim.ex.highlight :link :NeogitHunkHeader :TabLine)
+  (nvim.ex.highlight :link :NeogitHunkHeaderHighlight :DiffText))
 
 (augroup gotham_colorscheme_fixes
   (autocmd :ColorScheme :gotham (viml->fn colorscheme-fixes)))

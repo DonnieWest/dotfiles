@@ -234,6 +234,7 @@ let g:indentLine_enabled = 0
 let g:gitgutter_max_signs=10000
 autocmd BufWritePost * :GitGutter
 autocmd User ALELintPost :GitGutter
+autocmd User NeogitStatusRefreshed :GitGutterAll
 
 let g:closetag_xhtml_filenames = '*.xhtml,*.js,*.tsx'
 

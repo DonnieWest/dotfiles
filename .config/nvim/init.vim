@@ -91,7 +91,6 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'Shougo/context_filetype.vim'
 Plug 'kassio/neoterm'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'junegunn/fzf.vim'
 
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
@@ -332,12 +331,6 @@ let g:esearch = {
   \}
 
 nnoremap <C-p> :lua require'telescope.builtin'.find_files{}<ENTER>
-if has('nvim')
-  aug fzf_setup
-    au!
-    au TermOpen term://*FZF tnoremap <silent> <buffer><nowait> <esc> <c-c>
-  aug END
-end
 
 runtime plugin/grepper.vim
 let g:grepper.rg.grepprg .= ' -i'

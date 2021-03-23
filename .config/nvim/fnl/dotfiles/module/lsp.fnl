@@ -8,21 +8,21 @@
                   lsp-symbols lsputil.symbols
                   lsp-locations lsputil.locations}})
 
-(mapping.noremap :n :gd     "<cmd>lua vim.lsp.buf.declaration()<CR>")
-(mapping.noremap :n "<c-]>" "<cmd>lua vim.lsp.buf.definition()<CR>")
-(mapping.noremap :n :K      "<cmd>lua vim.lsp.buf.hover()<CR>")
-(mapping.noremap :n :gD     "<cmd>lua vim.lsp.buf.implementation()<CR>")
-(mapping.noremap :n :<c-k>  "<cmd>lua vim.lsp.buf.signature_help()<CR>")
-(mapping.noremap :n :1gD    "<cmd>lua vim.lsp.buf.type_definition()<CR>")
-(mapping.noremap :n :gr     "<cmd>lua vim.lsp.buf.references()<CR>")
-(mapping.noremap :n :g0     "<cmd>lua vim.lsp.buf.document_symbol()<CR>")
-(mapping.noremap :n :gW     "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>")
-(mapping.noremap :n :<Leader>r "<cmd>lua vim.lsp.buf.rename()<CR>")
-
 (def nvim_command vim.api.nvim_command)
 (defn on-attach [client bufnr]
-      (lsp-status/on_attach client bufnr)
-      (nvim_command "autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()"))
+      (lsp-status.on_attach client bufnr)
+      (mapping.noremap :n :gd     "<cmd>lua vim.lsp.buf.declaration()<CR>")
+      (mapping.noremap :n "<c-]>" "<cmd>lua vim.lsp.buf.definition()<CR>")
+      (mapping.noremap :n :K      "<cmd>lua vim.lsp.buf.hover()<CR>")
+      (mapping.noremap :n :gD     "<cmd>lua vim.lsp.buf.implementation()<CR>")
+      (mapping.noremap :n :<c-k>  "<cmd>lua vim.lsp.buf.signature_help()<CR>")
+      (mapping.noremap :n :1gD    "<cmd>lua vim.lsp.buf.type_definition()<CR>")
+      (mapping.noremap :n :gr     "<cmd>lua vim.lsp.buf.references()<CR>")
+      (mapping.noremap :n :g0     "<cmd>lua vim.lsp.buf.document_symbol()<CR>")
+      (mapping.noremap :n :gW     "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>")
+      (mapping.noremap :n :ga     "<cmd>lua vim.lsp.buf.code_action()<CR>")
+      (mapping.noremap :n :<Leader>r "<cmd>lua vim.lsp.buf.rename()<CR>")
+      (nvim.ex.autocmd :CursorHold :<buffer> "lua vim.lsp.diagnostic.show_line_diagnostics()"))
 
 ; Configure LSP with kind labels
 (local kind-labels-mt {:__index (fn [_ k]
@@ -59,6 +59,7 @@
 (lsp.gopls.setup {:on_attach on-attach})
 (lsp.tsserver.setup {:on_attach on-attach})
 (lsp.gopls.setup {:on_attach on-attach})
+(lsp.clojure_lsp.setup {:on_attach on-attach})
 (lsp.jsonls.setup {:on_attach on-attach
                    :settings {:json {:schemas [{:description "TypeScript compiler configuration file"
                                                 :fileMatch ["tsconfig.json"

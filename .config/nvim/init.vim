@@ -264,11 +264,6 @@ let g:closetag_xhtml_filenames = '*.xhtml,*.js,*.tsx'
 let g:closetag_emptyTags_caseSensitive = 1
 let g:closetag_shortcut = '>'
 
-autocmd FileType clojure nnoremap <silent> gd    <cmd>:ConjureDefWord<CR>
-autocmd FileType clojure nnoremap <silent> <c-]> <cmd>:ConjureDefWord<CR>
-autocmd FileType clojure nnoremap <silent> K     <cmd>:ConjureDocWord<CR>
-autocmd FileType clojure nnoremap <silent> gD    <cmd>:ConjureCljViewSource<CR>
-
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 

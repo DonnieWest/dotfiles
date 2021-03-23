@@ -8,7 +8,6 @@
                   lsp-symbols lsputil.symbols
                   lsp-locations lsputil.locations}})
 
-(def nvim_command vim.api.nvim_command)
 (defn on-attach [client bufnr]
       (lsp-status.on_attach client bufnr)
       (mapping.noremap :n :gd     "<cmd>lua vim.lsp.buf.declaration()<CR>")

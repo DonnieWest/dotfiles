@@ -271,8 +271,6 @@ autocmd FileType clojure nnoremap <silent> <c-]> <cmd>:ConjureDefWord<CR>
 autocmd FileType clojure nnoremap <silent> K     <cmd>:ConjureDocWord<CR>
 autocmd FileType clojure nnoremap <silent> gD    <cmd>:ConjureCljViewSource<CR>
 
-let g:conjure#extract#tree_sitter#enabled = v:true
-
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 

@@ -78,7 +78,6 @@ Plug 'rhysd/clever-f.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'mbbill/undotree'
 Plug 'justinmk/vim-dirvish'
-Plug 'mg979/vim-visual-multi'
 
 Plug 'LeafCage/echos.vim'
 
@@ -598,22 +597,6 @@ let g:rainbow_levels = [
     \{'ctermbg': 238, 'guibg': '#444444'},
     \{'ctermbg': 239, 'guibg': '#4e4e4e'},
     \{'ctermbg': 240, 'guibg': '#585858'}]
-
-
-" vim-visual-multi configuration
-let g:VM_default_mappings           = 1
-let g:VM_sublime_mappings           = 0
-let g:VM_mouse_mappings             = 1
-let g:VM_extended_mappings          = 0
-let g:VM_no_meta_mappings           = 0
-let g:VM_reselect_first_insert      = 0
-let g:VM_reselect_first_always      = 0
-let g:VM_case_setting               = "smart"
-let g:VM_pick_first_after_n_cursors = 0
-let g:VM_dynamic_synmaxcol          = 20
-let g:VM_disable_syntax_in_imode    = 0
-let g:VM_exit_on_1_cursor_left      = 0
-let g:VM_manual_infoline            = 0
 
 " Wayland clipboard provider that strips carriage returns (GTK3 issue).
 " This is needed because currently there's an issue where GTK3 applications on

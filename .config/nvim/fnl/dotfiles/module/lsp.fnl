@@ -24,6 +24,8 @@
       (mapping.noremap :n :<Leader>r "<cmd>lua vim.lsp.buf.rename()<CR>")
       (nvim.ex.autocmd :CursorHold :<buffer> "lua vim.lsp.diagnostic.show_line_diagnostics()"))
 
+(nvim.ex.autocmd :FileType :clojure "nnoremap <silent> <leader>fm    <cmd>lua vim.lsp.buf.formatting()<CR>")
+
 ; Configure LSP with kind labels
 (local kind-labels-mt {:__index (fn [_ k]
                                   k)})

@@ -231,12 +231,6 @@ nmap ga <Plug>(EasyAlign)
 "Set IndentLines to disabled by default
 let g:indentLine_enabled = 0
 
-" Allow gitgutter on large files
-let g:gitgutter_max_signs=10000
-autocmd BufWritePost * :GitGutter
-autocmd User ALELintPost :GitGutter
-autocmd User NeogitStatusRefreshed :GitGutterAll
-
 let g:closetag_xhtml_filenames = '*.xhtml,*.js,*.tsx'
 
 " This will make the list of non closing tags case sensitive (e.g. `<Link>` will be closed while `<link>` won't.)

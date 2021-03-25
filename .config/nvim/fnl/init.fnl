@@ -1,7 +1,12 @@
 (module init
   {require {core aniseed.core
             nvim aniseed.nvim
-            util dotfiles.util}})
+            util dotfiles.util
+            z zest.lib}})
+
+(global _Z {})
+(tset _Z :fn {})
+(tset _Z :sl {})
 
 ;; Load all modules in no particular order.
 (->> (util.glob (.. util.config-path "/lua/dotfiles/module/*.lua"))

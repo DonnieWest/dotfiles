@@ -25,13 +25,6 @@
 
 (nvim.ex.autocmd :FileType :clojure "nnoremap <silent> <leader>fm    <cmd>lua vim.lsp.buf.formatting()<CR>")
 
-; Configure LSP with kind labels
-(local kind-labels-mt {:__index (fn [_ k]
-                                  k)})
-(local kind-labels {})
-(setmetatable kind-labels kind-labels-mt)
-(lsp-status.config {:kind_labels kind-labels :status_symbol ""})
-
 (lsp-status.register_progress)
 
 (tset vim.lsp.handlers :textDocument/codeAction

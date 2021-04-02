@@ -181,7 +181,7 @@ Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 
-Plug 'Olical/conjure', {'tag': 'v4.16.0'}
+Plug 'Olical/conjure', {'tag': 'v4.17.0'}
 Plug 'dmac/vim-cljfmt'
 
 Plug 'tami5/compe-conjure'

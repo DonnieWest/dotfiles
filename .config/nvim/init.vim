@@ -207,13 +207,9 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 set whichwrap+=<,>,h,l,[,]
-let mapleader=","
-nnoremap U :redo<cr>
 set undodir=~/.vim/undodir
 set shortmess+=cI
 set diffopt+=vertical
-nnoremap ! :!
-nnoremap ; :
 set tags=.tags,./tags,tags;
 set list listchars=tab:»·,trail:·,nbsp:·
 "Generic wildignores
@@ -257,28 +253,6 @@ let g:ag_working_path_mode="r"
 "Use unix clipboard
 set clipboard+=unnamedplus
 
-" Split window Vertically
-nmap <leader>v :vsp<cr>
-" Split window horizontally
-nmap <leader>h :sp<cr>
-
-"Make visual selection more sane
-nnoremap    v   <C-V>
-nnoremap <C-V>     v
-
-vnoremap    v   <C-V>
-vnoremap <C-V>     v
-
-"Better indent
-vnoremap < <gv
-vnoremap > >gv
-
-"Disable Ex mode
-map Q <Nop>
-
-"Ctrl + Left and Right switch buffers
-nnoremap <silent> <C-Right> :bnext<CR>
-nnoremap <silent> <C-Left> :bprevious<CR>
 nnoremap <silent> <C-Del> :Sayonara<CR>
 
 let g:startify_custom_header = []
@@ -300,9 +274,6 @@ runtime plugin/grepper.vim
 let g:grepper.rg.grepprg .= ' -i'
 nnoremap \ :GrepperRg 
 
-" Map ,t to search for my Todos
-map <LEADER>t :GrepperRg TODO: <CR>
-
 " Automatically resize quickfix window to contents
 au FileType qf call AdjustWindowHeight(3, 15)
 function! AdjustWindowHeight(minheight, maxheight)
@@ -315,8 +286,7 @@ autocmd BufReadPost *
   \ exe "normal g`\"" |
   \ endif
 
-nnoremap <Leader>fr :%s/
-xnoremap <Leader>fr :s/
+let mapleader = ","
 call esearch#map('<leader>ff', 'esearch')
 call esearch#map('<leader>fw', 'esearch-word-under-cursor')
 hi ESearchMatch ctermfg=black ctermbg=white guifg=#000000 guibg=#E6E6FA

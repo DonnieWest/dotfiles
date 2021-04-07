@@ -293,20 +293,6 @@ nnoremap <silent> <C-W>j    :TmuxNavigateDown<CR>
 nnoremap <silent> <C-W>h    :TmuxNavigateLeft<CR>
 nnoremap <silent> <C-W>l    :TmuxNavigateRight<CR>
 
-function! GutentagsFilter(path) abort
-    if fnamemodify(a:path, ':e') == 'java'
-      return 0
-    elseif fnamemodify(a:path, ':e') == ''
-      return 0
-    elseif fnamemodify(a:path, ':e') == 'xml'
-      return 0
-    elseif fnamemodify(a:path, ':e') == 'gradle'
-      return 0
-    else
-      return 1
-    endif
-endfunction
-
 " Javascript Stuff
 let g:jsx_ext_required = 0
 let g:vim_json_syntax_conceal = 0

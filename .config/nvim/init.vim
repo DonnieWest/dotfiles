@@ -87,7 +87,6 @@ Plug 'dense-analysis/ale'
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'justinmk/vim-gtfo'
-Plug 'liuchengxu/vim-which-key'
 Plug 'liuchengxu/vista.vim'
 
 " LSP Features
@@ -473,4 +472,3 @@ let g:clipboard = {
       \   'cache_enabled': 1,
       \ }
 
-nnoremap <silent> <leader>      :<c-u>WhichKey ','<CR>

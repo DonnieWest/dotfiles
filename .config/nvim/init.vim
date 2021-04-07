@@ -197,12 +197,10 @@ call plug#end()
 
 let g:aniseed#env = v:true
 
-set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 set whichwrap+=<,>,h,l,[,]
-set undodir=~/.vim/undodir
 set shortmess+=cI
 set diffopt+=vertical
 set tags=.tags,./tags,tags;
@@ -308,17 +306,12 @@ function! GutentagsFilter(path) abort
     endif
 endfunction
 
-let g:gutentags_enabled_user_func = 'GutentagsFilter'
-let g:gutentags_ctags_tagfile = '.tags'
-let g:gutentags_ctags_executable_php = 'ctags --langmap=php:.engine.inc.module.theme.install.php --php-kinds=cdfi --fields=+l'
-
 " HTML/CSS/Markdown/Octopress Stuff
 autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css,scss,sass setlocal iskeyword+=-
 
 " Javascript Stuff
 let g:jsx_ext_required = 0
-let g:mustache_abbreviations = 1
 let g:vim_json_syntax_conceal = 0
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 autocmd BufNewFile,BufRead .eslintrc set ft=json

@@ -260,16 +260,6 @@ let g:startify_change_to_vcs_root = 1
 
 let g:qf_auto_open_loclist = 0
 
-let g:esearch = {
-  \ 'adapter':    'rg',
-  \ 'backend':    'nvim',
-  \ 'out':        'win',
-  \ 'batch_size': 1000,
-  \ 'use':        ['visual', 'hlsearch', 'last'],
-  \}
-
-nnoremap <C-p> :lua require'telescope.builtin'.find_files{}<ENTER>
-
 runtime plugin/grepper.vim
 let g:grepper.rg.grepprg .= ' -i'
 nnoremap \ :GrepperRg 
@@ -285,11 +275,6 @@ autocmd BufReadPost *
   \ if line("'\"") > 0 && line("'\"") <= line("$") |
   \ exe "normal g`\"" |
   \ endif
-
-let mapleader = ","
-call esearch#map('<leader>ff', 'esearch')
-call esearch#map('<leader>fw', 'esearch-word-under-cursor')
-hi ESearchMatch ctermfg=black ctermbg=white guifg=#000000 guibg=#E6E6FA
 
 tnoremap <Esc> <C-\><C-n>
 
@@ -321,71 +306,6 @@ nnoremap <silent> <C-W>k    :TmuxNavigateUp<CR>
 nnoremap <silent> <C-W>j    :TmuxNavigateDown<CR>
 nnoremap <silent> <C-W>h    :TmuxNavigateLeft<CR>
 nnoremap <silent> <C-W>l    :TmuxNavigateRight<CR>
-
-let g:sharpenup_statusline_opts = { 'Highlight': 0 }
-
-function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-
-function! LspStatus() abort
-  let status = luaeval('require("lsp-status").status()')
-  return trim(status)
-endfunction
-
-let g:lightline = {
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' },
-      \ 'colorscheme': 'gotham256',
-      \ 'tabline': {
-      \   'left': [['buffers']],
-      \   'right': [[ 'exit' ]],
-      \ },
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified', 'method'] ],
-      \   'right': [ [ 'lineinfo' ],
-      \              [ 'percent' ],
-      \              ['gradle_project', 'gradle_running', 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'],
-      \              [ 'lsp_status' ],
-      \              [ 'fileformat', 'fileencoding', 'filetype' ],
-      \              ['sharpenup']
-      \            ]
-      \ },
-      \ 'inactive': {
-      \   'right': [['lineinfo'], ['percent'], ['sharpenup'], ['lsp_status']]
-      \ },
-      \ 'component': {
-      \   'sharpenup': sharpenup#statusline#Build()
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
-      \   'method': 'NearestMethodOrFunction',
-      \   'lsp_status': 'LspStatus'
-      \ },
-      \ 'component_expand': {
-      \   'buffers': 'lightline#bufferline#buffers',
-      \   'linter_checking': 'lightline#ale#checking',
-      \   'linter_warnings': 'lightline#ale#warnings',
-      \   'linter_errors': 'lightline#ale#errors',
-      \   'linter_ok': 'lightline#ale#ok',
-      \   'gradle_errors': 'lightline#gradle#errors',
-      \   'gradle_warnings': 'lightline#gradle#warnings',
-      \   'gradle_running': 'lightline#gradle#running',
-      \   'gradle_project': 'lightline#gradle#project'
-      \ },
-      \ 'component_type': {
-      \   'buffers': 'tabsel',
-      \   'gradle_errors': 'error',
-      \   'gradle_warnings': 'warning',
-      \   'gradle_running': 'left',
-      \   'gradle_project': 'right',
-      \   'linter_checking': 'left',
-      \   'linter_warnings': 'warning',
-      \   'linter_errors': 'error',
-      \   'linter_ok': 'left'
-      \ },
-      \ }
 
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 

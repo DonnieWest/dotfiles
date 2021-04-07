@@ -210,6 +210,7 @@ set list listchars=tab:»·,trail:·,nbsp:·
 "Generic wildignores
 set wildignore+=*/log/*,*/.git/*,**/*.pyc
 set showtabline=2
+set clipboard+=unnamedplus
 
 augroup dirvish_config
   autocmd!
@@ -229,12 +230,6 @@ let g:closetag_xhtml_filenames = '*.xhtml,*.js,*.tsx'
 let g:closetag_emptyTags_caseSensitive = 1
 let g:closetag_shortcut = '>'
 
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
 " Use RipGrep instead of Grep
 if executable("rg")
     set grepprg=rg\ --vimgrep\ --no-heading
@@ -242,11 +237,8 @@ if executable("rg")
 endif
 
 let g:rainbow_active = 1
-let g:incsearch#auto_nohlsearch = 1
-let g:asterisk#keeppos = 1
 let g:ag_working_path_mode="r"
 "Use unix clipboard
-set clipboard+=unnamedplus
 
 nnoremap <silent> <C-Del> :Sayonara<CR>
 
@@ -302,8 +294,6 @@ nnoremap <silent> <C-W>j    :TmuxNavigateDown<CR>
 nnoremap <silent> <C-W>h    :TmuxNavigateLeft<CR>
 nnoremap <silent> <C-W>l    :TmuxNavigateRight<CR>
 
-autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
-
 function! GutentagsFilter(path) abort
     if fnamemodify(a:path, ':e') == 'java'
       return 0
@@ -330,6 +320,7 @@ autocmd FileType css,scss,sass setlocal iskeyword+=-
 let g:jsx_ext_required = 0
 let g:mustache_abbreviations = 1
 let g:vim_json_syntax_conceal = 0
+autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 autocmd BufNewFile,BufRead .eslintrc set ft=json
 
 autocmd FileType javascript nnoremap <buffer> <F3> :TSImport<CR>
@@ -348,11 +339,6 @@ call jspretmpl#register_tag('gql', 'graphql')
 call jspretmpl#register_tag('/* GraphQL */ ', 'graphql')
 autocmd FileType javascript JsPreTmpl
 autocmd FileType javascript.jsx JsPreTmpl
-
-autocmd FileType kotlin setlocal shiftwidth=4
-autocmd FileType kotlin setlocal softtabstop=4
-autocmd FileType kotlin setlocal tabstop=4
-
 " Git Stuff
 
 " Automatically wrap at 72 characters and spell check git commit messages
@@ -360,7 +346,11 @@ autocmd FileType gitcommit setlocal textwidth=72
 autocmd FileType gitcommit setlocal spell
 let g:grammarous#languagetool_cmd = 'languagetool'
 
-"VIM Android/Java/Gradle stuff
+"VIM Android/Java/Kotlin/Gradle stuff
+autocmd FileType kotlin setlocal shiftwidth=4
+autocmd FileType kotlin setlocal softtabstop=4
+autocmd FileType kotlin setlocal tabstop=4
+
 let g:android_sdk_path = expand("$ANDROID_HOME")
 let g:gradle_daemon=1
 let g:gradle_show_signs=0

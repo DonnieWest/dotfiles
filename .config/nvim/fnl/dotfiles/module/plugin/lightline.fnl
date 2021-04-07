@@ -32,6 +32,7 @@
 (set nvim.g.lightline#bufferline#enable_devicons 1)
 (set nvim.g.lightline#bufferline#show_number 0)
 (set nvim.g.lightline#bufferline#shorten_path 1)
+(set nvim.g.lightline_buffer_enable_devicons 1)
 
 (set nvim.g.lightline
      {:colorscheme :gotham256

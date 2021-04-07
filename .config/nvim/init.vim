@@ -326,13 +326,10 @@ let g:gutentags_ctags_executable_php = 'ctags --langmap=php:.engine.inc.module.t
 autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css,scss,sass setlocal iskeyword+=-
 
-let g:vim_json_syntax_conceal = 0
-" Python Stuff
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-
 " Javascript Stuff
 let g:jsx_ext_required = 0
 let g:mustache_abbreviations = 1
+let g:vim_json_syntax_conceal = 0
 autocmd BufNewFile,BufRead .eslintrc set ft=json
 
 autocmd FileType javascript nnoremap <buffer> <F3> :TSImport<CR>
@@ -380,10 +377,3 @@ augroup GradleGroup
   autocmd!
   au BufWrite build.gradle call gradle#sync()
 augroup END
-
-"XML completion based on CTags
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-let java_highlight_functions = 'style'
-let java_highlight_all = 1
-let java_highlight_debug = 1

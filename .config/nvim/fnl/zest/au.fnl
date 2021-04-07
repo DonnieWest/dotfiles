@@ -25,3 +25,13 @@
 
     (set id (+ id 1))
     (z.run! z.exec [(.. "augroup " id) "autocmd!" body "augroup end"])))
+
+(defn set-au-file [files action]
+  (let [events (z.flatten files ",")
+        body (.. "au FileType " files " "
+                 (if (z.function? action)
+                   (.. ":call " (reg-fn action))
+                   action))]
+
+    (set id (+ id 1))
+    (z.run! z.exec [(.. "augroup " id) "autocmd!" body "augroup end"])))

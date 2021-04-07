@@ -39,25 +39,13 @@
            action]]
     `(au.set-au-user ,(unpack t))))
 
-; sl -- statusline
-(fn sl- [a b c]
-  "events options action"
-  (match (table.maxn [a b c])
-    1 (let [t [false false a]]
-        `(sl.add ,(unpack t)))
-    2 (if (= (type b) :string)
-        (let [t [false a b]]
-          `(sl.add ,(unpack t)))
-        (let [t [(if (= (type a) :table)
-                   (tab-tostring a)
-                   [(sym-tostring a)])
-                 false b]]
-          `(sl.add ,(unpack t))))
-    3 (let [t [(if (= (type a) :table)
-                 (tab-tostring a)
-                 [(sym-tostring a)])
-               b c]]
-        `(sl.add ,(unpack t)))))
+(fn au-file- [files action]
+  "autocmd input parser"
+  (let [t [(if (= (type files) :table)
+             (tab-tostring files)
+             [(sym-tostring files)])
+           action]]
+    `(au.set-au-file ,(unpack t))))
 
 ; se -- compiles down to nvim_set_option!
 (fn get-scope [option]
@@ -114,7 +102,7 @@
  : se-
  : au-
  : au-user-
- : sl-
+ : au-file-
  : keys-begin
  : reg-fn
  : def-cmd

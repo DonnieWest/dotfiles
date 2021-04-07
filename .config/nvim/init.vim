@@ -307,10 +307,6 @@ function! GutentagsFilter(path) abort
     endif
 endfunction
 
-" HTML/CSS/Markdown/Octopress Stuff
-autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css,scss,sass setlocal iskeyword+=-
-
 " Javascript Stuff
 let g:jsx_ext_required = 0
 let g:vim_json_syntax_conceal = 0

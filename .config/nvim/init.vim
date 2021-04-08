@@ -180,8 +180,6 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'Olical/conjure', {'tag': 'v4.17.0'}
 Plug 'dmac/vim-cljfmt'
 
-Plug 'tami5/compe-conjure'
-
 Plug 'clojure-vim/clojure.vim'
 Plug 'clojure-vim/vim-jack-in'
 Plug 'clojure-vim/async-clj-highlight'

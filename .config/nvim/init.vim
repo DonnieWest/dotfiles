@@ -239,9 +239,6 @@ let g:ag_working_path_mode="r"
 
 nnoremap <silent> <C-Del> :Sayonara<CR>
 
-let g:startify_custom_header = []
-let g:startify_change_to_vcs_root = 1
-
 let g:qf_auto_open_loclist = 0
 
 runtime plugin/grepper.vim
@@ -262,13 +259,7 @@ autocmd BufReadPost *
 
 tnoremap <Esc> <C-\><C-n>
 
-autocmd User Startified setlocal buftype=
-let g:startify_bookmarks = [
-            \ { 'c': '~/.config/nvim/init.vim' },
-            \ ]
-
 let g:tmux_navigator_no_mappings = 1
-
 
 tnoremap <silent> <M-Left> <C-\><C-n>:TmuxNavigateLeft<cr>
 tnoremap <silent> <M-Down> <C-\><C-n>:TmuxNavigateDown<cr>

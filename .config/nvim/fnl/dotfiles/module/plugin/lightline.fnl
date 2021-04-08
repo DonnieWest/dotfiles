@@ -68,7 +68,7 @@
                       [:gitbranch :readonly :filename :modified :method]]
                :right [[:lineinfo]
                        [:percent]
-                       [:gradle_project :gradle_running :linter_checking :linter_errors :linter_warnings :linter_ok:]
+                       [:linter_checking :linter_errors :linter_warnings :linter_ok:]
                        [ :lsp_status: ]
                        [ :fileformat :fileencoding :filetype: ]]}
       :inactive {:right [[:lineinfo] [:percent] [:lsp_status]]}})

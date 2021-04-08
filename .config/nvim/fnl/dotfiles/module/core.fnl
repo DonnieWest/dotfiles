@@ -46,3 +46,7 @@
 (nvim.ex.autocmd :VimResized ":windcmd =")
 (nvim.ex.autocmd :FocusGained :* ":checktime")
 (nvim.ex.autocmd :TextYankPost :* "lua vim.highlight.on_yank { higroup=\"IncSearch\", timeout=100}")
+
+(nvim.ex.autocmd :FileType :kotlin "setlocal shiftwidth=4")
+(nvim.ex.autocmd :FileType :kotlin "setlocal softtabstop=4")
+(nvim.ex.autocmd :FileType :kotlin "setlocal tabstop=4")

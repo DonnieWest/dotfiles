@@ -143,7 +143,6 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'reasonml-editor/vim-reason-plus'
 
 "Java/Android/Gradle plugins
-Plug 'hsanson/vim-android'
 Plug 'npacker/vim-java-syntax-after'
 Plug 'georgewfraser/java-language-server', { 'do': './scripts/link_mac.sh' }
 
@@ -309,25 +308,3 @@ autocmd FileType javascript.jsx JsPreTmpl
 autocmd FileType gitcommit setlocal textwidth=72
 autocmd FileType gitcommit setlocal spell
 let g:grammarous#languagetool_cmd = 'languagetool'
-
-"VIM Android/Java/Kotlin/Gradle stuff
-autocmd FileType kotlin setlocal shiftwidth=4
-autocmd FileType kotlin setlocal softtabstop=4
-autocmd FileType kotlin setlocal tabstop=4
-
-let g:android_sdk_path = expand("$ANDROID_HOME")
-let g:gradle_daemon=1
-let g:gradle_show_signs=0
-let g:gradle_loclist_show=0
-let g:gradle_sync_on_load=1
-
-let g:gradle_glyph_error=''
-let g:gradle_glyph_warning=''
-let g:gradle_glyph_gradle=''
-let g:gradle_glyph_android=''
-let g:gradle_glyph_building=''
-
-augroup GradleGroup
-  autocmd!
-  au BufWrite build.gradle call gradle#sync()
-augroup END

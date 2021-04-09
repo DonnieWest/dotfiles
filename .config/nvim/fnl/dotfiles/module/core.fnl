@@ -70,10 +70,17 @@
 (au- [BufReadPost] *
      #(nvim.fn.setpos "." (nvim.fn.getpos "'\"")))
 
-(nvim.ex.autocmd :FileType :kotlin "setlocal shiftwidth=4")
-(nvim.ex.autocmd :FileType :kotlin "setlocal softtabstop=4")
-(nvim.ex.autocmd :FileType :kotlin "setlocal tabstop=4")
-
 (when (nvim.fn.executable "rg")
   (set nvim.o.grepprg "rg --vimgrep --no-heading")
   (set nvim.o.grepformat "%f:%l:%c:%m,%f:%l:%m"))
+
+;; File specific settings, which I might pull out into their own module
+(nvim.ex.autocmd "BufNewFile,BufRead" "*.tsx" "set filetype=typescript.tsx")
+(nvim.ex.autocmd "BufNewFile,BufRead" ".eslintrc" "set filetype=json")
+
+(nvim.ex.autocmd :FileType :gitcommit "setlocal textwidth=72")
+(nvim.ex.autocmd :FileType :gitcommit "setlocal spell")
+
+(nvim.ex.autocmd :FileType :kotlin "setlocal shiftwidth=4")
+(nvim.ex.autocmd :FileType :kotlin "setlocal softtabstop=4")
+(nvim.ex.autocmd :FileType :kotlin "setlocal tabstop=4")

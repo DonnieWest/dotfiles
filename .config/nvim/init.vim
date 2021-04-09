@@ -55,7 +55,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'itchyny/lightline.vim'
 Plug 'mgee/lightline-bufferline'
 Plug 'maximbaz/lightline-ale'
-Plug 'luochen1990/rainbow'
 Plug 'justinmk/nvim-repl'
 Plug 'christoomey/vim-run-interactive'
 Plug 'axvr/photon.vim'
@@ -125,7 +124,6 @@ Plug 'AndrewRadev/tagalong.vim'
 "Javascript Plugins
 Plug 'pangloss/vim-javascript'
 Plug 'maxmellon/vim-jsx-pretty'
-Plug 'samuelsimoes/vim-jsx-utils'
 Plug 'alampros/vim-react-keywords'
 Plug 'jparise/vim-graphql'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
@@ -143,7 +141,6 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'reasonml-editor/vim-reason-plus'
 
 "Java/Android/Gradle plugins
-Plug 'npacker/vim-java-syntax-after'
 Plug 'georgewfraser/java-language-server', { 'do': './scripts/link_mac.sh' }
 
 " Kotlin
@@ -159,9 +156,6 @@ Plug 'rhysd/vim-grammarous'
 Plug 'junegunn/goyo.vim'
 Plug 'jxnblk/vim-mdx-js'
 Plug 'gabrielelana/vim-markdown'
-
-" C Based plugins
-Plug 'justinmk/vim-syntax-extra'
 
 " Go Plugins
 Plug 'fatih/vim-go'
@@ -193,47 +187,4 @@ Plug 'hylang/vim-hy'
 call plug#end()
 
 let g:aniseed#env = v:true
-augroup dirvish_config
-  autocmd!
-  autocmd FileType dirvish silent! unmap <buffer> <C-p>
-  autocmd FileType dirvish silent! unmap <buffer> <C-n>
-augroup END
 
-"Set IndentLines to disabled by default
-let g:indentLine_enabled = 0
-
-let g:rainbow_active = 1
-
-runtime plugin/grepper.vim
-let g:grepper.rg.grepprg .= ' -i'
-nnoremap \ :GrepperRg 
-
-let g:qf_auto_open_loclist = 0
-" Automatically resize quickfix window to contents
-au FileType qf call AdjustWindowHeight(3, 15)
-function! AdjustWindowHeight(minheight, maxheight)
-  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
-endfunction
-
-" Javascript Stuff
-let g:jsx_ext_required = 0
-autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
-autocmd BufNewFile,BufRead .eslintrc set ft=json
-
-autocmd FileType javascript nnoremap eir :call JSXEncloseReturn()<CR>
-autocmd FileType javascript nnoremap oat :call JSXEachAttributeInLine()<CR>
-autocmd FileType javascript nnoremap eat :call JSXExtractPartialPrompt()<CR>
-autocmd FileType javascript nnoremap cat :call JSXChangeTagPrompt()<CR>
-autocmd FileType javascript nnoremap vat :call JSXSelectTag()<CR>
-
-" Register tag name associated the filetype
-call jspretmpl#register_tag('gql', 'graphql')
-call jspretmpl#register_tag('/* GraphQL */ ', 'graphql')
-autocmd FileType javascript JsPreTmpl
-autocmd FileType javascript.jsx JsPreTmpl
-" Git Stuff
-
-" Automatically wrap at 72 characters and spell check git commit messages
-autocmd FileType gitcommit setlocal textwidth=72
-autocmd FileType gitcommit setlocal spell
-let g:grammarous#languagetool_cmd = 'languagetool'

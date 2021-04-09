@@ -1,4 +1,4 @@
-(module dotfiles.module.core
+(module dotfiles.module.core.lsp
         {require {nvim aniseed.nvim
                   mapping dotfiles.module.mapping
                   lsp lspconfig

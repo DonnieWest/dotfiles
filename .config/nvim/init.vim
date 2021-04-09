@@ -193,104 +193,33 @@ Plug 'hylang/vim-hy'
 call plug#end()
 
 let g:aniseed#env = v:true
-
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
-set whichwrap+=<,>,h,l,[,]
-set shortmess+=cI
-set diffopt+=vertical
-set tags=.tags,./tags,tags;
-set list listchars=tab:»·,trail:·,nbsp:·
-"Generic wildignores
-set wildignore+=*/log/*,*/.git/*,**/*.pyc
-set showtabline=2
-set clipboard+=unnamedplus
-
 augroup dirvish_config
   autocmd!
   autocmd FileType dirvish silent! unmap <buffer> <C-p>
   autocmd FileType dirvish silent! unmap <buffer> <C-n>
 augroup END
 
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
-
 "Set IndentLines to disabled by default
 let g:indentLine_enabled = 0
 
-let g:closetag_xhtml_filenames = '*.xhtml,*.js,*.tsx'
-
-" This will make the list of non closing tags case sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
-let g:closetag_emptyTags_caseSensitive = 1
-let g:closetag_shortcut = '>'
-
-" Use RipGrep instead of Grep
-if executable("rg")
-    set grepprg=rg\ --vimgrep\ --no-heading
-    set grepformat=%f:%l:%c:%m,%f:%l:%m
-endif
-
 let g:rainbow_active = 1
-let g:ag_working_path_mode="r"
-"Use unix clipboard
-
-nnoremap <silent> <C-Del> :Sayonara<CR>
-
-let g:qf_auto_open_loclist = 0
 
 runtime plugin/grepper.vim
 let g:grepper.rg.grepprg .= ' -i'
 nnoremap \ :GrepperRg 
 
+let g:qf_auto_open_loclist = 0
 " Automatically resize quickfix window to contents
 au FileType qf call AdjustWindowHeight(3, 15)
 function! AdjustWindowHeight(minheight, maxheight)
   exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
 
-"Automatically go back to where you were last editing this file
-autocmd BufReadPost *
-  \ if line("'\"") > 0 && line("'\"") <= line("$") |
-  \ exe "normal g`\"" |
-  \ endif
-
-tnoremap <Esc> <C-\><C-n>
-
-let g:tmux_navigator_no_mappings = 1
-
-tnoremap <silent> <M-Left> <C-\><C-n>:TmuxNavigateLeft<cr>
-tnoremap <silent> <M-Down> <C-\><C-n>:TmuxNavigateDown<cr>
-tnoremap <silent> <M-Up> <C-\><C-n>:TmuxNavigateUp<cr>
-tnoremap <silent> <M-Right> <C-\><C-n>:TmuxNavigateRight<cr>
-" These mappings are used when nvim IS inside tmux
-tnoremap <silent> <C-W>k    <C-\><C-n>:TmuxNavigateUp<CR>
-tnoremap <silent> <C-W>j    <C-\><C-n>:TmuxNavigateDown<CR>
-tnoremap <silent> <C-W>h    <C-\><C-n>:TmuxNavigateLeft<CR>
-tnoremap <silent> <C-W>l    <C-\><C-n>:TmuxNavigateRight<CR>
-
-nnoremap <silent> <M-Left> :TmuxNavigateLeft<cr>
-nnoremap <silent> <M-Down> :TmuxNavigateDown<cr>
-nnoremap <silent> <Alt-Down> :TmuxNavigateDown<cr>
-nnoremap <silent> <M-Up> :TmuxNavigateUp<cr>
-nnoremap <silent> <M-Right> :TmuxNavigateRight<cr>
-" These mappings are used when nvim IS inside tmux
-nnoremap <silent> <C-W>k    :TmuxNavigateUp<CR>
-nnoremap <silent> <C-W>j    :TmuxNavigateDown<CR>
-nnoremap <silent> <C-W>h    :TmuxNavigateLeft<CR>
-nnoremap <silent> <C-W>l    :TmuxNavigateRight<CR>
-
 " Javascript Stuff
 let g:jsx_ext_required = 0
-let g:vim_json_syntax_conceal = 0
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 autocmd BufNewFile,BufRead .eslintrc set ft=json
 
-autocmd FileType javascript nnoremap <buffer> <F3> :TSImport<CR>
-autocmd FileType javascript inoremap <buffer> <F3> :TSImport<CR>
-autocmd FileType json setlocal conceallevel=0
-
-" autocmd FileType javascript setlocal omnifunc=tsuquyomi#complete
 autocmd FileType javascript nnoremap eir :call JSXEncloseReturn()<CR>
 autocmd FileType javascript nnoremap oat :call JSXEachAttributeInLine()<CR>
 autocmd FileType javascript nnoremap eat :call JSXExtractPartialPrompt()<CR>

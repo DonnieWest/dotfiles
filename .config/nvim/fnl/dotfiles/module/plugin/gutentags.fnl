@@ -4,4 +4,4 @@
             nvim aniseed.nvim}})
 
 (set nvim.g.gutentags_ctags_tagfile ".tags")
-(set nvim.g.gutentags_exclude_filetypes ["java" "xml" "gradle" "kotlin"])
+(set nvim.g.gutentags_exclude_filetypes ["java" "xml" "gradle" "kotlin" "fennel" "clojure"])

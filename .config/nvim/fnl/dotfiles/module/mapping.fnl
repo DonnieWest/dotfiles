@@ -12,6 +12,8 @@
 (nvim.set_keymap :n :<space> :<nop> {:noremap true})
 (set nvim.g.mapleader ",")
 
+(noremap :t :<Esc> :<C-\><C-n>)
+
 (noremap :n "!" ":!")
 (noremap :n ";" ":")
 (noremap :n :U ":redo<CR>")

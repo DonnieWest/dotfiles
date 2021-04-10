@@ -18,6 +18,7 @@
 
 ;; Plugins to be managed by packer.
 (use
+  :wbthomason/packer.nvim {}
   ;; Generic Plugins
   :tpope/vim-repeat {}
   :tpope/vim-surround {}

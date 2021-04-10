@@ -3,7 +3,7 @@
             lspkind lspkind}})
 
 (lspkind.init
-  {:with_text true
+  {:with_text false
    :symbol_map {:Text ""
                 :Method ""
                 :Function ""

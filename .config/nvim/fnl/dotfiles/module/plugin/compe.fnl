@@ -32,8 +32,6 @@
            :treesitter false
            :vim_dadbod_completion true}}))
 
-
 (nvim.ex.set "completeopt=menuone,noselect")
-(nvim.set_keymap :i :<C-x><C-o> "compe#complete()" {:expr true :silent true :noremap true})
-(nvim.set_keymap :i :<CR> "compe#confirm('<CR>')" {:expr true :silent true})
-(nvim.set_keymap :i :<C-e> "compe#close('<C-e>')" {:expr true :silent true})
+(nvim.set_keymap :i :<C-x><C-o> "compe#complete()" {:expr true :silent true })
+(nvim.set_keymap :i :<C-e> "compe#close('<C-e>')" {:expr true :silent true })

@@ -79,7 +79,6 @@
   :justinmk/vim-dirvish {}
 
   :hrsh7th/nvim-compe {}
-  ;; :puremourning/vimspector {}
   :mfussenegger/nvim-dap {}
 
   :kassio/neoterm {}

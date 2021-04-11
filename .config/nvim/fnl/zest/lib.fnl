@@ -144,21 +144,3 @@
         (fn [self index]
           (tset self index (fn [...] (callback index ...)))
           (rawget self index))}))
-
-; think I should go the function! route, cause it would make passed functions
-; accessible through :func-name
-; maybe depending on whether or not the name is passed?
-; bind anon funcs with v:lua, bind funcs with name through function! win-win
-; wish i could extract the name from (fn name [] (body)
-; like a viml-defn? ooooh but i'd rather have that as a macro that
-
-;(defn bridge [f name]
-;  (when (nil? _G._ZEST)
-;    (tset _G :_ZEST {}))
-;  (when (nil? _G._ZEST.maps)
-;    (tset _G :_ZEST :maps {}))
-;
-;  (let [name (or name "map")
-;        id (.. name "-" (count _G._ZEST.maps))]
-;    (tset _G :_ZEST :maps id f)
-;    (.. "v:lua._ZEST.maps." id "()")))

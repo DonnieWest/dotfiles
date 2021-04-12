@@ -1,0 +1,51 @@
+set hls
+set ignorecase smartcase
+set incsearch
+set showmode
+" minimum nr. of lines above and below cursor
+set so=5
+
+set whichwrap+=<,>,h,l,[,]
+
+" enable vim-surround plugin
+set surround
+
+set clipboard+=unnamedplus
+
+nnoremap ! :!
+nnoremap ; :
+
+"Make visual selection more sane
+nnoremap    v   <C-V>
+nnoremap <C-V>     v
+
+vnoremap    v   <C-V>
+vnoremap <C-V>     v
+
+"Better indent
+vnoremap < <gv
+vnoremap > >gv
+
+nnoremap U :redo<cr>
+nnoremap ,/ :action CommentByLineComment<CR>
+vnoremap ,/ :action CommentByBlockComment<CR>
+
+nnoremap ,fr :%s/
+xnoremap ,fr :s/
+nnoremap ,fm :action ReformatCode<CR>
+
+nnoremap <C-Right> :action NextTab<CR>
+nnoremap <C-Left> :action PreviousTab<CR>
+nnoremap <C-p> :action SearchEverywhere<CR>
+nnoremap <C-Delete> :action CloseEditor<CR>
+
+nnoremap ,v :action SplitVertically<CR>
+nnoremap ,h :action SplitHorizontally<CR>
+nnoremap <A-Right> :action NextSplitter<CR>
+nnoremap <A-Left> :action PrevSplitter<CR>
+
+nnoremap <silent> gd    :action GotoDeclaration<CR>
+nnoremap <silent> gD    :action GotoImplementation<CR>
+nnoremap <silent> <c-k> :action ParameterInfo<CR>
+inoremap <silent> <c-k> <c-o>:action ParameterInfo<CR>
+nnoremap <silent> 1gD   :action GotoTypeDeclaration<CR>

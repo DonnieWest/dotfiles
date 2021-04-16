@@ -12,6 +12,7 @@
                              :enable true}
               :highlight_definitions {:enable true}}
    :rainbow {:enable true}
+   :autotag {:enable true}
    :highlight {:enable true
                :disable ["java"]}
    :indent {:enable true}})

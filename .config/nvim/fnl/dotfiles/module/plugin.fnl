@@ -31,6 +31,7 @@
   :tpope/vim-abolish {}
   :tpope/vim-projectionist {}
   :jiangmiao/auto-pairs {}
+  :windwp/nvim-ts-autotag {}
   :junegunn/vim-easy-align {}
   :phaazon/hop.nvim {} ;; Easymotion / sneak alternative?
 
@@ -124,9 +125,7 @@
   ;; HTML and CSS Plugins
   :hail2u/vim-css3-syntax {}
   :othree/html5.vim {}
-  :alvan/vim-closetag {}
   :mattn/emmet-vim {}
-  :AndrewRadev/tagalong.vim {}
 
   ;; Javascript Plugins
   :pangloss/vim-javascript {}

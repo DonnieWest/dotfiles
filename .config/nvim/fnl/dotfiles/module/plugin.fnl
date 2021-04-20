@@ -132,6 +132,7 @@
   :maxmellon/vim-jsx-pretty {}
   :alampros/vim-react-keywords {}
   :jparise/vim-graphql {}
+  :jose-elias-alvarez/nvim-lsp-ts-utils {}
   :styled-components/vim-styled-components {:branch "main"}
   :mvolkmann/vim-react {}
   :mvolkmann/vim-js-arrow-function {}

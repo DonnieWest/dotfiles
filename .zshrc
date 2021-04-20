@@ -314,7 +314,7 @@ command_not_found_handler() {
   return $?
 }
 
-alias ls='exa'
+alias ls='exa --git'
 alias filpidcat='pidcat -i EGL_emulation -i HostConnection -i GnssHAL_GnssInterface -i android.os.Debug -i netmgr -i Phenix -i chatty -i WorkerManager -i ResolverController -i AppOps -i wifi_forwarder -i KeyguardClockSwitch -i memtrack -i GCoreFlp -i audio_hw_generic -i BeaconBle -i InputReader -i gralloc_ranchu'
 
 findAlias() {

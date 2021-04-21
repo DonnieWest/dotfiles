@@ -45,6 +45,7 @@
                            :lsp_status :LspStatus
                            :readonly :LightlineReadonly}
       :component_expand {:buffers "lightline#bufferline#buffers"
+                         :file_type_symbol "WebDevIconsGetFileTypeSymbol"
                          :linter_checking "lightline#ale#checking"
                          :linter_warnings "lightline#ale#warnings"
                          :linter_errors "lightline#ale#errors"
@@ -70,5 +71,5 @@
                        [:percent]
                        [:linter_checking :linter_errors :linter_warnings :linter_ok:]
                        [ :lsp_status: ]
-                       [ :fileformat :fileencoding :filetype: ]]}
+                       [ :fileformat :fileencoding :filetype :file_type_symbol ]]}
       :inactive {:right [[:lineinfo] [:percent] [:lsp_status]]}})

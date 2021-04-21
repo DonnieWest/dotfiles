@@ -60,20 +60,20 @@
   :p00f/nvim-ts-rainbow {}
   :nvim-treesitter/nvim-treesitter-refactor {}
   :mhinz/vim-startify {}
-  :ryanoasis/vim-devicons {}
   :itchyny/lightline.vim {}
   :mgee/lightline-bufferline {}
   :maximbaz/lightline-ale {}
   :justinmk/nvim-repl {}
   :christoomey/vim-run-interactive {}
-  :axvr/photon.vim {}
+  :ryanoasis/vim-devicons {}
+  :yamatsum/nvim-web-nonicons {}
+  :kyazdani42/nvim-web-devicons {}
 
   :norcalli/nvim.lua {}
   :norcalli/nvim-base16.lua {}
 
   ;; Generic IDE features
 
-  :simnalamburt/vim-mundo {}
   :rhysd/clever-f.vim {}
   :tomtom/tcomment_vim {}
   :mbbill/undotree {}
@@ -87,7 +87,8 @@
 
   :nvim-lua/popup.nvim {}
   :nvim-lua/plenary.nvim {}
-  :nvim-lua/telescope.nvim {}
+  :junegunn/fzf.vim {}
+  :junegunn/fzf {}
 
   :mhinz/vim-grepper {}
   :dense-analysis/ale {}
@@ -118,8 +119,6 @@
   :airblade/vim-gitgutter {}
   :tpope/vim-fugitive {}
   :christoomey/vim-conflicted {}
-  :junegunn/gv.vim {}
-  :tpope/vim-rhubarb {}
   ;; vim-rhubarb variables set in ~/.rhubarb_credentials
 
   ;; HTML and CSS Plugins
@@ -130,13 +129,10 @@
   ;; Javascript Plugins
   :pangloss/vim-javascript {}
   :maxmellon/vim-jsx-pretty {}
-  :alampros/vim-react-keywords {}
   :jparise/vim-graphql {}
   :jose-elias-alvarez/nvim-lsp-ts-utils {}
   :styled-components/vim-styled-components {:branch "main"}
   :mvolkmann/vim-react {}
-  :mvolkmann/vim-js-arrow-function {}
-  :PsychoLlama/further.vim {}
   :benjie/local-npm-bin.vim {}
   :Quramy/vim-js-pretty-template {}
 
@@ -144,18 +140,12 @@
   :leafgarland/typescript-vim {}
   :peitalin/vim-jsx-typescript {}
 
-  ;; Reason
-  :reasonml-editor/vim-reason-plus {}
-
   ;; Java/Android/Gradle plugins
   :georgewfraser/java-language-server {:run "./scripts/link_mac.sh"}
 
   ;; Kotlin
   :donniewest/kotlin-vim {}
   :fwcd/kotlin-language-server {:run "./gradlew :server:installDist"}
-
-  ;; VIMScript Plugins
-  :machakann/vim-Verdin {}
 
   ;; Markdown/Octopress Plugins
 
@@ -195,6 +185,7 @@
 ;; exist or it isn't installed according to packer.
 (def- always-load
   {:aniseed true
+   :fzf true
    :conjure true})
 
 (def- data-dir (.. (nvim.fn.stdpath :data) "/site/pack/packer/start"))

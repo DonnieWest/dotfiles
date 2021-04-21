@@ -188,20 +188,22 @@
    :fzf true
    :conjure true})
 
-(def- data-dir (.. (nvim.fn.stdpath :data) "/site/pack/packer/start"))
+(def- packer-dir (.. (nvim.fn.stdpath :data) "/site/pack/packer"))
 
 (defn- plugin-installed? [name]
   "Checks if the plugin directory can be found in the data directory."
-  (= 1 (nvim.fn.isdirectory (.. data-dir "/" name))))
+  (or (= 1 (nvim.fn.isdirectory (.. packer-dir "/start/" name)))
+      (= 1 (nvim.fn.isdirectory (.. packer-dir "/opt/" name)))))
 
 (defn- find-plugin [candidate]
   "Returns the matching plugin name if the given plugin can be found within any
   of the required plugins So `deoplete` would match `deoplete.nvim`."
-  (or (and (. packer_plugins candidate) candidate)
-      (->> (a.keys packer_plugins)
-           (a.some
-             (fn [plug-name]
-               (and (plug-name:find candidate 1 true) plug-name))))))
+  (let [plugins (a.get _G :packer_plugins)]
+    (or (and (a.get plugins candidate) candidate)
+        (->> (a.keys plugins)
+             (a.some
+               (fn [plug-name]
+                 (and (plug-name:find candidate 1 true) plug-name)))))))
 
 ;; Load plugin configuration modules.
 (a.run!

@@ -109,6 +109,8 @@ def pass_(domain, encoding, auto_lock):
     if err:
         msg = 'Bitwarden CLI returned for {:s} - {:s}'.format(domain, err)
         stderr(msg)
+
+    if process.returncode:
         return '[]'
 
     out = process.stdout.decode(encoding).strip()
@@ -128,6 +130,8 @@ def get_totp_code(selection_id, domain_name, encoding, auto_lock):
         # domain_name instead of selection_id to make it more user-friendly
         msg = 'Bitwarden CLI returned for {:s} - {:s}'.format(domain_name, err)
         stderr(msg)
+
+    if process.returncode:
         return '[]'
 
     out = process.stdout.decode(encoding).strip()
@@ -229,7 +233,7 @@ def main(arguments):
         fake_key_raw(password)
 
     if arguments.insert_mode:
-        qute_command('enter-mode insert')
+        qute_command('mode-enter insert')
 
     # If it finds a TOTP code, it copies it to the clipboard,
     # which is the same behavior as the Firefox add-on.

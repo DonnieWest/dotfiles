@@ -204,8 +204,11 @@ export GRADLE_HOME="$HOME/.gradle"
 export ANDROID_HOME="$HOME/.android-sdk-linux"
 export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export STEAM_RUNTIME=0
+
+INITIAL_QUERY=""
+RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
+FZF_DEFAULT_COMMAND="$RG_PREFIX '$INITIAL_QUERY'"
 
 export EDITOR="nvim"
 

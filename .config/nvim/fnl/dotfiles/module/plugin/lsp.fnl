@@ -27,6 +27,9 @@
 
 (lsp-status.register_progress)
 
+(lsp_status.config
+  {:current_function false})
+
 (tset vim.lsp.handlers :textDocument/codeAction
       lsp-code-action.code_action_handler)
 (tset vim.lsp.handlers :textDocument/references

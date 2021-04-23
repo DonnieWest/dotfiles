@@ -64,12 +64,11 @@
                        :linter_errors :error
                        :linter_ok :left}
       :tabline {:left [[:buffers]]
-                :right [[:exit]]}
+                :right [[]]}
       :active {:left [[:mode :paste]
                       [:gitbranch :readonly :filename :modified :method]]
                :right [[:lineinfo]
                        [:percent]
-                       [:linter_checking :linter_errors :linter_warnings :linter_ok:]
-                       [ :lsp_status: ]
-                       [ :fileformat :fileencoding :filetype :file_type_symbol ]]}
+                       [:linter_checking :linter_errors :linter_warnings :linter_ok :lsp_status]
+                       [:fileformat :fileencoding :filetype :file_type_symbol]]}
       :inactive {:right [[:lineinfo] [:percent] [:lsp_status]]}})

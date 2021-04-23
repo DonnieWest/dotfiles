@@ -18,7 +18,9 @@
 
 ;; Plugins to be managed by packer.
 (use
+  ;; Manage Packer w/ Packer
   :wbthomason/packer.nvim {}
+
   ;; Generic Plugins
   :tpope/vim-repeat {}
   :tpope/vim-surround {}
@@ -119,7 +121,6 @@
   :airblade/vim-gitgutter {}
   :tpope/vim-fugitive {}
   :christoomey/vim-conflicted {}
-  ;; vim-rhubarb variables set in ~/.rhubarb_credentials
 
   ;; HTML and CSS Plugins
   :hail2u/vim-css3-syntax {}

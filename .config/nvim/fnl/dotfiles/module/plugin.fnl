@@ -72,7 +72,9 @@
   :kyazdani42/nvim-web-devicons {}
 
   :norcalli/nvim.lua {}
-  :norcalli/nvim-base16.lua {}
+  :DonnieWest/nvim-base16.lua {}
+
+  :folke/lsp-colors.nvim {}
 
   ;; Generic IDE features
 

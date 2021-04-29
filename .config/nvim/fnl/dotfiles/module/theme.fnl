@@ -1,5 +1,6 @@
 (module dotfiles.module.theme
   {require {treesitter nvim-treesitter.configs
+            base16 base16
             nvim aniseed.nvim}
    require-macros [dotfiles.macros]})
 
@@ -40,8 +41,51 @@
   (nvim.ex.highlight :link :NeogitHunkHeader :TabLine)
   (nvim.ex.highlight :link :NeogitHunkHeaderHighlight :DiffText))
 
-(augroup gotham_colorscheme_fixes
-  (autocmd :ColorScheme :gotham (viml->fn colorscheme-fixes)))
+(tset base16.themes :gotham
+  (base16.theme_from_array
+    [:0c1014 ; Background
+     :11151c ; Lighter Background
+     :091f2e ; Selection
+     :0a3749 ; Comment
+     :245361 ; Dark Foreground
+     :d3ebe9 ; Foreground
+     :599cab ; Light Foreground
+     :98d1ce ; Light Background
+     :4e5166 ; Variables
+     :2aa889 ; Integers
+     :33859E ; Classes
+     :edb443 ; Strings
+     :195466 ; Support / Regex
+     :888ca6 ; Functions
+     :d26937 ; Tags/Keywords
+     :c23127 ; Deprecated, open/closing tags
+    ]))
 
-(_: colorscheme :gotham)
+(tset base16.themes :nightowl
+  (base16.theme_from_array
+    [:011627 ; Background
+     :01111d ; Lighter Background
+     :1d3b53 ; Selection
+     :637777 ; Comment
+     :ffffff ; Dark foreground
+     :d6deeb ; Foreground
+     :80a4c2 ; Light Foreground
+     :575656 ; Light Background
+     :4b6479 ; Variables
+     :c5e4fd ; Integers
+     :c792ea ; Classes
+     :22da6e ; Strings
+     :82aaff ; Support / Regex
+     :21c7a8 ; Functions
+     :7fdbca ; Tags/Keywords
+     :addb67 ; Deprecated, open/closing tags
+     ]))
+
+(base16 base16.themes.gotham true {:lightline true})
+
+(augroup colorscheme_fixes
+  (autocmd :ColorScheme :* (viml->fn colorscheme-fixes)))
+
+(colorscheme-fixes)
+
 (nvim.fn.matchadd "ColorColumn" "\\%81v" 100)

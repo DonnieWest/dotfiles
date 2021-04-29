@@ -35,7 +35,7 @@
 (set nvim.g.lightline_buffer_enable_devicons 1)
 
 (set nvim.g.lightline
-     {:colorscheme :gotham256
+     {:colorscheme :base16_nvim
       :separator {:left ""
                   :right "" }
       :subseparator {:left ""

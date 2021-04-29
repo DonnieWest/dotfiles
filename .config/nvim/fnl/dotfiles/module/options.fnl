@@ -5,6 +5,9 @@
 (set nvim.g.python3_host_prog "/usr/bin/python3")
 (set nvim.g.node_host_prog "/home/igneo676/.config/npm/bin/neovim-node-host")
 
+; Speedup vim startup by disabling python2
+(set nvim.g.loaded_python_provider 0)
+
 ;; Generic Neovim configuration.
 (set nvim.o.termguicolors true)
 (set nvim.o.mouse "a")

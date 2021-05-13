@@ -15,19 +15,19 @@ critical_bg = "#dc322f"
 critical_fg = "#d3ebe9"
 
 [[block]]
+block = "music"
+buttons = []
+
+[[block]]
 block = "net"
 device = "wlan0"
-# format = "{ssid} {signal_strength} {ip}"
-ip = true
-speed_down = false
-speed_up = false
-ssid = true
-signal_strength = true
+format = "{ssid} {ip}"
 
 [[block]]
 block = "memory"
 display_type = "memory"
-format_mem = "{Mug}G / {MTg}G"
+format_mem = "{mem_used} /{mem_total}"
+format_swap = "{swap_used} /{swap_total}"
 
 [[block]]
 block = "sound"

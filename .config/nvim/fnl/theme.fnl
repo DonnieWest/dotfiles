@@ -63,6 +63,69 @@
      :c23127 ; Deprecated, open/closing tags
     ]))
 
+; (defn- strip-hex-symbol [hex]
+;   (.gsub hex "#" ""))
+;
+; (defn- get-color [theme color]
+;   (strip-hex-symbol (tget theme color)))
+;
+; (defn- convert-theme-to-base16 [theme]
+;   {:base00 (get-color theme :background)
+;    :base01 (get-color theme :lighter-background)
+;    :base02 (get-color theme :selection)
+;    :base03 (get-color theme :comment)
+;    :base04 (get-color theme :dark-foreground)
+;    :base05 (get-color theme :foreground)
+;    :base06 (get-color theme :light-foreground)
+;    :base07 (get-color theme :light-background)
+;    :base08 (get-color theme :variables)
+;    :base09 (get-color theme :numbers)
+;    :base0A (get-color theme :classes)
+;    :base0B (get-color theme :strings)
+;    :base0C (get-color theme :regex)
+;    :base0D (get-color theme :functions)
+;    :base0E (get-color theme :keywords)
+;    :base0F (get-color theme :tags)})
+;
+; (tset base16.themes :gothamated
+;   (convert-theme-to-base16
+;     {:background :#03090e
+;      :lighter-background :#061620
+;      :selection :#091f2e
+;      :comment :#223543
+;      :dark-foreground :#9da5ab
+;      :foreground :#ffffff
+;      :light-foreground :#e6e9ea
+;      :light-background :#53626d
+;      :variables :#4e5166
+;      :numbers :#88A82A
+;      :classes :#33859E
+;      :strings :#6AC227
+;      :regex :#195466
+;      :functions :#27B8C2
+;      :keywords :#A82A49
+;      :tags :#c23127}))
+
+(tset base16.themes :gothamated
+  (base16.theme_from_array
+    [:03090e ; Background
+     :061620 ; Lighter Background
+     :091f2e ; Selection
+     :223543 ; Comment
+     :9da5ab ; Dark Foreground
+     :e6e9ea ; Foreground
+     :ffffff ; Light Foreground
+     :53626d ; Light Background
+     :4e5166 ; Variables
+     :DDECB2 ; Integers
+     :33859E ; Classes
+     :6AC227 ; Strings
+     :195466 ; Support / Regex
+     :27B8C2 ; Functions
+     :ecb2c0 ; Tags/Keywords
+     :c23127 ; Deprecated, open/closing tags
+    ]))
+
 (tset base16.themes :nightowl
   (base16.theme_from_array
     [:011627 ; Background
@@ -83,7 +146,7 @@
      :addb67 ; Deprecated, open/closing tags
      ]))
 
-(base16 base16.themes.gotham true {:lightline true})
+(base16 base16.themes.gothamated true {:lightline true})
 
 (au- [ColorScheme] *
      #(colorscheme-fixes))

@@ -8,7 +8,7 @@
 
 (treesitter.setup
   {:ensure_installed "all"
-   :refactor {:smart_rename {:keymaps {:goto_definition "<c-]>"
+   :refactor {:smart_rename {:keymaps {:goto_definition_lsp_fallback "<c-]>"
                                        :list_definitions "gD"
                                        :goto_next_usage "<Leader>n"
                                        :goto_previous_usage "<Leader>N"}

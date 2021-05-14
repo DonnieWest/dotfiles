@@ -205,6 +205,8 @@ export ANDROID_HOME="$HOME/.android-sdk-linux"
 export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
 export STEAM_RUNTIME=0
+export GRAALVM_HOME="$HOME/.config/graalvm"
+
 
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
@@ -224,7 +226,7 @@ export PATH="$ANDROID_HOME/emulator:$PATH"
 export PATH="$ANDROID_HOME/platform-tools:$PATH"
 export PATH="$ANDROID_HOME/tools/bin:$PATH"
 
-export PATH="$PATH:$HOME/.config/graalvm/bin"
+export PATH="$PATH:$GRAALVM_HOME/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$HOME/.config/n/bin:$PATH"
 export PATH="$HOME/.config/npm/bin:$PATH"

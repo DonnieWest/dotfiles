@@ -95,16 +95,16 @@
      :comment :#223543
      :dark-foreground :#9da5ab
      :foreground :#e6e9ea
-     :light-foreground :#ffffff
+     :light-foreground :#f5fafd
      :light-background :#53626d
      :variables :#4e5166
      :numbers :#DDECB2
      :classes :#33859E
-     :strings :#6AC227
+     :strings :#FFB610
      :regex :#195466
      :functions :#27B8C2
      :keywords :#ecb2c0
-     :tags :#c23127}))
+     :tags :#D12820 }))
 
 (base16 base16.themes.tweaked true {:lightline true})
 

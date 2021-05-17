@@ -179,7 +179,7 @@
 
 
   ;; Fennel
-  :Olical/aniseed {:tag "v3.16.0"}
+  :Olical/aniseed {:tag "v3.18.0"}
   :Olical/fennel.vim {}
 
   ;; Hy

@@ -121,6 +121,7 @@
 
   ;; Git plugins
   :TimUntersberger/neogit {}
+  :sindrets/diffview.nvim {}
   :airblade/vim-gitgutter {}
   :tpope/vim-fugitive {}
   :christoomey/vim-conflicted {}
@@ -170,7 +171,7 @@
   :guns/vim-sexp {}
   :tpope/vim-sexp-mappings-for-regular-people {}
 
-  :Olical/conjure {:tag "v4.18.0"}
+  :Olical/conjure {:tag "v4.20.0"}
   :dmac/vim-cljfmt {}
 
   :clojure-vim/clojure.vim {}
@@ -179,8 +180,9 @@
 
 
   ;; Fennel
-  :Olical/aniseed {:tag "v3.18.0"}
+  :Olical/aniseed {:tag "v3.19.0"}
   :Olical/fennel.vim {}
+  :elkowar/nvim-gehzu {}
 
   ;; Hy
   :hylang/vim-hy {})
@@ -189,6 +191,7 @@
 ;; exist or it isn't installed according to packer.
 (def- always-load
   {:aniseed true
+   :gehzu true
    :fzf true
    :conjure true})
 

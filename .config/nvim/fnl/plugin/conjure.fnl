@@ -13,7 +13,7 @@
 (nvim.ex.autocmd :FileType "clojure,fennel,scheme"
                  "nnoremap <silent> gd    <cmd>:ConjureDefWord<CR>")
 
-(nvim.ex.autocmd :FileType "clojure,fennel,scheme"
+(nvim.ex.autocmd :FileType "clojure,scheme"
                  "nnoremap <silent> <c-]> <cmd>:ConjureDefWord<CR>")
 
 (nvim.ex.autocmd :FileType "clojure,fennel,scheme"

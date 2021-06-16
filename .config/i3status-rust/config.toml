@@ -16,6 +16,9 @@ critical_fg = "#e6e9ea"
 
 [[block]]
 block = "music"
+max_width = 50
+dynamic_width = true
+smart_trim = true
 buttons = []
 
 [[block]]

@@ -120,8 +120,8 @@
   :sbdchd/neoformat {}
 
   ;; Git plugins
-  :TimUntersberger/neogit {}
   :sindrets/diffview.nvim {}
+  :TimUntersberger/neogit {:requires :nvim-lua/plenary.nvim}
   :airblade/vim-gitgutter {}
   :tpope/vim-fugitive {}
   :christoomey/vim-conflicted {}

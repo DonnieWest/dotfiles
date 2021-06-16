@@ -177,6 +177,7 @@
   :clojure-vim/clojure.vim {}
   :clojure-vim/vim-jack-in {}
   :clojure-vim/async-clj-highlight {}
+  :eraserhd/parinfer-rust {:run "cargo build --release"}
 
 
   ;; Fennel

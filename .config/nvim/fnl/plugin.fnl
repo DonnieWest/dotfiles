@@ -71,6 +71,7 @@
   :ryanoasis/vim-devicons {}
   :yamatsum/nvim-web-nonicons {}
   :kyazdani42/nvim-web-devicons {}
+  :folke/todo-comments.nvim {}
 
   :norcalli/nvim.lua {}
   :DonnieWest/nvim-base16.lua {}
@@ -194,6 +195,7 @@
   {:aniseed true
    :gehzu true
    :fzf true
+   :todo-comments true
    :conjure true})
 
 (def- packer-dir (.. (nvim.fn.stdpath :data) "/site/pack/packer"))

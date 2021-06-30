@@ -126,6 +126,7 @@
   :airblade/vim-gitgutter {}
   :tpope/vim-fugitive {}
   :christoomey/vim-conflicted {}
+  :ruifm/gitlinker.nvim {:requires :nvim-lua/plenary.nvim}
 
   ;; HTML and CSS Plugins
   :hail2u/vim-css3-syntax {}
@@ -196,6 +197,7 @@
    :gehzu true
    :fzf true
    :todo-comments true
+   :gitlinker true
    :conjure true})
 
 (def- packer-dir (.. (nvim.fn.stdpath :data) "/site/pack/packer"))

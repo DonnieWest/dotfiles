@@ -173,7 +173,7 @@
   :guns/vim-sexp {}
   :tpope/vim-sexp-mappings-for-regular-people {}
 
-  :Olical/conjure {:tag "v4.20.0"}
+  :Olical/conjure {:tag "v4.21.0"}
   :dmac/vim-cljfmt {}
 
   :clojure-vim/clojure.vim {}

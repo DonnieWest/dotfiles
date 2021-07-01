@@ -131,7 +131,6 @@
   ;; HTML and CSS Plugins
   :hail2u/vim-css3-syntax {}
   :othree/html5.vim {}
-  :mattn/emmet-vim {}
 
   ;; Javascript Plugins
   :pangloss/vim-javascript {}
@@ -157,7 +156,6 @@
   ;; Markdown/Octopress Plugins
 
   :rhysd/vim-grammarous {}
-  :junegunn/goyo.vim {}
   :jxnblk/vim-mdx-js {}
   :gabrielelana/vim-markdown {}
 

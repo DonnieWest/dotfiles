@@ -35,7 +35,7 @@
   :jiangmiao/auto-pairs {}
   :windwp/nvim-ts-autotag {}
   :junegunn/vim-easy-align {}
-  :phaazon/hop.nvim {} ;; Easymotion / sneak alternative?
+  :ggandor/lightspeed.nvim {}
 
   ;; VIM Quirks fixes
   :lervag/file-line {}

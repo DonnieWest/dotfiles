@@ -52,11 +52,9 @@
   :pgdouyon/vim-evanesco {}
   :kana/vim-operator-user {}
   :kshenoy/vim-signature {}
-  :Firef0x/PKGBUILD.vim {}
-  :ekalinin/Dockerfile.vim {}
-  :blueyed/vim-diminactive {}
 
   ;; UI
+  :blueyed/vim-diminactive {}
   :whatyouhide/vim-gotham {}
   :nvim-treesitter/nvim-treesitter {:run ":TSUpdate"}
   :nvim-treesitter/nvim-treesitter-textobjects {}
@@ -116,6 +114,8 @@
   ;; Appearance
 
   :norcalli/nvim-colorizer.lua {}
+  :Firef0x/PKGBUILD.vim {}
+  :ekalinin/Dockerfile.vim {}
 
   ;; Formatters
   :sbdchd/neoformat {}

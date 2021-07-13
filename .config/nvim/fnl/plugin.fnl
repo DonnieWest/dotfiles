@@ -123,7 +123,7 @@
   ;; Git plugins
   :sindrets/diffview.nvim {}
   :TimUntersberger/neogit {:requires :nvim-lua/plenary.nvim}
-  :airblade/vim-gitgutter {}
+  :lewis6991/gitsigns.nvim {:requires :nvim-lua/plenary.nvim}
   :tpope/vim-fugitive {}
   :christoomey/vim-conflicted {}
   :ruifm/gitlinker.nvim {:requires :nvim-lua/plenary.nvim}
@@ -196,6 +196,7 @@
    :fzf true
    :todo-comments true
    :gitlinker true
+   :gitsigns true
    :conjure true})
 
 (def- packer-dir (.. (nvim.fn.stdpath :data) "/site/pack/packer"))

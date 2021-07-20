@@ -130,23 +130,19 @@ superimpose_padlock() {
     scale=.8
     lockimage=$(mktemp --tmpdir swaylock-logo-XXXXXXXXXX)
     img_pdf_gz | base64 -d | gunzip > "${lockimage}.pdf"
-    height=$(identify -format "($scale * %H + .5)/1\n" "$file2" | bc)
+    height=$(identify -format "($scale * %H + .5)/1\n" "$file" | bc)
     width=$(identify -format "scale=4; t=%W/%H; scale=0; (t * $height + .5)/1\n" "${lockimage}.pdf" | bc)
     convert -density 600 -background none -resize ${height}x${width} "${lockimage}.pdf" "${lockimage}.png"
-    convert -compose Exclusion -composite -gravity center "$file2" "${lockimage}.png" "$file2"
+    convert -compose Exclusion -composite -gravity center "$file" "${lockimage}.png" "$file"
     rm "${lockimage}" "${lockimage}.png" "${lockimage}.pdf"
 }
 
 use_logo=0
 arg_test $@
 
-file1=$(mktemp --tmpdir swaylock-wrapper-XXXXXXXXXX.png)
-file2=$(mktemp --tmpdir swaylock-wrapper-XXXXXXXXXX.png)
+file=$(mktemp --tmpdir swaylock-wrapper-XXXXXXXXXX.png)
 
-grim -o eDP-1 "$file1"
-convert "$file1" -blur 0x3 "$file2"
-rm "$file1" # Remove for security
-
+grimshot save screen - | corrupter - > "$file"
 if [ $use_logo -eq 1 ]; then
     superimpose_padlock
 fi
@@ -159,6 +155,6 @@ for i in $@; do
 done
 
 # drop the last "--" introduced by getopt
-swaylock -i "$file2" --indicator-radius 200 --indicator-thickness 20 ${cmd}
+swaylock -i "$file" --indicator-radius 200 --indicator-thickness 20 ${cmd}
 
-trap "rm '$file2'" EXIT
+trap "rm '$file'" EXIT

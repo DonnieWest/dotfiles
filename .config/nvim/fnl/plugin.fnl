@@ -171,7 +171,7 @@
   :guns/vim-sexp {}
   :tpope/vim-sexp-mappings-for-regular-people {}
 
-  :Olical/conjure {:tag "v4.21.0"}
+  :Olical/conjure {:tag "v4.22.1"}
   :dmac/vim-cljfmt {}
 
   :clojure-vim/clojure.vim {}
@@ -181,7 +181,7 @@
 
 
   ;; Fennel
-  :Olical/aniseed {:tag "v3.19.0"}
+  :Olical/aniseed {:tag "v3.20.0"}
   :Olical/fennel.vim {}
   :elkowar/nvim-gehzu {}
 

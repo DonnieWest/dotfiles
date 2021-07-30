@@ -22,5 +22,9 @@
      {:exe "ktlint"
       :args ["-F" "-a" "--stdin"]
       :stdin 1})
-(set nvim.g.neoformat_enabled_kotlin ["ktlint"])
 
+(set nvim.g.neoformat_kotlin_ktfmt
+     {:exe "ktfmt"
+      :args ["-"]
+      :stdin 1})
+(set nvim.g.neoformat_enabled_kotlin ["ktfmt"])

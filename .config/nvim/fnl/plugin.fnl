@@ -123,7 +123,7 @@
   ;; Git plugins
   :sindrets/diffview.nvim {}
   :TimUntersberger/neogit {:requires :nvim-lua/plenary.nvim}
-  :lewis6991/gitsigns.nvim {:requires :nvim-lua/plenary.nvim}
+  :lewis6991/gitsigns.nvim {:requires :nvim-lua/plenary.nvim :branch "main"}
   :tpope/vim-fugitive {}
   :christoomey/vim-conflicted {}
   :ruifm/gitlinker.nvim {:requires :nvim-lua/plenary.nvim}
@@ -151,7 +151,7 @@
 
   ;; Kotlin
   :donniewest/kotlin-vim {}
-  :fwcd/kotlin-language-server {:run "./gradlew :server:installDist"}
+  :fwcd/kotlin-language-server {:run "./gradlew :server:installDist" :branch "main"}
 
   ;; Markdown/Octopress Plugins
 

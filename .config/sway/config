@@ -272,8 +272,8 @@ input "65261:24672:OLKB_Planck" {
 input "1452:782:Dr_Money_Handsomesons's_Domination_Pad" {
   accel_profile flat
   middle_emulation enabled
+  pointer_accel 1
   dwt enabled
-  pointer_accel 0.2
   tap enabled
   click_method clickfinger
 }

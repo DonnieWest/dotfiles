@@ -153,11 +153,12 @@
   :donniewest/kotlin-vim {}
   :fwcd/kotlin-language-server {:run "./gradlew :server:installDist" :branch "main"}
 
-  ;; Markdown/Octopress Plugins
+  ;; Writing Plugins
 
   :rhysd/vim-grammarous {}
   :jxnblk/vim-mdx-js {}
   :gabrielelana/vim-markdown {}
+  :vhyrro/neorg {:requires :nvim-lua/plenary.nvim}
 
   ;; Go Plugins
   :fatih/vim-go {}
@@ -197,6 +198,7 @@
    :todo-comments true
    :gitlinker true
    :gitsigns true
+   :neorg true
    :conjure true})
 
 (def- packer-dir (.. (nvim.fn.stdpath :data) "/site/pack/packer"))

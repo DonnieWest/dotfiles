@@ -1,3 +1,6 @@
+set ideajoin
+set ideamarks
+
 set hls
 set ignorecase smartcase
 set incsearch
@@ -10,7 +13,7 @@ set whichwrap+=<,>,h,l,[,]
 " enable vim-surround plugin
 set surround
 
-set clipboard+=unnamedplus
+set clipboard+=ideaput
 
 nnoremap ! :!
 nnoremap ; :

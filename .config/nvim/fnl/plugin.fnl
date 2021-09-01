@@ -52,6 +52,7 @@
   :pgdouyon/vim-evanesco {}
   :kana/vim-operator-user {}
   :kshenoy/vim-signature {}
+  :antoinemadec/FixCursorHold.nvim {}
 
   ;; UI
   :blueyed/vim-diminactive {}

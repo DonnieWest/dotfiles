@@ -13,7 +13,7 @@ set whichwrap+=<,>,h,l,[,]
 " enable vim-surround plugin
 set surround
 
-set clipboard+=ideaput
+set clipboard+=unnamedplus
 
 nnoremap ! :!
 nnoremap ; :

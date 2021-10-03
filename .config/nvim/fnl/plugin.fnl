@@ -172,17 +172,17 @@
   :guns/vim-sexp {}
   :tpope/vim-sexp-mappings-for-regular-people {}
 
-  :Olical/conjure {:tag "v4.22.1"}
+  :Olical/conjure {}
   :dmac/vim-cljfmt {}
 
   :clojure-vim/clojure.vim {}
   :clojure-vim/vim-jack-in {}
   :clojure-vim/async-clj-highlight {}
-  :eraserhd/parinfer-rust {:run "cargo build --release"}
+  :gpanders/nvim-parinfer {}
 
 
   ;; Fennel
-  :Olical/aniseed {:tag "v3.20.0"}
+  :Olical/aniseed {}
   :Olical/fennel.vim {}
   :elkowar/nvim-gehzu {}
 

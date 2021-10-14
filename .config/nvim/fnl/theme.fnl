@@ -20,9 +20,6 @@
                :disable ["java" "kotlin"]}
    :indent {:enable true}})
 
-; (defn- run-ex [name ...]
-;   `((. nvim.ex ,(tostring name)) ,...))
-
 (defn colorscheme-fixes []
   (run-ex hi :TSComment :gui=italic)
   (run-ex hi :TSType    :gui=italic)
@@ -72,8 +69,8 @@
      :195466 ; Support / Regex
      :888ca6 ; Functions
      :d26937 ; Tags/Keywords
-     :c23127 ; Deprecated, open/closing tags
-    ]))
+     :c23127])) ; Deprecated, open/closing tags
+    
 
 (defn- strip-hex-symbol [hex]
   (string.gsub hex "#" ""))
@@ -116,7 +113,7 @@
      :regex :#195466
      :functions :#27B8C2
      :keywords :#ecb2c0
-     :tags :#D12820 }))
+     :tags :#D12820}))
 
 (base16 base16.themes.tweaked true {:lightline true})
 

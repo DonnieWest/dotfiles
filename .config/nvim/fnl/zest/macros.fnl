@@ -98,6 +98,9 @@
        (vim.api.nvim_command cmd#)
        f#)))
 
+(fn run-ex [name ...]
+  `((. nvim.ex ,(tostring name)) ,...))
+
 {
  : se-
  : au-
@@ -106,4 +109,4 @@
  : keys-begin
  : reg-fn
  : def-cmd
- }
+ : run-ex}

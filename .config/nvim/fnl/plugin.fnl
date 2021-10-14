@@ -4,17 +4,37 @@
             util util
             packer packer}})
 
-(defn- use [...]
+(defn- safe-require-plugin-config [name]
+  "Safely require a module under the plugin.* prefix. Will catch errors
+  and print them while continuing execution, allowing other plugins to load
+  even if one configuration module is broken."
+  (let [(ok? val-or-err) (pcall require (.. ".plugin." name))]
+    (when (not ok?)
+      (print (.. "Plugin config error: " val-or-err)))))
+
+(defn req [name]
+  "A shortcut to building a require string for your plugin
+  configuration. Intended for use with packer's config or setup
+  configuration options. Will prefix the name with `magic.plugin.`
+  before requiring."
+  (.. "require('magic.plugin." name "')"))
+
+(defn use [...]
   "Iterates through the arguments as pairs and calls packer's use function for
   each of them. Works around Fennel not liking mixed associative and sequential
-  tables as well."
+  tables as well.
+  This is just a helper / syntax sugar function to make interacting with packer
+  a little more concise."
   (let [pkgs [...]]
     (packer.startup
       (fn [use]
         (for [i 1 (a.count pkgs) 2]
           (let [name (. pkgs i)
                 opts (. pkgs (+ i 1))]
-            (use (a.assoc opts 1 name))))))))
+            (-?> (. opts :mod) (safe-require-plugin-config))
+            (use (a.assoc opts 1 name)))))))
+
+  nil)
 
 ;; Plugins to be managed by packer.
 (use
@@ -32,23 +52,23 @@
   :tpope/vim-endwise {}
   :tpope/vim-abolish {}
   :tpope/vim-projectionist {}
-  :jiangmiao/auto-pairs {}
+  :jiangmiao/auto-pairs {:mod :auto-pairs}
   :windwp/nvim-ts-autotag {}
-  :junegunn/vim-easy-align {}
+  :junegunn/vim-easy-align {:mod :easy-align}
   :ggandor/lightspeed.nvim {}
 
   ;; VIM Quirks fixes
   :lervag/file-line {}
   :pbrisbin/vim-mkdir {}
-  :mhinz/vim-sayonara {:command "Sayonara"}
-  :romainl/vim-qf {}
+  :mhinz/vim-sayonara {:command "Sayonara" :mod :sayonara}
+  :romainl/vim-qf {:mod :qf}
   :eugen0329/vim-esearch {}
   :ynkdir/vim-vimlparser {}
   :tpope/vim-unimpaired {}
   :airblade/vim-rooter {}
-  :christoomey/vim-tmux-navigator {}
+  :christoomey/vim-tmux-navigator {:mod :navigator}
   :Valloric/ListToggle {}
-  :Yggdroot/indentLine {}
+  :Yggdroot/indentLine {:mod :indentLine}
   :pgdouyon/vim-evanesco {}
   :kana/vim-operator-user {}
   :kshenoy/vim-signature {}
@@ -60,8 +80,8 @@
   :nvim-treesitter/nvim-treesitter-textobjects {}
   :p00f/nvim-ts-rainbow {}
   :nvim-treesitter/nvim-treesitter-refactor {}
-  :mhinz/vim-startify {}
-  :itchyny/lightline.vim {}
+  :mhinz/vim-startify {:mod :startify}
+  :itchyny/lightline.vim {:mod :lightline}
   :mgee/lightline-bufferline {}
   :maximbaz/lightline-ale {}
   :justinmk/nvim-repl {}
@@ -69,7 +89,7 @@
   :ryanoasis/vim-devicons {}
   :yamatsum/nvim-web-nonicons {}
   :kyazdani42/nvim-web-devicons {}
-  :folke/todo-comments.nvim {}
+  :folke/todo-comments.nvim {:mod :todo-comments}
 
   :norcalli/nvim.lua {}
   :DonnieWest/nvim-base16.lua {}
@@ -79,54 +99,54 @@
   ;; Generic IDE features
 
   :rhysd/clever-f.vim {}
-  :tomtom/tcomment_vim {}
-  :mbbill/undotree {}
-  :justinmk/vim-dirvish {}
+  :tomtom/tcomment_vim {:mod :tcomment}
+  :mbbill/undotree {:mod :undotree}
+  :justinmk/vim-dirvish {:mod :dirvish}
 
-  :hrsh7th/nvim-compe {}
+  :hrsh7th/nvim-compe {:mod :compe}
   :mfussenegger/nvim-dap {}
 
   :kassio/neoterm {}
-  :ludovicchabant/vim-gutentags {}
+  :ludovicchabant/vim-gutentags {:mod :gutentags}
 
   :nvim-lua/popup.nvim {}
   :nvim-lua/plenary.nvim {}
-  :junegunn/fzf.vim {}
+  :junegunn/fzf.vim {:mod :fzf}
   :junegunn/fzf {}
 
-  :mhinz/vim-grepper {}
-  :dense-analysis/ale {}
+  :mhinz/vim-grepper {:mod :grepper}
+  :dense-analysis/ale {:mod :ale}
 
   :editorconfig/editorconfig-vim {}
   :justinmk/vim-gtfo {}
-  :liuchengxu/vista.vim {}
+  :liuchengxu/vista.vim {:mod :vista}
 
   ;; LSP Features
 
-  :neovim/nvim-lspconfig {}
+  :neovim/nvim-lspconfig {:mod :lsp}
   :nvim-lua/lsp-status.nvim {}
   :tjdevries/lsp_extensions.nvim {}
-  :onsails/lspkind-nvim {}
+  :onsails/lspkind-nvim {:mod :lspkind}
   :RishabhRD/popfix {}
   :RishabhRD/nvim-lsputils {}
   :kosayoda/nvim-lightbulb {}
 
   ;; Appearance
 
-  :norcalli/nvim-colorizer.lua {}
+  :norcalli/nvim-colorizer.lua {:mod :colorizer}
   :Firef0x/PKGBUILD.vim {}
   :ekalinin/Dockerfile.vim {}
 
   ;; Formatters
-  :sbdchd/neoformat {}
+  :sbdchd/neoformat {:mod :neoformat}
 
   ;; Git plugins
   :sindrets/diffview.nvim {}
-  :TimUntersberger/neogit {:requires :nvim-lua/plenary.nvim}
-  :lewis6991/gitsigns.nvim {:requires :nvim-lua/plenary.nvim :branch "main"}
+  :TimUntersberger/neogit {:requires :nvim-lua/plenary.nvim :mod :neogit}
+  :lewis6991/gitsigns.nvim {:requires :nvim-lua/plenary.nvim :branch :main :mod :gitsigns}
   :tpope/vim-fugitive {}
   :christoomey/vim-conflicted {}
-  :ruifm/gitlinker.nvim {:requires :nvim-lua/plenary.nvim}
+  :ruifm/gitlinker.nvim {:requires :nvim-lua/plenary.nvim :mod :gitlinker}
 
   ;; HTML and CSS Plugins
   :hail2u/vim-css3-syntax {}
@@ -140,7 +160,7 @@
   :styled-components/vim-styled-components {:branch "main"}
   :mvolkmann/vim-react {}
   :benjie/local-npm-bin.vim {}
-  :Quramy/vim-js-pretty-template {}
+  :Quramy/vim-js-pretty-template {:mod :pretty-template}
 
   ;; Typescript
   :leafgarland/typescript-vim {}
@@ -155,10 +175,10 @@
 
   ;; Writing Plugins
 
-  :rhysd/vim-grammarous {}
+  :rhysd/vim-grammarous {:mod :grammarous}
   :jxnblk/vim-mdx-js {}
   :gabrielelana/vim-markdown {}
-  :vhyrro/neorg {:requires :nvim-lua/plenary.nvim}
+  :vhyrro/neorg {:requires :nvim-lua/plenary.nvim :mod :neorg}
 
   ;; Go Plugins
   :fatih/vim-go {}
@@ -169,10 +189,10 @@
   :kristijanhusak/vim-dadbod-ui {}
 
   ;; Clojure
-  :guns/vim-sexp {}
+  :guns/vim-sexp {:mod :sexp}
   :tpope/vim-sexp-mappings-for-regular-people {}
 
-  :Olical/conjure {}
+  :Olical/conjure {:mod :conjure}
   :dmac/vim-cljfmt {}
 
   :clojure-vim/clojure.vim {}
@@ -184,50 +204,7 @@
   ;; Fennel
   :Olical/aniseed {}
   :Olical/fennel.vim {}
-  :elkowar/nvim-gehzu {}
+  :elkowar/nvim-gehzu {:mod :gehzu}
 
   ;; Hy
   :hylang/vim-hy {})
-
-;; Plugin configuration that should be loaded even if the directory doesn't
-;; exist or it isn't installed according to packer.
-(def- always-load
-  {:aniseed true
-   :gehzu true
-   :fzf true
-   :todo-comments true
-   :gitlinker true
-   :gitsigns true
-   :neorg true
-   :conjure true})
-
-(def- packer-dir (.. (nvim.fn.stdpath :data) "/site/pack/packer"))
-
-(defn- plugin-installed? [name]
-  "Checks if the plugin directory can be found in the data directory."
-  (or (= 1 (nvim.fn.isdirectory (.. packer-dir "/start/" name)))
-      (= 1 (nvim.fn.isdirectory (.. packer-dir "/opt/" name)))))
-
-(defn- find-plugin [candidate]
-  "Returns the matching plugin name if the given plugin can be found within any
-  of the required plugins So `deoplete` would match `deoplete.nvim`."
-  (let [plugins (a.get _G :packer_plugins)]
-    (or (and (a.get plugins candidate) candidate)
-        (->> (a.keys plugins)
-             (a.some
-               (fn [plug-name]
-                 (and (plug-name:find candidate 1 true) plug-name)))))))
-
-;; Load plugin configuration modules.
-(a.run!
-  (fn [path]
-    (let [name (nvim.fn.fnamemodify path ":t:r")
-          full-name (find-plugin name)
-          bypass? (. always-load name)]
-      (if (or bypass? full-name)
-        (if (or bypass? (plugin-installed? full-name))
-          (match (pcall require (.. "plugin." name))
-            (false err) (print "Error requiring plugin module:" name "-" err))
-          (print (.. "Not loading plugin module, not installed yet: " name)))
-        (print (.. "Orphan plugin configuration: " name)))))
-  (util.glob (.. (nvim.fn.stdpath "config") "/lua/plugin/*.lua")))

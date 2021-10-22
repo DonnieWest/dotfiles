@@ -73,6 +73,7 @@
   :kana/vim-operator-user {}
   :kshenoy/vim-signature {}
   :antoinemadec/FixCursorHold.nvim {}
+  :lewis6991/impatient.nvim {:compile_path (.. (vim.fn.stdpath :config) "/lua/packer_compiled.lua")}
 
   ;; UI
   :blueyed/vim-diminactive {}

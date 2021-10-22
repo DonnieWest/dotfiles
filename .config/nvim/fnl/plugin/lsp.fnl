@@ -50,7 +50,7 @@
                     {:virtual_text false :signs true :update_in_insert false}))
 
 (vim.cmd "autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()")
-(vim.cmd "autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = \"Comment\" }")
+(vim.cmd "autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost .rs,.ts,.js lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = \"Comment\" }")
 
 (lsp.tsserver.setup {:on_attach on-attach})
 (lsp.gopls.setup {:on_attach on-attach})

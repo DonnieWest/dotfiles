@@ -16,7 +16,7 @@ config.load_autoconfig(False)
 # Aliases for commands. The keys of the given dictionary are the
 # aliases, while the values are the commands they map to.
 # Type: Dict
-c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/qute-bitwarden', 'mpv': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/view_in_mpv', 'pushwebsite': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/pushwebsite'}
+c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/qute-bitwarden', 'mpv': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/view_in_mpv', 'pushwebsite': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/pushwebsite', 'readability': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/readability-js'}
 
 # Additional arguments to pass to Qt, without leading `--`. With
 # QtWebEngine, some Chromium arguments (see
@@ -56,7 +56,14 @@ c.auto_save.session = True
 # unknown-3rdparty` per-domain on QtWebKit will have the same effect as
 # `all`. If this setting is used with URL patterns, the pattern gets
 # applied to the origin/first party URL of the page making the request,
-# not the request URL.
+# not the request URL. With QtWebEngine 5.15.0+, paths will be stripped
+# from URLs, so URL patterns using paths will not match. With
+# QtWebEngine 5.15.2+, subdomains are additionally stripped as well, so
+# you will typically need to set this setting for `example.com` when the
+# cookie is set on `somesubdomain.example.com` for it to work properly.
+# To debug issues with this setting, start qutebrowser with `--debug
+# --logfilter network --debug-flag log-cookies` which will show all
+# cookies being set.
 # Type: String
 # Valid values:
 #   - all: Accept all cookies.
@@ -73,7 +80,14 @@ config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
 # unknown-3rdparty` per-domain on QtWebKit will have the same effect as
 # `all`. If this setting is used with URL patterns, the pattern gets
 # applied to the origin/first party URL of the page making the request,
-# not the request URL.
+# not the request URL. With QtWebEngine 5.15.0+, paths will be stripped
+# from URLs, so URL patterns using paths will not match. With
+# QtWebEngine 5.15.2+, subdomains are additionally stripped as well, so
+# you will typically need to set this setting for `example.com` when the
+# cookie is set on `somesubdomain.example.com` for it to work properly.
+# To debug issues with this setting, start qutebrowser with `--debug
+# --logfilter network --debug-flag log-cookies` which will show all
+# cookies being set.
 # Type: String
 # Valid values:
 #   - all: Accept all cookies.
@@ -81,6 +95,19 @@ config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
 #   - no-unknown-3rdparty: Accept cookies from the same origin only, unless a cookie is already set for the domain. On QtWebEngine, this is the same as no-3rdparty.
 #   - never: Don't accept cookies at all.
 config.set('content.cookies.accept', 'all', 'devtools://*')
+
+# Allow websites to share screen content.
+# Type: BoolAsk
+# Valid values:
+#   - true
+#   - false
+#   - ask
+config.set('content.desktop_capture', True, 'https://meet.google.com')
+
+# Value to send in the `Accept-Language` header. Note that the value
+# read from JavaScript is always the global value.
+# Type: String
+config.set('content.headers.accept_language', '', 'https://matchmaker.krunker.io/*')
 
 # User agent to send.  The following placeholders are defined:  *
 # `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
@@ -192,13 +219,29 @@ config.set('content.javascript.enabled', True, 'chrome://*/*')
 # Type: Bool
 config.set('content.javascript.enabled', True, 'qute://*/*')
 
-# Allow websites to show notifications.
+# Allow websites to record audio.
 # Type: BoolAsk
 # Valid values:
 #   - true
 #   - false
 #   - ask
-config.set('content.notifications', False, 'https://www.reddit.com')
+config.set('content.media.audio_capture', True, 'https://meet.google.com')
+
+# Allow websites to record audio and video.
+# Type: BoolAsk
+# Valid values:
+#   - true
+#   - false
+#   - ask
+config.set('content.media.audio_video_capture', True, 'https://meet.google.com')
+
+# Allow websites to record video.
+# Type: BoolAsk
+# Valid values:
+#   - true
+#   - false
+#   - ask
+config.set('content.media.video_capture', True, 'https://meet.google.com')
 
 # Allow websites to show notifications.
 # Type: BoolAsk
@@ -206,7 +249,15 @@ config.set('content.notifications', False, 'https://www.reddit.com')
 #   - true
 #   - false
 #   - ask
-config.set('content.notifications', False, 'https://meet.google.com')
+config.set('content.notifications.enabled', False, 'https://meet.google.com')
+
+# Allow websites to show notifications.
+# Type: BoolAsk
+# Valid values:
+#   - true
+#   - false
+#   - ask
+config.set('content.notifications.enabled', False, 'https://www.reddit.com')
 
 # Allow pdf.js to view PDF files in the browser. Note that the files can
 # still be downloaded by clicking the download button in the pdf.js
@@ -232,6 +283,20 @@ config.set('content.register_protocol_handler', False, 'https://calendar.google.
 #   - ask
 config.set('content.register_protocol_handler', False, 'https://mail.google.com?extsrc=mailto&url=%25s')
 
+# Number of commands to save in the command history. 0: no history / -1:
+# unlimited
+# Type: Int
+c.completion.cmd_history_max_items = -1
+
+# Delay (in milliseconds) before updating completions after typing a
+# character.
+# Type: Int
+c.completion.delay = 200
+
+# Minimum amount of characters needed to update completions.
+# Type: Int
+c.completion.min_chars = 2
+
 # Where to show the downloaded files.
 # Type: VerticalPosition
 # Valid values:
@@ -249,7 +314,9 @@ c.downloads.remove_finished = 1000
 # Type: Bool
 c.scrolling.smooth = True
 
-# How to behave when the last tab is closed.
+# How to behave when the last tab is closed. If the
+# `tabs.tabs_are_windows` setting is set, this is ignored and the
+# behavior is always identical to the `close` value.
 # Type: String
 # Valid values:
 #   - ignore: Don't do anything.
@@ -330,9 +397,17 @@ c.colors.tabs.pinned.selected.odd.bg = '#093748'
 # Type: QtColor
 c.colors.tabs.pinned.selected.even.bg = '#093748'
 
-# Force `prefers-color-scheme: dark` colors for websites.
-# Type: Bool
-c.colors.webpage.prefers_color_scheme_dark = True
+# Value to use for `prefers-color-scheme:` for websites. The "light"
+# value is only available with QtWebEngine 5.15.2+. On older versions,
+# it is the same as "auto". The "auto" value is broken on QtWebEngine
+# 5.15.2 due to a Qt bug. There, it will fall back to "light"
+# unconditionally.
+# Type: String
+# Valid values:
+#   - auto: Use the system-wide color scheme setting.
+#   - light: Force a light theme.
+#   - dark: Force a dark theme.
+c.colors.webpage.preferred_color_scheme = 'dark'
 
 # Default font families to use. Whenever "default_family" is used in a
 # font setting, it's replaced with the fonts listed here. If set to an

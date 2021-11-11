@@ -16,7 +16,7 @@ config.load_autoconfig(False)
 # Aliases for commands. The keys of the given dictionary are the
 # aliases, while the values are the commands they map to.
 # Type: Dict
-c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/qute-bitwarden', 'mpv': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/view_in_mpv', 'pushwebsite': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/pushwebsite', 'readability': 'spawn --userscript /home/igneo676/.config/qutebrowser/userscripts/readability-js'}
+c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript ~/.config/qutebrowser/userscripts/qute-bitwarden', 'mpv': 'spawn --userscript ~/.config/qutebrowser/userscripts/view_in_mpv', 'pushwebsite': 'spawn --userscript ~/.config/qutebrowser/userscripts/pushwebsite', 'readability': 'spawn --userscript ~/.config/qutebrowser/userscripts/readability-js'}
 
 # Additional arguments to pass to Qt, without leading `--`. With
 # QtWebEngine, some Chromium arguments (see

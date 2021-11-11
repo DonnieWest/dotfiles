@@ -26,7 +26,7 @@ exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec hash dbus-update-activation-environment 2>/dev/null && \
      dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
-exec wlsunset -l 39.099724 -L -94.578331
+# exec wlsunset -l 39.099724 -L -94.578331
 
 exec swayidle \
     timeout 490 '/home/igneo676/.bin/swaylock-wrapper' \

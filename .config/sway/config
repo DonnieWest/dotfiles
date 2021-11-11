@@ -15,6 +15,8 @@ seat seat0 xcursor_theme Paper 50
 set $mod Mod4
 set $alt Mod1
 
+exec kanshi
+
 # exec /home/igneo676/.bin/mail-checker
 # exec nightshift -l 39.0315533:-94.4954291 -d -m wayland
 

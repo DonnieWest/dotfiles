@@ -1,4 +1,7 @@
-icons = "awesome5"
+[icons]
+name = "awesome5"
+[icons.overrides]
+music = ""
 [theme]
 name = "solarized-dark"
 [theme.overrides]

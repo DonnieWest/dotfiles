@@ -28,3 +28,10 @@
       :args ["-"]
       :stdin 1})
 (set nvim.g.neoformat_enabled_kotlin ["ktfmt"])
+
+(set nvim.g.neoformat_fennel_fnlfmt
+     {:exe "fnlfmt"
+      :args ["-"]
+      :stdin 1})
+
+(set nvim.g.neoformat_enabled_fennel ["fnlfmt"])

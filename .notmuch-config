@@ -3,6 +3,9 @@ path=.mail
 [user]
 name=Gmail
 primary_email=igneo676@gmail.com
+[user]
+name=Fastmail
+primary_email=me@donniewest.com
 [new]
 tags=new
 ignore=

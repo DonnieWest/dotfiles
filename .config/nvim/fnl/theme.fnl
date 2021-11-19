@@ -17,7 +17,7 @@
    :rainbow {:enable true}
    :autotag {:enable true}
    :highlight {:enable true
-               :disable ["java" "kotlin"]}
+               :disable ["java"]}
    :indent {:enable true}})
 
 (defn colorscheme-fixes []

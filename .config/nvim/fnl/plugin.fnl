@@ -44,14 +44,11 @@
   ;; Generic Plugins
   :tpope/vim-repeat {}
   :tpope/vim-surround {}
-  :tpope/vim-dispatch {}
-  :radenling/vim-dispatch-neovim {}
   :tpope/vim-tbone {}
   :duggiefresh/vim-easydir {}
   :tpope/vim-eunuch {}
   :tpope/vim-endwise {}
   :tpope/vim-abolish {}
-  :tpope/vim-projectionist {}
   :jiangmiao/auto-pairs {:mod :auto-pairs}
   :windwp/nvim-ts-autotag {}
   :junegunn/vim-easy-align {:mod :easy-align}
@@ -63,7 +60,6 @@
   :mhinz/vim-sayonara {:command "Sayonara" :mod :sayonara}
   :romainl/vim-qf {:mod :qf}
   :eugen0329/vim-esearch {}
-  :ynkdir/vim-vimlparser {}
   :tpope/vim-unimpaired {}
   :airblade/vim-rooter {}
   :christoomey/vim-tmux-navigator {:mod :navigator}
@@ -156,9 +152,7 @@
   ;; Javascript Plugins
   :pangloss/vim-javascript {}
   :maxmellon/vim-jsx-pretty {}
-  :jparise/vim-graphql {}
   :jose-elias-alvarez/nvim-lsp-ts-utils {}
-  :styled-components/vim-styled-components {:branch "main"}
   :mvolkmann/vim-react {}
   :benjie/local-npm-bin.vim {}
   :Quramy/vim-js-pretty-template {:mod :pretty-template}
@@ -181,9 +175,6 @@
   :gabrielelana/vim-markdown {}
   :vhyrro/neorg {:requires :nvim-lua/plenary.nvim :mod :neorg}
 
-  ;; Go Plugins
-  :fatih/vim-go {}
-
   ;; SQL
   :tpope/vim-dadbod {}
   :kristijanhusak/vim-dadbod-completion {}
@@ -197,15 +188,10 @@
   :dmac/vim-cljfmt {}
 
   :clojure-vim/clojure.vim {}
-  :clojure-vim/vim-jack-in {}
-  :clojure-vim/async-clj-highlight {}
   :gpanders/nvim-parinfer {}
 
 
   ;; Fennel
   :Olical/aniseed {}
   :Olical/fennel.vim {}
-  :elkowar/nvim-gehzu {:mod :gehzu}
-
-  ;; Hy
-  :hylang/vim-hy {})
+  :elkowar/nvim-gehzu {:mod :gehzu})

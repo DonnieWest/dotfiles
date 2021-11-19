@@ -9,7 +9,6 @@ set sort_aux = reverse-last-date-received  # like gmail
 set uncollapse_jump                        # don't collapse on an unread message
 set sort_re                                # thread based on regex
 set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
-set sort = 'reverse-date'
 set smtp_authenticators = 'gssapi:login'
 set query_command = "abook --mutt-query '%s'"
 set rfc2047_parameters = yes

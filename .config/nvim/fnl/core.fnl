@@ -12,4 +12,3 @@
 ;; Restore previous cursor permission
 (au- [BufReadPost] *
      #(nvim.fn.setpos "." (nvim.fn.getpos "'\"")))
-

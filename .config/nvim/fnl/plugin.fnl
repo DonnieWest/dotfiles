@@ -50,7 +50,6 @@
   :tpope/vim-endwise {}
   :tpope/vim-abolish {}
   :jiangmiao/auto-pairs {:mod :auto-pairs}
-  :windwp/nvim-ts-autotag {}
   :junegunn/vim-easy-align {:mod :easy-align}
   :ggandor/lightspeed.nvim {}
 
@@ -148,6 +147,8 @@
   ;; HTML and CSS Plugins
   :hail2u/vim-css3-syntax {}
   :othree/html5.vim {}
+  :mattn/emmet-vim {}
+  :windwp/nvim-ts-autotag {}
 
   ;; Javascript Plugins
   :pangloss/vim-javascript {}
@@ -156,6 +157,8 @@
   :mvolkmann/vim-react {}
   :benjie/local-npm-bin.vim {}
   :Quramy/vim-js-pretty-template {:mod :pretty-template}
+  :vuki656/package-info.nvim {:mod :package-info}
+  :MunifTanjim/nui.nvim {}
 
   ;; Typescript
   :leafgarland/typescript-vim {}

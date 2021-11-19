@@ -29,10 +29,10 @@ exec hash dbus-update-activation-environment 2>/dev/null && \
 # exec wlsunset -l 39.099724 -L -94.578331
 
 exec swayidle \
-    timeout 490 '/home/igneo676/.bin/swaylock-wrapper' \
+    timeout 490 '~/.bin/swaylock-wrapper' \
     timeout 500 'swaymsg "output * dpms off"' \
        resume 'swaymsg "output * dpms on"' \
-    before-sleep '/home/igneo676/.bin/swaylock-wrapper'
+    before-sleep '~/.bin/swaylock-wrapper'
 
 output * bg ~/Wallpapers/armed_society_wallpaper.png fill
 # output * bg ~/Wallpapers/MK1-Dark.png fill

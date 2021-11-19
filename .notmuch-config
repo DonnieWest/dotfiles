@@ -1,5 +1,5 @@
 [database]
-path=/home/igneo676/.mail
+path=.mail
 [user]
 name=Gmail
 primary_email=igneo676@gmail.com

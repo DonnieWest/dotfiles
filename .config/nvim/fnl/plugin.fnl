@@ -197,4 +197,5 @@
   ;; Fennel
   :Olical/aniseed {}
   :Olical/fennel.vim {}
+  :elkowar/antifennel-nvim {}
   :elkowar/nvim-gehzu {:mod :gehzu})

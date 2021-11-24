@@ -9,4 +9,4 @@
 
 (package.setup)
 
-(au- [BufWritePost] :package.json #(package.show))
+(au- [BufEnter BufWritePost] :package.json #(package.show))

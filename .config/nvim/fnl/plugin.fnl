@@ -87,7 +87,6 @@
   :kyazdani42/nvim-web-devicons {}
   :folke/todo-comments.nvim {:mod :todo-comments}
 
-  :norcalli/nvim.lua {}
   :DonnieWest/nvim-base16.lua {}
 
   :folke/lsp-colors.nvim {}
@@ -99,7 +98,6 @@
   :mbbill/undotree {:mod :undotree}
   :justinmk/vim-dirvish {:mod :dirvish}
 
-  :hrsh7th/nvim-compe {:mod :compe}
   :mfussenegger/nvim-dap {}
 
   :kassio/neoterm {}
@@ -116,6 +114,18 @@
   :editorconfig/editorconfig-vim {}
   :justinmk/vim-gtfo {}
   :liuchengxu/vista.vim {:mod :vista}
+
+  ;; Completion
+
+  :hrsh7th/nvim-cmp {:mod :cmp}
+  :PaterJason/cmp-conjure {}
+  :hrsh7th/cmp-nvim-lsp {}
+  :hrsh7th/cmp-path {}
+
+  :hrsh7th/cmp-vsnip {}
+  :hrsh7th/vim-vsnip {}
+
+  :rafamadriz/friendly-snippets {}
 
   ;; LSP Features
 

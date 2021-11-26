@@ -63,7 +63,11 @@
 (vim.cmd "autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()")
 (vim.cmd "autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost .rs,.ts,.js lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = \"Comment\" }")
 
-(lsp.tsserver.setup {:on_attach on-attach : capabilities})
+(lsp.tsserver.setup {:on_attach on-attach
+                     : capabilities
+                     :init_options {:preferences {:allowIncompleteCompletions false
+                                                  :hostInfo :neovim}}})
+
 (lsp.gopls.setup {:on_attach on-attach : capabilities})
 (lsp.tsserver.setup {:on_attach on-attach : capabilities})
 (lsp.gopls.setup {:on_attach on-attach : capabilities})

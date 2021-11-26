@@ -160,6 +160,7 @@
       :Quramy/vim-js-pretty-template {:mod :pretty-template}
       :vuki656/package-info.nvim {:mod :package-info}
       :MunifTanjim/nui.nvim {}
+      :JoosepAlviste/nvim-ts-context-commentstring {}
 
       ;; Typescript
       :leafgarland/typescript-vim {}

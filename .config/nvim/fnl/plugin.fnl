@@ -54,13 +54,11 @@
       :mhinz/vim-sayonara {:command "Sayonara" :mod :sayonara}
       :romainl/vim-qf {:mod :qf}
       :eugen0329/vim-esearch {}
-      :tpope/vim-unimpaired {}
       :airblade/vim-rooter {}
       :christoomey/vim-tmux-navigator {:mod :navigator}
       :Valloric/ListToggle {}
       :Yggdroot/indentLine {:mod :indentLine}
       :pgdouyon/vim-evanesco {}
-      :kana/vim-operator-user {}
       :kshenoy/vim-signature {}
       :antoinemadec/FixCursorHold.nvim {}
       :lewis6991/impatient.nvim {:compile_path (.. (vim.fn.stdpath :config) "/lua/packer_compiled.lua")}
@@ -75,8 +73,6 @@
       :itchyny/lightline.vim {:mod :lightline}
       :mgee/lightline-bufferline {}
       :maximbaz/lightline-ale {}
-      :justinmk/nvim-repl {}
-      :christoomey/vim-run-interactive {}
       :ryanoasis/vim-devicons {}
       :yamatsum/nvim-web-nonicons {}
       :kyazdani42/nvim-web-devicons {}

@@ -10,7 +10,7 @@
 
 (var capabilities (vim.lsp.protocol.make_client_capabilities))
 (set capabilities
-     ((. (require :cmp_nvim_lsp) :update_capabilities) capabilities))  
+     ((. (require :cmp_nvim_lsp) :update_capabilities) capabilities))
 
 (defn on-attach [client bufnr] (lsp-status.on_attach client bufnr)
       (mapping.noremap :n :gd "<cmd>lua vim.lsp.buf.declaration()<CR>")

@@ -11,8 +11,12 @@ set shell sh
 set shellopts '-eu'
 
 set previewer pistol
-
+set color256 true
 set icons
+set incsearch
+set incfilter
+
+%[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
 
 # set internal field separator (IFS) to "\n" for shell commands
 # This is useful to automatically split file names in $fs and $fx properly
@@ -34,6 +38,9 @@ map X !$f
 # dedicated keys for file opener actions
 map o &mimeopen $f
 map O $mimeopen --ask $f
+
+cmd open-with %"$@" $fx
+map ` push :open-with<space>
 
 # define a custom 'open' command
 # This command is called when current file is not a directory. You may want to
@@ -94,6 +101,29 @@ cmd zip ${{
     rm -rf $1
 }}
 
+
+cmd mkdir ${{
+  printf "Directory Name: "
+  read ans
+  mkdir $ans
+}}
+
+cmd mkfile ${{
+  printf "File Name: "
+  read ans
+  $EDITOR $ans
+}}
+
+cmd chmod ${{
+  printf "Mode Bits: "
+  read ans
+
+  for file in "$fx"
+  do
+    chmod $ans $file
+  done
+}}
+
 # pasting done right
 cmd paste &{{
     load=$(lf -remote 'load')
@@ -122,3 +152,13 @@ cmd fzf_jump ${{
 lf -remote "send $id $cmd \"$res\""
 }}
 map <c-p> :fzf_jump
+
+map d
+
+map . set hidden!
+map dd delete
+map p paste
+map x cut
+map y copy
+map <enter> open
+map r rename

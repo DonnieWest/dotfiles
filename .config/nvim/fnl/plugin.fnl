@@ -70,17 +70,17 @@
       :p00f/nvim-ts-rainbow {}
       :nvim-treesitter/nvim-treesitter-refactor {}
       :mhinz/vim-startify {:mod :startify}
+
       :itchyny/lightline.vim {:mod :lightline}
       :mgee/lightline-bufferline {}
       :maximbaz/lightline-ale {}
       :josa42/nvim-lightline-lsp {}
+
       :ryanoasis/vim-devicons {}
       :yamatsum/nvim-web-nonicons {}
       :kyazdani42/nvim-web-devicons {}
       :folke/todo-comments.nvim {:mod :todo-comments}
-
       :DonnieWest/nvim-base16.lua {}
-
       :folke/lsp-colors.nvim {}
 
       ;; Generic IDE features

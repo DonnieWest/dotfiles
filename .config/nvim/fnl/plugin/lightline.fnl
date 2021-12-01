@@ -15,7 +15,7 @@
 
 (set nvim.g.lightline#ale#indicator_checking "")
 (set nvim.g.lightline#ale#indicator_warnings "")
-(set nvim.g.lightline#ale#indicator_errors  "")
+(set nvim.g.lightline#ale#indicator_errors "")
 (set nvim.g.lightline#ale#indicator_ok "")
 (set nvim.g.lightline#bufferline#enable_devicons 1)
 (set nvim.g.lightline#bufferline#show_number 0)
@@ -24,15 +24,13 @@
 
 (set nvim.g.lightline
      {:colorscheme :base16_nvim
-      :separator {:left ""
-                  :right "" }
-      :subseparator {:left ""
-                     :right "" }
+      :separator {:left "" :right ""}
+      :subseparator {:left "" :right ""}
       :component_function {:gitbranch "fugitive#head"
                            :method :NearestMethodOrFunction
                            :readonly :LightlineReadonly}
       :component_expand {:buffers "lightline#bufferline#buffers"
-                         :file_type_symbol "WebDevIconsGetFileTypeSymbol"
+                         :file_type_symbol :WebDevIconsGetFileTypeSymbol
                          :lsp_warnings "lightline#lsp#warnings"
                          :lsp_errors "lightline#lsp#errors"
                          :lsp_info "lightline#lsp#info"
@@ -61,13 +59,15 @@
                        :linter_warnings :warning
                        :linter_errors :error
                        :linter_ok :left}
-      :tabline {:left [[:buffers]]
-                :right [[]]}
+      :tabline {:left [[:buffers]] :right [[]]}
       :active {:left [[:mode :paste]
                       [:gitbranch :readonly :filename :modified :method]]
                :right [[:lineinfo]
                        [:percent]
-                       [:linter_checking :linter_errors :linter_warnings :linter_ok :lsp_status]
+                       [:linter_checking
+                        :linter_errors
+                        :linter_warnings
+                        :linter_ok]
                        [:lsp_warnings
                         :lsp_errors
                         :lsp_info
@@ -76,3 +76,4 @@
                         :lsp_status]
                        [:fileformat :fileencoding :filetype :file_type_symbol]]}
       :inactive {:right [[:lineinfo] [:percent] [:lsp_status]]}})
+

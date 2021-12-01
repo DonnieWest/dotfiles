@@ -73,6 +73,7 @@
       :itchyny/lightline.vim {:mod :lightline}
       :mgee/lightline-bufferline {}
       :maximbaz/lightline-ale {}
+      :josa42/nvim-lightline-lsp {}
       :ryanoasis/vim-devicons {}
       :yamatsum/nvim-web-nonicons {}
       :kyazdani42/nvim-web-devicons {}
@@ -121,7 +122,6 @@
       ;; LSP Features
 
       :neovim/nvim-lspconfig {:mod :lsp}
-      :nvim-lua/lsp-status.nvim {}
       :tjdevries/lsp_extensions.nvim {}
       :onsails/lspkind-nvim {:mod :lspkind}
       :RishabhRD/popfix {}

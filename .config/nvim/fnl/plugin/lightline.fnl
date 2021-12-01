@@ -1,25 +1,13 @@
-(module plugin.lightline
-  {require {nvim aniseed.nvim
-            lsp-status lsp-status
-            nu aniseed.nvim.util}})
+(module plugin.lightline {require {nvim aniseed.nvim nu aniseed.nvim.util}})
 
-(defn- expand [s]
-  (nvim.fn.expand s))
+(defn- expand [s] (nvim.fn.expand s))
 
-(defn readonly []
-  (if (and nvim.bo.readonly
-           (not= nvim.bo.filetype "help"))
-    "RO"
-    ""))
+(defn readonly [] (if (and nvim.bo.readonly (not= nvim.bo.filetype :help)) :RO
+                      ""))
 
-(defn nearest-method []
-  (or nvim.b.vista_nearest_method_or_function ""))
+(defn nearest-method [] (or nvim.b.vista_nearest_method_or_function ""))
 
-(defn lspstatus []
-  (lsp-status.status))
-
-(defn- bridge [from to]
-  (nu.fn-bridge from :plugin.lightline to {:return true}))
+(defn- bridge [from to] (nu.fn-bridge from :plugin.lightline to {:return true}))
 
 (bridge :LightlineReadonly :readonly)
 (bridge :LspStatus :lspstatus)
@@ -42,10 +30,15 @@
                      :right "" }
       :component_function {:gitbranch "fugitive#head"
                            :method :NearestMethodOrFunction
-                           :lsp_status :LspStatus
                            :readonly :LightlineReadonly}
       :component_expand {:buffers "lightline#bufferline#buffers"
                          :file_type_symbol "WebDevIconsGetFileTypeSymbol"
+                         :lsp_warnings "lightline#lsp#warnings"
+                         :lsp_errors "lightline#lsp#errors"
+                         :lsp_info "lightline#lsp#info"
+                         :lsp_hints "lightline#lsp#hints"
+                         :lsp_ok "lightline#lsp#ok"
+                         :lsp_status "lightline#lsp#status"
                          :linter_checking "lightline#ale#checking"
                          :linter_warnings "lightline#ale#warnings"
                          :linter_errors "lightline#ale#errors"
@@ -59,6 +52,11 @@
                        :gradle_warnings :warning
                        :gradle_running :left
                        :gradle_project :right
+                       :linter_warnings :warning
+                       :linter_errors :error
+                       :linter_info :info
+                       :linter_hints :hints
+                       :linter_ok :left
                        :linter_checking :left
                        :linter_warnings :warning
                        :linter_errors :error
@@ -70,5 +68,11 @@
                :right [[:lineinfo]
                        [:percent]
                        [:linter_checking :linter_errors :linter_warnings :linter_ok :lsp_status]
+                       [:lsp_warnings
+                        :lsp_errors
+                        :lsp_info
+                        :lsp_hints
+                        :lsp_ok
+                        :lsp_status]
                        [:fileformat :fileencoding :filetype :file_type_symbol]]}
       :inactive {:right [[:lineinfo] [:percent] [:lsp_status]]}})

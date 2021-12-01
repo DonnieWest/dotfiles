@@ -3,7 +3,6 @@
                            cmp-lsp cmp_nvim_lsp
                            lsp lspconfig
                            lightbulb nvim-lightbulb
-                           lsp-status lsp-status
                            lsp-code-action lsputil.codeAction
                            lsp-symbols lsputil.symbols
                            lsp-locations lsputil.locations}})
@@ -12,7 +11,7 @@
 (set capabilities
      ((. (require :cmp_nvim_lsp) :update_capabilities) capabilities))
 
-(defn on-attach [client bufnr] (lsp-status.on_attach client bufnr)
+(defn on-attach [client bufnr]
       (mapping.noremap :n :gd "<cmd>lua vim.lsp.buf.declaration()<CR>")
       (mapping.noremap :n "<c-]>" "<cmd>lua vim.lsp.buf.definition()<CR>")
       (mapping.noremap :n :K "<cmd>lua vim.lsp.buf.hover()<CR>")
@@ -29,10 +28,6 @@
 
 (nvim.ex.autocmd :FileType :clojure
                  "nnoremap <silent> <leader>fm    <cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>")
-
-(lsp-status.register_progress)
-
-(lsp_status.config {:current_function false})
 
 (tset vim.lsp.handlers :textDocument/codeAction
       lsp-code-action.code_action_handler)

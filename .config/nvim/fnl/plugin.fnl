@@ -112,6 +112,7 @@
       :hrsh7th/nvim-cmp {:mod :cmp}
       :PaterJason/cmp-conjure {}
       :hrsh7th/cmp-nvim-lsp {}
+      :hrsh7th/cmp-nvim-lua {}
       :hrsh7th/cmp-path {}
 
       :hrsh7th/cmp-vsnip {}
@@ -167,7 +168,8 @@
       :peitalin/vim-jsx-typescript {}
 
       ;; Java/Android/Gradle plugins
-      :georgewfraser/java-language-server {:run "./scripts/link_mac.sh"}
+      :hsanson/vim-android {:mod :android}
+      :mfussenegger/nvim-jdtls {}
 
       ;; Kotlin
       :donniewest/kotlin-vim {}

@@ -68,12 +68,12 @@
                         :linter_errors
                         :linter_warnings
                         :linter_ok]
-                       [:lsp_warnings
+                       [:lsp_status
+                        :lsp_warnings
                         :lsp_errors
                         :lsp_info
                         :lsp_hints
-                        :lsp_ok
-                        :lsp_status]
+                        :lsp_ok]
                        [:fileformat :fileencoding :filetype :file_type_symbol]]}
       :inactive {:right [[:lineinfo] [:percent] [:lsp_status]]}})
 

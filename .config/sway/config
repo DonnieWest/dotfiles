@@ -277,6 +277,11 @@ input "65261:24672:Cartel_Contra" {
   repeat_rate 25
 }
 
+input "936:42233:Drop_Planck" {
+  repeat_delay 250
+  repeat_rate 25
+}
+
 input "65261:24672:OLKB_Planck" {
   repeat_delay 250
   repeat_rate 25

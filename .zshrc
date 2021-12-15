@@ -413,7 +413,6 @@ logsForDevice() {
 pushwebsite() {
   pushover --title "Website" --url "$1" --message "$1"
 }
-alias git=hub
 
 pr-checkout() {
   jq_template='"'\

@@ -4,3 +4,4 @@
             mapping mapping}})
 
 (mapping.noremap :n :<C-Del> ":Sayonara<CR>")
+(mapping.noremap :n "<ESC>[M" ":Sayonara<CR>")

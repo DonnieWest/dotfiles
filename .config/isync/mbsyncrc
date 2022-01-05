@@ -15,7 +15,7 @@ Channel igneo676@gmail.com
 Expunge Both
 Master :igneo676@gmail.com-remote:
 Slave :igneo676@gmail.com-local:
-Patterns * !"_/*" !"[Gmail]" !"[Gmail]/All Mail"
+Patterns * !"_/*" !"[Gmail]"
 Create Both
 SyncState *
 MaxMessages 0

@@ -8,6 +8,7 @@
 
 (treesitter.setup
   {:ensure_installed "all"
+   :ignore_install [:php :phpdoc]
    :refactor {:smart_rename {:keymaps {:goto_definition_lsp_fallback "<c-]>"
                                        :list_definitions "gD"
                                        :goto_next_usage "<Leader>n"
@@ -17,8 +18,7 @@
    :rainbow {:enable true}
    :autotag {:enable true}
    :context_commentstring {:enable true}
-   :highlight {:enable true
-               :disable ["java"]}
+   :highlight {:enable true}
    :indent {:enable true}})
 
 (defn colorscheme-fixes []

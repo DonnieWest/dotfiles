@@ -14,3 +14,4 @@ lukechilds/zsh-better-npm-completion
 chrisands/zsh-yarn-completion
 robbyrussell/oh-my-zsh path:plugins/docker path:plugins/adb path:plugins/gradle path:plugins/extract
 unixorn/docker-helpers.zshplugin
+marlonrichert/zsh-hist

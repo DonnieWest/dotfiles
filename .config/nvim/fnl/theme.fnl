@@ -73,7 +73,7 @@
      :888ca6 ; Functions
      :d26937 ; Tags/Keywords
      :c23127])) ; Deprecated, open/closing tags
-    
+
 
 (defn- strip-hex-symbol [hex]
   (string.gsub hex "#" ""))

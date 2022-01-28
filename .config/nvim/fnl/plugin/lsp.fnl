@@ -23,7 +23,7 @@
       (mapping.noremap :n :gW "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>")
       (mapping.noremap :n :ga "<cmd>lua vim.lsp.buf.code_action()<CR>")
       (mapping.noremap :n :<Leader>r "<cmd>lua vim.lsp.buf.rename()<CR>")
-      (mapping.noremap :n :<F6> "<cmd>lua vim.lsp.buf.rename()<CR>")
+      (mapping.noremap :n :<F19> "<cmd>lua vim.lsp.buf.rename()<CR>")
       (nvim.ex.autocmd :CursorHold :<buffer> "lua vim.diagnostic.open_float()"))
 
 (nvim.ex.autocmd :FileType :clojure

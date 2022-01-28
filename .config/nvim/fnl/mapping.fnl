@@ -45,7 +45,7 @@
 
 (nu.fn-bridge
   :StripTrailingWhitespace
-  :dotfiles.module.mapping :strip-trailing-whitespace)
+  :mapping :strip-trailing-whitespace)
 
 (defn strip-trailing-whitespace []
   (let [pos (nvim.fn.getpos ".")]

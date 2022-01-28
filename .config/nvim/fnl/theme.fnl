@@ -9,11 +9,13 @@
 (treesitter.setup
   {:ensure_installed "all"
    :ignore_install [:php :phpdoc]
-   :refactor {:smart_rename {:keymaps {:goto_definition_lsp_fallback "<c-]>"
-                                       :list_definitions "gD"
-                                       :goto_next_usage "<Leader>n"
-                                       :goto_previous_usage "<Leader>N"}
+   :refactor {:smart_rename {:keymaps {:smart_rename "grr"}
                              :enable true}
+              :navigation {:keymaps {:goto_definition_lsp_fallback "<c-]>"
+                                                   :list_definitions "gD"
+                                                   :goto_next_usage "<Leader>n"
+                                                   :goto_previous_usage "<Leader>N"}
+                           :enable true}
               :highlight_definitions {:enable true}}
    :rainbow {:enable true}
    :autotag {:enable true}

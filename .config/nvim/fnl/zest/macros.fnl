@@ -23,64 +23,64 @@
 (fn au- [events filetypes action]
   "autocmd input parser"
   (let [t [(if (= (type events) :table)
-             (tab-tostring events)
-             [(sym-tostring events)])
+               (tab-tostring events)
+               [(sym-tostring events)])
            (if (= (type filetypes) :table)
-             (tab-tostring filetypes)
-             [(sym-tostring filetypes)])
+               (tab-tostring filetypes)
+               [(sym-tostring filetypes)])
            action]]
     `(au.set-au ,(unpack t))))
 
 (fn au-user- [events action]
   "autocmd input parser"
   (let [t [(if (= (type events) :table)
-             (tab-tostring events)
-             [(sym-tostring events)])
+               (tab-tostring events)
+               [(sym-tostring events)])
            action]]
     `(au.set-au-user ,(unpack t))))
 
 (fn au-file- [files action]
   "autocmd input parser"
   (let [t [(if (= (type files) :table)
-             (tab-tostring files)
-             [(sym-tostring files)])
+               (tab-tostring files)
+               [(sym-tostring files)])
            action]]
     `(au.set-au-file ,(unpack t))))
 
 ; se -- compiles down to nvim_set_option!
 (fn get-scope [option]
   (if (pcall vim.api.nvim_get_option_info option)
-    (. (vim.api.nvim_get_option_info option) :scope)
-    false))
+      (. (vim.api.nvim_get_option_info option) :scope)
+      false))
 
 (fn set-option [scope option value]
   (match scope
-    :global `(vim.api.nvim_set_option       ,option ,value)
-    :win    `(vim.api.nvim_win_set_option 0 ,option ,value)
-    :buf    `(vim.api.nvim_buf_set_option 0 ,option ,value)
-    _       `(print (.. "zest.se- invalid scope '" ,scope "' for option '" ,option "'"))))
+    :global `(vim.api.nvim_set_option ,option ,value)
+    :win `(vim.api.nvim_win_set_option 0 ,option ,value)
+    :buf `(vim.api.nvim_buf_set_option 0 ,option ,value)
+    _ `(print (.. "zest.se- invalid scope '" ,scope "' for option '" ,option
+                  "'"))))
 
 (fn se- [option value]
   (let [option (sym-tostring option)
-        value (if (= value nil)
-                true
-                value)
+        value (if (= value nil) true value)
         scope (get-scope option)]
     (if scope
-      `,(set-option scope option value)
-      (if (= (: option :sub 1 2) :no)
-        (let [option (: option :sub 3)
-              scope (get-scope option)
-              value false]
-          (if scope
-            `,(set-option scope option value)
-            `(print (.. "zest.se- option '" ,option "' not found"))))
-        `(print (.. "zest.se- option '" ,option "' not found"))))))
+        `,(set-option scope option value)
+        (if (= (: option :sub 1 2) :no)
+            (let [option (: option :sub 3)
+                  scope (get-scope option)
+                  value false]
+              (if scope
+                  `,(set-option scope option value)
+                  `(print (.. "zest.se- option '" ,option "' not found"))))
+            `(print (.. "zest.se- option '" ,option "' not found"))))))
 
 ; keys TODO: redo with a parser like autocmds
 ; or even compile down to nvim builtins like set
 (fn keys-begin []
-  `(local (,(sym :expr) ,(sym :silent) ,(sym :remap)) (values :expr :silent :remap)))
+  `(local (,(sym :expr) ,(sym :silent) ,(sym :remap))
+          (values :expr :silent :remap)))
 
 (fn reg-fn [...]
   "register a lua function in a global table _Z.maps under id
@@ -92,21 +92,13 @@
 
 (fn def-cmd [name ...]
   "declare a lua function, register it, and bind it to a corresponding vim :command"
-  `(local ,name
-     (let [f# (fn ,...)
-           cmd# (.. "com! " ,(tostring name) " :call " (reg-fn f#))]
-       (vim.api.nvim_command cmd#)
-       f#)))
+  `(local ,name (let [f# (fn ,...)
+                      cmd# (.. "com! " ,(tostring name) " :call " (reg-fn f#))]
+                  (vim.api.nvim_command cmd#)
+                  f#)))
 
 (fn run-ex [name ...]
   `((. nvim.ex ,(tostring name)) ,...))
 
-{
- : se-
- : au-
- : au-user-
- : au-file-
- : keys-begin
- : reg-fn
- : def-cmd
- : run-ex}
+{: se- : au- : au-user- : au-file- : keys-begin : reg-fn : def-cmd : run-ex}
+

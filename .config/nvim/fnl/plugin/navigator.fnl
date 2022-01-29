@@ -1,7 +1,6 @@
-(module plugin.navigator
-  {require {core aniseed.core
-            nvim aniseed.nvim
-            mapping mapping}})
+(module plugin.navigator {require {core aniseed.core
+                                   nvim aniseed.nvim
+                                   mapping mapping}})
 
 (set nvim.g.tmux_navigator_no_mappings 1)
 
@@ -30,3 +29,4 @@
 (mapping.noremap :t :<C-W>j "<C-\\><C-n>:TmuxNavigateDown<CR>")
 (mapping.noremap :t :<C-W>h "<C-\\><C-n>:TmuxNavigateLeft<CR>")
 (mapping.noremap :t :<C-W>l "<C-\\><C-n>:TmuxNavigateRight<CR>")
+

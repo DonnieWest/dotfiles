@@ -1,5 +1,4 @@
-(module plugin.grammarous
-  {require {core aniseed.core
-            nvim aniseed.nvim}})
+(module plugin.grammarous {require {core aniseed.core nvim aniseed.nvim}})
 
-(set nvim.g.grammarous#languagetool_cmd "languagetool")
+(set nvim.g.grammarous#languagetool_cmd :languagetool)
+

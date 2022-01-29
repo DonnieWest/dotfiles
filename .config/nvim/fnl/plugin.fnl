@@ -1,37 +1,31 @@
-(module plugin
-  {require {nvim aniseed.nvim
-            a aniseed.core
-            util util
-            packer packer}})
+(module plugin {require {nvim aniseed.nvim
+                         a aniseed.core
+                         util util
+                         packer packer}})
 
 (defn- safe-require-plugin-config [name]
-  "Safely require a module under the plugin.* prefix. Will catch errors
+       "Safely require a module under the plugin.* prefix. Will catch errors
   and print them while continuing execution, allowing other plugins to load
   even if one configuration module is broken."
-  (let [(ok? val-or-err) (pcall require (.. ".plugin." name))]
-    (when (not ok?)
-      (print (.. "Plugin config error: " val-or-err)))))
+       (let [(ok? val-or-err) (pcall require (.. :.plugin. name))]
+         (when (not ok?)
+           (print (.. "Plugin config error: " val-or-err)))))
 
-(defn req [name]
-  "A shortcut to building a require string for your plugin
+(defn req [name] "A shortcut to building a require string for your plugin
   configuration. Intended for use with packer's config or setup
   configuration options. Will prefix the name with `magic.plugin.`
-  before requiring."
-  (.. "require('magic.plugin." name "')"))
+  before requiring." (.. "require('magic.plugin." name "')"))
 
-(defn use [pkgs]
-  "Iterates through the arguments as pairs and calls packer's use function for
+(defn use [pkgs] "Iterates through the arguments as pairs and calls packer's use function for
   each of them. Works around Fennel not liking mixed associative and sequential
   tables as well.
   This is just a helper / syntax sugar function to make interacting with packer
   a little more concise."
-  (packer.startup
-    (fn [use]
-      (each [name opts (pairs pkgs)]
-          (-?> (. opts :mod) (safe-require-plugin-config))
-          (use (a.assoc opts 1 name)))))
+      (packer.startup (fn [use]
+                        (each [name opts (pairs pkgs)]
+                          (-?> (. opts :mod) (safe-require-plugin-config))
+                          (use (a.assoc opts 1 name))))) nil)
 
-  nil)
 
 ;; Plugins to be managed by packer.
 (use {:wbthomason/packer.nvim {} ;; Manage Packer w/ Packer

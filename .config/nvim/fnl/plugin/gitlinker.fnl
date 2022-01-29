@@ -1,4 +1,4 @@
-(module plugin.gitlinker
-  {require {gitlinker gitlinker}})
+(module plugin.gitlinker {require {gitlinker gitlinker}})
 
 (gitlinker.setup)
+

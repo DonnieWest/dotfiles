@@ -1,8 +1,7 @@
-(module plugin.conjure
-        {require {nvim aniseed.nvim
-                  core aniseed.core
-                  z zest.lib
-                  :ceval conjure.eval}})
+(module plugin.conjure {require {nvim aniseed.nvim
+                                 core aniseed.core
+                                 z zest.lib
+                                 :ceval conjure.eval}})
 
 (set nvim.g.conjure#eval#result_register "*")
 (set nvim.g.conjure#log#botright true)
@@ -50,8 +49,7 @@
              has-dot (includes before_char "%.")
              has-slash (includes before_char "/")
              trigger (if (or has-dot has-slash) col 0)]
-         (if (core.nil? offset)
-             {}
+         (if (core.nil? offset) {}
              {:keyword_pattern_offset (+ offset 1)
               :trigger_character_offset trigger})))
 

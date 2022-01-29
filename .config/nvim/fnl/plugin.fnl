@@ -26,10 +26,10 @@
                           (-?> (. opts :mod) (safe-require-plugin-config))
                           (use (a.assoc opts 1 name))))) nil)
 
-
 ;; Plugins to be managed by packer.
-(use {:wbthomason/packer.nvim {} ;; Manage Packer w/ Packer
 
+;; fnlfmt: skip
+(use {:wbthomason/packer.nvim {} ;; Manage Packer w/ Packer
       ;; Generic Plugins
       :tpope/vim-repeat {}
       :tpope/vim-surround {}
@@ -196,3 +196,4 @@
       :Olical/fennel.vim {}
       :elkowar/antifennel-nvim {}
       :elkowar/nvim-gehzu {:mod :gehzu}})
+

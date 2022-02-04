@@ -15,6 +15,26 @@
                                                      :goto_previous_usage :<Leader>N}
                                            :enable true}
                               :highlight_definitions {:enable true}}
+                   :textobjects {:lsp_interop {:peek_definition_code {:<Leader>df "@function.outer"
+                                                                      :<Leader>dF "@class.outer"}
+                                               :border false
+                                               :enable true}
+                                 :move {:enable true
+                                        :set_jumps true
+                                        :goto_next_start {"]m" "@function.outer"
+                                                          "]]" "@class.outer"}
+                                        :goto_next_end {"]M" "@function.outer"
+                                                        "][" "@class.outer"}
+                                        :goto_previous_start {"[m" "@function.outer"
+                                                              "[[" "@class.outer"}
+                                        :goto_previous_end {"[M" "@function.outer"
+                                                            "[]" "@class.outer"}}
+                                 :select {:keymaps {:af "@function.inner"
+                                                    :if "@function.outer"
+                                                    :ag "@class.outer"
+                                                    :ig "@class.inner"
+                                                    :ac "@comment.outer"}
+                                          :enable true}}
                    :rainbow {:enable true}
                    :autotag {:enable true}
                    :context_commentstring {:enable true}

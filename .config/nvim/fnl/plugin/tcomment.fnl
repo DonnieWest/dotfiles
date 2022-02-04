@@ -7,3 +7,5 @@
 (mapping.noremap :n :<leader>/ ":TComment<CR>")
 (mapping.noremap :v :<leader>/ ":TCommentBlock<CR>")
 
+(mapping.noremap :n :gbc ":TCommentBlock<CR>")
+(mapping.noremap :v :gb ":TCommentBlock<CR>")

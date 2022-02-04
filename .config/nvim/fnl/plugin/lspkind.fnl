@@ -1,7 +1,6 @@
 (module plugin.lspkind {require {nvim aniseed.nvim lspkind lspkind}})
 
-(lspkind.init {:with_text false
-               :symbol_map {:Text ""
+(lspkind.init {:symbol_map {:Text ""
                             :Method ""
                             :Function ""
                             :Constructor ""

@@ -2,6 +2,7 @@
                            mapping mapping
                            cmp-lsp cmp_nvim_lsp
                            lsp lspconfig
+                           schemastore schemastore
                            lightbulb nvim-lightbulb
                            lsp-code-action lsputil.codeAction
                            lsp-symbols lsputil.symbols
@@ -67,33 +68,7 @@
 (lsp.clojure_lsp.setup {:on_attach on-attach : capabilities})
 (lsp.jsonls.setup {:on_attach on-attach
                    : capabilities
-                   :settings {:json {:schemas [{:description "TypeScript compiler configuration file"
-                                                :fileMatch [:tsconfig.json
-                                                            ":tsconfig.*.json"]
-                                                :url "http://json.schemastore.org/tsconfig"}
-                                               {:description "NPM package.json"
-                                                :fileMatch [:package.json]
-                                                :url "http://json.schemastore.org/package"}
-                                               {:description "Lerna config"
-                                                :fileMatch [":lerna.json"]
-                                                :url "http://json.schemastore.org/lerna"}
-                                               {:description "Babel configuration"
-                                                :fileMatch [:.babelrc.json
-                                                            :.babelrc
-                                                            :babel.config.json]
-                                                :url "http://json.schemastore.org/lerna"}
-                                               {:description "ESLint config"
-                                                :fileMatch [:.eslintrc.json
-                                                            :.eslintrc]
-                                                :url "http://json.schemastore.org/eslintrc"}
-                                               {:description "Bucklescript config"
-                                                :fileMatch [":bsconfig.json"]
-                                                :url "https://bucklescript.github.io/bucklescript/docson/build-schema.json"}
-                                               {:description "Prettier config"
-                                                :fileMatch [:.prettierrc
-                                                            :.prettierrc.json
-                                                            :prettier.config.json]
-                                                :url "http://json.schemastore.org/prettierrc"}]}
+                   :settings {:json {:schemas (schemastore.json.schemas)}
                               :jsonls {:textDocument {:completion {:completionItem {:snippetSupport true}}}}}})
 
 (lsp.jdtls.setup {:on_attach on-attach : capabilities})

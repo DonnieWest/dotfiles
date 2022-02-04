@@ -122,6 +122,7 @@
       :RishabhRD/popfix {}
       :RishabhRD/nvim-lsputils {}
       :kosayoda/nvim-lightbulb {}
+      :b0o/schemastore.nvim {}
 
       ;; Appearance
 

@@ -121,6 +121,7 @@
       :hrsh7th/cmp-vsnip {}
       :hrsh7th/vim-vsnip {}
 
+      :petertriho/cmp-git {:requires :nvim-lua/plenary.nvim}
       :rafamadriz/friendly-snippets {}
 
       ;; LSP Features

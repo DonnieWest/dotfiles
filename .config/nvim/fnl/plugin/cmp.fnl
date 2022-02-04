@@ -1,6 +1,7 @@
 (module plugin.cmp {require {nvim aniseed.nvim
                              :nu aniseed.nvim.util
                              cmp cmp
+                             cmp_git cmp_git
                              lspkind lspkind
                              lsp cmp_nvim_lsp
                              lspconfig lspconfig}})
@@ -49,7 +50,9 @@
                       {:name :nvim_lua}
                       {:name :path}
                       {:name :vsnip}
+                      {:name :cmp_git}
                       {:name :vim-dadbod-completion}]})
 
 (nvim.ex.set "completeopt=menuone,noselect")
 
+(cmp_git.setup)

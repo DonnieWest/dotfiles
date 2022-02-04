@@ -122,7 +122,7 @@
       ;; LSP Features
 
       :neovim/nvim-lspconfig {:mod :lsp}
-      :tjdevries/lsp_extensions.nvim {}
+      :nvim-lua/lsp_extensions.nvim {}
       :onsails/lspkind-nvim {:mod :lspkind}
       :RishabhRD/popfix {}
       :RishabhRD/nvim-lsputils {}

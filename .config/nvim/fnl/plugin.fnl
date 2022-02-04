@@ -81,6 +81,9 @@
 
       :rhysd/clever-f.vim {}
       :tomtom/tcomment_vim {:mod :tcomment}
+      :nvim-telescope/telescope.nvim {:mod :telescope}
+      :nvim-telescope/telescope-fzf-native.nvim {:run :make}
+      :nvim-telescope/telescope-frecency.nvim {:requires :tami5/sqlite.lua}
       :mbbill/undotree {:mod :undotree}
       :justinmk/vim-dirvish {:mod :dirvish}
 

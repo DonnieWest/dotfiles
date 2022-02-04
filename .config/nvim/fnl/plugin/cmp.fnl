@@ -47,6 +47,7 @@
             :experimental {:ghost_text true}
             :sources [{:name :conjure}
                       {:name :nvim_lsp}
+                      {:name :nvim_lsp_signature_help}
                       {:name :nvim_lua}
                       {:name :path}
                       {:name :vsnip}

@@ -85,6 +85,10 @@
       :nvim-telescope/telescope-fzf-native.nvim {:run :make}
       :nvim-telescope/telescope-frecency.nvim {:requires :tami5/sqlite.lua}
       :folke/trouble.nvim {:mod :trouble}
+      :pwntester/octo.nvim {:mod :octo
+                            :requires [:nvim-telescope/telescope.nvim
+                                       :kyazdani42/nvim-web-devicons
+                                       :nvim-lua/plenary.nvim]}
 
       :mbbill/undotree {:mod :undotree}
       :justinmk/vim-dirvish {:mod :dirvish}

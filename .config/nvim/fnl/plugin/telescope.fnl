@@ -1,6 +1,7 @@
 (module plugin.telescope {require {nvim aniseed.nvim
                                    telescope telescope
                                    actions telescope.actions
+                                   builtin telescope.builtin
                                    mapping mapping}})
 
 (telescope.setup {:defaults {:mappings {:i {:<esc> actions.close}}}
@@ -13,6 +14,11 @@
 (each [_ value (ipairs [:fzf :frecency])]
   (telescope.load_extension value))
 
-(mapping.noremap :n :<C-p> ":Telescope find_files<CR>")
+(fn _G.__find_files []
+  (if (= (vim.fn.getcwd) (vim.fn.expand :$HOME))
+      (telescope.extensions.frecency.frecency)
+      (builtin.find_files)))
+
+(mapping.noremap :n :<C-p> ":lua _G.__find_files()<CR>")
 (mapping.noremap :n "\\" ":Telescope live_grep<CR>")
 

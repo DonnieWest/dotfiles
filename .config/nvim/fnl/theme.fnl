@@ -7,6 +7,7 @@
 
 (treesitter.setup {:ensure_installed :all
                    :ignore_install [:php :phpdoc]
+                   :endwise {:enable true}
                    :refactor {:smart_rename {:keymaps {:smart_rename :grr}
                                              :enable true}
                               :navigation {:keymaps {:goto_definition_lsp_fallback "<c-]>"

@@ -139,7 +139,7 @@
 
       ;; Appearance
 
-      :norcalli/nvim-colorizer.lua {:mod :colorizer}
+      :RRethy/vim-hexokinase {:run "make hexokinase"}
       :Firef0x/PKGBUILD.vim {}
       :ekalinin/Dockerfile.vim {}
 

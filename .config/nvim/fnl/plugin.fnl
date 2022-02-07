@@ -170,6 +170,7 @@
       :vuki656/package-info.nvim {:mod :package-info}
       :MunifTanjim/nui.nvim {}
       :JoosepAlviste/nvim-ts-context-commentstring {}
+      :David-Kunz/cmp-npm {}
 
       ;; Typescript
       :leafgarland/typescript-vim {}

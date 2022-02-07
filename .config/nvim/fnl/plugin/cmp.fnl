@@ -1,7 +1,8 @@
 (module plugin.cmp {require {nvim aniseed.nvim
                              :nu aniseed.nvim.util
                              cmp cmp
-                             cmp_git cmp_git
+                             npm cmp-npm
+                             git cmp_git
                              lspkind lspkind
                              lsp cmp_nvim_lsp
                              lspconfig lspconfig}})
@@ -48,6 +49,7 @@
             :sources [{:name :conjure}
                       {:name :nvim_lsp}
                       {:name :nvim_lsp_signature_help}
+                      {:name :npm :keyword_length 4}
                       {:name :nvim_lua}
                       {:name :path}
                       {:name :vsnip}
@@ -56,4 +58,6 @@
 
 (nvim.ex.set "completeopt=menuone,noselect")
 
-(cmp_git.setup)
+(git.setup)
+
+(npm.setup)

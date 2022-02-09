@@ -14,11 +14,13 @@
 (each [_ value (ipairs [:fzf :frecency])]
   (telescope.load_extension value))
 
-(fn _G.__find_files []
-  (if (= (vim.fn.getcwd) (vim.fn.expand :$HOME))
-      (telescope.extensions.frecency.frecency)
-      (builtin.find_files)))
+(defn telescopeFindFiles []
+      (if (= (vim.fn.getcwd) (vim.fn.expand :$HOME))
+          (telescope.extensions.frecency.frecency)
+          (builtin.find_files)))
 
-(mapping.noremap :n :<C-p> ":lua _G.__find_files()<CR>")
+(mapping.noremap :n :<C-p>
+                 ":lua require('plugin.telescope').telescopeFindFiles()<CR>")
+
 (mapping.noremap :n "\\" ":Telescope live_grep<CR>")
 

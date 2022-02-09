@@ -124,8 +124,8 @@
       :hrsh7th/cmp-nvim-lua {}
       :hrsh7th/cmp-path {}
 
-      :hrsh7th/cmp-vsnip {}
-      :hrsh7th/vim-vsnip {}
+      :L3MON4D3/LuaSnip {:mod :luasnip}
+      :saadparwaiz1/cmp_luasnip {}
 
       :petertriho/cmp-git {:requires :nvim-lua/plenary.nvim}
       :rafamadriz/friendly-snippets {}

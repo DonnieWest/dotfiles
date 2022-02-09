@@ -3,6 +3,7 @@
                              cmp cmp
                              npm cmp-npm
                              git cmp_git
+                             luasnip luasnip
                              lspkind lspkind
                              lsp cmp_nvim_lsp
                              lspconfig lspconfig}})
@@ -22,29 +23,25 @@
                       :<Tab> (cmp.mapping (fn [fallback]
                                             (if (cmp.visible)
                                                 (cmp.select_next_item)
-                                                (= ((. vim.fn "vsnip#available") 1)
-                                                   1)
-                                                (feedkey "<Plug>(vsnip-expand-or-jump)"
-                                                         "")
+                                                (luasnip.expand_or_locally_jumpable)
+                                                (luasnip.expand_or_jump)
                                                 (has-words-before)
                                                 (cmp.complete)
                                                 (fallback)))
                                           [:i :s])
-                      :<S-Tab> (cmp.mapping (fn []
+                      :<S-Tab> (cmp.mapping (fn [fallback]
                                               (if (cmp.visible)
                                                   (cmp.select_prev_item)
-                                                  (= ((. vim.fn
-                                                         "vsnip#jumpable") (- 1))
-                                                     1)
-                                                  (feedkey "<Plug>(vsnip-jump-prev)"
-                                                           "")))
-                                            [:i :s])
+                                                  (luasnip.jumpable (- 1))
+                                                  (luasnip.jump (- 1))
+                                                  (fallback))
+                                              [:i :s]))
                       :<C-e> (cmp.mapping {:i (cmp.mapping.abort)
                                            :c (cmp.mapping.close)})
                       :<C-x><C-o> (cmp.mapping (cmp.mapping.complete) [:i :c])}
             :formatting {:format (lspkind.cmp_format {:maxwidth 80})}
             :snippet {:expand (fn [args]
-                                ((. vim.fn "vsnip#anonymous") args.body))}
+                                (luasnip.lsp_expand args.body))}
             :experimental {:ghost_text true}
             :sources [{:name :conjure}
                       {:name :nvim_lsp}
@@ -52,7 +49,7 @@
                       {:name :npm :keyword_length 4}
                       {:name :nvim_lua}
                       {:name :path}
-                      {:name :vsnip}
+                      {:name :luasnip}
                       {:name :cmp_git}
                       {:name :vim-dadbod-completion}]})
 

@@ -36,7 +36,6 @@
       :tpope/vim-tbone {}
       :duggiefresh/vim-easydir {}
       :tpope/vim-eunuch {}
-      :tpope/vim-endwise {}
       :RRethy/nvim-treesitter-endwise {}
       :tpope/vim-abolish {}
       :jiangmiao/auto-pairs {:mod :auto-pairs}

@@ -9,9 +9,8 @@
                            lsp-symbols lsputil.symbols
                            lsp-locations lsputil.locations}})
 
-(var capabilities (vim.lsp.protocol.make_client_capabilities))
-(set capabilities
-     ((. (require :cmp_nvim_lsp) :update_capabilities) capabilities))
+(def capabilities
+     (cmp-lsp.update_capabilities (vim.lsp.protocol.make_client_capabilities)))
 
 (defn on-attach [client bufnr]
       (mapping.noremap :n :gd "<cmd>lua vim.lsp.buf.declaration()<CR>")

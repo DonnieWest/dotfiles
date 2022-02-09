@@ -111,6 +111,7 @@
       :justinmk/vim-gtfo {}
       :liuchengxu/vista.vim {:mod :vista}
       :noahfrederick/vim-skeleton {:mod :skeleton}
+      :ThePrimeagen/refactoring.nvim {:mod :refactoring}
 
       ;; Completion
 

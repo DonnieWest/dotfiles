@@ -11,7 +11,7 @@
                                      :override_file_sorter true
                                      :case_mode :smart_case}}})
 
-(each [_ value (ipairs [:fzf :frecency])]
+(each [_ value (ipairs [:fzf :frecency :refactoring])]
   (telescope.load_extension value))
 
 (defn telescopeFindFiles []
@@ -24,3 +24,5 @@
 
 (mapping.noremap :n "\\" ":Telescope live_grep<CR>")
 
+(mapping.noremap :v :<Leader>rr
+                 "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>")

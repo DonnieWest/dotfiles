@@ -5,11 +5,11 @@
                          :java [:android]
                          :python [:flake8 :mypy :pylint :pyls]
                          :clojure [:clj-kondo :joker]
-                         :kotlin [:android :ktlint]})
+                         :kotlin []})
 
 (set nvim.g.ale_fixers {:javascript [:prettier_eslint]
                         :rust [:rustfmt]
-                        :kotlin [:ktlint]})
+                        :kotlin []})
 
 (set nvim.g.ale_kotlin_ktlint_options "-aF --experimental")
 (set nvim.g.ale_lint_on_enter 1)
@@ -24,12 +24,6 @@
 (set nvim.g.ale_hover_to_popup 1)
 
 (set nvim.g.javascript_tsserver_use_global 1)
-
-(set nvim.g.ale_kotlin_languageserver_executable
-     :/home/igneo676/.config/nvim/plugged/kotlin-language-server/server/build/install/server/bin/kotlin-language-server)
-
-(set nvim.g.ale_java_javalsp_executable
-     :/home/igneo676/.config/nvim/plugged/java-language-server/dist/mac/bin/launcher)
 
 (set nvim.g.ale_completion_symbols
      {:text ""

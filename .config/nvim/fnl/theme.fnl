@@ -7,6 +7,9 @@
 
 (treesitter.setup {:ensure_installed :all
                    :ignore_install [:php :phpdoc]
+                   :query_linter {:enable true
+                                  :use_virtual_text true
+                                  :lint_events [:BufWrite :CursorHold]}
                    :endwise {:enable true}
                    :refactor {:smart_rename {:keymaps {:smart_rename :grr}
                                              :enable true}

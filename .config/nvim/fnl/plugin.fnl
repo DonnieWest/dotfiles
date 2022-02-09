@@ -62,6 +62,7 @@
       :tjdevries/overlength.vim {:mod :overlength}
 
       :nvim-treesitter/nvim-treesitter {:run ":TSUpdate"}
+      :nvim-treesitter/playground {}
       :nvim-treesitter/nvim-treesitter-textobjects {}
       :p00f/nvim-ts-rainbow {}
       :nvim-treesitter/nvim-treesitter-refactor {}

@@ -110,7 +110,7 @@
       :junegunn/fzf {}
 
       :mhinz/vim-grepper {:mod :grepper}
-      :dense-analysis/ale {:mod :ale}
+      :mfussenegger/nvim-lint {:mod :lint}
 
       :editorconfig/editorconfig-vim {}
       :justinmk/vim-gtfo {}
@@ -150,7 +150,7 @@
       :ekalinin/Dockerfile.vim {}
 
       ;; Formatters
-      :sbdchd/neoformat {:mod :neoformat}
+      :mhartington/formatter.nvim {:mod :formatter}
 
       ;; Git plugins
       :sindrets/diffview.nvim {}

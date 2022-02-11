@@ -112,11 +112,7 @@
 
 (lsp.jdtls.setup {:on_attach on-attach : capabilities})
 (lsp.tailwindcss.setup {:on_attach on-attach : capabilities})
-(lsp.kotlin_language_server.setup {:cmd [:/home/donniew/.local/share/nvim/site/pack/packer/start/kotlin-language-server/server/build/install/server/bin/kotlin-language-server]
-                                   :log_level vim.lsp.protocol.MessageType.Log
-                                   :root_dir (or (lsp.util.root_pattern :settings.gradle.kts)
-                                                 (lsp.util.root_pattern :settings.gradle))
-                                   :message_level vim.lsp.protocol.MessageType.Log
+(lsp.kotlin_language_server.setup {:cmd [:/home/igneo676/.local/share/nvim/site/pack/packer/start/kotlin-language-server/server/build/install/server/bin/kotlin-language-server]
                                    :on_attach on-attach
                                    : capabilities
                                    :settings {:kotlin {:compiler {:jvm {:target :1.8}}}}})

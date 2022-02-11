@@ -209,7 +209,7 @@
       :dmac/vim-cljfmt {}
 
       :clojure-vim/clojure.vim {}
-      :gpanders/nvim-parinfer {}
+      :gpanders/nvim-parinfer {:mod :parinfer}
 
 
       ;; Fennel

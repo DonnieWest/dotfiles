@@ -11,7 +11,7 @@
                                      :override_file_sorter true
                                      :case_mode :smart_case}}})
 
-(each [_ value (ipairs [:fzf :frecency :refactoring])]
+(each [_ value (ipairs [:fzf :frecency :refactoring :dap])]
   (telescope.load_extension value))
 
 (defn telescopeFindFiles []

@@ -99,7 +99,10 @@
       :mbbill/undotree {:mod :undotree}
       :justinmk/vim-dirvish {:mod :dirvish}
 
-      :mfussenegger/nvim-dap {}
+      :mfussenegger/nvim-dap {:mod :dap}
+      :rcarriga/nvim-dap-ui {}
+      :theHamsta/nvim-dap-virtual-text {}
+      :nvim-telescope/telescope-dap.nvim {}
 
       :kassio/neoterm {}
       :ludovicchabant/vim-gutentags {:mod :gutentags}

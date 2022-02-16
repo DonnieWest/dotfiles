@@ -190,7 +190,6 @@
       :mfussenegger/nvim-jdtls {}
 
       ;; Kotlin
-      :donniewest/kotlin-vim {}
       :fwcd/kotlin-language-server {:run "./gradlew :server:installDist" :branch "main"}
 
       ;; Writing Plugins

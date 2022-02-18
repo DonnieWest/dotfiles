@@ -29,15 +29,16 @@ exec hash dbus-update-activation-environment 2>/dev/null && \
 # exec wlsunset -l 39.099724 -L -94.578331
 
 exec swayidle \
-    timeout 490 '~/.bin/swaylock-wrapper' \
-    timeout 500 'swaymsg "output * dpms off"' \
-       resume 'swaymsg "output * dpms on"' \
+    timeout 400 '~/.bin/swaylock-wrapper' \
+    timeout 600 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
     before-sleep '~/.bin/swaylock-wrapper'
 
-output * bg ~/Wallpapers/armed_society_wallpaper.png fill
+# output * bg ~/Wallpapers/armed_society_wallpaper.png fill
 # output * bg ~/Wallpapers/MK1-Dark.png fill
 # output * bg ~/Wallpapers/the_big_one_by_grivetart-d7mrqvp.jpg fill
 # output * bg ~/Wallpapers/Dragon_Fire_Fantasy_4813x4018.jpg fill
+output * bg ~/Wallpapers/PlasmaNoir.png fill
 output eDP-1 scale 1
 
 exec libinput-gestures-setup start

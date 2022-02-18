@@ -358,9 +358,6 @@ tmuxattach() {
   tmux attach-session -t $(tmux ls | fzf | sed 's/:.*//')
 }
 
-# Custom aliases
-alias package-json-dependency-lint=pjdl
-
 # source <(npx --shell-auto-fallback zsh)
 command_not_found_handler() {
   # Do not run within a pipe

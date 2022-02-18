@@ -191,6 +191,7 @@
 
       ;; Kotlin
       :fwcd/kotlin-language-server {:run "./gradlew :server:installDist" :branch "main"}
+      :microsoft/vscode-gradle {:run "./gradlew installDist" :branch "main"}
 
       ;; Writing Plugins
       :rhysd/vim-grammarous {:mod :grammarous}

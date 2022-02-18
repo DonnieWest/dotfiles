@@ -62,6 +62,24 @@
 (vim.cmd "autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()")
 (vim.cmd "autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost .rs,.ts,.js lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = \"Comment\" }")
 
+(defn- filter [arr ___fn-__] (if (not= (type arr) :table)
+                                 arr)
+       (local filtered {})
+       (each [k v (pairs arr)]
+         (when (___fn-__ v k arr)
+           (table.insert filtered v))) filtered)
+
+(defn- filter-react-dTS [value] (= (string.match value.uri :react/index.d.ts)
+                                   nil))
+
+(defn- definition-handler [err result method ...]
+       (if (and (vim.tbl_islist result) (> (length result) 1))
+           (vim.lsp.handlers.textDocument/definition err
+                                                     ((filter result
+                                                              filter-react-dTS))
+                                                     method ...)
+           (vim.lsp.handlers.textDocument/definition err result method ...)))
+
 (defn ts-on-attach [client bufnr] (on-attach client bufnr)
       (ts-utils.setup {:debug false
                        :disable_commands false
@@ -90,6 +108,7 @@
 
 (lsp.tsserver.setup {:on_attach ts-on-attach
                      : capabilities
+                     :handlers {:textDocument/definition definition-handler}
                      :init_options {:preferences {:allowIncompleteCompletions false
                                                   :includeInlayParameterNameHints :all
                                                   :includeInlayParameterNameHintsWhenArgumentMatchesName true

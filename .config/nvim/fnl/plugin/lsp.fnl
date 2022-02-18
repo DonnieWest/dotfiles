@@ -86,9 +86,6 @@
                        :watch_dir nil}) (ts-utils.setup_client client)
       (local opts {:silent true})
       (vim.api.nvim_buf_set_keymap bufnr :n :gs ":TSLspOrganize<CR>" opts)
-      (vim.api.nvim_buf_set_keymap bufnr :n :<Leader>r ":TSLspRenameFile<CR>"
-                                   opts)
-      (vim.api.nvim_buf_set_keymap bufnr :n :<F19> ":TSLspRenameFile<CR>" opts)
       (vim.api.nvim_buf_set_keymap bufnr :n :gi ":TSLspImportAll<CR>" opts))
 
 (lsp.tsserver.setup {:on_attach ts-on-attach

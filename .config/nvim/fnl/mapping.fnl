@@ -37,6 +37,9 @@
 (noremap :n :<C-Right> ":bnext<CR>")
 (noremap :n :<C-Left> ":bprevious<CR>")
 
+(noremap :n :<C-l> ":bnext<CR>")
+(noremap :n :<C-h> ":bprevious<CR>")
+
 (noremap :n :<Leader>t ":GrepperRg TODO: <CR>")
 
 (noremap :n :<leader><space> ":call StripTrailingWhitespace()<cr>")

@@ -39,6 +39,8 @@ nnoremap ,fm :action ReformatCode<CR>
 
 nnoremap <C-Right> :action NextTab<CR>
 nnoremap <C-Left> :action PreviousTab<CR>
+nnoremap <C-l> :action NextTab<CR>
+nnoremap <C-h> :action PreviousTab<CR>
 nnoremap <C-p> :action SearchEverywhere<CR>
 nnoremap <C-Delete> :action CloseEditor<CR>
 

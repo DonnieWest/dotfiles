@@ -126,6 +126,9 @@ bindsym Mod1+Control+Left workspace prev
 bindsym Mod1+Control+L workspace next
 bindsym Mod1+Control+H workspace prev
 
+bindsym Mod1+Control+K workspace next
+bindsym Mod1+Control+J workspace prev
+
 workspace_auto_back_and_forth yes
 bindsym $mod+z workspace back_and_forth
 bindsym $mod+Shift+z move container to workspace back_and_forth

@@ -114,7 +114,7 @@
       :mhinz/vim-grepper {:mod :grepper}
       :mfussenegger/nvim-lint {:mod :lint}
 
-      :editorconfig/editorconfig-vim {}
+      :gpanders/editorconfig.nvim {}
       :justinmk/vim-gtfo {}
       :liuchengxu/vista.vim {:mod :vista}
       :noahfrederick/vim-skeleton {:mod :skeleton}

@@ -59,7 +59,6 @@
 
       ;; UI
       :blueyed/vim-diminactive {}
-      :tjdevries/overlength.vim {:mod :overlength}
 
       :nvim-treesitter/nvim-treesitter {:run ":TSUpdate"}
       :nvim-treesitter/playground {}

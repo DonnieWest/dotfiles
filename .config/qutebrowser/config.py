@@ -314,7 +314,7 @@ c.completion.cmd_history_max_items = -1
 # Delay (in milliseconds) before updating completions after typing a
 # character.
 # Type: Int
-c.completion.delay = 200
+c.completion.delay = 300
 
 # Minimum amount of characters needed to update completions.
 # Type: Int

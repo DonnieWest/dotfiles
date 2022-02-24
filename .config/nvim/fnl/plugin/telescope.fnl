@@ -4,7 +4,18 @@
                                    builtin telescope.builtin
                                    mapping mapping}})
 
-(telescope.setup {:defaults {:mappings {:i {:<esc> actions.close}}}
+(telescope.setup {:defaults {:vimgrep_arguments [:rg
+                                                 :--color=never
+                                                 :--no-heading
+                                                 :--with-filename
+                                                 :--line-number
+                                                 :--column
+                                                 :--smart-case
+                                                 :--hidden
+                                                 :--follow
+                                                 :-g
+                                                 :!.git/]
+                             :mappings {:i {:<esc> actions.close}}}
                   :extensions {:frecency {:workspaces {:config :$HOME/.config}}
                                :fzf {:fuzzy true
                                      :override_generic_sorter true

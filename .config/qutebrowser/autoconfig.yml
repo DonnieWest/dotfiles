@@ -14,3 +14,5 @@ settings:
     https://meet.google.com: true
   content.media.video_capture:
     https://meet.google.com: true
+  completion.delay:
+    global: 300

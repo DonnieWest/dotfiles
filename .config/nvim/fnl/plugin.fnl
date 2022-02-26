@@ -135,6 +135,8 @@
       :petertriho/cmp-git {:requires :nvim-lua/plenary.nvim}
       :rafamadriz/friendly-snippets {}
 
+      :ray-x/lsp_signature.nvim {:mod :signature}
+
       ;; LSP Features
 
       :neovim/nvim-lspconfig {:mod :lsp}

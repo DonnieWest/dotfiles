@@ -1,12 +1,8 @@
 (module plugin.package-info
-        {require {core aniseed.core
-                  nvim aniseed.nvim
-                  package package-info
-                  au zest.au
-                  z zest.lib}
-         require-macros [zest.macros]})
+        {require {core aniseed.core nvim aniseed.nvim package package-info}})
 
 (package.setup)
 
-(au- [BufEnter BufWritePost] :package.json #(package.show))
+(vim.api.nvim_create_autocmd [:BufEnter :BufWritePost]
+                             {:pattern :package.json :callback #(package.show)})
 

@@ -1,7 +1,5 @@
 (module theme {require {treesitter nvim-treesitter.configs
                         base16 base16
-                        au zest.au
-                        z zest.lib
                         nvim aniseed.nvim}
                require-macros [zest.macros macros]})
 
@@ -142,7 +140,7 @@
 
 (base16 base16.themes.tweaked true {:lightline true})
 
-(au- [ColorScheme] * #(colorscheme-fixes))
+(vim.api.nvim_create_autocmd [:ColorScheme] {:callback #(colorscheme-fixes)})
 
 (colorscheme-fixes)
 

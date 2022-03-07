@@ -133,3 +133,7 @@
                                    : capabilities
                                    :settings {:kotlin {:compiler {:jvm {:target :1.8}}}}})
 
+(lsp.gradle_ls.setup {:cmd [:/home/donniew/.local/share/nvim/site/pack/packer/start/vscode-gradle/gradle-language-server/build/install/gradle-language-server/bin/gradle-language-server]
+                      :on_attach on-attach
+                      : capabilities})
+

@@ -18,3 +18,5 @@
 	rebase = true
 [rebase]
 	autostash = true
+[fetch]
+	prune = true

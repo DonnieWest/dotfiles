@@ -146,6 +146,7 @@
       :RishabhRD/nvim-lsputils {}
       :kosayoda/nvim-lightbulb {}
       :b0o/schemastore.nvim {}
+      :onsails/diaglist.nvim {:mod :diaglist}
 
       ;; Appearance
 

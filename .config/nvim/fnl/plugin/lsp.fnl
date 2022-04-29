@@ -30,9 +30,6 @@
 (nvim.ex.autocmd :FileType :clojure
                  "nnoremap <silent> <leader>fm    <cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>")
 
-(nvim.ex.autocmd "BufWrite,BufEnter,InsertLeave" "*"
-                 ":lua vim.diagnostic.setloclist({open = false})")
-
 (tset vim.lsp.handlers :textDocument/codeAction
       lsp-code-action.code_action_handler)
 

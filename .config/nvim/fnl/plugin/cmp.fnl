@@ -1,5 +1,4 @@
 (module plugin.cmp {require {nvim aniseed.nvim
-                             :nu aniseed.nvim.util
                              cmp cmp
                              npm cmp-npm
                              git cmp_git

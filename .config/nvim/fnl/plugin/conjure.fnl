@@ -1,7 +1,7 @@
 (module plugin.conjure {require {nvim aniseed.nvim
                                  core aniseed.core
                                  z zest.lib
-                                 :ceval conjure.eval}})
+                                 ceval conjure.eval}})
 
 (set nvim.g.conjure#eval#result_register "*")
 (set nvim.g.conjure#log#botright true)

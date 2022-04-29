@@ -18,26 +18,29 @@
   (vim.api.nvim_feedkeys (vim.api.nvim_replace_termcodes key true true true)
                          mode true))
 
-(cmp.setup {:mapping {:<CR> (cmp.mapping.confirm {:select true})
-                      :<Tab> (cmp.mapping (fn [fallback]
-                                            (if (cmp.visible)
-                                                (cmp.select_next_item)
-                                                (luasnip.expand_or_locally_jumpable)
-                                                (luasnip.expand_or_jump)
-                                                (has-words-before)
-                                                (cmp.complete)
-                                                (fallback)))
-                                          [:i :s])
-                      :<S-Tab> (cmp.mapping (fn [fallback]
-                                              (if (cmp.visible)
-                                                  (cmp.select_prev_item)
-                                                  (luasnip.jumpable (- 1))
-                                                  (luasnip.jump (- 1))
-                                                  (fallback))
-                                              [:i :s]))
-                      :<C-e> (cmp.mapping {:i (cmp.mapping.abort)
-                                           :c (cmp.mapping.close)})
-                      :<C-x><C-o> (cmp.mapping (cmp.mapping.complete) [:i :c])}
+(cmp.setup {:mapping (cmp.mapping.preset.insert {:<CR> (cmp.mapping.confirm {:select true})
+                                                 :<Tab> (cmp.mapping (fn [fallback]
+                                                                       (if (cmp.visible)
+                                                                           (cmp.select_next_item)
+                                                                           (luasnip.expand_or_locally_jumpable)
+                                                                           (luasnip.expand_or_jump)
+                                                                           (has-words-before)
+                                                                           (cmp.complete)
+                                                                           (fallback)))
+                                                                     [:i :s])
+                                                 :<S-Tab> (cmp.mapping (fn [fallback]
+                                                                         (if (cmp.visible)
+                                                                             (cmp.select_prev_item)
+                                                                             (luasnip.jumpable (- 1))
+                                                                             (luasnip.jump (- 1))
+                                                                             (fallback))
+                                                                         [:i
+                                                                          :s]))
+                                                 :<C-e> (cmp.mapping {:i (cmp.mapping.abort)
+                                                                      :c (cmp.mapping.close)})
+                                                 :<C-x><C-o> (cmp.mapping (cmp.mapping.complete)
+                                                                          [:i
+                                                                           :c])})
             :formatting {:format (lspkind.cmp_format {:maxwidth 80})}
             :snippet {:expand (fn [args]
                                 (luasnip.lsp_expand args.body))}

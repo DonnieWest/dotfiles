@@ -54,10 +54,17 @@
 (tset vim.lsp.handlers :textDocument/documentSymbol
       lsp-symbols.document_handler)
 
+(def- diagnostic-config {:virtual_text false
+                         :signs true
+                         :underline true
+                         :update_in_insert true
+                         :severity_sort true})
+
 (tset vim.lsp.handlers :workspace/symbol lsp-symbols.workspace_handler)
 (tset vim.lsp.handlers :textDocument/publishDiagnostics
-      (vim.lsp.with vim.lsp.diagnostic.on_publish_diagnostics
-                    {:virtual_text false :signs true :update_in_insert false}))
+      (vim.lsp.with vim.lsp.diagnostic.on_publish_diagnostics diagnostic-config))
+
+(vim.diagnostic.config diagnostic-config)
 
 (vim.cmd "autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()")
 (vim.cmd "autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost .rs,.ts,.js lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = \"Comment\" }")

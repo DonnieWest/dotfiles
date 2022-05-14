@@ -28,7 +28,7 @@
       (nvim.ex.autocmd :CursorHold :<buffer> "lua vim.diagnostic.open_float(nil, { focusable = false })"))
 
 (nvim.ex.autocmd :FileType :clojure
-                 "nnoremap <silent> <leader>fm    <cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>")
+                 "nnoremap <silent> <leader>fm    <cmd>lua vim.lsp.buf.format()<CR>")
 
 (tset vim.lsp.handlers :textDocument/codeAction
       lsp-code-action.code_action_handler)

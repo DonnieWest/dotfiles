@@ -26,7 +26,7 @@
      {:colorscheme :base16_nvim
       :separator {:left "" :right ""}
       :subseparator {:left "" :right ""}
-      :component_function {:gitbranch "fugitive#head"
+      :component_function {:gitbranch "FugitiveHead"
                            :method :NearestMethodOrFunction
                            :readonly :LightlineReadonly}
       :component_expand {:buffers "lightline#bufferline#buffers"

@@ -13,10 +13,6 @@
 (bridge :LspStatus :lspstatus)
 (bridge :NearestMethodOrFunction :nearest-method)
 
-(set nvim.g.lightline#ale#indicator_checking "")
-(set nvim.g.lightline#ale#indicator_warnings "")
-(set nvim.g.lightline#ale#indicator_errors "")
-(set nvim.g.lightline#ale#indicator_ok "")
 (set nvim.g.lightline#bufferline#enable_devicons 1)
 (set nvim.g.lightline#bufferline#show_number 0)
 (set nvim.g.lightline#bufferline#shorten_path 1)
@@ -37,10 +33,6 @@
                          :lsp_hints "lightline#lsp#hints"
                          :lsp_ok "lightline#lsp#ok"
                          :lsp_status "lightline#lsp#status"
-                         :linter_checking "lightline#ale#checking"
-                         :linter_warnings "lightline#ale#warnings"
-                         :linter_errors "lightline#ale#errors"
-                         :linter_ok "lightline#ale#ok"
                          :gradle_errors "lightline#gradle#errors"
                          :gradle_warnings "lightline#gradle#warnings"
                          :gradle_running "lightline#gradle#running"
@@ -49,25 +41,12 @@
                        :gradle_errors :error
                        :gradle_warnings :warning
                        :gradle_running :left
-                       :gradle_project :right
-                       :linter_warnings :warning
-                       :linter_errors :error
-                       :linter_info :info
-                       :linter_hints :hints
-                       :linter_ok :left
-                       :linter_checking :left
-                       :linter_warnings :warning
-                       :linter_errors :error
-                       :linter_ok :left}
+                       :gradle_project :right}
       :tabline {:left [[:buffers]] :right [[]]}
       :active {:left [[:mode :paste]
                       [:gitbranch :readonly :filename :modified :method]]
                :right [[:lineinfo]
                        [:percent]
-                       [:linter_checking
-                        :linter_errors
-                        :linter_warnings
-                        :linter_ok]
                        [:lsp_status
                         :lsp_warnings
                         :lsp_errors

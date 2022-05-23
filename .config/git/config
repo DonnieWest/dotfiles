@@ -20,3 +20,5 @@
 	autostash = true
 [fetch]
 	prune = true
+[merge]
+	conflictstyle = diff3

@@ -69,7 +69,6 @@
 
       :itchyny/lightline.vim {:mod :lightline}
       :mgee/lightline-bufferline {}
-      :maximbaz/lightline-ale {}
       :josa42/nvim-lightline-lsp {}
 
       :ryanoasis/vim-devicons {}

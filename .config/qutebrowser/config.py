@@ -223,8 +223,12 @@ config.set('content.images', True, 'devtools://*')
 # Allow JavaScript to read from or write to the clipboard. With
 # QtWebEngine, writing the clipboard as response to a user interaction
 # is always allowed.
-# Type: Bool
-c.content.javascript.can_access_clipboard = True
+# Type: String
+# Valid values:
+#   - none: Disable access to clipboard.
+#   - access: Allow reading from and writing to the clipboard.
+#   - access-paste: Allow accessing the clipboard and pasting clipboard content.
+c.content.javascript.clipboard = 'access-paste'
 
 # Enable JavaScript.
 # Type: Bool

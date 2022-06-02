@@ -230,8 +230,6 @@ plugins=(
   zdharma-continuum/fast-syntax-highlighting
   mafredri/zsh-async
 
-  wfxr/forgit
-  walesmd/caniuse.plugin.zsh
   jsahlen/tmux-vim-integration.plugin.zsh
   laggardkernel/git-ignore
 
@@ -240,7 +238,6 @@ plugins=(
 
   lukechilds/zsh-better-npm-completion
   chrisands/zsh-yarn-completion
-  unixorn/docker-helpers.zshplugin
   marlonrichert/zsh-hist
 )
 

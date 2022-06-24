@@ -128,6 +128,8 @@
       :hrsh7th/cmp-nvim-lua {}
       :hrsh7th/cmp-path {}
 
+      :jubnzv/virtual-types.nvim {}
+
       :L3MON4D3/LuaSnip {:mod :luasnip}
       :saadparwaiz1/cmp_luasnip {}
 

@@ -4,6 +4,7 @@
                            lsp lspconfig
                            schemastore schemastore
                            ts-utils nvim-lsp-ts-utils
+                           virtualtypes virtualtypes
                            lightbulb nvim-lightbulb
                            lsp-code-action lsputil.codeAction
                            lsp-symbols lsputil.symbols
@@ -13,6 +14,7 @@
      (cmp-lsp.update_capabilities (vim.lsp.protocol.make_client_capabilities)))
 
 (defn on-attach [client bufnr]
+      (virtualtypes.on_attach client bufnr)
       (mapping.noremap :n :gd "<cmd>lua vim.lsp.buf.declaration()<CR>")
       (mapping.noremap :n "<c-]>" "<cmd>lua vim.lsp.buf.definition()<CR>")
       (mapping.noremap :n :K "<cmd>lua vim.lsp.buf.hover()<CR>")

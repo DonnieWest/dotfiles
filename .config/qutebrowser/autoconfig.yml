@@ -16,3 +16,6 @@ settings:
     https://meet.google.com: true
   completion.delay:
     global: 300
+  url.searchengines:
+    global:
+      DEFAULT: https://search.brave.com/search?q={}

@@ -202,6 +202,8 @@
       :jxnblk/vim-mdx-js {}
       :gabrielelana/vim-markdown {}
       :vhyrro/neorg {:requires :nvim-lua/plenary.nvim :mod :neorg}
+      :preservim/vim-wordy {}
+      :preservim/vim-lexical {:mod :lexical}
 
       ;; SQL
       :tpope/vim-dadbod {}

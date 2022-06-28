@@ -79,3 +79,6 @@
 (nvim.ex.autocmd :FileType :kotlin "setlocal shiftwidth=4")
 (nvim.ex.autocmd :FileType :kotlin "setlocal softtabstop=4")
 (nvim.ex.autocmd :FileType :kotlin "setlocal tabstop=4")
+
+(nvim.ex.autocmd :FileType :markdown "setlocal spell")
+(nvim.ex.autocmd :FileType :markdown "setlocal wrap linebreak")

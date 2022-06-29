@@ -39,7 +39,7 @@ config.load_autoconfig(False)
 # Aliases for commands. The keys of the given dictionary are the
 # aliases, while the values are the commands they map to.
 # Type: Dict
-c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript ~/.config/qutebrowser/userscripts/qute-bitwarden', 'mpv': 'spawn --userscript ~/.config/qutebrowser/userscripts/view_in_mpv', 'pushwebsite': 'spawn --userscript ~/.config/qutebrowser/userscripts/pushwebsite', 'readability': 'spawn --userscript ~/.config/qutebrowser/userscripts/readability-js'}
+c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript ~/.config/qutebrowser/userscripts/qute-bitwarden', 'mpv': 'spawn --userscript ~/.config/qutebrowser/userscripts/view_in_mpv', 'pushwebsite': 'spawn --userscript ~/.config/qutebrowser/userscripts/pushwebsite', 'readability': 'spawn --userscript ~/.config/qutebrowser/userscripts/readability-js', 'add-to-wallabag': 'spawn --userscript ~/.config/qutebrowser/userscripts/wallabag-add'}
 
 # Additional arguments to pass to Qt, without leading `--`. With
 # QtWebEngine, some Chromium arguments (see
@@ -50,7 +50,7 @@ c.qt.args = ['enable-webrtc-pipewire-capturer', 'enable-gpu-rasterization', 'ign
 # Additional environment variables to set. Setting an environment
 # variable to null/None will unset it.
 # Type: Dict
-c.qt.environ = {'NODE_PATH': '/home/igneo676/.config/n/lib/node_modules'}
+c.qt.environ = {'NODE_PATH': '~/.config/n/lib/node_modules'}
 
 # Force a Qt platform to use. This sets the `QT_QPA_PLATFORM`
 # environment variable and is useful to force using the XCB plugin when

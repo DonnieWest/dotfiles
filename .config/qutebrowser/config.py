@@ -46,7 +46,8 @@ c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save
 # https://peter.sh/experiments/chromium-command-line-switches/ for a
 # list) will work.
 # Type: List of String
-c.qt.args = ['enable-webrtc-pipewire-capturer', 'enable-gpu-rasterization', 'ignore-gpu-blacklist', 'enable-accelerated-video-decode']
+c.qt.args = ['enable-accelerated-video-decode', 'enable-webrtc-pipewire-capturer', 'enable-gpu-rasterization', 'ignore-gpu-blacklist', 'enable-accelerated-video-decode', 'enable-native-gpu-memory-buffers', 'num-raster-threads=4']
+
 # Additional environment variables to set. Setting an environment
 # variable to null/None will unset it.
 # Type: Dict
@@ -290,9 +291,11 @@ config.set('content.notifications.enabled', False, 'https://meet.google.com')
 #   - ask
 config.set('content.notifications.enabled', False, 'https://www.reddit.com')
 
-# Allow pdf.js to view PDF files in the browser. Note that the files can
-# still be downloaded by clicking the download button in the pdf.js
-# viewer.
+# Display PDF files via PDF.js in the browser without showing a download
+# prompt. Note that the files can still be downloaded by clicking the
+# download button in the pdf.js viewer. With this set to `false`, the
+# `:prompt-open-download --pdfjs` command (bound to `<Ctrl-p>` by
+# default) can be used in the download prompt.
 # Type: Bool
 c.content.pdfjs = True
 
@@ -480,9 +483,9 @@ config.bind('<Ctrl+Del>', 'tab-close')
 config.bind('<Ctrl+Left>', 'tab-prev')
 config.bind('<Ctrl+Right>', 'tab-next')
 config.bind('<Ctrl+h>', 'tab-prev')
-config.bind('<Ctrl+l>', 'tab-next')
 config.bind('<Ctrl+j>', 'tab-prev')
 config.bind('<Ctrl+k>', 'tab-next')
+config.bind('<Ctrl+l>', 'tab-next')
 config.bind('F', 'hint all tab-bg')
 config.unbind('d')
 config.bind('dd', 'tab-close')

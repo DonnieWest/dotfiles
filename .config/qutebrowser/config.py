@@ -47,6 +47,10 @@ c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save
 # list) will work.
 # Type: List of String
 c.qt.args = ['enable-webrtc-pipewire-capturer', 'enable-gpu-rasterization', 'ignore-gpu-blacklist', 'enable-accelerated-video-decode']
+# Additional environment variables to set. Setting an environment
+# variable to null/None will unset it.
+# Type: Dict
+c.qt.environ = {'NODE_PATH': '/home/igneo676/.config/n/lib/node_modules'}
 
 # Force a Qt platform to use. This sets the `QT_QPA_PLATFORM`
 # environment variable and is useful to force using the XCB plugin when
@@ -370,6 +374,27 @@ c.tabs.new_position.related = 'last'
 # tab contents, or smaller than tabs.min_width.
 # Type: Int
 c.tabs.max_width = 256
+
+# Search engines which can be used via the address bar.  Maps a search
+# engine name (such as `DEFAULT`, or `ddg`) to a URL with a `{}`
+# placeholder. The placeholder will be replaced by the search term, use
+# `{{` and `}}` for literal `{`/`}` braces.  The following further
+# placeholds are defined to configure how special characters in the
+# search terms are replaced by safe characters (called 'quoting'):  *
+# `{}` and `{semiquoted}` quote everything except slashes; this is the
+# most   sensible choice for almost all search engines (for the search
+# term   `slash/and&amp` this placeholder expands to `slash/and%26amp`).
+# * `{quoted}` quotes all characters (for `slash/and&amp` this
+# placeholder   expands to `slash%2Fand%26amp`). * `{unquoted}` quotes
+# nothing (for `slash/and&amp` this placeholder   expands to
+# `slash/and&amp`). * `{0}` means the same as `{}`, but can be used
+# multiple times.  The search engine named `DEFAULT` is used when
+# `url.auto_search` is turned on and something else than a URL was
+# entered to be opened. Other search engines can be used by prepending
+# the search engine name to the search term, e.g. `:open google
+# qutebrowser`.
+# Type: Dict
+c.url.searchengines = {'DEFAULT': 'https://search.brave.com/search?q={}'}
 
 # Hide the window decoration.  This setting requires a restart on
 # Wayland.

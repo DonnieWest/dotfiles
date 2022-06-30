@@ -19,3 +19,5 @@ settings:
   url.searchengines:
     global:
       DEFAULT: https://search.brave.com/search?q={}
+  content.javascript.clipboard:
+    global: access-paste

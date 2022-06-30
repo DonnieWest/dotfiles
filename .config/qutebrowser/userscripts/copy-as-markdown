@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+readable $QUTE_HTML | pandoc -f html -t markdown | wl-copy

@@ -489,6 +489,10 @@ delete-branches() {
     xargs --no-run-if-empty git branch --delete --force
 }
 
+open-ebook() {
+  epy "$(find $HOME/Calibre\ Library -name '*.epub' -o -name '*.azw3' -o -name '*.mobi' -o -name '*.epub3' -o -name '*.azw' | fzf)"
+}
+
 alias ua-drop-caches='sudo paccache -rk3; yay -Sc --aur --noconfirm'
 alias ua-update-all='export TMPFILE="$(mktemp)"; \
     sudo true; \

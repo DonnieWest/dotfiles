@@ -204,6 +204,7 @@
       :vhyrro/neorg {:requires :nvim-lua/plenary.nvim :mod :neorg}
       :preservim/vim-wordy {}
       :preservim/vim-lexical {:mod :lexical}
+      :mickael-menu/zk-nvim {:mod :zk}
 
       ;; SQL
       :tpope/vim-dadbod {}

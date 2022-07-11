@@ -494,6 +494,90 @@ open-ebook() {
   epy "$(find $HOME/Calibre\ Library -name '*.epub' -o -name '*.azw3' -o -name '*.mobi' -o -name '*.epub3' -o -name '*.azw' | fzf)"
 }
 
+pomo() {
+    arg1=$1
+    shift
+    args="$*"
+
+    min=${arg1:?Example: pomo 15 Take a break}
+    sec=$((min * 60))
+    msg="${args:?Example: pomo 15 Take a break}"
+
+    now=$(date +%s)
+    timeout=$((now + sec))
+
+    trap "rm /tmp/pomo" EXIT
+
+    while [ "$(date +%s)" -lt "$timeout" ]; do
+        clear
+
+        echo "$(date -d "@$timeout" +%I:%M) $msg" > /tmp/pomo
+
+        echo "$(date '+%I:%M') - $(date -d "@$timeout" +%I:%M) ${msg:?}" && sleep 10s
+    done
+
+    notify-send -u critical -i /usr/share/icons/Arc/status/128/messagebox_critical.png -a pomo "${msg:?}"
+
+    echo "Done ${msg:?}"
+}
+
+transition-jira-issues() {
+  SPRINT=$(jira mysprint)
+
+  STATUS=$(echo $SPRINT | rg "WR" | awk -F \|  '{print $6}' | sort -u | fzf | xargs)
+
+  declare TRANSITION
+  declare VERSION
+
+  echo $SPRINT | rg "WR" | rg $STATUS | awk -F \| '{print $2}' | fzf --multi | while read -r issue; do
+    ISSUEVERSION=$(jira view $issue | rg fixVersions)
+
+    if [ -z "$ISSUEVERSION" ]; then
+      if [ -z "$VERSION" ]; then
+        VERSION=$(jira releases WR | rg Android | fzf | sed s/.*://g | xargs)
+      fi
+
+      jira edit --noedit -ofixVersions="$VERSION" $issue
+    fi
+
+    if [ -z "$TRANSITION" ]; then
+      TRANSITION=$(jira transitions $issue | fzf | sed s/.*://g | xargs)
+    fi
+
+    jira transition --noedit "$TRANSITION" $issue
+  done
+}
+
+add-jira-fix-versions() {
+  SPRINT=$(jira mysprint)
+
+  VERSION=$(jira releases WR | rg Android | fzf | sed s/.*://g | xargs)
+
+  echo $SPRINT | rg "WR" | rg $STATUS | awk -F \| '{print $2}' | fzf --multi | while read -r issue; do
+    jira edit --noedit -ofixVersions="$VERSION" $issue
+  done
+}
+
+add-missing-jira-fix-versions() {
+  SPRINT=$(jira mysprint)
+
+  STATUS=$(echo $SPRINT | rg "WR" | awk -F \|  '{print $6}' | sort -u | fzf)
+
+  declare VERSION
+
+  echo $SPRINT | rg "WR" | rg $STATUS | awk -F \| '{print $2}' | fzf --multi | while read -r issue; do
+    ISSUEVERSION=$(jira view $issue | rg fixVersions)
+
+    if [ -z "$ISSUEVERSION" ]; then
+      if [ -z "$VERSION" ]; then
+        VERSION=$(jira releases WR | rg Android | fzf | sed s/.*://g | xargs)
+      fi
+
+      jira edit --noedit -ofixVersions="$VERSION" $issue
+    fi
+  done
+}
+
 alias ua-drop-caches='sudo paccache -rk3; yay -Sc --aur --noconfirm'
 alias ua-update-all='export TMPFILE="$(mktemp)"; \
     sudo true; \

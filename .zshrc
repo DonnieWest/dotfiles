@@ -521,6 +521,18 @@ pomo() {
     echo "Done ${msg:?}"
 }
 
+get-youtube-subtitles() {
+  DIRECTORY=$(mktemp -d)
+
+  cd $DIRECTORY
+
+  yt-dlp --quiet --write-sub --sub-format vtt --sub-lang en --skip-download $1
+
+  cat * | grep : -v | awk '!seen[$0]++' | grep -v "^WEBVTT\|^Kind: cap\|^Language" | tr '\n' ' '
+
+  popd
+}
+
 transition-jira-issues() {
   SPRINT=$(jira mysprint)
 

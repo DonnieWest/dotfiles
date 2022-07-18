@@ -361,6 +361,8 @@ tmuxattach() {
 alias ls='exa --git'
 alias filpidcat='pidcat -i EGL_emulation -i HostConnection -i GnssHAL_GnssInterface -i android.os.Debug -i netmgr -i Phenix -i chatty -i WorkerManager -i ResolverController -i AppOps -i wifi_forwarder -i KeyguardClockSwitch -i memtrack -i GCoreFlp -i audio_hw_generic -i BeaconBle -i InputReader -i gralloc_ranchu'
 
+alias sedremovespace="sed -E '/^[[:space:]]*$/d;s/^[[:space:]]+//;s/[[:space:]]+$//'"
+
 findAlias() {
   PS4='+%x:%I>' zsh -i -x -c '' |& grep $1
 }
@@ -540,6 +542,79 @@ get-youtube-subtitles() {
 
 fix-punctuation() {
   recasepunc predict ~/.bin/checkpoint "$@" | sed "s/ ' //g" | sed 's/ ?/?/g'
+}
+
+#/ defaultpassword <keyword>: search default password from a keyword
+defaultpassword() { curl -sS 'https://raw.githubusercontent.com/many-passwords/many-passwords/main/passwords.csv' | rg "$1|Vendor,Model" | column -t -s ',' }
+
+#/ currency <from_currency> <to_currency> <number>: fetch currency exchange rate
+currency () { curl -sS "https://www.xe.com/currencyconverter/convert/?Amount=$3&From=${1:u}&To=${2:u}" |  htmlq -t 'p[class*="BigRate"]' }
+
+# httpstatus: show HTTP code explanation, $1 HTTP code
+httpstatus () { curl -i "https://httpstat.us/$1" }
+
+# httpstatuslist: show list of HTTP codes
+httpstatuslist () { curl -s 'https://httpstat.us/' | htmlq -t 'dl' | sedremovespace | awk 'NR%2{printf "%s ",$0;next}{print}' }
+
+tinyurl()  {
+    local u=$(curl -sS "https://tinyurl.com/create.php?source=index&alias=&url=$1" | grep '://tinyurl.com/' | grep 'target' | grep -E 'https://tinyurl.com/\w+' -o | head -1)
+    echo -n "$u" | wl-copy
+}
+
+#/ unshorten <url>: reveal shortened URL
+unshorten() { curl -sSL -I "$1" | grep 'Location: ' | awk -F ': ' '{print $2}' }
+
+#/ synonym <word>: search for synonym of a word
+synonym() { curl -sS https://www.thesaurus.com/browse/$1| htmlq -t 'script' | grep INITIAL_STATE | sed -E 's/.*INITIAL_STATE = //;s/;$//' | sed -E 's/:undefined,/:null,/g' | jq -r '.searchData.tunaApiData.posTabs[] | .definition as $definition | .pos as $pos | .synonyms | sort_by (.term) | .[] | select((.similarity | tonumber)>49) | "\($pos) \($definition):: \(.term)"' | awk -F"::" '{if ($1==prev) printf ",%s", $2; else printf "\n\n%s\n %s", $1, $2; prev=$1} END {print "\n"}' }
+
+#/ timezone <city>: show timezone of a city
+timezone() {
+    local data
+    data="$(curl -sSL "https://time.is/${1// /_}" -H 'Accept-Language: en-US,en' -A 'c')"
+    htmlq -t '#clock0_bg' <<< "$data"
+    htmlq -t '#dd' <<< "$data"
+    htmlq -t '.keypoints' <<< "$data"
+}
+
+#/ cpu <keyword>: find CPU info from PassMark: Name; Mark; Rank; Value; Price
+cpu () { curl -sS 'https://www.cpubenchmark.net/cpu_list.php' | grep 'cpu_lookup' | sed -e 's/<\/td><\/tr>/\n/g' -e 's/<tr.*multi=\w">//g' -e 's/<\/a><\/td><td>/; /g' -e 's/<\/td><td>/; /g' -e 's/<tr//g' -e 's/><td>//g' | awk -F '>' '{print $2}' | sed -e 's/<a href=.*//g' | grep -i "$1"}
+
+#/ lyrics <word>: search lyrics
+lyrics () {
+    local o m s t a l
+    o=$(curl -sS "https://www.lyrics.com/lyrics/${1// /%20}" | sed -E 's/\r$/---/g' | htmlq '.sec-lyric')
+    m=$(grep -c '.sec-lyric' <<< "$o")
+    [[ "$m" -gt 11 ]] && m=10
+
+    for (( i = 0; i < m; i++ )); do
+        s=$(htmlq 'div.sec-lyric:nth-child('"$((i+1))"')' <<< "$o")
+        t=$(htmlq -t '.lyric-meta-title' <<< "$s" | sedremovespace)
+        a=$(htmlq -t '.lyric-meta-album-artist' <<< "$s" | sedremovespace)
+        [[ "$a" == "" ]] && a=$(htmlq -t '.lyric-meta-artists' <<< "$s" | sedremovespace)
+        l=$(htmlq -t '.lyric-body' <<< "$s" | sedremovespace | awk '{printf "%s ",$0}' | sed -E 's/---/\n/g' | sedremovespace)
+        printf '\n%b\n' "\033[32m$t\033[0m - $a\n$l" | sed -E "s/\&#39;/\'/g"
+    done
+}
+
+# snykadvisor <name> <source>: get pacakge info from Snyk Advisor
+snykadvisor () {
+    # $1: package name
+    # $2: npm, python or docker
+    local n="${1:-}"
+    local s="${2:-npm}"
+    local d len
+    d="$(curl -sS "https://snyk.io/advisor/search?source=${s}&q=${n}" | htmlq '.package')"
+    len="$(htmlq '.package' <<< "$d" | grep -c 'class="package"')"
+    for (( i = 1; i <= len; i++ )); do
+        printf '%b. \033[1m%b \033[34m%b\033[0m\033[0m\n' \
+            "$i" \
+            "$(htmlq -t '.package:nth-child('"$i"') .package-title' <<< "$d" | sedremovespace)" \
+            "$(htmlq -t '.package:nth-child('"$i"') .number' <<< "$d" | sedremovespace | sed -E 's/ \/ 100//')"
+        printf '\033[1;30m[%b] %b\033[0m\n' \
+            "$(htmlq -t '.package:nth-child('"$i"') .package-history' <<< "$d" | sedremovespace | sed 'N;s/\n/ /')" \
+            "$(htmlq -t '.package:nth-child('"$i"') .package-details p' <<< "$d" | sedremovespace)"
+        printf '%b\n\n' "$(htmlq -t '.package:nth-child('"$i"') a' -a href <<< "$d")"
+    done
 }
 
 transition-jira-issues() {

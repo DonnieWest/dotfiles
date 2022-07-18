@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-readable $QUTE_HTML | pandoc -f html -t markdown | wl-copy
+readable $QUTE_HTML | pandoc -f html -t commonmark_x | sed -e "s/::: {.*}//g" | sed -e "s/::://g" | cat -s | sed -e 's/<div>/```/g' | sed -e 's/<\/div>/```/g' | wl-copy

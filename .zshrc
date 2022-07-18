@@ -524,13 +524,22 @@ pomo() {
 get-youtube-subtitles() {
   DIRECTORY=$(mktemp -d)
 
-  cd $DIRECTORY
+  pushd $DIRECTORY
 
-  yt-dlp --quiet --write-sub --sub-format vtt --sub-lang en --skip-download $1
+  yt-dlp --quiet --write-sub --sub-format vtt --skip-download $1
+
+  if [ "$(command ls -A ./)" ]; then
+  else
+    yt-dlp --quiet --write-auto-sub --sub-format vtt --skip-download $1
+  fi
 
   cat * | grep : -v | awk '!seen[$0]++' | grep -v "^WEBVTT\|^Kind: cap\|^Language" | tr '\n' ' '
 
   popd
+}
+
+fix-punctuation() {
+  recasepunc predict ~/.bin/checkpoint "$@" | sed "s/ ' //g" | sed 's/ ?/?/g'
 }
 
 transition-jira-issues() {

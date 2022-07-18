@@ -61,12 +61,16 @@ function n_grep() {
 # Setup and state
 #
 
-VERSION="v8.0.0"
+VERSION="v9.0.0"
 
 N_PREFIX="${N_PREFIX-/usr/local}"
 N_PREFIX=${N_PREFIX%/}
 readonly N_PREFIX
-readonly CACHE_DIR=$N_PREFIX/n/versions
+
+N_CACHE_PREFIX="${N_CACHE_PREFIX-${N_PREFIX}}"
+N_CACHE_PREFIX=${N_CACHE_PREFIX%/}
+CACHE_DIR="${N_CACHE_PREFIX}/n/versions"
+readonly N_CACHE_PREFIX CACHE_DIR
 
 N_NODE_MIRROR=${N_NODE_MIRROR:-${NODE_MIRROR:-https://nodejs.org/dist}}
 N_NODE_MIRROR=${N_NODE_MIRROR%/}
@@ -337,7 +341,7 @@ enter_fullscreen() {
 leave_fullscreen() {
   # Set cursor to normal
   tput cnorm 2> /dev/null
-  # Restore screen contentsq
+  # Restore screen contents
   tput rmcup 2> /dev/null
   stty echo
 }
@@ -668,6 +672,8 @@ activate() {
   local dir="$CACHE_DIR/$version"
   local original_node="$(command -v node)"
   local installed_node="${N_PREFIX}/bin/node"
+  log "copying" "$version"
+
 
   # Ideally we would just copy from cache to N_PREFIX, but there are some complications
   # - various linux versions use symlinks for folders in /usr/local and also error when copy folder onto symlink
@@ -689,7 +695,7 @@ activate() {
     clean_copy_folder "$dir/lib/node_modules/npm" "$N_PREFIX/lib/node_modules/npm"
   fi
   # Takes same steps for corepack (experimental in node 16.9.0) as for npm, to avoid version problems.
-  if [[ -e "$dir/lib/node_modules/corepack" ]]; then
+  if [[ -e "$dir/lib/node_modules/corepack" && -z "${N_PRESERVE_COREPACK}" ]]; then
     mkdir -p "$N_PREFIX/lib/node_modules"
     clean_copy_folder "$dir/lib/node_modules/corepack" "$N_PREFIX/lib/node_modules/corepack"
   fi
@@ -701,7 +707,9 @@ activate() {
   # Copy bin items by hand, in case user has installed global npm modules into cache.
   cp -f "$dir/bin/node" "$N_PREFIX/bin"
   [[ -e "$dir/bin/node-waf" ]] && cp -f "$dir/bin/node-waf" "$N_PREFIX/bin" # v0.8.x
-  [[ -e "$dir/bin/corepack" ]] && cp -fR "$dir/bin/corepack" "$N_PREFIX/bin" # from 16.9.0
+  if [[ -z "${N_PRESERVE_COREPACK}" ]]; then
+    [[ -e "$dir/bin/corepack" ]] && cp -fR "$dir/bin/corepack" "$N_PREFIX/bin" # from 16.9.0
+  fi
   if [[ -z "${N_PRESERVE_NPM}" ]]; then
     [[ -e "$dir/bin/npm" ]] && cp -fR "$dir/bin/npm" "$N_PREFIX/bin"
     [[ -e "$dir/bin/npx" ]] && cp -fR "$dir/bin/npx" "$N_PREFIX/bin"
@@ -740,8 +748,7 @@ activate() {
       printf '\nNote: the node command changed location and the old location may be remembered in your current shell.\n'
       log old "${original_node}"
       log new "${active_node}"
-      # shellcheck disable=SC2016
-      printf 'To reset the command location hash either start a new shell, or execute PATH="$PATH"\n'
+      printf 'If "node --version" shows the old version then start a new shell, or reset the location hash with:\nhash -r  (for bash, zsh, ash, dash, and ksh)\nrehash   (for csh and tcsh)\n'
     fi
   fi
 }
@@ -762,6 +769,7 @@ install() {
 
   local dir="${CACHE_DIR}/${g_mirror_folder_name}/${version}"
 
+  # Note: decompression flags ignored with default Darwin tar which autodetects.
   if test "$N_USE_XZ" = "true"; then
     local tarflag="-Jx"
   else
@@ -789,9 +797,13 @@ install() {
   cd "${dir}" || abort "Failed to cd to ${dir}"
 
   log fetch "$url"
-  do_get "${url}" | tar "$tarflag" --strip-components=1 --no-same-owner
-  if [[ "${PIPESTATUS[0]}" -ne 0 ]]; then
+  do_get "${url}" | tar "$tarflag" --strip-components=1 --no-same-owner -f -
+  pipe_results=( "${PIPESTATUS[@]}" )
+  if [[ "${pipe_results[0]}" -ne 0 ]]; then
     abort "failed to download archive for $version"
+  fi
+  if [[ "${pipe_results[1]}" -ne 0 ]]; then
+    abort "failed to extract archive for $version"
   fi
   [ "$GET_SHOWS_PROGRESS" = "true" ] && erase_line
   rm -f "$dir/n.lock"
@@ -1269,7 +1281,7 @@ function display_remote_versions() {
   elif is_download_folder "${version}"; then
     match='.'
   elif is_download_version "${version}"; then
-    version="${version#${g_mirror_folder_name}/}"
+    version="${version#"${g_mirror_folder_name}"/}"
     if [[ "${version}" = "latest" || "${version}" = "current" ]]; then
       match_count=1
       match='.'
@@ -1412,6 +1424,7 @@ function show_diagnostics() {
   [[ -n "${N_PREFIX}" ]] && echo "PATH: ${PATH}"
   echo "ls-remote max matches: ${N_MAX_REMOTE_MATCHES}"
    [[ -n "${N_PRESERVE_NPM}" ]] && echo "installs preserve npm by default"
+   [[ -n "${N_PRESERVE_COREPACK}" ]] && echo "installs preserve corepack by default"
 
   printf "\nProxy\n"
   # disable "var is referenced but not assigned": https://github.com/koalaman/shellcheck/wiki/SC2154
@@ -1551,8 +1564,8 @@ while [[ $# -ne 0 ]]; do
     -q|--quiet) set_quiet ;;
     -d|--download) DOWNLOAD="true" ;;
     --insecure) set_insecure ;;
-    -p|--preserve) N_PRESERVE_NPM="true" ;;
-    --no-preserve) N_PRESERVE_NPM="" ;;
+    -p|--preserve) N_PRESERVE_NPM="true" N_PRESERVE_COREPACK="true" ;;
+    --no-preserve) N_PRESERVE_NPM="" N_PRESERVE_COREPACK="" ;;
     --use-xz) N_USE_XZ="true" ;;
     --no-use-xz) N_USE_XZ="false" ;;
     --latest) display_remote_versions latest; exit ;;

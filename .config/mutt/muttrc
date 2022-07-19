@@ -57,6 +57,9 @@ macro attach 'V' "<pipe-entry>iconv -c --to-code=UTF8 > ~/.cache/mutt/mail.html<
 macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
 macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
+macro index <esc>U <pipe-entry>~/.config/mutt/scripts/unsubscribe.py<enter> 'Unsubscribe from this mailing list.'
+macro pager <esc>U <pipe-entry>~/.config/mutt/scripts/unsubscribe.py<enter><exit> 'Unsubscribe from this mailing list.'
+
 auto_view text/html            # automatically show html (mailcap uses w3m)
 auto_view application/pgp-encrypted
 auto_view text/x-vcard         # vcard attachments viewed through mutt.vcard.filter

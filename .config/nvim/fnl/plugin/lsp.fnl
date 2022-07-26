@@ -75,14 +75,12 @@
          (when (___fn-__ v k arr)
            (table.insert filtered v))) filtered)
 
-(defn- filter-react-dTS [value] (= (string.match value.uri :react/index.d.ts)
-                                   nil))
+(defn- filter-dts [value] (= (string.match value.uri :d.ts) nil))
 
 (defn- definition-handler [err result method ...]
        (if (and (vim.tbl_islist result) (> (length result) 1))
            (vim.lsp.handlers.textDocument/definition err
-                                                     ((filter result
-                                                              filter-react-dTS))
+                                                     ((filter result filter-dts))
                                                      method ...)
            (vim.lsp.handlers.textDocument/definition err result method ...)))
 

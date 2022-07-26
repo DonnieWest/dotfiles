@@ -1,4 +1,7 @@
-(module plugin.lightline {require {nvim aniseed.nvim nu aniseed.nvim.util}})
+(module plugin.lightline
+        {require {nvim aniseed.nvim
+                  nu aniseed.nvim.util
+                  devicon nvim-web-devicons}})
 
 (defn- expand [s] (nvim.fn.expand s))
 

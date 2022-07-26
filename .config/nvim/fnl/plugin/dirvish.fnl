@@ -2,4 +2,3 @@
 
 (nvim.ex.autocmd :FileType :dirvish "silent! unmap <buffer> <C-p>")
 (nvim.ex.autocmd :FileType :dirvish "silent! unmap <buffer> <C-n>")
-

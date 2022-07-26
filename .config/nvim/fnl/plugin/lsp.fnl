@@ -13,8 +13,7 @@
 (def capabilities
      (cmp-lsp.update_capabilities (vim.lsp.protocol.make_client_capabilities)))
 
-(defn on-attach [client bufnr]
-      (virtualtypes.on_attach client bufnr)
+(defn on-attach [client bufnr] (virtualtypes.on_attach client bufnr)
       (mapping.noremap :n :gd "<cmd>lua vim.lsp.buf.declaration()<CR>")
       (mapping.noremap :n "<c-]>" "<cmd>lua vim.lsp.buf.definition()<CR>")
       (mapping.noremap :n :K "<cmd>lua vim.lsp.buf.hover()<CR>")
@@ -27,7 +26,8 @@
       (mapping.noremap :n :ga "<cmd>lua vim.lsp.buf.code_action()<CR>")
       (mapping.noremap :n :grr "<cmd>lua vim.lsp.buf.rename()<CR>")
       (mapping.noremap :n :<F19> "<cmd>lua vim.lsp.buf.rename()<CR>")
-      (nvim.ex.autocmd :CursorHold :<buffer> "lua vim.diagnostic.open_float(nil, { focusable = false })"))
+      (nvim.ex.autocmd :CursorHold :<buffer>
+                       "lua vim.diagnostic.open_float(nil, { focusable = false })"))
 
 (nvim.ex.autocmd :FileType :clojure
                  "nnoremap <silent> <leader>fm    <cmd>lua vim.lsp.buf.format()<CR>")

@@ -33,6 +33,14 @@
 (noremap :v "<" :<gv)
 (noremap :v ">" :>gv)
 
+(noremap :n :<Tab> ">>_")
+(noremap :n :<S-Tab> "<<_")
+
+(noremap :i :<S-Tab> :<C-D>)
+
+(noremap :v :<Tab> :>gv)
+(noremap :v :<S-Tab> :<gv)
+
 ; Ctrl + Left and Right switch buffers
 (noremap :n :<C-Right> ":bnext<CR>")
 (noremap :n :<C-Left> ":bprevious<CR>")

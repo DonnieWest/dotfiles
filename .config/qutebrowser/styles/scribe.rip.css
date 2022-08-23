@@ -1,0 +1,8 @@
+.gist {
+  width: 100%;
+}
+
+pre>code {
+  width: 100%;
+  overflow-x: unset;
+}

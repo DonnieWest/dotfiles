@@ -477,6 +477,8 @@ c.fonts.default_family = 'Victor Mono SemiBold'
 # Type: String
 c.fonts.default_size = '10pt'
 
+config.bind(',s', 'spawn --userscript rebuild-qutebrowser-grease-styles.py', mode='normal')
+
 # Bindings for normal mode
 config.bind(';b', 'hint all tab')
 config.bind('<Ctrl+Del>', 'tab-close')

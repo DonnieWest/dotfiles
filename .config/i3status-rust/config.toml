@@ -30,6 +30,34 @@ device = "wlan0"
 format = "{ssid} {ip}"
 
 [[block]]
+block = "github"
+format = "{total}|{mention}|{review_requested}"
+info = ["total"]
+hide_if_total_is_zero = true
+warning = ["mention","review_requested"]
+
+[[block]]
+block = "taskwarrior"
+interval = 60
+format = "{count} open tasks ({filter_name})"
+format_singular = "{count} open task ({filter_name})"
+format_everything_done = "nothing to do!"
+warning_threshold = 10
+critical_threshold = 20
+[[block.filters]]
+name = "today"
+filter = "+PENDING +OVERDUE or +DUETODAY"
+[[block.filters]]
+name = "WR"
+filter = "project:WR +PENDING"
+
+[[block]]
+block = "bluetooth"
+mac = "C8:91:9A:B1:F9:A8"
+format = "MX {percentage}"
+format_unavailable = ""
+
+[[block]]
 block = "memory"
 display_type = "memory"
 format_mem = "{mem_used} /{mem_total}"

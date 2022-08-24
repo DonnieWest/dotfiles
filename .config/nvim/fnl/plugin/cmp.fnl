@@ -52,7 +52,7 @@
                       {:name :nvim_lua}
                       {:name :path}
                       {:name :luasnip}
-                      {:name :cmp_git}
+                      {:name :git}
                       {:name :vim-dadbod-completion}]})
 
 (nvim.ex.set "completeopt=menuone,noselect")

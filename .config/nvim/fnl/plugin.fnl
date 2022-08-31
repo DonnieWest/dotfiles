@@ -201,7 +201,6 @@
       :rhysd/vim-grammarous {:mod :grammarous}
       :jxnblk/vim-mdx-js {}
       :gabrielelana/vim-markdown {}
-      :vhyrro/neorg {:requires :nvim-lua/plenary.nvim :mod :neorg}
       :preservim/vim-wordy {}
       :preservim/vim-lexical {:mod :lexical}
       :mickael-menu/zk-nvim {:mod :zk}

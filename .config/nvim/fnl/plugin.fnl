@@ -164,8 +164,8 @@
       :lewis6991/gitsigns.nvim {:requires :nvim-lua/plenary.nvim :branch :main :mod :gitsigns}
       :tpope/vim-fugitive {}
       :tpope/vim-rhubarb {}
-      :christoomey/vim-conflicted {}
       :ruifm/gitlinker.nvim {:requires :nvim-lua/plenary.nvim :mod :gitlinker}
+      :akinsho/git-conflict.nvim {:mod :conflict}
 
       ;; HTML and CSS Plugins
       :hail2u/vim-css3-syntax {}

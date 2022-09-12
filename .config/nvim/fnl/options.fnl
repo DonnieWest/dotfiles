@@ -7,6 +7,7 @@
 
 ; Speedup vim startup by disabling python2
 (set nvim.g.loaded_python_provider 0)
+(set nvim.g.ts_highlight_lua true)
 
 ;; Generic Neovim configuration.
 (set nvim.o.termguicolors true)

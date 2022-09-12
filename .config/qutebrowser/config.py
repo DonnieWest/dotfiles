@@ -51,7 +51,7 @@ c.qt.args = ['enable-accelerated-video-decode', 'enable-webrtc-pipewire-capturer
 # Additional environment variables to set. Setting an environment
 # variable to null/None will unset it.
 # Type: Dict
-c.qt.environ = {'NODE_PATH': '~/.config/n/lib/node_modules', 'XCURSOR_SIZE': "25"}
+c.qt.environ = {'NODE_PATH': '~/.config/n/lib/node_modules', 'XCURSOR_SIZE': '25'}
 
 # Force a Qt platform to use. This sets the `QT_QPA_PLATFORM`
 # environment variable and is useful to force using the XCB plugin when

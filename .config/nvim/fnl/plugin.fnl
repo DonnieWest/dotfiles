@@ -54,7 +54,6 @@
       :Yggdroot/indentLine {:mod :indentLine}
       :pgdouyon/vim-evanesco {}
       :kshenoy/vim-signature {}
-      :antoinemadec/FixCursorHold.nvim {:mod :cursorhold}
       :lewis6991/impatient.nvim {:compile_path (.. (vim.fn.stdpath :config) "/lua/packer_compiled.lua")}
 
       ;; UI

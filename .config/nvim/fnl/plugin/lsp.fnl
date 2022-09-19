@@ -6,14 +6,21 @@
                            ts-utils nvim-lsp-ts-utils
                            virtualtypes virtualtypes
                            lightbulb nvim-lightbulb
+                           document-color document-color
                            lsp-code-action lsputil.codeAction
                            lsp-symbols lsputil.symbols
                            lsp-locations lsputil.locations}})
 
+(document-color.setup {:mode :background})
+
 (def capabilities
      (cmp-lsp.update_capabilities (vim.lsp.protocol.make_client_capabilities)))
 
+(set capabilities.textDocument.colorProvider {:dynamicRegistration true})
+
 (defn on-attach [client bufnr] (virtualtypes.on_attach client bufnr)
+      (when client.server_capabilities.colorProvider
+        (document-color.buf_attach bufnr))
       (mapping.noremap :n :gd "<cmd>lua vim.lsp.buf.declaration()<CR>")
       (mapping.noremap :n "<c-]>" "<cmd>lua vim.lsp.buf.definition()<CR>")
       (mapping.noremap :n :K "<cmd>lua vim.lsp.buf.hover()<CR>")

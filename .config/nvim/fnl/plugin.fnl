@@ -76,6 +76,7 @@
       :folke/todo-comments.nvim {:mod :todo-comments}
       :DonnieWest/nvim-base16.lua {}
       :folke/lsp-colors.nvim {}
+      :mrshmllow/document-color.nvim {}
       :glts/vim-textobj-comment {:requires :kana/vim-textobj-user}
       :stevearc/dressing.nvim {:mod :dressing}
 

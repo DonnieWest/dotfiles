@@ -303,6 +303,7 @@ export PATH="$PATH:$HOME/.dotnet/tools"
 export PATH="$PATH:$HOME/go/bin"
 export PATH="$HOME/.luarocks/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
+export PATH="$HOME/.babashka/bbin/bin:$PATH"
 
 sn() {
   local version

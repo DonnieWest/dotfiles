@@ -9,3 +9,6 @@ max-visible=5
 width=600
 height=300
 border-radius=20
+
+[mode=do-not-disturb]
+invisible=1

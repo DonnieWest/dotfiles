@@ -40,7 +40,7 @@
       :tpope/vim-abolish {}
       :jiangmiao/auto-pairs {:mod :auto-pairs}
       :junegunn/vim-easy-align {:mod :easy-align}
-      :ggandor/lightspeed.nvim {}
+      :ggandor/leap.nvim {:mod :leap}
 
       ;; VIM Quirks fixes
       :lervag/file-line {}

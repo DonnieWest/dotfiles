@@ -13,8 +13,7 @@
 
 (document-color.setup {:mode :background})
 
-(def capabilities
-     (cmp-lsp.update_capabilities (vim.lsp.protocol.make_client_capabilities)))
+(def capabilities (cmp-lsp.default_capabilities))
 
 (set capabilities.textDocument.colorProvider {:dynamicRegistration true})
 

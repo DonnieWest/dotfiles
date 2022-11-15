@@ -143,25 +143,28 @@
                                    : capabilities
                                    :settings {:kotlin {:compiler {:jvm {:target :1.8}}}}})
 
-; (lsp.kotlin_language_server.setup {:cmd [:android-studio-canary :lsp-server]
-;                                    :on_attach on-attach
-;                                    : capabilities})
-
 (lsp.gradle_ls.setup {:cmd [:/home/igneo676/.local/share/nvim/site/pack/packer/start/vscode-gradle/gradle-language-server/build/install/gradle-language-server/bin/gradle-language-server]
                       :on_attach on-attach
                       : capabilities})
 
-(vim.api.nvim_create_autocmd :FileType
-                             {:pattern :kotlin
-                              :callback #(vim.lsp.start {:name :idealsp
-                                                         :cmd [:android-studio-canary
-                                                               :lsp-server]
-                                                         :on_attach on-attach
-                                                         : capabilities
-                                                         :root_dir (vim.fs.dirname (. (vim.fs.find [:settings.gradle
-                                                                                                    :settings.gradle.kts
-                                                                                                    :build.gradle
-                                                                                                    :build.gradle.kts]
-                                                                                                   {:upward true})
-                                                                                      1))})})
+(tset (require :lspconfig.configs) :fennel_language_server
+      {:default_config {:cmd [:fennel-language-server]
+                        :filetypes [:fennel]
+                        :single_file_support true
+                        :root_dir (lsp.util.root_pattern :fnl)
+                        :settings {:fennel {:workspace {:library (vim.api.nvim_list_runtime_paths)}
+                                            :diagnostics {:globals [:vim]}}}}})
 
+; (lsp.fennel_language_server.setup {:on_attach on-attach : capabilities})
+
+(tset (require :lspconfig.configs) :ideals
+      {:default_config {:cmd [:android-studio-canary :lsp-server]
+                        :filetypes [:kotlin]
+                        :root_dir (vim.fs.dirname (. (vim.fs.find [:settings.gradle
+                                                                   :settings.gradle.kts
+                                                                   :build.gradle
+                                                                   :build.gradle.kts]
+                                                                  {:upward true})
+                                                     1))}})
+
+; (lsp.ideals.setup {:on_attach on-attach : capabilities})

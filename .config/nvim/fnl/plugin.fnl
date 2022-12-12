@@ -103,7 +103,6 @@
       :nvim-telescope/telescope-dap.nvim {}
 
       :kassio/neoterm {}
-      :ludovicchabant/vim-gutentags {:mod :gutentags}
 
       :nvim-lua/popup.nvim {}
       :nvim-lua/plenary.nvim {}

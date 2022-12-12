@@ -176,7 +176,6 @@
       ;; Javascript Plugins
       :pangloss/vim-javascript {}
       :maxmellon/vim-jsx-pretty {}
-      :jose-elias-alvarez/nvim-lsp-ts-utils {}
       :mvolkmann/vim-react {}
       :benjie/local-npm-bin.vim {}
       :Quramy/vim-js-pretty-template {:mod :pretty-template}
@@ -188,6 +187,7 @@
       ;; Typescript
       :leafgarland/typescript-vim {}
       :peitalin/vim-jsx-typescript {}
+      :jose-elias-alvarez/typescript.nvim {}
 
       ;; Java/Android/Gradle plugins
       :hsanson/vim-android {:mod :android}

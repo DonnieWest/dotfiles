@@ -2,8 +2,8 @@
                            mapping mapping
                            cmp-lsp cmp_nvim_lsp
                            lsp lspconfig
+                           typescript typescript
                            schemastore schemastore
-                           ts-utils nvim-lsp-ts-utils
                            virtualtypes virtualtypes
                            lightbulb nvim-lightbulb
                            document-color document-color
@@ -90,44 +90,18 @@
                                                      method ...)
            (vim.lsp.handlers.textDocument/definition err result method ...)))
 
-(defn ts-on-attach [client bufnr] (on-attach client bufnr)
-      (ts-utils.setup {:debug false
-                       :disable_commands false
-                       :enable_import_on_completion false
-                       :import_all_timeout 5000
-                       :import_all_priorities {:same_file 1
-                                               :local_files 2
-                                               :buffer_content 3
-                                               :buffers 4}
-                       :import_all_scan_buffers 100
-                       :import_all_select_source false
-                       :always_organize_imports true
-                       :filter_out_diagnostics_by_severity {}
-                       :filter_out_diagnostics_by_code {}
-                       :auto_inlay_hints true
-                       :inlay_hints_highlight :Comment
-                       :inlay_hints_priority 200
-                       :inlay_hints_throttle 150
-                       :inlay_hints_format {:Type {} :Parameter {} :Enum {}}
-                       :update_imports_on_move false
-                       :require_confirmation_on_move false
-                       :watch_dir nil}) (ts-utils.setup_client client)
-      (local opts {:silent true})
-      (vim.api.nvim_buf_set_keymap bufnr :n :gs ":TSLspOrganize<CR>" opts)
-      (vim.api.nvim_buf_set_keymap bufnr :n :gi ":TSLspImportAll<CR>" opts))
-
-(lsp.tsserver.setup {:on_attach ts-on-attach
-                     : capabilities
-                     :handlers {:textDocument/definition definition-handler}
-                     :init_options {:preferences {:allowIncompleteCompletions false
-                                                  :includeInlayParameterNameHints :all
-                                                  :includeInlayParameterNameHintsWhenArgumentMatchesName true
-                                                  :includeInlayFunctionParameterTypeHints true
-                                                  :includeInlayVariableTypeHints true
-                                                  :includeInlayPropertyDeclarationTypeHints true
-                                                  :includeInlayFunctionLikeReturnTypeHints true
-                                                  :includeInlayEnumMemberValueHints true
-                                                  :hostInfo :neovim}}})
+(typescript.setup {:server {:on_attach on-attach
+                            : capabilities
+                            :handlers {:textDocument/definition definition-handler}
+                            :init_options {:preferences {:allowIncompleteCompletions false
+                                                         :includeInlayParameterNameHints :all
+                                                         :includeInlayParameterNameHintsWhenArgumentMatchesName true
+                                                         :includeInlayFunctionParameterTypeHints true
+                                                         :includeInlayVariableTypeHints true
+                                                         :includeInlayPropertyDeclarationTypeHints true
+                                                         :includeInlayFunctionLikeReturnTypeHints true
+                                                         :includeInlayEnumMemberValueHints true
+                                                         :hostInfo :neovim}}}})
 
 (lsp.gopls.setup {:on_attach on-attach : capabilities})
 (lsp.clojure_lsp.setup {:on_attach on-attach : capabilities})

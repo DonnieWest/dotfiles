@@ -95,7 +95,7 @@
                                        :nvim-lua/plenary.nvim]}
 
       :mbbill/undotree {:mod :undotree}
-      :justinmk/vim-dirvish {:mod :dirvish}
+      :DonnieWest/vim-dirvish {:mod :dirvish}
 
       :mfussenegger/nvim-dap {:mod :dap}
       :rcarriga/nvim-dap-ui {}

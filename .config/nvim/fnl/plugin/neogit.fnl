@@ -1,4 +1,4 @@
-(module plugin.neogit {require {nvim aniseed.nvim neogit neogit}})
+(module plugin.neogit {require {nvim aniseed.nvim neogit neogit status neogit.status}})
 
 (neogit.setup {:disable_context_highlighting true
                :auto_refresh false
@@ -11,6 +11,7 @@
                             "^\\(Neogit.*\\|.git/COMMIT_EDITMSG\\)$")
              0) false
           (= (: (vim.api.nvim_buf_get_option o.buf :filetype) :find :Neogit) nil) false
+          (not status.status_buffer) false
           (= (nvim.fn.expand :$HOME) (nvim.fn.bufname)) false
           (= (nvim.fn.expand :$HOME) file) false
           true))

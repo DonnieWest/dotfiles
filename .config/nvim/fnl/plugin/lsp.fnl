@@ -134,11 +134,13 @@
 (tset (require :lspconfig.configs) :ideals
       {:default_config {:cmd [:android-studio-canary :lsp-server]
                         :filetypes [:kotlin]
-                        :root_dir (vim.fs.dirname (. (vim.fs.find [:settings.gradle
-                                                                   :settings.gradle.kts
-                                                                   :build.gradle
-                                                                   :build.gradle.kts]
-                                                                  {:upward true})
-                                                     1))}})
+                        :root_dir (fn [fname]
+                                    (or ((lsp.util.root_pattern (unpack [:settings.gradle
+                                                                         :settings.gradle.kts
+                                                                         :build.gradle
+                                                                         :build.gradle.kts])) fname)
+                                        ((lsp.util.root_pattern (unpack [:build.gradle
+                                                                         :build.gradle.kts])) fname)))}})
 
-; (lsp.ideals.setup {:on_attach on-attach : capabilities})
+(lsp.ideals.setup {:on_attach on-attach : capabilities})
+

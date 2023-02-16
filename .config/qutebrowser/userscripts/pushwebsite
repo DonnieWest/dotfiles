@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-~/.bin/pushover --title "Website" --url "$QUTE_URL" --message "$QUTE_URL" --priority -1
+/usr/bin/ntfy pub links --message "$QUTE_URL" --title "$QUTE_URL" --click "$QUTE_URL"

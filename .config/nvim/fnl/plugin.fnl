@@ -84,9 +84,14 @@
 
       :rhysd/clever-f.vim {}
       :tomtom/tcomment_vim {:mod :tcomment}
+
       :nvim-telescope/telescope.nvim {:mod :telescope}
       :nvim-telescope/telescope-fzf-native.nvim {:run :make}
       :nvim-telescope/telescope-frecency.nvim {:requires :tami5/sqlite.lua}
+
+      :ibhagwan/fzf-lua {}
+
+      :chipsenkbeil/distant.nvim {:mod :distant}
       :folke/trouble.nvim {:mod :trouble}
       :j-hui/fidget.nvim {:mod :fidget}
       :pwntester/octo.nvim {:mod :octo
@@ -111,6 +116,8 @@
 
       :mhinz/vim-grepper {:mod :grepper}
       :mfussenegger/nvim-lint {:mod :lint}
+      :lpoto/actions.nvim {:mod :actions}
+
 
       :gpanders/editorconfig.nvim {}
       :justinmk/vim-gtfo {}
@@ -136,6 +143,7 @@
       :rafamadriz/friendly-snippets {}
 
       :ray-x/lsp_signature.nvim {:mod :signature}
+      :jose-elias-alvarez/null-ls.nvim {:mod :null}
 
       ;; LSP Features
 
@@ -182,6 +190,7 @@
       :MunifTanjim/nui.nvim {}
       :JoosepAlviste/nvim-ts-context-commentstring {}
       :David-Kunz/cmp-npm {}
+      :barrett-ruth/import-cost.nvim {:run "sh install.sh npm" :mod :cost}
 
       ;; Typescript
       :leafgarland/typescript-vim {}

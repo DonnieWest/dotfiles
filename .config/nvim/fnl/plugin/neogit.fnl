@@ -5,13 +5,14 @@
                :integrations {:diffview true}})
 
 (defn valid-neogit-refresh-context [file o]
-      (if (= (nvim.fn.bufname) :dirvish) false
+      (if (not status.status_buffer) false
+          (= (nvim.fn.bufname) :dirvish) false
           (= (nvim.fn.bufname) :Neogit) false
           (= (nvim.fn.match (nvim.fn.bufname)
                             "^\\(Neogit.*\\|.git/COMMIT_EDITMSG\\)$")
              0) false
-          (= (: (vim.api.nvim_buf_get_option o.buf :filetype) :find :Neogit) nil) false
-          (not status.status_buffer) false
+          (= (: (vim.api.nvim_buf_get_option o.buf :filetype) :find :Neogit)
+             nil) false
           (= (nvim.fn.expand :$HOME) (nvim.fn.bufname)) false
           (= (nvim.fn.expand :$HOME) file) false
           true))

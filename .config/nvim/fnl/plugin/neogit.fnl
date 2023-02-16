@@ -1,4 +1,6 @@
-(module plugin.neogit {require {nvim aniseed.nvim neogit neogit status neogit.status}})
+(module plugin.neogit {require {nvim aniseed.nvim
+                                neogit neogit
+                                status neogit.status}})
 
 (neogit.setup {:disable_context_highlighting true
                :auto_refresh false

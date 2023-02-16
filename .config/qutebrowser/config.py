@@ -251,6 +251,14 @@ config.set('content.javascript.enabled', True, 'chrome://*/*')
 # Type: Bool
 config.set('content.javascript.enabled', True, 'qute://*/*')
 
+# Allow locally loaded documents to access remote URLs.
+# Type: Bool
+config.set('content.local_content_can_access_remote_urls', True, 'file:///home/igneo676/.local/share/qutebrowser/userscripts/*')
+
+# Allow locally loaded documents to access other local URLs.
+# Type: Bool
+config.set('content.local_content_can_access_file_urls', False, 'file:///home/igneo676/.local/share/qutebrowser/userscripts/*')
+
 # Allow websites to record audio.
 # Type: BoolAsk
 # Valid values:
@@ -291,6 +299,14 @@ config.set('content.notifications.enabled', False, 'https://meet.google.com')
 #   - ask
 config.set('content.notifications.enabled', False, 'https://www.reddit.com')
 
+# Allow websites to show notifications.
+# Type: BoolAsk
+# Valid values:
+#   - true
+#   - false
+#   - ask
+config.set('content.notifications.enabled', True, 'https://outlook.office.com')
+
 # Display PDF files via PDF.js in the browser without showing a download
 # prompt. Note that the files can still be downloaded by clicking the
 # download button in the pdf.js viewer. With this set to `false`, the
@@ -316,6 +332,28 @@ config.set('content.register_protocol_handler', False, 'https://calendar.google.
 #   - false
 #   - ask
 config.set('content.register_protocol_handler', False, 'https://mail.google.com?extsrc=mailto&url=%25s')
+
+# Allow websites to register protocol handlers via
+# `navigator.registerProtocolHandler`.
+# Type: BoolAsk
+# Valid values:
+#   - true
+#   - false
+#   - ask
+config.set('content.register_protocol_handler', False, 'https://outlook.office.com?mailtouri=%25s')
+
+# Allow websites to register protocol handlers via
+# `navigator.registerProtocolHandler`.
+# Type: BoolAsk
+# Valid values:
+#   - true
+#   - false
+#   - ask
+config.set('content.register_protocol_handler', False, 'https://outlook.office365.com?mailtouri=%25s')
+
+# List of user stylesheet filenames to use.
+# Type: List of File, or File
+c.content.user_stylesheets = []
 
 # Number of commands to save in the command history. 0: no history / -1:
 # unlimited
@@ -452,6 +490,11 @@ c.colors.tabs.pinned.selected.odd.bg = '#093748'
 # Type: QtColor
 c.colors.tabs.pinned.selected.even.bg = '#093748'
 
+# Background color for webpages if unset (or empty to use the theme's
+# color).
+# Type: QtColor
+c.colors.webpage.bg = 'white'
+
 # Value to use for `prefers-color-scheme:` for websites. The "light"
 # value is only available with QtWebEngine 5.15.2+. On older versions,
 # it is the same as "auto". The "auto" value is broken on QtWebEngine
@@ -477,9 +520,9 @@ c.fonts.default_family = 'Victor Mono SemiBold'
 # Type: String
 c.fonts.default_size = '10pt'
 
-config.bind(',s', 'spawn --userscript rebuild-qutebrowser-grease-styles.py', mode='normal')
-
 # Bindings for normal mode
+config.bind(',d', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/css/darculized-all-sites.css ""')
+config.bind(',s', 'spawn --userscript rebuild-qutebrowser-grease-styles.py')
 config.bind(';b', 'hint all tab')
 config.bind('<Ctrl+Del>', 'tab-close')
 config.bind('<Ctrl+Left>', 'tab-prev')

@@ -37,7 +37,9 @@
                                                     :ig "@class.inner"
                                                     :ac "@comment.outer"}
                                           :enable true}}
-                   :rainbow {:enable true}
+                   :rainbow {:enable true
+                             :query :rainbow-parens
+                             :strategy (require :ts-rainbow.strategy.global)}
                    :autotag {:enable true}
                    :context_commentstring {:enable true}
                    :highlight {:enable true}

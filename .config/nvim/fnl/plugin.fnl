@@ -62,7 +62,7 @@
       :nvim-treesitter/nvim-treesitter {:run ":TSUpdate"}
       :nvim-treesitter/playground {}
       :nvim-treesitter/nvim-treesitter-textobjects {}
-      :p00f/nvim-ts-rainbow {}
+      :HiPhish/nvim-ts-rainbow2 {}
       :nvim-treesitter/nvim-treesitter-refactor {}
       :mhinz/vim-startify {:mod :startify}
 
@@ -79,6 +79,11 @@
       :mrshmllow/document-color.nvim {}
       :glts/vim-textobj-comment {:requires :kana/vim-textobj-user}
       :stevearc/dressing.nvim {:mod :dressing}
+
+      ;; Themes
+      :barrientosvctor/abyss.nvim {}
+      :EdenEast/nightfox.nvim {}
+      :rose-pine/neovim {}
 
       ;; Generic IDE features
 
@@ -124,6 +129,8 @@
       :liuchengxu/vista.vim {:mod :vista}
       :noahfrederick/vim-skeleton {:mod :skeleton}
       :ThePrimeagen/refactoring.nvim {:mod :refactoring}
+
+      :zbirenbaum/neodim {:mod :neodim :branch :v2}
 
       ;; Completion
 

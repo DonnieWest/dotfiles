@@ -113,6 +113,7 @@
 (lsp.jdtls.setup {:on_attach on-attach : capabilities})
 (lsp.tailwindcss.setup {:on_attach on-attach : capabilities})
 (lsp.kotlin_language_server.setup {:cmd [:/home/igneo676/.local/share/nvim/site/pack/packer/start/kotlin-language-server/server/build/install/server/bin/kotlin-language-server]
+                                   :init_options {:storagePath :/home/igneo676/.cache/kotlin-lsp}
                                    :on_attach on-attach
                                    : capabilities
                                    :settings {:kotlin {:compiler {:jvm {:target :1.8}}}}})

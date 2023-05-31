@@ -238,7 +238,6 @@ plugins=(
 
   lukechilds/zsh-better-npm-completion
   chrisands/zsh-yarn-completion
-  marlonrichert/zsh-hist
 )
 
 plugin-load $plugins

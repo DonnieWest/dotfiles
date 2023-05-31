@@ -141,9 +141,9 @@ alias cp='cp -i'                    # prompt for overwrite
 alias mv='mv -i'                    # prompt for overwrite
 alias df='df -h'                    # human readable
 alias du='du -h'                    # human readable
-alias ls='ls -hF --color=tty'       # colour, readable sizes, indicator
-alias ll='ls -hlF --color=tty'      # long format to show sizes
-alias la='ls -AlF'                  # all but . and ..
+alias ls='ls -hF --color=always'    # colour, readable sizes, indicator
+alias ll='ls -hlF --color=always'   # long format to show sizes
+alias la='ls -lF'                   # all but . and ..
 
 ## Stack
 
@@ -267,7 +267,7 @@ export ANDROID_HOME="$HOME/.android-sdk-linux"
 export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
 export STEAM_RUNTIME=0
-export GRAALVM_HOME="$HOME/.config/graalvm"
+export GRAALVM_HOME="$HOME/.config/graalvm-ce"
 
 
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -303,6 +303,7 @@ export PATH="$PATH:$HOME/go/bin"
 export PATH="$HOME/.luarocks/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
 export PATH="$HOME/.babashka/bbin/bin:$PATH"
+export PATH="$HOME/.tmux/plugins/tmuxifier/bin:$PATH"
 
 sn() {
   local version
@@ -394,7 +395,7 @@ connectToDevice() {
 
 launchEmulator() {
   avdmanager list avd | grep "Name:" | awk '{ print $2 }' | fzf -m | while read emulator; do
-    emulator "@${emulator%.*}" 1>/dev/null 2>/dev/null &!
+    QT_QPA_PLATFORM=xcb emulator "@${emulator%.*}" 1>/dev/null 2>/dev/null &!
   done
 }
 

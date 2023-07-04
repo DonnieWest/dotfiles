@@ -98,7 +98,7 @@
 
       :chipsenkbeil/distant.nvim {:mod :distant}
       :folke/trouble.nvim {:mod :trouble}
-      :j-hui/fidget.nvim {:mod :fidget}
+      :j-hui/fidget.nvim {:mod :fidget :branch :legacy}
       :pwntester/octo.nvim {:mod :octo
                             :requires [:nvim-telescope/telescope.nvim
                                        :kyazdani42/nvim-web-devicons
@@ -174,7 +174,7 @@
 
       ;; Git plugins
       :sindrets/diffview.nvim {}
-      :TimUntersberger/neogit {:requires :nvim-lua/plenary.nvim :mod :neogit}
+      :NeogitOrg/neogit {:requires :nvim-lua/plenary.nvim :mod :neogit}
       :lewis6991/gitsigns.nvim {:requires :nvim-lua/plenary.nvim :branch :main :mod :gitsigns}
       :tpope/vim-fugitive {}
       :tpope/vim-rhubarb {}

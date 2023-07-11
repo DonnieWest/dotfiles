@@ -104,6 +104,7 @@
                                                          :hostInfo :neovim}}}})
 
 (lsp.gopls.setup {:on_attach on-attach : capabilities})
+(lsp.cssls.setup {:on_attach on-attach : capabilities})
 (lsp.clojure_lsp.setup {:on_attach on-attach : capabilities})
 (lsp.jsonls.setup {:on_attach on-attach
                    : capabilities

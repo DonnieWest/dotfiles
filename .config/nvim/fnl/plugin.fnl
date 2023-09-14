@@ -235,6 +235,9 @@
       :clojure-vim/clojure.vim {}
       :gpanders/nvim-parinfer {:mod :parinfer}
 
+      ;; GraphQL
+      :jparise/vim-graphql {}
+
 
       ;; Fennel
       :Olical/aniseed {}

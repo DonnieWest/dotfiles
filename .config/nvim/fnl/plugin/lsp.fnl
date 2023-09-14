@@ -103,6 +103,26 @@
                                                          :includeInlayEnumMemberValueHints true
                                                          :hostInfo :neovim}}}})
 
+(fn get-python-path [workspace]
+  (when vim.env.VIRTUAL_ENV
+    (let [___antifnl_rtns_1___ [(lsp.util.path.join vim.env.VIRTUAL_ENV :bin :python)]]
+      (lua "return (table.unpack or _G.unpack)(___antifnl_rtns_1___)")))
+  (each [_ pattern (ipairs ["*" ".*"])]
+    (local ___match___ (vim.fn.glob (path.join workspace pattern :pyvenv.cfg)))
+    (when (not= ___match___ "")
+      (let [___antifnl_rtns_1___ [(lsp.util.path.join (lsp.util.path.dirname ___match___) :bin
+                                             :python)]]
+        (lua "return (table.unpack or _G.unpack)(___antifnl_rtns_1___)"))))
+  (or (or (exepath :python3) (exepath :python)) :python))
+
+(lsp.pyright.setup {:on_attach on-attach
+                    : capabilities
+                    :before_init (fn [_ config]
+                                     (set config.settings.python.pythonPath
+                                          (get-python-path config.root_dir)))
+                    :settings {:python {:analysis {:useLibraryCodeForTypes true
+                                                   :completeFunctionParens true}}}})
+
 (lsp.gopls.setup {:on_attach on-attach : capabilities})
 (lsp.cssls.setup {:on_attach on-attach : capabilities})
 (lsp.clojure_lsp.setup {:on_attach on-attach : capabilities})
@@ -111,6 +131,7 @@
                    :settings {:json {:schemas (schemastore.json.schemas)}
                               :jsonls {:textDocument {:completion {:completionItem {:snippetSupport true}}}}}})
 
+(lsp.cssls.setup {:on_attach on-attach : capabilities})
 (lsp.jdtls.setup {:on_attach on-attach : capabilities})
 (lsp.tailwindcss.setup {:on_attach on-attach : capabilities})
 (lsp.kotlin_language_server.setup {:cmd [:/home/igneo676/.local/share/nvim/site/pack/packer/start/kotlin-language-server/server/build/install/server/bin/kotlin-language-server]

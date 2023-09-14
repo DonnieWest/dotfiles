@@ -8,6 +8,9 @@
 (set nvim.g.conjure#log#hud#enabled true)
 (set nvim.g.conjure#log#hud#height 0.2)
 (set nvim.g.conjure#extract#tree_sitter#enabled true)
+(set nvim.g.conjure#filetype#python false)
+(set nvim.g.conjure#filetype#rust false)
+(set nvim.g.conjure#mapping#enable_ft_mappings false)
 
 (nvim.ex.autocmd :FileType "clojure,fennel,scheme"
                  "nnoremap <silent> gd    <cmd>:ConjureDefWord<CR>")

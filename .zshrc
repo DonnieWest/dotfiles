@@ -328,6 +328,10 @@ cheat() {
   curl cht.sh/$1
 }
 
+bunx() {
+  bun x "$@"
+}
+
 update_npm() {
   echo "Checking NPM global packages"
   output=$(ncu -g)

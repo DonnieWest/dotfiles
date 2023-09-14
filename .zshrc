@@ -79,6 +79,8 @@ setopt share_history # share command history data
 setopt hist_ignore_all_dups
 
 alias history='fc -l 1'
+alias docker='podman'
+alias docker-compose='podman-compose'
 
 ## Completion
 
@@ -280,6 +282,7 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=red"
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
 
 # Setup PATH
 

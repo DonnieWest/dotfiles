@@ -1,11 +1,11 @@
-(module plugin.auto-pairs {require {core aniseed.core nvim aniseed.nvim}})
+(module plugin.auto-pairs
+        {require {core aniseed.core nvim aniseed.nvim autopairs nvim-autopairs}})
 
-(defn init [] (let [auto-pairs nvim.g.AutoPairs]
-                (tset auto-pairs "'" nil)
-                (tset auto-pairs "`" nil)
-                (set nvim.b.AutoPairs auto-pairs)))
+(autopairs.setup {:check_ts true})
 
-(vim.schedule (fn []
-                (nvim.ex.autocmd :FileType "clojure,fennel,scheme"
-                                 "lua require('plugin.auto-pairs').init()")))
+(local lisps [:scheme :lisp :clojure :fennel])
 
+(tset (. (autopairs.get_rules "'") 1) :not_filetypes lisps)
+
+(local backrules (autopairs.get_rules "`"))
+(tset (. backrules 1) :not_filetypes lisps)

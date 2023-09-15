@@ -9,6 +9,7 @@
                                   :use_virtual_text true
                                   :lint_events [:BufWrite :CursorHold]}
                    :endwise {:enable true}
+                   :matchup {:enable true}
                    :refactor {:smart_rename {:keymaps {:smart_rename :grr}
                                              :enable true}
                               :navigation {:keymaps {:goto_definition_lsp_fallback "<c-]>"

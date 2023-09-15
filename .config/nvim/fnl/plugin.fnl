@@ -38,7 +38,9 @@
       :tpope/vim-eunuch {}
       :RRethy/nvim-treesitter-endwise {}
       :tpope/vim-abolish {}
-      :jiangmiao/auto-pairs {:mod :auto-pairs}
+      :windwp/nvim-autopairs {:mod :auto-pairs}
+      :AndrewRadev/splitjoin.vim {}
+      :andymass/vim-matchup {}
       :junegunn/vim-easy-align {:mod :easy-align}
       :ggandor/leap.nvim {:mod :leap}
 
@@ -226,14 +228,16 @@
       :kristijanhusak/vim-dadbod-ui {}
 
       ;; Clojure
-      :guns/vim-sexp {:mod :sexp}
-      :tpope/vim-sexp-mappings-for-regular-people {}
-
       :Olical/conjure {:mod :conjure}
       :dmac/vim-cljfmt {}
 
       :clojure-vim/clojure.vim {}
+
+      ;; Lisp
       :gpanders/nvim-parinfer {:mod :parinfer}
+      :julienvincent/nvim-paredit {:mod :paredit}
+      :julienvincent/nvim-paredit-fennel {}
+      :dundalek/parpar.nvim {}
 
       ;; GraphQL
       :jparise/vim-graphql {}

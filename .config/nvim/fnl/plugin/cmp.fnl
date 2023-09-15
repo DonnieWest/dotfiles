@@ -2,6 +2,7 @@
                              cmp cmp
                              npm cmp-npm
                              git cmp_git
+                             cmp-autopairs nvim-autopairs.completion.cmp
                              luasnip luasnip
                              lspkind lspkind
                              lsp cmp_nvim_lsp
@@ -61,3 +62,4 @@
 
 (npm.setup)
 
+(cmp.event:on :confirm_done (cmp-autopairs.on_confirm_done))  

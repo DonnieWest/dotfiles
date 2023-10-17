@@ -138,7 +138,10 @@
                                    :init_options {:storagePath :/home/igneo676/.cache/kotlin-lsp}
                                    :on_attach on-attach
                                    : capabilities
-                                   :settings {:kotlin {:compiler {:jvm {:target :1.8}}}}})
+                                   :settings {:kotlin {:hints {:typeHints true
+                                                               :chainedHints true
+                                                               :parameterHints true}
+                                                       :compiler {:jvm {:target :1.8}}}}})
 
 (lsp.gradle_ls.setup {:cmd [:/home/igneo676/.local/share/nvim/site/pack/packer/start/vscode-gradle/gradle-language-server/build/install/gradle-language-server/bin/gradle-language-server]
                       :on_attach on-attach

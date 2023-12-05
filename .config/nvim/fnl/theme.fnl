@@ -17,8 +17,7 @@
                                                      :list_definitions :gD
                                                      :goto_next_usage :<Leader>n
                                                      :goto_previous_usage :<Leader>N}
-                                           :enable true}
-                              :highlight_definitions {:enable true}}
+                                           :enable true}}
                    :textobjects {:lsp_interop {:peek_definition_code {:<Leader>df "@function.outer"
                                                                       :<Leader>dF "@class.outer"}
                                                :border false
@@ -39,9 +38,6 @@
                                                     :ig "@class.inner"
                                                     :ac "@comment.outer"}
                                           :enable true}}
-                   :rainbow {:enable true
-                             :query :rainbow-parens-react
-                             :strategy (require :ts-rainbow.strategy.global)}
                    :autotag {:enable true}
                    :highlight {:enable true}
                    :indent {:enable true}})

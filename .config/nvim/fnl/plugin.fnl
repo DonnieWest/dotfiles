@@ -64,7 +64,6 @@
       :nvim-treesitter/nvim-treesitter {:run ":TSUpdate"}
       :nvim-treesitter/playground {}
       :nvim-treesitter/nvim-treesitter-textobjects {}
-      :HiPhish/nvim-ts-rainbow2 {}
       :nvim-treesitter/nvim-treesitter-refactor {}
       :mhinz/vim-startify {:mod :startify}
 
@@ -124,7 +123,6 @@
 
       :mhinz/vim-grepper {:mod :grepper}
       :mfussenegger/nvim-lint {:mod :lint}
-      :lpoto/actions.nvim {:mod :actions}
 
 
       :gpanders/editorconfig.nvim {}
@@ -153,7 +151,6 @@
       :rafamadriz/friendly-snippets {}
 
       :ray-x/lsp_signature.nvim {:mod :signature}
-      :jose-elias-alvarez/null-ls.nvim {:mod :null}
 
       ;; LSP Features
 

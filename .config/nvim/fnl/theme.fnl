@@ -1,5 +1,6 @@
 (module theme {require {treesitter nvim-treesitter.configs
                         base16 base16
+                        ts_commentstring ts_context_commentstring
                         nvim aniseed.nvim}
                require-macros [zest.macros macros]})
 
@@ -42,9 +43,10 @@
                              :query :rainbow-parens-react
                              :strategy (require :ts-rainbow.strategy.global)}
                    :autotag {:enable true}
-                   :context_commentstring {:enable true}
                    :highlight {:enable true}
                    :indent {:enable true}})
+
+(ts_commentstring.setup)
 
 (defn colorscheme-fixes [] (run-ex hi :TSComment :gui=italic)
       (run-ex hi :TSType :gui=italic) (run-ex hi :TSKeywords :gui=italic)

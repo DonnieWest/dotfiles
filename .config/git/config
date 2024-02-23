@@ -18,9 +18,14 @@
 	rebase = true
 [rebase]
 	autostash = true
+  autosquash = true
 [fetch]
 	prune = true
 [merge]
-	conflictstyle = diff3
+	conflictstyle = zdiff3
+[rerere]
+  enbaled = true
+[diff]
+  algorithm = histogram
 [init]
 	defaultBranch = main

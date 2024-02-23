@@ -117,6 +117,9 @@ zstyle ':completion:*' users off
 zstyle ':completion::complete:*' use-cache 1
 zstyle ':completion::complete:*' cache-path $ZSH/cache/
 zstyle ':completion:*' rehash true
+
+# Complete targets first, then variables if none, then files if none
+zstyle ':completion::complete:make::' tag-order targets variables
 # Don't complete uninteresting users
 zstyle ':completion:*:*:*:users' ignored-patterns \
         adm amanda apache at avahi avahi-autoipd beaglidx bin cacti canna \

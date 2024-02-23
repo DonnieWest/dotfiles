@@ -62,6 +62,8 @@ argument_parser = argparse.ArgumentParser(
 argument_parser.add_argument('url', nargs='?', default=os.getenv('QUTE_URL'))
 argument_parser.add_argument('--dmenu-invocation', '-d', default='wofi --dmenu -i -p Bitwarden',
                              help='Invocation used to execute a dmenu-provider')
+argument_parser.add_argument('--password-prompt-invocation', '-p', default='rofi -dmenu -p "Master Password" -password -lines 0',
+                             help='Invocation used to prompt the user for their Bitwarden password')
 argument_parser.add_argument('--no-insert-mode', '-n', dest='insert_mode', action='store_false',
                              help="Don't automatically enter insert mode")
 argument_parser.add_argument('--totp', '-t', action='store_true',
@@ -147,7 +149,7 @@ def dmenu(items, invocation, encoding):
 def fake_key_raw(text):
     for character in text:
         # Escape all characters by default, space requires special handling
-        sequence = '" "' if character == ' ' else '\{}'.format(character)
+        sequence = '" "' if character == ' ' else r'\{}'.format(character)
         qute_command('fake-key {}'.format(sequence))
 
 

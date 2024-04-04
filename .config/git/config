@@ -24,7 +24,7 @@
 [merge]
 	conflictstyle = zdiff3
 [rerere]
-  enbaled = true
+  enabled = true
 [diff]
   algorithm = histogram
 [init]

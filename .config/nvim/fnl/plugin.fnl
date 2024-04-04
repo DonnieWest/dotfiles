@@ -98,7 +98,6 @@
 
       :ibhagwan/fzf-lua {}
 
-      :chipsenkbeil/distant.nvim {:mod :distant}
       :folke/trouble.nvim {:mod :trouble}
       :j-hui/fidget.nvim {:mod :fidget :branch :legacy}
       :pwntester/octo.nvim {:mod :octo

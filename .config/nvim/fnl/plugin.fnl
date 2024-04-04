@@ -43,6 +43,7 @@
       :andymass/vim-matchup {}
       :junegunn/vim-easy-align {:mod :easy-align}
       :ggandor/leap.nvim {:mod :leap}
+      :dkarter/bullets.vim {}
 
       ;; VIM Quirks fixes
       :lervag/file-line {}
@@ -76,6 +77,7 @@
       :kyazdani42/nvim-web-devicons {}
       :folke/todo-comments.nvim {:mod :todo-comments}
       :DonnieWest/nvim-base16.lua {}
+      :RRethy/nvim-base16 {}
       :folke/lsp-colors.nvim {}
       :Wansmer/symbol-usage.nvim {:mod :symbol-usage}
       :mrshmllow/document-color.nvim {}
@@ -85,6 +87,7 @@
       ;; Themes
       :barrientosvctor/abyss.nvim {}
       :EdenEast/nightfox.nvim {}
+      :mhartington/oceanic-next {}
       :rose-pine/neovim {}
 
       ;; Generic IDE features

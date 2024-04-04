@@ -9,6 +9,7 @@
                            document-color document-color
                            lsp-code-action lsputil.codeAction
                            lsp-symbols lsputil.symbols
+                           fzf fzf-lua
                            lsp-locations lsputil.locations}})
 
 (document-color.setup {:mode :background})
@@ -20,18 +21,18 @@
 (defn on-attach [client bufnr] (virtualtypes.on_attach client bufnr)
       (when client.server_capabilities.colorProvider
         (document-color.buf_attach bufnr))
-      (mapping.noremap :n :gd "<cmd>lua vim.lsp.buf.declaration()<CR>")
-      (mapping.noremap :n "<c-]>" "<cmd>lua vim.lsp.buf.definition()<CR>")
-      (mapping.noremap :n :K "<cmd>lua vim.lsp.buf.hover()<CR>")
-      (mapping.noremap :n :gD "<cmd>lua vim.lsp.buf.implementation()<CR>")
-      (mapping.noremap :n :<c-k> "<cmd>lua vim.lsp.buf.signature_help()<CR>")
-      (mapping.noremap :n :1gD "<cmd>lua vim.lsp.buf.type_definition()<CR>")
-      (mapping.noremap :n :gr "<cmd>lua vim.lsp.buf.references()<CR>")
-      (mapping.noremap :n :g0 "<cmd>lua vim.lsp.buf.document_symbol()<CR>")
-      (mapping.noremap :n :gW "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>")
-      (mapping.noremap :n :ga "<cmd>lua vim.lsp.buf.code_action()<CR>")
-      (mapping.noremap :n :grr "<cmd>lua vim.lsp.buf.rename()<CR>")
-      (mapping.noremap :n :<F19> "<cmd>lua vim.lsp.buf.rename()<CR>")
+      (vim.keymap.set :n :gd fzf.lsp_declarations opts)
+      (vim.keymap.set :n "<c-]>" vim.lsp.buf.definition opts)
+      (vim.keymap.set :n :K vim.lsp.buf.hover opts)
+      (vim.keymap.set :n :gD fzf.lsp_implementations opts)
+      (vim.keymap.set :n :<c-k> vim.lsp.buf.signature_help opts)
+      (vim.keymap.set :n :1gD fzf.lsp_typedefs opts)
+      (vim.keymap.set :n :gr fzf.lsp_references opts)
+      (vim.keymap.set :n :g0 fzf.lsp_document_symbol opts)
+      (vim.keymap.set :n :gW fzf.lsp_workspace_symbol opts)
+      (vim.keymap.set :n :ga vim.lsp.buf.code_action opts)
+      (vim.keymap.set :n :grr vim.lsp.buf.rename opts)
+      (vim.keymap.set :n :<F19> vim.lsp.buf.rename opts)
       (nvim.ex.autocmd :CursorHold :<buffer>
                        "lua vim.diagnostic.open_float(nil, { focusable = false })"))
 
@@ -105,21 +106,22 @@
 
 (fn get-python-path [workspace]
   (when vim.env.VIRTUAL_ENV
-    (let [___antifnl_rtns_1___ [(lsp.util.path.join vim.env.VIRTUAL_ENV :bin :python)]]
+    (let [___antifnl_rtns_1___ [(lsp.util.path.join vim.env.VIRTUAL_ENV :bin
+                                                    :python)]]
       (lua "return (table.unpack or _G.unpack)(___antifnl_rtns_1___)")))
   (each [_ pattern (ipairs ["*" ".*"])]
     (local ___match___ (vim.fn.glob (path.join workspace pattern :pyvenv.cfg)))
     (when (not= ___match___ "")
-      (let [___antifnl_rtns_1___ [(lsp.util.path.join (lsp.util.path.dirname ___match___) :bin
-                                             :python)]]
+      (let [___antifnl_rtns_1___ [(lsp.util.path.join (lsp.util.path.dirname ___match___)
+                                                      :bin :python)]]
         (lua "return (table.unpack or _G.unpack)(___antifnl_rtns_1___)"))))
   (or (or (exepath :python3) (exepath :python)) :python))
 
 (lsp.pyright.setup {:on_attach on-attach
                     : capabilities
                     :before_init (fn [_ config]
-                                     (set config.settings.python.pythonPath
-                                          (get-python-path config.root_dir)))
+                                   (set config.settings.python.pythonPath
+                                        (get-python-path config.root_dir)))
                     :settings {:python {:analysis {:useLibraryCodeForTypes true
                                                    :completeFunctionParens true}}}})
 
@@ -147,15 +149,7 @@
                       :on_attach on-attach
                       : capabilities})
 
-(tset (require :lspconfig.configs) :fennel_language_server
-      {:default_config {:cmd [:fennel-language-server]
-                        :filetypes [:fennel]
-                        :single_file_support true
-                        :root_dir (lsp.util.root_pattern :fnl)
-                        :settings {:fennel {:workspace {:library (vim.api.nvim_list_runtime_paths)}
-                                            :diagnostics {:globals [:vim]}}}}})
-
-; (lsp.fennel_language_server.setup {:on_attach on-attach : capabilities})
+(lsp.fennel_ls.setup {:on_attach on-attach : capabilities})
 
 (tset (require :lspconfig.configs) :ideals
       {:default_config {:cmd [:android-studio-canary :lsp-server]

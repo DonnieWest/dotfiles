@@ -17,6 +17,8 @@ set $alt Mod1
 
 exec kanshi
 
+include /etc/sway/config.d/*
+
 exec wl-clip-persist --clipboard both
 
 # exec /home/igneo676/.bin/mail-checker
@@ -52,7 +54,7 @@ floating_modifier $mod
 # start a terminal
 # bindsym $mod+Return exec mlterm
 # bindsym $mod+Return exec /home/igneo676/.bin/restraint
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec wezterm
 # bindsym $mod+Return exec alacritty
 
 # kill focused window
@@ -352,6 +354,7 @@ bar {
 # exec eventd
 exec mako
 exec sudo -u igneo676 udiskie
+exec nextcloud
 # exec opensnitch-ui
 bindsym Control+Shift+space exec ~/.bin/clearNotifications.sh
 

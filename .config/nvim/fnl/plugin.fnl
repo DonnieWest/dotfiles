@@ -112,7 +112,7 @@
       :DonnieWest/vim-dirvish {:mod :dirvish}
 
       :mfussenegger/nvim-dap {:mod :dap}
-      :rcarriga/nvim-dap-ui {}
+      :rcarriga/nvim-dap-ui {:requires :nvim-neotest/nvim-nio}
       :theHamsta/nvim-dap-virtual-text {}
       :nvim-telescope/telescope-dap.nvim {}
 

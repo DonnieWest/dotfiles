@@ -19,6 +19,11 @@ icons = "awesome5"
 music = ""
 
 [[block]]
+block = "custom"
+command = "sed 's/64129://' <(curl 'https://wttr.in/64129?u&format=3' -s)"
+interval = 600
+
+[[block]]
 block = "music"
 format = " $icon {$combo.str(max_w:50,rot_interval:0.5) |}"
 

@@ -311,6 +311,12 @@ export PATH="$HOME/.deno/bin:$PATH"
 export PATH="$HOME/.babashka/bbin/bin:$PATH"
 export PATH="$HOME/.tmux/plugins/tmuxifier/bin:$PATH"
 
+# Taken from https://gist.github.com/jhass/8839655bb038e829fba1 but also useful for system ruby on arch
+
+source /usr/share/chruby/chruby.sh
+source /usr/share/chruby/auto.sh
+RUBIES=(/opt/ruby* $HOME/.rubies/*)
+
 sn() {
   local version
   version=$(n lsr --all  | fzf)

@@ -20,7 +20,7 @@ music = ""
 
 [[block]]
 block = "custom"
-command = "sed 's/64129://' <(curl 'https://wttr.in/64129?u&format=3' -s)"
+command = "sed 's/64110://' <(curl 'https://wttr.in/64110?u&format=3' -s)"
 interval = 600
 
 [[block]]
@@ -38,17 +38,6 @@ format = "$icon $total | $icon $mention | $icon $review_requested"
 info = ["total"]
 hide_if_total_is_zero = true
 warning = ["mention","review_requested"]
-
-[[block]]
-block = "taskwarrior"
-interval = 60
-format = "$count open ($filter_name)"
-format_everything_done = ""
-warning_threshold = 10
-critical_threshold = 20
-[[block.filters]]
-name = "today"
-filter = "+PENDING +OVERDUE or +DUETODAY"
 
 [[block]]
 block = "memory"

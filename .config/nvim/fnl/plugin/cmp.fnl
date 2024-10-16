@@ -52,7 +52,6 @@
                       {:name :npm :keyword_length 4}
                       {:name :nvim_lua}
                       {:name :path}
-                      {:name :luasnip}
                       {:name :git}
                       {:name :vim-dadbod-completion}]})
 
@@ -62,4 +61,5 @@
 
 (npm.setup)
 
-(cmp.event:on :confirm_done (cmp-autopairs.on_confirm_done))  
+(cmp.event:on :confirm_done (cmp-autopairs.on_confirm_done))
+

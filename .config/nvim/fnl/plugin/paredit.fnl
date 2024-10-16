@@ -1,9 +1,5 @@
 (module plugin.parinfer
         {require {nvim aniseed.nvim
-                  paredit nvim-paredit
-                  fennel-paredit nvim-paredit-fennel}})
-
-(fennel-paredit.setup)
+                  paredit nvim-paredit}})
 
 (paredit.setup {:indent {:enabled true}})
-

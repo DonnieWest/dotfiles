@@ -5,7 +5,6 @@
                            typescript typescript
                            schemastore schemastore
                            virtualtypes virtualtypes
-                           lightbulb nvim-lightbulb
                            document-color document-color
                            lsp-code-action lsputil.codeAction
                            lsp-symbols lsputil.symbols
@@ -72,7 +71,6 @@
 
 (vim.diagnostic.config diagnostic-config)
 
-(vim.cmd "autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()")
 (vim.cmd "autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost .rs,.ts,.js lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = \"Comment\" }")
 
 (defn- filter [arr ___fn-__] (if (not= (type arr) :table)

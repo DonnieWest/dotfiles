@@ -40,7 +40,6 @@
       :tpope/vim-abolish {}
       :windwp/nvim-autopairs {:mod :auto-pairs}
       :AndrewRadev/splitjoin.vim {}
-      :andymass/vim-matchup {}
       :junegunn/vim-easy-align {:mod :easy-align}
       :ggandor/leap.nvim {:mod :leap}
       :dkarter/bullets.vim {}
@@ -133,7 +132,7 @@
       :noahfrederick/vim-skeleton {:mod :skeleton}
       :ThePrimeagen/refactoring.nvim {:mod :refactoring}
 
-      :zbirenbaum/neodim {:mod :neodim :branch :v2}
+      :zbirenbaum/neodim {:mod :neodim}
 
       ;; Completion
 
@@ -161,7 +160,6 @@
       :onsails/lspkind-nvim {:mod :lspkind}
       :RishabhRD/popfix {}
       :RishabhRD/nvim-lsputils {}
-      :kosayoda/nvim-lightbulb {}
       :b0o/schemastore.nvim {}
       :onsails/diaglist.nvim {:mod :diaglist}
 
@@ -236,7 +234,6 @@
       ;; Lisp
       :gpanders/nvim-parinfer {:mod :parinfer}
       :julienvincent/nvim-paredit {:mod :paredit}
-      :julienvincent/nvim-paredit-fennel {}
       :dundalek/parpar.nvim {}
 
       ;; GraphQL

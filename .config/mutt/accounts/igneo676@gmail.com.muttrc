@@ -5,7 +5,7 @@ set folder = "/home/igneo676/.mail/igneo676@gmail.com"
 
 folder-hook $folder 'source /home/igneo676/.config/mutt/accounts/igneo676@gmail.com.muttrc'
 
-mailboxes ="=== Gmail: Igneo676 ===" "=INBOX" "=[Gmail]/Sent Mail" "=[Gmail]/Drafts" "=[Gmail]/Starred" "=[Gmail]/Spam" "=[Gmail]/Important" "=[Gmail]/All Mail" "=Trash" "=Github" "=Coursera"
+mailboxes ="=== Gmail: Igneo676 ===" "=INBOX" "=[Gmail]/Sent Mail" "=[Gmail]/Drafts" "=[Gmail]/Starred" "=[Gmail]/Spam" "=[Gmail]/Important" "=[Gmail]/All Mail" "=Trash"
 
 set sendmail = "msmtp -a $from"
 

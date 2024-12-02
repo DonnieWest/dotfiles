@@ -142,6 +142,8 @@
       :hrsh7th/cmp-nvim-lsp-signature-help {}
       :hrsh7th/cmp-nvim-lua {}
       :hrsh7th/cmp-path {}
+      :yetone/avante.nvim {:mod :avante :run :make}
+      :MeanderingProgrammer/render-markdown.nvim {}
 
       :jubnzv/virtual-types.nvim {}
 

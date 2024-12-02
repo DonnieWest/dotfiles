@@ -94,6 +94,7 @@
       :rhysd/clever-f.vim {}
       :tomtom/tcomment_vim {:mod :tcomment}
 
+      :fabridamicelli/cronex.nvim {:mod cronex}
       :nvim-telescope/telescope.nvim {:mod :telescope}
       :nvim-telescope/telescope-fzf-native.nvim {:run :make}
       :nvim-telescope/telescope-frecency.nvim {:requires :tami5/sqlite.lua}

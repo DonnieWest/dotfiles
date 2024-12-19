@@ -46,7 +46,7 @@ c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save
 # https://peter.sh/experiments/chromium-command-line-switches/ for a
 # list) will work.
 # Type: List of String
-c.qt.args = ['enable-accelerated-video-decode', 'enable-webrtc-pipewire-capturer', 'enable-gpu-rasterization', 'ignore-gpu-blacklist', 'enable-accelerated-video-decode', 'enable-native-gpu-memory-buffers', 'num-raster-threads=4']
+c.qt.args = ['enable-zero-copy' 'use-gl=egl' 'enable-accelerated-video-decode', 'enable-webrtc-pipewire-capturer', 'enable-gpu-rasterization', 'ignore-gpu-blacklist', 'enable-accelerated-video-decode', 'enable-native-gpu-memory-buffers', 'num-raster-threads=4' 'enable-webgpu']
 
 # Additional environment variables to set. Setting an environment
 # variable to null/None will unset it.

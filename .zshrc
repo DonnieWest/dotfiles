@@ -564,9 +564,6 @@ fix-punctuation() {
 #/ defaultpassword <keyword>: search default password from a keyword
 defaultpassword() { curl -sS 'https://raw.githubusercontent.com/many-passwords/many-passwords/main/passwords.csv' | rg "$1|Vendor,Model" | column -t -s ',' }
 
-#/ currency <from_currency> <to_currency> <number>: fetch currency exchange rate
-currency () { curl -sS "https://www.xe.com/currencyconverter/convert/?Amount=$3&From=${1:u}&To=${2:u}" |  htmlq -t 'p[class*="BigRate"]' }
-
 # httpstatus: show HTTP code explanation, $1 HTTP code
 httpstatus () { curl -i "https://httpstat.us/$1" }
 
@@ -596,24 +593,7 @@ timezone() {
 #/ cpu <keyword>: find CPU info from PassMark: Name; Mark; Rank; Value; Price
 cpu () { curl -sS 'https://www.cpubenchmark.net/cpu_list.php' | grep 'cpu_lookup' | sed -e 's/<\/td><\/tr>/\n/g' -e 's/<tr.*multi=\w">//g' -e 's/<\/a><\/td><td>/; /g' -e 's/<\/td><td>/; /g' -e 's/<tr//g' -e 's/><td>//g' | awk -F '>' '{print $2}' | sed -e 's/<a href=.*//g' | grep -i "$1"}
 
-#/ lyrics <word>: search lyrics
-lyrics () {
-    local o m s t a l
-    o=$(curl -sS "https://www.lyrics.com/lyrics/${1// /%20}" | sed -E 's/\r$/---/g' | htmlq '.sec-lyric')
-    m=$(grep -c '.sec-lyric' <<< "$o")
-    [[ "$m" -gt 11 ]] && m=10
-
-    for (( i = 0; i < m; i++ )); do
-        s=$(htmlq 'div.sec-lyric:nth-child('"$((i+1))"')' <<< "$o")
-        t=$(htmlq -t '.lyric-meta-title' <<< "$s" | sedremovespace)
-        a=$(htmlq -t '.lyric-meta-album-artist' <<< "$s" | sedremovespace)
-        [[ "$a" == "" ]] && a=$(htmlq -t '.lyric-meta-artists' <<< "$s" | sedremovespace)
-        l=$(htmlq -t '.lyric-body' <<< "$s" | sedremovespace | awk '{printf "%s ",$0}' | sed -E 's/---/\n/g' | sedremovespace)
-        printf '\n%b\n' "\033[32m$t\033[0m - $a\n$l" | sed -E "s/\&#39;/\'/g"
-    done
-}
-
-# snykadvisor <name> <source>: get pacakge info from Snyk Advisor
+# snykadvisor <name> <source>: get package info from Snyk Advisor
 snykadvisor () {
     # $1: package name
     # $2: npm, python or docker

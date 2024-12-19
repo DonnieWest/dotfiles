@@ -18,7 +18,6 @@
 (fn feedkey [key mode]
   (vim.api.nvim_feedkeys (vim.api.nvim_replace_termcodes key true true true)
                          mode true))
-
 (cmp.setup {:mapping (cmp.mapping.preset.insert {:<CR> (cmp.mapping.confirm {:select true})
                                                  :<Tab> (cmp.mapping (fn [fallback]
                                                                        (if (cmp.visible)

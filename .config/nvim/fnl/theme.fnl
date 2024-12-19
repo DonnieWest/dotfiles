@@ -39,13 +39,16 @@
                                                     :ac "@comment.outer"}
                                           :enable true}}
                    :autotag {:enable true}
-                   :highlight {:enable true}
+                   :highlight {:enable true
+                               :additional_vim_regex_highlighting true}
                    :indent {:enable true}})
 
 (ts_commentstring.setup)
 
 (defn colorscheme-fixes [] (run-ex hi :TSComment :gui=italic)
       (run-ex hi :TSType :gui=italic) (run-ex hi :TSKeywords :gui=italic)
+      (run-ex hi :jsGlobalNodeObjects :gui=italic) (run-ex hi :JSKeywords :gui=italic)
+      (run-ex hi :jsFunction :gui=italic) (run-ex hi :JSKeywords :gui=italic)
       (run-ex hi :TSKeyword :gui=italic) (run-ex hi :TSStatement :gui=italic)
       (run-ex hi :TSBoolean :gui=italic) (run-ex hi :TSConstant :gui=italic)
       (run-ex hi :TSInclude :gui=italic) (run-ex hi :SpellBad :gui=underline)
@@ -157,83 +160,31 @@
                                 :c792ea
                                 :f78c6c]))
 
-(tset base16.themes :darkowl
-      (convert-theme-to-base16 {:background "#040d13"
-                                :lighter-background "#0e222f"
-                                :selection "#1c3950"
-                                :comment "#2c4f6e"
-                                :dark-foreground "#a5acb3"
-                                :foreground "#d5dce4"
-                                :light-foreground "#ffffff"
-                                :light-background "#53626d"
-                                :variables "#e56f73"
-                                :numbers "#ff9f93"
-                                :classes "#a8cc8c"
-                                :strings "#5ccfe6"
-                                :regex "#82aaff"
-                                :functions "#c792ea"
-                                :keywords "#f07178"
-                                :tags "#ff9e64"}))
-
-(tset base16.themes :gpt
+(tset base16.themes :gotham-tweaked
       (convert-theme-to-base16 {:background "#03090e"
-                                :lighter-background "#0a1c29"
-                                :selection "#13344f"
-                                :comment "#3c576e"
-                                :dark-foreground "#b7c1c8"
-                                :foreground "#f0f3f4"
-                                :light-foreground "#f9fdfc"
-                                :light-background "#47555f"
-                                :variables "#4e5166"
-                                :numbers "#b3d3a8"
-                                :classes "#74c1b1"
-                                :strings "#ffb06c"
-                                :regex "#478c90"
-                                :functions "#7cd7d2"
-                                :keywords "#e1a9b4"
-                                :tags "#d04437"}))
+                                :lighter-background "#10151c"
+                                :selection "#0e3a4f"
+                                :comment "#13596c"
+                                :dark-foreground "#2d6a79"
+                                :foreground "#e6f9f7"
+                                :light-foreground "#6bb8c8"
+                                :light-background "#b0e3e4"
+                                :variables "#606476"
+                                :numbers "#3cd7b2"
+                                :classes "#41a8c7"
+                                :strings "#f7ba56"
+                                :regex "#1e6a87"
+                                :functions "#a3a7c1"
+                                :keywords "#ee7545"
+                                :tags "#d5423b"}))
 
-(tset base16.themes :night
-      (base16.theme_from_array [:03090e
-                                :1a1f25
-                                :2a2f36
-                                :3e4451
-                                :5b626f
-                                :73797e
-                                :9ca0a4
-                                :d5d6d6
-                                :d74b73
-                                :e4b51c
-                                :4dbf99
-                                :4aa5d4
-                                :6d9cbe
-                                :8f79c0
-                                :c17e70
-                                :b77b8e]))
-
-(tset base16.themes :improved
-      (base16.theme_from_array [:03090e
-                                :10171d
-                                :1b2a38
-                                :32425a
-                                :475c73
-                                :7b98b2
-                                :c1d2d7
-                                :f0f5f5
-                                :b62d28
-                                :d26d37
-                                :e8c54d
-                                :2ca889
-                                :32a8a6
-                                :8a8c9d
-                                :53556a
-                                :306885]))
-
-(base16 base16.themes.tweaked true {:lightline true})
+(base16 base16.themes.gotham-tweaked true {:lightline true})
 
 (vim.api.nvim_create_autocmd [:ColorScheme] {:callback #(colorscheme-fixes)})
 
 (colorscheme-fixes)
+
+; (vim.cmd.colorscheme "night-owl")
 
 (nvim.fn.matchadd :ColorColumn "\\%81v" 100)
 

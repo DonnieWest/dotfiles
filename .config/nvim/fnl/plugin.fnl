@@ -94,7 +94,7 @@
       :rhysd/clever-f.vim {}
       :tomtom/tcomment_vim {:mod :tcomment}
 
-      :fabridamicelli/cronex.nvim {:mod cronex}
+      :fabridamicelli/cronex.nvim {:mod :cronex}
       :nvim-telescope/telescope.nvim {:mod :telescope}
       :nvim-telescope/telescope-fzf-native.nvim {:run :make}
       :nvim-telescope/telescope-frecency.nvim {:requires :tami5/sqlite.lua}
@@ -107,6 +107,8 @@
                             :requires [:nvim-telescope/telescope.nvim
                                        :kyazdani42/nvim-web-devicons
                                        :nvim-lua/plenary.nvim]}
+
+      :tzachar/cmp-ai {:mod :cmp-ai}
 
       :mbbill/undotree {:mod :undotree}
       :DonnieWest/vim-dirvish {:mod :dirvish}
@@ -126,7 +128,6 @@
       :mhinz/vim-grepper {:mod :grepper}
       :mfussenegger/nvim-lint {:mod :lint}
 
-
       :gpanders/editorconfig.nvim {}
       :justinmk/vim-gtfo {}
       :liuchengxu/vista.vim {:mod :vista}
@@ -143,7 +144,12 @@
       :hrsh7th/cmp-nvim-lsp-signature-help {}
       :hrsh7th/cmp-nvim-lua {}
       :hrsh7th/cmp-path {}
-      :yetone/avante.nvim {:mod :avante :run :make}
+      :Exafunction/codeium.vim {}
+      :yetone/avante.nvim {:mod :avante :run :make :requires [:MunifTanjim/nui.nvim
+                                                              :nvim-lua/plenary.nvim
+                                                              :stevearc/dressing.nvim]}
+
+      ; :olimorris/codecompanion.nvim {:mod :codecompanion}
       :MeanderingProgrammer/render-markdown.nvim {}
 
       :jubnzv/virtual-types.nvim {}
@@ -241,7 +247,6 @@
 
       ;; GraphQL
       :jparise/vim-graphql {}
-
 
       ;; Fennel
       :Olical/aniseed {}

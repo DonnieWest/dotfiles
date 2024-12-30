@@ -1,0 +1,5 @@
+window-decoration = false
+theme = dark:gotham-accessible,light:gotham-accessible
+font-size = 21
+font-family = Victor Mono SemiBold
+resize-overlay = never

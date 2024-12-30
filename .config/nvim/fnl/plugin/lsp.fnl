@@ -2,7 +2,6 @@
                            mapping mapping
                            cmp-lsp cmp_nvim_lsp
                            lsp lspconfig
-                           typescript typescript
                            schemastore schemastore
                            virtualtypes virtualtypes
                            document-color document-color
@@ -88,19 +87,6 @@
                                                      ((filter result filter-dts))
                                                      method ...)
            (vim.lsp.handlers.textDocument/definition err result method ...)))
-
-(typescript.setup {:server {:on_attach on-attach
-                            : capabilities
-                            :handlers {:textDocument/definition definition-handler}
-                            :init_options {:preferences {:allowIncompleteCompletions false
-                                                         :includeInlayParameterNameHints :all
-                                                         :includeInlayParameterNameHintsWhenArgumentMatchesName true
-                                                         :includeInlayFunctionParameterTypeHints true
-                                                         :includeInlayVariableTypeHints true
-                                                         :includeInlayPropertyDeclarationTypeHints true
-                                                         :includeInlayFunctionLikeReturnTypeHints true
-                                                         :includeInlayEnumMemberValueHints true
-                                                         :hostInfo :neovim}}}})
 
 (fn get-python-path [workspace]
   (when vim.env.VIRTUAL_ENV

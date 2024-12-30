@@ -211,7 +211,7 @@
       ;; Typescript
       :leafgarland/typescript-vim {}
       :peitalin/vim-jsx-typescript {}
-      :jose-elias-alvarez/typescript.nvim {}
+      :pmizio/typescript-tools.nvim {:mod :typescript-tools}
 
       ;; Java/Android/Gradle plugins
       :hsanson/vim-android {:mod :android}

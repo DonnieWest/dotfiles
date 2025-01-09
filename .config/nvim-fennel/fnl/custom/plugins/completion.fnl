@@ -1,5 +1,7 @@
 {1 :saghen/blink.cmp
- :dependencies :rafamadriz/friendly-snippets
+ :dependencies [:rafamadriz/friendly-snippets
+                :saghen/blink.compat
+                :PaterJason/cmp-conjure]
  :opts {:appearance {:nerd_font_variant :mono :use_nvim_cmp_as_default true}
         :keymap {:preset :enter}
         :signature {:enabled true}
@@ -9,8 +11,11 @@
                                          (or (and (= ctx.mode :cmdline)
                                                   :auto_insert)
                                              :preselect))}}
-        :sources {:default [:lsp :path :snippets :buffer]}}
+        :sources {:default [:lsp :path :snippets :buffer :conjure]
+                  :providers {:conjure {:name :conjure
+                                        :module :blink.compat.source}}}}
  :init (fn []
          (set vim.opt.completeopt "menuone,noselect")
          (require :custom/completion))
  :version "*"}
+

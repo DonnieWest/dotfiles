@@ -47,7 +47,7 @@
 (set opt.showmatch true)
 (set opt.autowrite true)
 (set opt.shiftround true)
-(set vim.o.magic true)
+(set opt.magic true)
 (set opt.autoread true)
 (set opt.expandtab true)
 (set opt.showcmd true)
@@ -62,7 +62,7 @@
 (set vim.w.list true)
 
 ;; List characters and indentation
-(set opt.listchars "tab:»·,trail:·,nbsp:·")
+(set vim.o.listchars "tab:»·,trail:·,nbsp:·")
 (set opt.shiftwidth 2)
 (set opt.softtabstop 2)
 (set opt.tabstop 2)

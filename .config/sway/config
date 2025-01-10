@@ -19,7 +19,7 @@ exec kanshi
 
 include /etc/sway/config.d/*
 
-exec wl-clip-persist --clipboard both
+# exec wl-clip-persist --clipboard both
 
 # exec /home/igneo676/.bin/mail-checker
 # exec nightshift -l 39.0315533:-94.4954291 -d -m wayland

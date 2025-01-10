@@ -144,12 +144,12 @@
       :hrsh7th/cmp-nvim-lsp-signature-help {}
       :hrsh7th/cmp-nvim-lua {}
       :hrsh7th/cmp-path {}
-      :Exafunction/codeium.vim {}
+      :monkoose/neocodeium {:mod :neocodeium}
+      :ggml-org/llama.vim {}
       :yetone/avante.nvim {:mod :avante :run :make :requires [:MunifTanjim/nui.nvim
                                                               :nvim-lua/plenary.nvim
                                                               :stevearc/dressing.nvim]}
 
-      ; :olimorris/codecompanion.nvim {:mod :codecompanion}
       :MeanderingProgrammer/render-markdown.nvim {}
 
       :jubnzv/virtual-types.nvim {}

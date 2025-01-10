@@ -44,6 +44,10 @@
 (keymap.set :n :<C-l> ":bnext<CR>")
 (keymap.set :n :<C-h> ":bprevious<CR>")
 
+(keymap.set :n :<Leader>c :gcc { :noremap false :silent true})
+
+(keymap.set :v :<Leader>c :gc { :noremap false :silent true})
+
 ;; Grep for TODOs
 (keymap.set :n :<Leader>t ":GrepperRg TODO: <CR>")
 
@@ -52,7 +56,7 @@
     (vim.cmd "%s/\\s\\+$//e")
     (vim.cmd "%s/\\n\\{3,}/\\r\\r/e")
     (vim.cmd "%s#\\($\\n\\s*\\)\\+\\%$##e")
-    (vim.fn.keymap.setpos "." pos)))
+    (vim.fn.setpos "." pos)))
 
 ;; Strip trailing whitespace
 (keymap.set :n :<leader><space> stripTrailingWhitespace)
@@ -61,3 +65,19 @@
 (vim.api.nvim_create_user_command :StripTrailingWhitespace
                                   stripTrailingWhitespace {})
 
+(vim.api.nvim_create_autocmd [:BufWritePost]
+                             {:pattern :init.vim :command "source $MYVIMRC"})
+
+(vim.api.nvim_create_autocmd [:VimResized] {:command "wincmd ="})
+
+(vim.api.nvim_create_autocmd [:FocusGained] {:command :checktime})
+
+(vim.api.nvim_create_autocmd [:TextYankPost]
+                             {:callback #(vim.highlight.on_yank {:higroup :IncSearch
+                                                                 :timeout 100})})
+
+;; Restore previous cursor permission
+(vim.api.nvim_create_autocmd [:BufReadPost]
+                             {:desc "set position after vim loads"
+                              :callback #(vim.fn.setpos "."
+                                                         (vim.fn.getpos "'\""))})

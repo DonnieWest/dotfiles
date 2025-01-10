@@ -1,5 +1,4 @@
-[
- ;; Generic Plugins
+[;; Generic Plugins
  :tpope/vim-repeat
  :tpope/vim-surround
  :tpope/vim-tbone
@@ -79,5 +78,7 @@
  ;; Fennel
  :Olical/aniseed
  :Olical/fennel.vim
+ {1 :fwcd/kotlin-language-server :build "./gradlew :server:installDist"}
+ {1 :microsoft/vscode-gradle :build "./gradlew :server:installDist"}
  :elkowar/antifennel-nvim]
 

@@ -19,24 +19,13 @@
  :blueyed/vim-diminactive
  :folke/lsp-colors.nvim
  :mrshmllow/document-color.nvim
- ;; Themes
- :barrientosvctor/abyss.nvim
- :EdenEast/nightfox.nvim
- :mhartington/oceanic-next
- :rose-pine/neovim
  ;; Generic IDE features
  :rhysd/clever-f.vim
- :ibhagwan/fzf-lua
  :kassio/neoterm
  :nvim-lua/popup.nvim
  :nvim-lua/plenary.nvim
- :junegunn/fzf
  :gpanders/editorconfig.nvim
  :justinmk/vim-gtfo
- ;; Completion
- ; :PaterJason/cmp-conjure  ;; Need to make compatible with blink.cmp
- :Exafunction/codeium.vim
- :ggml-org/llama.vim
  :MeanderingProgrammer/render-markdown.nvim
  :jubnzv/virtual-types.nvim
  :rafamadriz/friendly-snippets
@@ -61,7 +50,6 @@
  :benjie/local-npm-bin.vim
  :MunifTanjim/nui.nvim
  :JoosepAlviste/nvim-ts-context-commentstring
- :David-Kunz/cmp-npm
  ;; Java/Android/Gradle plugins
  :mfussenegger/nvim-jdtls
  ;; SQL
@@ -76,7 +64,6 @@
  ;; GraphQL
  :jparise/vim-graphql
  ;; Fennel
- :Olical/aniseed
  :Olical/fennel.vim
  {1 :fwcd/kotlin-language-server :build "./gradlew :server:installDist"}
  {1 :microsoft/vscode-gradle :build "./gradlew :server:installDist"}

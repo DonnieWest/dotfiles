@@ -3,5 +3,6 @@
  :init (fn []
          (vim.api.nvim_create_autocmd [:BufEnter :BufWritePost]
                                       {:pattern :package.json
-                                       :callback #(package.show)}))}
+                                       :callback (. (require :package-info)
+                                                    :show)}))}
 

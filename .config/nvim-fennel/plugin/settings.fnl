@@ -90,6 +90,3 @@
 ;; Filetype-specific settings
 (vim.cmd "autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx")
 (vim.cmd "autocmd BufNewFile,BufRead .eslintrc set filetype=json")
-(vim.cmd "autocmd FileType gitcommit setlocal textwidth=72 spell")
-(vim.cmd "autocmd FileType kotlin setlocal shiftwidth=4 softtabstop=4 tabstop=4")
-(vim.cmd "autocmd FileType markdown setlocal spell wrap linebreak")

@@ -1,20 +1,113 @@
-{1 :RRethy/base16-nvim
- :init (fn []
-         (let [base16 (require :base16-colorscheme)]
-           (base16.setup {:base00 "#03090e"
-                          :base01 "#091f2e"
-                          :base02 "#0a3749"
-                          :base03 "#245361"
-                          :base04 "#4e5166"
-                          :base05 "#d3ebe9"
-                          :base06 "#98d1ce"
-                          :base07 "#d3ebe9"
-                          :base08 "#2aa889"
-                          :base09 "#33859e"
-                          :base0A "#edb443"
-                          :base0B "#195466"
-                          :base0C "#599cab"
-                          :base0D "#888ca6"
-                          :base0E "#d26937"
-                          :base0F "#c23127"})))}
+{1 :DonnieWest/nvim-base16.lua
+ :config (fn []
+           (let [base16 (require :base16)]
+             (tset base16.themes :gotham
+                   (base16.theme_from_array [:0c1014
+                                             ; Background
+                                             :11151c
+                                             ; Lighter Background
+                                             :091f2e
+                                             ; Selection
+                                             :0a3749
+                                             ; Comment
+                                             :245361
+                                             ; Dark Foreground
+                                             :d3ebe9
+                                             ; Foreground
+                                             :599cab
+                                             ; Light Foreground
+                                             :98d1ce
+                                             ; Light Background
+                                             :4e5166
+                                             ; Variables
+                                             :2aa889
+                                             ; Integers
+                                             :33859E
+                                             ; Classes
+                                             :edb443
+                                             ; Strings
+                                             :195466
+                                             ; Support / Regex
+                                             :888ca6
+                                             ; Functions
+                                             :d26937
+                                             ; Tags/Keywords
+                                             :c23127])) ; Deprecated, open/closing tags
+
+             (fn strip-hex-symbol [hex]
+               (string.gsub hex "#" ""))
+
+             (fn get-color [theme color]
+               (strip-hex-symbol (. theme color)))
+
+             (fn convert-theme-to-base16 [theme]
+               {:base00 (get-color theme :background)
+                :base01 (get-color theme :lighter-background)
+                :base02 (get-color theme :selection)
+                :base03 (get-color theme :comment)
+                :base04 (get-color theme :dark-foreground)
+                :base05 (get-color theme :foreground)
+                :base06 (get-color theme :light-foreground)
+                :base07 (get-color theme :light-background)
+                :base08 (get-color theme :variables)
+                :base09 (get-color theme :numbers)
+                :base0A (get-color theme :classes)
+                :base0B (get-color theme :strings)
+                :base0C (get-color theme :regex)
+                :base0D (get-color theme :functions)
+                :base0E (get-color theme :keywords)
+                :base0F (get-color theme :tags)})
+
+             (tset base16.themes :tweaked
+                   (convert-theme-to-base16 {:background "#03090e"
+                                             :lighter-background "#061620"
+                                             :selection "#091f2e"
+                                             :comment "#223543"
+                                             :dark-foreground "#9da5ab"
+                                             :foreground "#e6e9ea"
+                                             :light-foreground "#f5fafd"
+                                             :light-background "#53626d"
+                                             :variables "#4e5166"
+                                             :numbers "#DDECB2"
+                                             :classes "#33859E"
+                                             :strings "#FFB610"
+                                             :regex "#195466"
+                                             :functions "#27B8C2"
+                                             :keywords "#ecb2c0"
+                                             :tags "#D12820"}))
+             (tset base16.themes :nightowl
+                   (base16.theme_from_array [:011627
+                                             :0c2132
+                                             :172c3d
+                                             :223748
+                                             :2c4152
+                                             :ced6e3
+                                             :d6deeb
+                                             :feffff
+                                             :ecc48d
+                                             :f78c6c
+                                             :c792ea
+                                             :29E68E
+                                             :aad2ff
+                                             :82aaff
+                                             :c792ea
+                                             :f78c6c]))
+             (tset base16.themes :gotham-tweaked
+                   (convert-theme-to-base16 {:background "#03090e"
+                                             :lighter-background "#10151c"
+                                             :selection "#0e3a4f"
+                                             :comment "#13596c"
+                                             :dark-foreground "#2d6a79"
+                                             :foreground "#e6f9f7"
+                                             :light-foreground "#6bb8c8"
+                                             :light-background "#b0e3e4"
+                                             :variables "#606476"
+                                             :numbers "#3cd7b2"
+                                             :classes "#41a8c7"
+                                             :strings "#f7ba56"
+                                             :regex "#1e6a87"
+                                             :functions "#a3a7c1"
+                                             :keywords "#ee7545"
+                                             :tags "#d5423b"}))
+             (base16 base16.themes.gotham-tweaked true {:lightline true})))}
 

@@ -1,6 +1,8 @@
 {1 :neovim/nvim-lspconfig
  :dependencies [:nvim-lua/plenary.nvim
                 :pmizio/typescript-tools.nvim
+                :SmiteshP/nvim-navic
+                {1 :VidocqH/lsp-lens.nvim :opts {}}
                 {1 :lewis6991/hover.nvim
                  :opts {:init (fn []
                                 (require :hover.providers.lsp))}}
@@ -10,7 +12,10 @@
            (let [lsp (require :lspconfig)
                  cmp (require :blink.cmp)
                  lsp_lines (require :lsp_lines)
-                 typescript (require :typescript-tools)]
+                 typescript (require :typescript-tools)
+                 navic (require :nvim-navic)
+                 on-attach (fn [client bufnr]
+                             (navic.attach client bufnr))]
              (lsp_lines.setup {})
              (typescript.setup {:server {:init_options {:preferences {:allowIncompleteCompletions false
                                                                       :includeInlayParameterNameHints :all
@@ -23,9 +28,7 @@
                                                                       :hostInfo :neovim}}}})
              (vim.diagnostic.config {:virtual_text true :virtual_lines false})
              (vim.api.nvim_create_autocmd :LspAttach
-                                          {:callback (fn [args]
-
-                                                       ; (vim.keymap.del :n :K {:buffer args.buf})
+                                          {:callback (fn [args] ; (vim.keymap.del :n :K {:buffer args.buf})
                                                        (local bufnr args.buf)
                                                        (local client
                                                               (assert (vim.lsp.get_client_by_id args.data.client_id)
@@ -34,15 +37,13 @@
                                                               (require :telescope.builtin))
                                                        (set vim.opt_local.omnifunc
                                                             "v:lua.vim.lsp.omnifunc")
-
-                                                      ; Some keymaps are created unconditionally when Nvim starts:
-                                                      ; "grn" is mapped in Normal mode to vim.lsp.buf.rename()
-                                                      ; "gra" is mapped in Normal and Visual mode to vim.lsp.buf.code_action()
-                                                      ; "grr" is mapped in Normal mode to vim.lsp.buf.references()
-                                                      ; "gri" is mapped in Normal mode to vim.lsp.buf.implementation()
-                                                      ; "gO" is mapped in Normal mode to vim.lsp.buf.document_symbol()
-                                                      ; CTRL-S is mapped in Insert mode to vim.lsp.buf.signature_help()
-
+                                                       ; Some keymaps are created unconditionally when Nvim starts:
+                                                       ; "grn" is mapped in Normal mode to vim.lsp.buf.rename()
+                                                       ; "gra" is mapped in Normal and Visual mode to vim.lsp.buf.code_action()
+                                                       ; "grr" is mapped in Normal mode to vim.lsp.buf.references()
+                                                       ; "gri" is mapped in Normal mode to vim.lsp.buf.implementation()
+                                                       ; "gO" is mapped in Normal mode to vim.lsp.buf.document_symbol()
+                                                       ; CTRL-S is mapped in Insert mode to vim.lsp.buf.signature_help()
                                                        (vim.keymap.set :n :grr
                                                                        builtin.lsp_references)
                                                        (vim.keymap.set :n
@@ -82,5 +83,6 @@
              (each [server config (pairs opts.servers)]
                (set config.capabilities
                     (cmp.get_lsp_capabilities config.capabilities))
-               ((. lsp server :setup) config))))}
+               ((. lsp server :setup) (vim.tbl_extend :force config
+                                                      {: on-attach})))))}
 

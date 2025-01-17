@@ -1,6 +1,6 @@
 ;; Host programs for external language support
-(set vim.g.python_host_prog "/usr/bin/python2")
-(set vim.g.python3_host_prog "/usr/bin/python3")
+(set vim.g.python_host_prog :/usr/bin/python2)
+(set vim.g.python3_host_prog :/usr/bin/python3)
 (set vim.g.node_host_prog "~/.config/npm/bin/neovim-node-host")
 
 ;; Disable unnecessary providers for faster startup
@@ -29,12 +29,12 @@
 
 ;; General settings
 (set opt.termguicolors true)
-(set opt.mouse "a")
+(set opt.mouse :a)
 (set opt.updatetime 300)
 (set opt.ttimeoutlen 50)
 (set opt.timeoutlen 500)
-(set opt.inccommand "split")
-(set opt.background "dark")
+(set opt.inccommand :split)
+(set opt.background :dark)
 (set opt.scrolloff 10)
 (set opt.laststatus 2)
 (set opt.hidden true)
@@ -70,10 +70,10 @@
 
 ;; Enhanced navigation and formatting
 (set vim.o.whichwrap (.. vim.o.whichwrap ",<,>,h,l,[,]"))
-(set vim.o.shortmess (.. vim.o.shortmess "cI"))
+(set vim.o.shortmess (.. vim.o.shortmess :cI))
 (set vim.o.diffopt (.. vim.o.diffopt ",vertical"))
 (set vim.o.tags (.. vim.o.tags ".tags,./tags,tags;"))
-(set opt.clipboard "unnamedplus")
+(set opt.clipboard :unnamedplus)
 (set vim.o.wildignore "*/log/*,*/.git/*,**/*.pyc")
 
 ;; Disable unnecessary features
@@ -83,10 +83,16 @@
 (vim.cmd "set nobackup")
 
 ;; Use ripgrep if available
-(when (> (vim.fn.executable "rg") 0)
+(when (> (vim.fn.executable :rg) 0)
   (set vim.opt.grepprg "rg --vimgrep --no-heading")
   (set vim.opt.grepformat "%f:%l:%c:%m,%f:%l:%m"))
 
-;; Filetype-specific settings
-(vim.cmd "autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx")
-(vim.cmd "autocmd BufNewFile,BufRead .eslintrc set filetype=json")
+(vim.api.nvim_create_autocmd [:BufNewFile :BufRead]
+                             {:pattern "*.tsx,*.jsx"
+                              :callback #(set vim.opt_local.filetype
+                                              :typescriptreact)})
+
+(vim.api.nvim_create_autocmd [:BufNewFile :BufRead]
+                             {:pattern :.eslintrc
+                              :callback #(set vim.opt_local.filetype :json)})
+

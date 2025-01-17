@@ -1,24 +1,49 @@
-; (fn colorscheme-fixes [] (run-ex hi :TSComment :gui=italic)
-;       (run-ex hi :TSType :gui=italic) (run-ex hi :TSKeywords :gui=italic)
-;       (run-ex hi :jsGlobalNodeObjects :gui=italic) (run-ex hi :JSKeywords :gui=italic)
-;       (run-ex hi :jsFunction :gui=italic) (run-ex hi :JSKeywords :gui=italic)
-;       (run-ex hi :TSKeyword :gui=italic) (run-ex hi :TSStatement :gui=italic)
-;       (run-ex hi :TSBoolean :gui=italic) (run-ex hi :TSConstant :gui=italic)
-;       (run-ex hi :TSInclude :gui=italic) (run-ex hi :SpellBad :gui=underline)
-;       (run-ex hi :SpellLocal :gui=underline)
-;       (run-ex hi :SpellRare :gui=underline) (run-ex hi :htmlArg :gui=italic)
-;       (run-ex hi :Comment :gui=italic) (run-ex hi :Type :gui=italic)
-;       (run-ex hi :Keywords :gui=italic) (run-ex hi :Keyword :gui=italic)
-;       (run-ex hi :Statement :gui=italic) (run-ex hi :Boolean :gui=italic)
-;       (run-ex hi :Constant :gui=italic) (run-ex hi :Include :gui=italic)
-;       (run-ex hi :ColorColumn :ctermbg=blue)
-;       (run-ex hi :NeogitDiffAdd :guifg=LightGray :guibg=DarkGreen)
-;       (run-ex hi :NeogitDiffDelete :guifg=DarkGray :guibg=DarkRed)
-;       (run-ex hi :NeogitDiffAddHighlight :guifg=LightGray :guibg=DarkGreen)
-;       (run-ex hi :NeogitDiffDeleteHighlight :guifg=DarkGray :guibg=DarkRed)
-;       (nvim.ex.highlight :link :NeogitDiffContextHighlight :CursorLine)
-;       (nvim.ex.highlight :link :NeogitHunkHeader :TabLine)
-;       (nvim.ex.highlight :link :NeogitHunkHeaderHighlight :DiffText))
+(fn merge-and-set-hl [group new-settings]
+  (let [old-settings (vim.api.nvim_get_hl 0 {:name group})
+        ;; Get existing highlight settings
+        merged-settings (vim.tbl_extend :force old-settings new-settings)]
+    ;; Merge with new settings
+    (vim.api.nvim_set_hl 0 group merged-settings)))
+
+(fn colorscheme-fixes []
+  (let [italic-groups [:TSComment
+                       :TSType
+                       :TSKeywords
+                       :jsGlobalNodeObjects
+                       :JSKeywords
+                       :jsFunction
+                       :TSKeyword
+                       :TSStatement
+                       :TSBoolean
+                       :TSConstant
+                       :TSInclude
+                       :htmlArg
+                       :Comment
+                       :Type
+                       :Keywords
+                       :Keyword
+                       :Statement
+                       :Boolean
+                       :Constant
+                       :Include]
+        underline-groups [:SpellBad :SpellLocal :SpellRare]]
+    ;; Set italic highlights
+    (each [index group (ipairs italic-groups)]
+      (merge-and-set-hl group {:italic true}))
+    ;; Set underline highlights
+    (each [index group (ipairs underline-groups)]
+      (merge-and-set-hl group {:underline true}))
+    ;; Set specific highlights
+    (merge-and-set-hl :ColorColumn {:ctermbg :blue})
+    (merge-and-set-hl :NeogitDiffAdd {:fg :LightGray :bg :Green})
+    (merge-and-set-hl :NeogitDiffDelete {:fg :DarkGray :bg :Red})
+    (merge-and-set-hl :NeogitDiffAddHighlight {:fg :LightGray :bg :DarkGreen})
+    (merge-and-set-hl :NeogitDiffDeleteHighlight {:fg :DarkGray :bg :DarkRed})
+    ;; Set links for other groups
+    (vim.api.nvim_set_hl 0 :NeogitDiffContextHighlight {:link :CursorLine})
+    (vim.api.nvim_set_hl 0 :NeogitHunkHeader {:link :TabLine})
+    (vim.fn.matchadd :ColorColumn "\\%101v" 100)
+    (vim.api.nvim_set_hl 0 :NeogitHunkHeaderHighlight {:link :DiffText})))
 
 {1 :nvim-treesitter/nvim-treesitter
  :build ":TSUpdate"
@@ -26,6 +51,10 @@
                 :nvim-treesitter/playground
                 :nvim-treesitter/nvim-treesitter-textobjects
                 :nvim-treesitter/nvim-treesitter-refactor]
+ :init (fn []
+         (colorscheme-fixes)
+         (vim.api.nvim_create_autocmd [:ColorScheme]
+                                      {:callback colorscheme-fixes}))
  :opts {:ensure_installed :all
         :ignore_install [:php :phpdoc]
         :query_linter {:enable true

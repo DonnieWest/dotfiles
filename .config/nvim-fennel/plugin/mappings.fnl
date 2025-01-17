@@ -51,19 +51,19 @@
 ;; Grep for TODOs
 (keymap.set :n :<Leader>t ":GrepperRg TODO: <CR>")
 
-(fn operator-rhs []
-  ((. (require :vim._comment) :operator)))
-(keymap.set [:n :x] :<Leader>c operator-rhs {:desc "Toggle comment" :expr true})
-
-(fn line-rhs []
-  (.. ((. (require :vim._comment) :operator)) "_"))
-
-(keymap.set :n :<Leader>c line-rhs {:desc "Toggle comment line" :expr true})
-
-(fn textobject-rhs []
-  ((. (require :vim._comment) :textobject)))
-
-(keymap.set [:o] :<Leader>c textobject-rhs {:desc "Comment textobject"})
+; (fn operator-rhs []
+;   ((. (require :vim._comment) :operator)))
+; (keymap.set [:n :x] :<Leader>c operator-rhs {:desc "Toggle comment" :expr true})
+;
+; (fn line-rhs []
+;   (.. ((. (require :vim._comment) :operator)) "_"))
+;
+; (keymap.set :n :<Leader>c line-rhs {:desc "Toggle comment line" :expr true})
+;
+; (fn textobject-rhs []
+;   ((. (require :vim._comment) :textobject)))
+;
+; (keymap.set [:o] :<Leader>c textobject-rhs {:desc "Comment textobject"})
 
 (fn stripTrailingWhitespace []
   (let [pos (vim.fn.getpos ".")]

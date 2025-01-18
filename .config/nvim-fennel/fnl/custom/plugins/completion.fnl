@@ -8,13 +8,14 @@
                  :cmdline {:<Tab> [:select_next :fallback]
                            :<S-Tab> [:select_prev :fallback]}}
         :signature {:enabled true}
-        :completion {:ghost_text {:enabled true}
+        :completion {:ghost_text {:enabled false}
                      :documentation {:auto_show true :auto_show_delay_ms 500}
                      :list {:selection {:preselect true
                                         :auto_insert (fn [ctx]
                                                        (= ctx.mode :cmdline))}}}
-        :sources {:default [:lsp :path :snippets :buffer :conjure :npm]
+        :sources {:default [:lsp :path :snippets :buffer :conjure :npm :dadbod]
                   :providers {:npm {:name :npm :module :blink.compat.source}
+                              :dadbod {:name :Dadbod :module :vim_dadbod_completion.blink}
                                    :conjure {:name :conjure
                                              :module :blink.compat.source}}}}
  :build "cargo build --release"}

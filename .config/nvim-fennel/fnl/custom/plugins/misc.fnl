@@ -1,6 +1,6 @@
 [;; Generic Plugins
  :tpope/vim-repeat
- :tpope/vim-surround
+ {1 :kylechui/nvim-surround :opts {}}
  :tpope/vim-tbone
  :duggiefresh/vim-easydir
  :tpope/vim-eunuch
@@ -16,9 +16,9 @@
  :pgdouyon/vim-evanesco
  :kshenoy/vim-signature
  ;; UI
+ {1 :catgoose/nvim-colorizer.lua :event :BufReadPre :opts {}}
  :blueyed/vim-diminactive
  :folke/lsp-colors.nvim
- :mrshmllow/document-color.nvim
  ;; Generic IDE features
  :rhysd/clever-f.vim
  :kassio/neoterm
@@ -29,6 +29,7 @@
  :MeanderingProgrammer/render-markdown.nvim
  :jubnzv/virtual-types.nvim
  :rafamadriz/friendly-snippets
+ :RRethy/vim-illuminate
  ;; LSP Features
  :b0o/schemastore.nvim
  ;; Appearance
@@ -49,7 +50,6 @@
  :mvolkmann/vim-react
  :benjie/local-npm-bin.vim
  :MunifTanjim/nui.nvim
- :JoosepAlviste/nvim-ts-context-commentstring
  ;; Java/Android/Gradle plugins
  :mfussenegger/nvim-jdtls
  ;; SQL
@@ -65,6 +65,7 @@
  :jparise/vim-graphql
  ;; Fennel
  :Olical/fennel.vim
+ :HiPhish/rainbow-delimiters.nvim
  {1 :fwcd/kotlin-language-server :build "./gradlew :server:installDist"}
  {1 :microsoft/vscode-gradle :build "./gradlew :server:installDist"}
  :elkowar/antifennel-nvim]

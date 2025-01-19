@@ -44,26 +44,12 @@
 (keymap.set :n :<C-l> ":bnext<CR>")
 (keymap.set :n :<C-h> ":bprevious<CR>")
 
-(keymap.set :n :<Leader>c :gcc { :noremap false :silent true})
+(keymap.set :n :<Leader>c :gcc {:noremap false :silent true})
 
-(keymap.set :v :<Leader>c :gc { :noremap false :silent true})
+(keymap.set :v :<Leader>c :gc {:noremap false :silent true})
 
 ;; Grep for TODOs
 (keymap.set :n :<Leader>t ":GrepperRg TODO: <CR>")
-
-; (fn operator-rhs []
-;   ((. (require :vim._comment) :operator)))
-; (keymap.set [:n :x] :<Leader>c operator-rhs {:desc "Toggle comment" :expr true})
-;
-; (fn line-rhs []
-;   (.. ((. (require :vim._comment) :operator)) "_"))
-;
-; (keymap.set :n :<Leader>c line-rhs {:desc "Toggle comment line" :expr true})
-;
-; (fn textobject-rhs []
-;   ((. (require :vim._comment) :textobject)))
-;
-; (keymap.set [:o] :<Leader>c textobject-rhs {:desc "Comment textobject"})
 
 (fn stripTrailingWhitespace []
   (let [pos (vim.fn.getpos ".")]
@@ -74,8 +60,7 @@
 
 ;; Strip trailing whitespace
 (keymap.set :n :<leader><space> stripTrailingWhitespace)
-
-;; Define the StripTrailingWhitespace function
+;; Define the StripTrailingWhitespace command
 (vim.api.nvim_create_user_command :StripTrailingWhitespace
                                   stripTrailingWhitespace {})
 
@@ -94,4 +79,5 @@
 (vim.api.nvim_create_autocmd [:BufReadPost]
                              {:desc "set position after vim loads"
                               :callback #(vim.fn.setpos "."
-                                                         (vim.fn.getpos "'\""))})
+                                                        (vim.fn.getpos "'\""))})
+

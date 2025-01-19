@@ -145,7 +145,6 @@
       :hrsh7th/cmp-nvim-lua {}
       :hrsh7th/cmp-path {}
       :monkoose/neocodeium {:mod :neocodeium}
-      :ggml-org/llama.vim {}
       :yetone/avante.nvim {:mod :avante :run :make :requires [:MunifTanjim/nui.nvim
                                                               :nvim-lua/plenary.nvim
                                                               :stevearc/dressing.nvim]}

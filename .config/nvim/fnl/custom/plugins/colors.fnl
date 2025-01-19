@@ -3,36 +3,21 @@
            (let [base16 (require :base16)]
              (tset base16.themes :gotham
                    (base16.theme_from_array [:0c1014
-                                             ; Background
                                              :11151c
-                                             ; Lighter Background
                                              :091f2e
-                                             ; Selection
                                              :0a3749
-                                             ; Comment
                                              :245361
-                                             ; Dark Foreground
                                              :d3ebe9
-                                             ; Foreground
                                              :599cab
-                                             ; Light Foreground
                                              :98d1ce
-                                             ; Light Background
                                              :4e5166
-                                             ; Variables
                                              :2aa889
-                                             ; Integers
                                              :33859E
-                                             ; Classes
                                              :edb443
-                                             ; Strings
                                              :195466
-                                             ; Support / Regex
                                              :888ca6
-                                             ; Functions
                                              :d26937
-                                             ; Tags/Keywords
-                                             :c23127])) ; Deprecated, open/closing tags
+                                             :c23127]))
 
              (fn strip-hex-symbol [hex]
                (string.gsub hex "#" ""))

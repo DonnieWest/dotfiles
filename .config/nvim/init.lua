@@ -1,30 +1,61 @@
--- Entrypoint for my Neovim configuration!
--- We simply bootstrap packer and Aniseed here.
--- It's then up to Aniseed to compile and load fnl/init.fnl
+-- Ensure lazy and hotpot are always installed
+local function ensure_installed(plugin, branch)
+  local user, repo = string.match(plugin, "(.+)/(.+)")
+  local repo_path = vim.fn.stdpath("data") .. "/lazy/" .. repo
+  if not (vim.uv or vim.loop).fs_stat(repo_path) then
+    vim.notify("Installing " .. plugin .. " " .. branch)
+    local repo_url = "https://github.com/" .. plugin .. ".git"
+    local out = vim.fn.system({
+      "git",
+      "clone",
+      "--filter=blob:none",
+      "--branch=" .. branch,
+      repo_url,
+      repo_path
+    })
+    if vim.v.shell_error ~= 0 then
+      vim.api.nvim_echo({
+        { "Failed to clone " .. plugin .. ":\n", "ErrorMsg" },
+        { out, "WarningMsg" },
+        { "\nPress any key to exit..." },
+      }, true, {})
+      vim.fn.getchar()
+      os.exit(1)
+    end
+  end
+  return repo_path
+end
+local lazy_path = ensure_installed("folke/lazy.nvim", "stable")
+local hotpot_path = ensure_installed("rktjmp/hotpot.nvim", "v0.14.6")
+-- As per Lazy's install instructions, but also include hotpot
+vim.opt.runtimepath:prepend({hotpot_path, lazy_path})
 
-local execute = vim.api.nvim_command
-local fn = vim.fn
+-- You must call vim.loader.enable() before requiring hotpot unless you are
+-- passing {performance = {cache = false}} to Lazy.
+vim.loader.enable()
 
-local pack_path = fn.stdpath("data") .. "/site/pack"
-local fmt = string.format
+vim.g.mapleader = ","
 
-function ensure (user, repo)
-  -- Ensures a given github.com/USER/REPO is cloned in the pack/packer/start directory.
-  local install_path = fmt("%s/packer/start/%s", pack_path, repo, repo)
-  if fn.empty(fn.glob(install_path)) > 0 then
-    execute(fmt("!git clone https://github.com/%s/%s %s", user, repo, install_path))
-    execute(fmt("packadd %s", repo))
+-- Generate plugins table
+local plugins = {
+  {
+    "rktjmp/hotpot.nvim",
+  },
+}
+
+-- Configure hotpot.nvim
+require("hotpot").setup({
+  provide_require_fennel = true,
+})
+
+-- Add plugins to table
+local plugins_path = vim.fn.stdpath("config") .. "/fnl/custom/plugins"
+if vim.loop.fs_stat(plugins_path) then
+  for file in vim.fs.dir(plugins_path) do
+    file = file:match("^(.*)%.fnl$")
+    plugins[#plugins + 1] = require("custom.plugins." .. file)
   end
 end
 
--- Bootstrap essential plugins required for installing and loading the rest.
-ensure("wbthomason", "packer.nvim")
-ensure("Olical", "aniseed")
-ensure("lewis6991", "impatient.nvim")
-
-require('impatient')
-
--- Enable Aniseed's automatic compilation and loading of Fennel source code.
-vim.g["aniseed#env"] = {
-  compile = true
-}
+-- Configure lazy.nvim
+require("lazy").setup(plugins)

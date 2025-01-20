@@ -1,6 +1,7 @@
 {1 :saghen/blink.cmp
  :dependencies [:rafamadriz/friendly-snippets
                 :saghen/blink.compat
+                {1 :xzbdmw/colorful-menu.nvim :opts {:ls {:fallback true}}}
                 :kristijanhusak/vim-dadbod-completion
                 {1 :David-Kunz/cmp-npm :ft :json :opts {}}
                 :PaterJason/cmp-conjure]
@@ -10,6 +11,13 @@
                            :<S-Tab> [:select_prev :fallback]}}
         :signature {:enabled true}
         :completion {:ghost_text {:enabled false}
+                     :menu {:draw {:components {:label {:highlight (fn [ctx]
+                                                                     ((. (require :colorful-menu)
+                                                                         :blink_components_highlight) ctx))
+                                                        :text (fn [ctx]
+                                                                ((. (require :colorful-menu)
+                                                                    :blink_components_text) ctx))}}
+                                   :columns [[:kind_icon] {1 :label :gap 1}]}}
                      :documentation {:auto_show true :auto_show_delay_ms 500}
                      :list {:selection {:preselect true
                                         :auto_insert (fn [ctx]

@@ -35,10 +35,11 @@
       (merge-and-set-hl group {:underline true}))
     ;; Set specific highlights
     (merge-and-set-hl :ColorColumn {:ctermbg :blue})
-    (merge-and-set-hl :NeogitDiffAdd {:fg :LightGray :bg :Green})
-    (merge-and-set-hl :NeogitDiffDelete {:fg :DarkGray :bg :Red})
-    (merge-and-set-hl :NeogitDiffAddHighlight {:fg :LightGray :bg :DarkGreen})
-    (merge-and-set-hl :NeogitDiffDeleteHighlight {:fg :DarkGray :bg :DarkRed})
+    (merge-and-set-hl :NeogitDiffAdd {:fg "#ffffff" :bg "#218c50"})
+    (merge-and-set-hl :NeogitDiffDelete {:fg "#ffffff" :bg "#d32f2f"})
+    (merge-and-set-hl :NeogitDiffAddHighlight {:fg "#ffffff" :bg "#176b3a"})
+    (merge-and-set-hl :NeogitDiffDeleteHighlight {:fg "#ffffff" :bg "#a62323"})
+    (merge-and-set-hl :BlinkCmpMenuSelection {:bg "#0e3a4f"}) 
     ;; Set links for other groups
     (vim.api.nvim_set_hl 0 :NeogitDiffContextHighlight {:link :CursorLine})
     (vim.api.nvim_set_hl 0 :NeogitHunkHeader {:link :TabLine})

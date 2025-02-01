@@ -4,7 +4,9 @@
                 :jubnzv/virtual-types.nvim
                 :SmiteshP/nvim-navic
                 :b0o/schemastore.nvim
-                {1 :VidocqH/lsp-lens.nvim :opts {}}
+                {1 :Wansmer/symbol-usage.nvim
+                 :event :LspAttach
+                 :opts {:vt_position :end_of_line}}
                 {1 :lewis6991/hover.nvim
                  :opts {:init (fn []
                                 (require :hover.providers.lsp))}}
@@ -16,6 +18,7 @@
                 virtualtypes (require :virtualtypes)
                 navic (require :nvim-navic)
                 servers {:fennel_ls {}
+                         :marksman {}
                          :jsonls {:settings {:json {:schemas ((. (require :schemastore)
                                                                  :json :schemas))
                                                     :validate {:enable true}}}}}
@@ -75,7 +78,7 @@
                                                       (vim.keymap.set :n :gT
                                                                       vim.lsp.buf.type_definition
                                                                       {:buffer 0})
-                                                      (vim.keymap.set :n :grr
+                                                      (vim.keymap.set :n :grn
                                                                       vim.lsp.buf.rename
                                                                       {:buffer 0})
                                                       (vim.keymap.set :n :gra

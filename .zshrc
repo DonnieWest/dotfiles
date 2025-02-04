@@ -347,13 +347,12 @@ update_npm() {
   lastLine=$(echo -n $output | tail -2 | head | tr -d "\n")
   echo $output
   if [ "$lastLine" != "All global packages are up-to-date :)" ]; then
-    echo "Do you wish to update these packages?"
-    select yn in "Yes" "No"; do
-        case $yn in
-            Yes ) $(echo $lastLine); break;;
-            No ) exit;;
-        esac
-    done
+    read -rsqk "input?Do you wish to update these packages? [Y/n]" 
+    case "$input" in
+      [Yy]) echo "\nUpdating..."; $(echo $lastLine); return 0 ;;  # Proceed with action
+      [Nn]) echo "\nAborting..."; return 1 ;;   # Abort action
+      *) echo -n " Invalid choice. Please press Y or N: " ;;
+    esac
   fi
 }
 

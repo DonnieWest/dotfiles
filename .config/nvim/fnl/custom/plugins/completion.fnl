@@ -4,6 +4,14 @@
                 :kristijanhusak/vim-dadbod-completion
                 {1 :David-Kunz/cmp-npm :ft :json :opts {}}
                 :PaterJason/cmp-conjure]
+ :init (fn []
+         (let [cmp (require :blink.cmp)]
+           (vim.keymap.set :i :<C-x><C-o>
+                           (fn []
+                             (cmp.show)
+                             (cmp.show_documentation)
+                             (cmp.hide_documentation))
+                           {:silent false})))
  :opts {:appearance {:nerd_font_variant :mono :use_nvim_cmp_as_default true}
         :keymap {:preset :enter
                  :<Tab> [:select_next :fallback]

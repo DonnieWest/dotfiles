@@ -1,6 +1,14 @@
 {1 :saghen/blink.cmp
  :dependencies [:rafamadriz/friendly-snippets
                 :saghen/blink.compat
+                ; {1 :tzachar/cmp-ai
+                ;  :opts {:ignored_file_types {}
+                ;         :max_lines 1000
+                ;         :notify true
+                ;         :notify_callback (fn [msg] (vim.notify msg))
+                ;         :provider :OpenAI
+                ;         :provider_options {:model :gpt-4}
+                ;         :run_on_every_keystroke true}}
                 :kristijanhusak/vim-dadbod-completion
                 {1 :David-Kunz/cmp-npm :ft :json :opts {}}
                 :PaterJason/cmp-conjure]
@@ -13,11 +21,11 @@
                              (cmp.hide_documentation))
                            {:silent false})))
  :opts {:appearance {:nerd_font_variant :mono :use_nvim_cmp_as_default true}
+        :cmdline {:keymap {:<Tab> [:select_next :fallback]
+                           :<S-Tab> [:select_prev :fallback]}}
         :keymap {:preset :enter
                  :<Tab> [:select_next :fallback]
-                 :<S-Tab> [:select_prev :fallback]
-                 :cmdline {:<Tab> [:select_next :fallback]
-                           :<S-Tab> [:select_prev :fallback]}}
+                 :<S-Tab> [:select_prev :fallback]}
         :signature {:enabled true}
         :completion {:ghost_text {:enabled false}
                      :menu {:draw {:treesitter [:lsp]}}
@@ -27,6 +35,8 @@
                                                        (= ctx.mode :cmdline))}}}
         :sources {:default [:lsp :path :snippets :buffer :conjure :npm :dadbod]
                   :providers {:npm {:name :npm :module :blink.compat.source}
+                              ; :cmp_ai {:name :cmp_ai
+                              ;          :module :blink.compat.source}
                               :dadbod {:name :Dadbod
                                        :module :vim_dadbod_completion.blink}
                               :conjure {:name :conjure

@@ -21,7 +21,8 @@
                              (cmp.hide_documentation))
                            {:silent false})))
  :opts {:appearance {:nerd_font_variant :mono :use_nvim_cmp_as_default true}
-        :cmdline {:keymap {:<Tab> [:select_next :fallback]
+        :cmdline {:completion {:menu {:auto_show true}}
+                  :keymap {:<Tab> [:select_next :fallback]
                            :<S-Tab> [:select_prev :fallback]}}
         :keymap {:preset :enter
                  :<Tab> [:select_next :fallback]
@@ -33,8 +34,17 @@
                      :list {:selection {:preselect true
                                         :auto_insert (fn [ctx]
                                                        (= ctx.mode :cmdline))}}}
-        :sources {:default [:lsp :path :snippets :buffer :conjure :npm :dadbod]
+        :sources {:default [:lsp
+                            :easy-dotnet
+                            :path
+                            :snippets
+                            :buffer
+                            :conjure
+                            :npm
+                            :dadbod]
                   :providers {:npm {:name :npm :module :blink.compat.source}
+                              :easy-dotnet {:module :easy-dotnet.completion.blink
+                                            :name :easy-dotnet}
                               ; :cmp_ai {:name :cmp_ai
                               ;          :module :blink.compat.source}
                               :dadbod {:name :Dadbod

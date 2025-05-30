@@ -18,6 +18,7 @@
                 virtualtypes (require :virtualtypes)
                 navic (require :nvim-navic)
                 servers {:fennel_ls {}
+                         :csharp_ls {}
                          :marksman {}
                          :jsonls {:settings {:json {:schemas ((. (require :schemastore)
                                                                  :json :schemas))

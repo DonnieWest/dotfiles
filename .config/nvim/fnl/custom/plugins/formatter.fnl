@@ -10,6 +10,7 @@
                                                     :args ["-"]
                                                     :stdin true})]
                                         :javascript (util.copyf defaults.prettier)
+                                        :html (util.copyf defaults.prettier)
                                         :kotlin [(fn []
                                                    {:exe :ktfmt
                                                     :args ["-"]

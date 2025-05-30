@@ -3,3 +3,5 @@ theme = dark:gotham-accessible,light:gotham-accessible
 font-size = 21
 font-family = Victor Mono SemiBold
 resize-overlay = never
+link-url = true
+confirm-close-surface = false

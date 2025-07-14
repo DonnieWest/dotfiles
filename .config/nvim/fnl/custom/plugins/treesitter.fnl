@@ -47,6 +47,7 @@
     (vim.api.nvim_set_hl 0 :NeogitHunkHeaderHighlight {:link :DiffText})))
 
 {1 :nvim-treesitter/nvim-treesitter
+ :branch "master" ; Convert to main since master is deprecated. This breaks treesitter refactor
  :build ":TSUpdate"
  :dependencies [:RRethy/nvim-treesitter-endwise
                 :nvim-treesitter/playground

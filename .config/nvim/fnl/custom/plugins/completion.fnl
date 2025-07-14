@@ -11,6 +11,7 @@
                 ;         :run_on_every_keystroke true}}
                 :kristijanhusak/vim-dadbod-completion
                 {1 :David-Kunz/cmp-npm :ft :json :opts {}}
+                :Kaiser-Yang/blink-cmp-avante
                 :PaterJason/cmp-conjure]
  :init (fn []
          (let [cmp (require :blink.cmp)]
@@ -34,15 +35,17 @@
                      :list {:selection {:preselect true
                                         :auto_insert (fn [ctx]
                                                        (= ctx.mode :cmdline))}}}
-        :sources {:default [:lsp
-                            :easy-dotnet
+        :sources {:default [:avante
+                            :lsp
                             :path
+                            :easy-dotnet
                             :snippets
                             :buffer
                             :conjure
                             :npm
                             :dadbod]
                   :providers {:npm {:name :npm :module :blink.compat.source}
+                              :avante {:name :avante :module :blink-cmp-avante}
                               :easy-dotnet {:module :easy-dotnet.completion.blink
                                             :name :easy-dotnet}
                               ; :cmp_ai {:name :cmp_ai

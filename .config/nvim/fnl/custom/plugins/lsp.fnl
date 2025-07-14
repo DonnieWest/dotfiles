@@ -19,6 +19,14 @@
                 navic (require :nvim-navic)
                 servers {:fennel_ls {}
                          :csharp_ls {}
+                         ; :omnisharp {:cmd [:omnisharp
+                         ;                   :-z
+                         ;                   :--hostPID
+                         ;                   :12345
+                         ;                   "DotNet:enablePackageRestore=false"
+                         ;                   :--encoding
+                         ;                   :utf-8
+                         ;                   :--languageserver]}
                          :marksman {}
                          :jsonls {:settings {:json {:schemas ((. (require :schemastore)
                                                                  :json :schemas))

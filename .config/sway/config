@@ -248,6 +248,24 @@ input "1739:0:Synaptics_TM3471-020" {
   click_method clickfinger
 }
 
+input "1739:52914:SYNA8017:00_06CB:CEB2_Touchpad" {
+  accel_profile adaptive
+  middle_emulation enabled
+  dwt enabled
+  pointer_accel 0.2
+  tap enabled
+  click_method clickfinger
+}
+
+input "1165:35089:HTX_USB_HID_Device_HTX_HID_Device_Touchpad" {
+  accel_profile adaptive
+  middle_emulation enabled
+  dwt enabled
+  pointer_accel 0.5
+  tap enabled
+  click_method clickfinger
+}
+
 input "1739:30381:DLL0665:01_06CB:76AD_Touchpad" {
   accel_profile flat
   middle_emulation enabled

@@ -128,11 +128,8 @@ bindsym $mod+0 workspace "10: Code"
 bindsym Mod1+Control+Right workspace next
 bindsym Mod1+Control+Left workspace prev
 
-bindsym Mod1+Control+L workspace next
-bindsym Mod1+Control+H workspace prev
-
-bindsym Mod1+Control+K workspace next
-bindsym Mod1+Control+J workspace prev
+bindsym Mod1+Control+semicolon workspace next
+bindsym Mod1+Control+j workspace prev
 
 workspace_auto_back_and_forth yes
 bindsym $mod+z workspace back_and_forth
@@ -356,12 +353,12 @@ bar {
   # strip_workspace_numbers yes
 
   colors {
-    separator #9da5ab
+    separator #8be9fd
     background #03090e
-    statusline #53626d
-    focused_workspace #061620 #061620 #e6e9ea
+    statusline #e6f9f7
+    focused_workspace #061620 #061620 #50fa7b
     active_workspace #223543 #223543 #e6e9ea
-    inactive_workspace #03090e #03090e #26a98b
+    inactive_workspace #03090e #03090e #e6e9ea
     urgent_workspace #D12820 #D12820 #f5fafd
   }
 }

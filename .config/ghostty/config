@@ -1,6 +1,6 @@
 window-decoration = false
-theme = dark:gotham-accessible,light:gotham-accessible
-font-size = 21
+theme = gotham-noir-ultra
+font-size = 24
 font-family = Victor Mono SemiBold
 resize-overlay = never
 link-url = true

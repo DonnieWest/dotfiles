@@ -77,6 +77,23 @@
                                              :82aaff
                                              :c792ea
                                              :f78c6c]))
+             (tset base16.themes :gotham-noir-ultra
+                   (convert-theme-to-base16 {:background "#03090e"
+                                             :lighter-background "#080f15"
+                                             :selection "#1e425a"
+                                             :comment "#2b7a9c"
+                                             :dark-foreground "#539daf"
+                                             :foreground "#e6f9f7"
+                                             :light-foreground "#b0e3e4"
+                                             :light-background "#d3ebe9"
+                                             :variables "#ff5555"
+                                             :numbers "#ffb86c"
+                                             :classes "#ffd700"
+                                             :strings "#33c2de"
+                                             :regex "#50fa7b"
+                                             :functions "#8be9fd"
+                                             :keywords "#ff79c6"
+                                             :tags "#bd93f9"}))
              (tset base16.themes :gotham-tweaked
                    (convert-theme-to-base16 {:background "#03090e"
                                              :lighter-background "#10151c"
@@ -94,5 +111,5 @@
                                              :functions "#a3a7c1"
                                              :keywords "#ee7545"
                                              :tags "#d5423b"}))
-             (base16 base16.themes.gotham-tweaked true {:lightline true})))}
+             (base16 base16.themes.gotham-noir-ultra true {:lightline true})))}
 

@@ -272,6 +272,16 @@ input "1739:30381:DLL0665:01_06CB:76AD_Touchpad" {
   click_method clickfinger
 }
 
+
+input "1165:35089:HTX_USB_HID_Device_HTX_HID_Device_Mouse" {
+  accel_profile adaptive
+  middle_emulation enabled
+  dwt enabled
+  pointer_accel 0.5
+  tap enabled
+  click_method clickfinger
+}
+
 input "1739:52619:SYNA8004:00_06CB:CD8B_Touchpad" {
   accel_profile adaptive
   middle_emulation enabled
@@ -356,7 +366,7 @@ bar {
     separator #8be9fd
     background #03090e
     statusline #e6f9f7
-    focused_workspace #061620 #061620 #50fa7b
+    focused_workspace #0c2132 #0c2132 #50fa7b
     active_workspace #223543 #223543 #e6e9ea
     inactive_workspace #03090e #03090e #e6e9ea
     urgent_workspace #D12820 #D12820 #f5fafd

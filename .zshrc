@@ -286,6 +286,7 @@ export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+export JDTLS_JVM_ARGS="-javaagent:$HOME/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar"
 
 # Setup PATH
 
@@ -409,8 +410,8 @@ connectToDevice() {
 }
 
 launchEmulator() {
-  avdmanager list avd | grep "Name:" | awk '{ print $2 }' | fzf -m | while read emulator; do
-    QT_QPA_PLATFORM=xcb emulator "@${emulator%.*}" 1>/dev/null 2>/dev/null &!
+  emulator -list-avds | fzf -m | while read emulator; do
+    QT_QPA_PLATFORM=xcb emulator -gpu host "@${emulator%.*}" 1>/dev/null 2>/dev/null &!
   done
 }
 

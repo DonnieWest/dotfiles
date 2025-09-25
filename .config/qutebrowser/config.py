@@ -12,7 +12,7 @@
 import qutebrowser.api.interceptor
 
 def rewrite(request: qutebrowser.api.interceptor.Request):
-    if request.request_url.host() == 'www.reddit.com':
+    if request.request_url.host() == 'www.reddit.com' and request.request_url.path() != '/media':
         request.request_url.setHost('old.reddit.com')
         try:
             request.redirect(request.request_url)

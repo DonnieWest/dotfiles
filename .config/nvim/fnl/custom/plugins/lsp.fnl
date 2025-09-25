@@ -11,14 +11,16 @@
                  :opts {:init (fn []
                                 (require :hover.providers.lsp))}}
                 "https://git.sr.ht/~whynothugo/lsp_lines.nvim"]
- :config #(let [lsp (require :lspconfig)
-                cmp (require :blink.cmp)
+ :config #(let [cmp (require :blink.cmp)
                 lsp_lines (require :lsp_lines)
                 typescript (require :typescript-tools)
                 virtualtypes (require :virtualtypes)
                 navic (require :nvim-navic)
                 servers {:fennel_ls {}
                          :csharp_ls {}
+                         :harper_ls {:linters {:SentenceCapitalization false
+                                               :SpellCheck false}}
+                         :jdtls {}
                          ; :omnisharp {:cmd [:omnisharp
                          ;                   :-z
                          ;                   :--hostPID
@@ -45,7 +47,7 @@
                                                                      :includeInlayFunctionLikeReturnTypeHints true
                                                                      :includeInlayEnumMemberValueHints true
                                                                      :hostInfo :neovim}}}})
-            (vim.diagnostic.config {:virtual_text true :virtual_lines false})
+            (vim.diagnostic.config {:virtual_text false :virtual_lines true})
             (vim.api.nvim_create_autocmd :LspAttach
                                          {:callback (fn [args] ; (vim.keymap.del :n :K {:buffer args.buf})
                                                       (local bufnr args.buf)
@@ -77,9 +79,9 @@
                                                       (vim.keymap.set :n :K
                                                                       (. (require :hover)
                                                                          :hover))
-                                                      (vim.api.nvim_create_autocmd :CursorHold
-                                                                                   {:callback (. (require :hover)
-                                                                                                 :hover)})
+                                                      ; (vim.api.nvim_create_autocmd :CursorHold
+                                                      ;                              {:callback (. (require :hover)
+                                                      ;                                            :hover)})
                                                       (vim.keymap.set :n :<c-k>
                                                                       vim.lsp.buf.signature_help)
                                                       (vim.keymap.set :n :gW
@@ -100,6 +102,9 @@
             (each [server config (pairs servers)]
               (set config.capabilities
                    (cmp.get_lsp_capabilities config.capabilities))
-              ((. lsp server :setup) (vim.tbl_extend :force config
-                                                     {: on-attach}))))}
+              (vim.lsp.config server
+                              (vim.tbl_extend :force
+                                              config
+                                              {: on-attach}))
+              (vim.lsp.enable server)))}
 

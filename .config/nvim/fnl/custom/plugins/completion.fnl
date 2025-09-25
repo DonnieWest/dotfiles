@@ -1,14 +1,6 @@
 {1 :saghen/blink.cmp
  :dependencies [:rafamadriz/friendly-snippets
                 :saghen/blink.compat
-                ; {1 :tzachar/cmp-ai
-                ;  :opts {:ignored_file_types {}
-                ;         :max_lines 1000
-                ;         :notify true
-                ;         :notify_callback (fn [msg] (vim.notify msg))
-                ;         :provider :OpenAI
-                ;         :provider_options {:model :gpt-4}
-                ;         :run_on_every_keystroke true}}
                 :kristijanhusak/vim-dadbod-completion
                 {1 :David-Kunz/cmp-npm :ft :json :opts {}}
                 :Kaiser-Yang/blink-cmp-avante
@@ -24,6 +16,8 @@
  :opts {:appearance {:nerd_font_variant :mono :use_nvim_cmp_as_default true}
         :cmdline {:completion {:menu {:auto_show true}}
                   :keymap {:<Tab> [:select_next :fallback]
+                           :<Up> [:select_prev :fallback]
+                           :<Down> [:select_next :fallback]
                            :<S-Tab> [:select_prev :fallback]}}
         :keymap {:preset :enter
                  :<Tab> [:select_next :fallback]
@@ -48,8 +42,6 @@
                               :avante {:name :avante :module :blink-cmp-avante}
                               :easy-dotnet {:module :easy-dotnet.completion.blink
                                             :name :easy-dotnet}
-                              ; :cmp_ai {:name :cmp_ai
-                              ;          :module :blink.compat.source}
                               :dadbod {:name :Dadbod
                                        :module :vim_dadbod_completion.blink}
                               :conjure {:name :conjure

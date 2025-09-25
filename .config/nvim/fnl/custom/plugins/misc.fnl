@@ -24,6 +24,8 @@
  :gpanders/editorconfig.nvim
  :rafamadriz/friendly-snippets
  :RRethy/vim-illuminate
+ :stevearc/quicker.nvim ; Quickfix changes
+ ;; :kevinhwang91/nvim-bqf ; A Different Quickfix List
  ;; Git plugins
  :sindrets/diffview.nvim
  :tpope/vim-fugitive

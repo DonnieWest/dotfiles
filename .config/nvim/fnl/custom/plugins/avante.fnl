@@ -8,7 +8,6 @@
                 :hrsh7th/nvim-cmp
                 :ibhagwan/fzf-lua
                 :nvim-tree/nvim-web-devicons
-                :zbirenbaum/copilot.lua
                 {1 :HakonHarnes/img-clip.nvim
                  :event :VeryLazy
                  :opts {:default {:drag_and_drop {:insert_mode true}
@@ -21,9 +20,7 @@
  :event :VeryLazy
  :lazy false
  :opts {:providers {:openai {:endpoint "https://openrouter.ai/api/v1"}
-                    :max_tokens 4096
-                    :model :deepseek/deepseek-r1-distill-llama-70b:free
-                    :temperature 0
+                    :model :moonshotai/kimi-k2:free
                     :timeout 30000}
         :provider :openai}
  :version false}

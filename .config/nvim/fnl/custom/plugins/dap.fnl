@@ -2,6 +2,7 @@
  :dependencies [{1 :rcarriga/nvim-dap-ui :opts {}}
                 :nvim-neotest/nvim-nio
                 {1 :theHamsta/nvim-dap-virtual-text :opts {}}
+                :igorlfs/nvim-dap-view
                 :nvim-telescope/telescope-dap.nvim]
  :init #(let [dap (require :dap)]
           (tset dap.listeners.before.event_terminated :dapui_config

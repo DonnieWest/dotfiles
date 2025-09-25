@@ -79,7 +79,7 @@
                                              :f78c6c]))
              (tset base16.themes :gotham-noir-ultra
                    (convert-theme-to-base16 {:background "#03090e"
-                                             :lighter-background "#080f15"
+                                             :lighter-background "#0c2132"
                                              :selection "#1e425a"
                                              :comment "#2b7a9c"
                                              :dark-foreground "#539daf"

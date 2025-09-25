@@ -5,3 +5,4 @@ font-family = Victor Mono SemiBold
 resize-overlay = never
 link-url = true
 confirm-close-surface = false
+working-directory = home

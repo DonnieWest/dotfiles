@@ -1,0 +1,63 @@
+#!/bin/bash
+# Script to display all connected Bluetooth device batteries
+# Automatically detects and shows split keyboard peripheral batteries
+
+declare -a output_parts
+
+# Get all connected Bluetooth devices
+while IFS= read -r mac; do
+  [ -z "$mac" ] && continue
+
+  # Get device name and battery
+  device_info=$(bluetoothctl info "$mac" 2>/dev/null)
+  name=$(echo "$device_info" | grep "Name:" | cut -d: -f2 | xargs)
+  battery=$(echo "$device_info" | grep "Battery Percentage" | grep -oP '\(\K[0-9]+')
+
+  # Skip if no battery info
+  [ -z "$battery" ] && continue
+
+  # Convert MAC to D-Bus path format
+  mac_path=$(echo "$mac" | tr ':' '_')
+
+  # Try to find peripheral battery in Battery Service
+  peripheral_battery=""
+
+  # Check known service paths for Battery Service with peripheral characteristic
+  for svc in {0001..0050}; do
+    char_path="/org/bluez/hci0/dev_${mac_path}/service${svc}/char0016"
+
+    # Try to read the descriptor to see if this is a peripheral battery
+    desc_content=$(gdbus call --system --dest org.bluez \
+      --object-path "${char_path}/desc001a" \
+      --method org.bluez.GattDescriptor1.ReadValue "{}" 2>/dev/null)
+
+    # Check if description contains "Peripheral" (hex: 0x50 0x65 0x72 0x69...)
+    if echo "$desc_content" | grep -q "0x50.*0x65.*0x72.*0x69"; then
+      # Read the peripheral battery value
+      peripheral_hex=$(gdbus call --system --dest org.bluez \
+        --object-path "$char_path" \
+        --method org.bluez.GattCharacteristic1.ReadValue "{}" 2>/dev/null | \
+        grep -oP 'byte 0x[0-9a-f]+' | cut -d'x' -f2)
+
+      if [ -n "$peripheral_hex" ]; then
+        peripheral_battery=$((16#$peripheral_hex))
+        break
+      fi
+    fi
+  done
+
+  # Format output
+  if [ -n "$peripheral_battery" ]; then
+    output_parts+=("${name}: L:${battery}% R:${peripheral_battery}%")
+  else
+    output_parts+=("${name}: ${battery}%")
+  fi
+done < <(bluetoothctl devices Connected | awk '{print $2}')
+
+# Join output parts with separator
+if [ ${#output_parts[@]} -gt 0 ]; then
+  IFS=' | '
+  echo " ${output_parts[*]}"
+else
+  echo ""
+fi

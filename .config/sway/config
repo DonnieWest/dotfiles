@@ -291,6 +291,11 @@ input "1739:52619:SYNA8004:00_06CB:CD8B_Touchpad" {
   click_method clickfinger
 }
 
+input "18003:4:foostan_Corne_v4_Consumer_Control" {
+  repeat_delay 250
+  repeat_rate 25
+}
+
 input "1:1:AT_Translated_Set_2_keyboard" {
   repeat_delay 250
   repeat_rate 25

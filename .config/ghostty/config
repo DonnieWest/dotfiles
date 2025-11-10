@@ -6,3 +6,4 @@ resize-overlay = never
 link-url = true
 confirm-close-surface = false
 working-directory = home
+window-inherit-working-directory = false

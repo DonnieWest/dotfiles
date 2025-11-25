@@ -111,5 +111,42 @@
                                              :functions "#a3a7c1"
                                              :keywords "#ee7545"
                                              :tags "#d5423b"}))
-             (base16 base16.themes.gotham-noir-ultra true {:lightline true})))}
+             ;; Minimalist theme following Tonsky's principles:
+             ;; - Only 4 colors for syntax (high contrast, vibrant character)
+             ;; - Highlight strings/numbers, constants/literals, top-level definitions
+             ;; - Keywords and function calls use default foreground
+             ;; - Comments are visible but muted
+             ;; - Preserves gotham-noir-ultra's signature colors (cyan + purple)
+             ;; - All colors meet WCAG AA or AAA contrast standards
+             ;; - High saturation (89-97%) for neon/cyberpunk aesthetic
+             (tset base16.themes :gotham-noir-minimalist
+                   (convert-theme-to-base16 {:background "#03090e"
+                                             :lighter-background "#0c2132"
+                                             :selection "#1e425a"
+                                             :comment "#539daf"
+                                             :dark-foreground "#7cc4d0"
+                                             :foreground "#b0e3e4"
+                                             :light-foreground "#e6f9f7"
+                                             :light-background "#d3ebe9"
+                                             :variables "#b0e3e4"
+                                             :numbers "#8be9fd"
+                                             :classes "#bd93f9"
+                                             :strings "#8be9fd"
+                                             :regex "#8be9fd"
+                                             :functions "#b0e3e4"
+                                             :keywords "#b0e3e4"
+                                             :tags "#bd93f9"}))
+             (base16 base16.themes.gotham-noir-ultra true {:lightline true}))
 
+              ;; Colorblind friendly diff colors: blue for add, red for delete (fg only, bg matches theme)
+           (vim.api.nvim_set_hl 0 :DiffAdd {:fg "#8be9fd"})
+           (vim.api.nvim_set_hl 0 :DiffDelete {:fg "#ff5555"})
+           (vim.api.nvim_set_hl 0 :DiffChange {:fg "#ffb86c"})
+           (vim.api.nvim_set_hl 0 :DiffText {:fg "#50fa7b"})
+           ;; Neogit specific diff highlights
+           (vim.api.nvim_set_hl 0 :NeogitDiffAdd {:fg "#8be9fd"})
+           (vim.api.nvim_set_hl 0 :NeogitDiffDelete {:fg "#ff5555"})
+           (vim.api.nvim_set_hl 0 :NeogitDiffAddHighlight {:fg "#8be9fd" :bold true})
+           (vim.api.nvim_set_hl 0 :NeogitDiffDeleteHighlight {:fg "#ff5555" :bold true})
+           (vim.api.nvim_set_hl 0 :NeogitDiffAddCursor {:fg "#8be9fd" :underline true})
+           (vim.api.nvim_set_hl 0 :NeogitDiffDeleteCursor {:fg "#ff5555" :underline true}))}

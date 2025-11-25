@@ -468,11 +468,11 @@ c.colors.tabs.even.bg = '#03090e'
 
 # Background color of selected odd tabs.
 # Type: QtColor
-c.colors.tabs.selected.odd.bg = '#061620'
+c.colors.tabs.selected.odd.bg = '#093748'
 
 # Background color of selected even tabs.
 # Type: QtColor
-c.colors.tabs.selected.even.bg = '#061620'
+c.colors.tabs.selected.even.bg = '#093748'
 
 # Background color of pinned unselected odd tabs.
 # Type: QtColor
@@ -484,11 +484,11 @@ c.colors.tabs.pinned.even.bg = '#03090e'
 
 # Background color of pinned selected odd tabs.
 # Type: QtColor
-c.colors.tabs.pinned.selected.odd.bg = '#061620'
+c.colors.tabs.pinned.selected.odd.bg = '#093748'
 
 # Background color of pinned selected even tabs.
 # Type: QtColor
-c.colors.tabs.pinned.selected.even.bg = '#061620'
+c.colors.tabs.pinned.selected.even.bg = '#093748'
 
 # Background color for webpages if unset (or empty to use the theme's
 # color).
@@ -531,6 +531,8 @@ config.bind('<Ctrl+h>', 'tab-prev')
 config.bind('<Ctrl+j>', 'tab-prev')
 config.bind('<Ctrl+k>', 'tab-next')
 config.bind('<Ctrl+l>', 'tab-next')
+config.bind('<Ctrl+l>', 'tab-next')
+config.bind('<Ctrl+;>', 'tab-next')
 config.bind('F', 'hint all tab-bg')
 config.unbind('d')
 config.bind('dd', 'tab-close')

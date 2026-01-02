@@ -52,6 +52,7 @@
 (set opt.expandtab true)
 (set opt.showcmd true)
 (set opt.undofile true)
+(set opt.undodir (.. (vim.fn.stdpath :data) :/undo))  ;; Persistent undo directory
 (set opt.secure true)
 (set opt.exrc true)
 (set opt.splitbelow true)

@@ -52,8 +52,10 @@ require("hotpot").setup({
 local plugins_path = vim.fn.stdpath("config") .. "/fnl/custom/plugins"
 if vim.loop.fs_stat(plugins_path) then
   for file in vim.fs.dir(plugins_path) do
-    file = file:match("^(.*)%.fnl$")
-    plugins[#plugins + 1] = require("custom.plugins." .. file)
+    local name = file:match("^(.*)%.fnl$")
+    if name then
+      plugins[#plugins + 1] = require("custom.plugins." .. name)
+    end
   end
 end
 

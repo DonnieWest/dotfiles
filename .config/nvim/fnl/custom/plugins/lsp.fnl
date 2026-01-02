@@ -4,9 +4,10 @@
                 :jubnzv/virtual-types.nvim
                 :SmiteshP/nvim-navic
                 :b0o/schemastore.nvim
-                {1 :Wansmer/symbol-usage.nvim
-                 :event :LspAttach
-                 :opts {:vt_position :end_of_line}}
+                ; {1 :Wansmer/symbol-usage.nvim
+                ;  :event :LspAttach
+                ;  :opts {:vt_position :end_of_line
+                ;         :request_pending_text false}}
                 {1 :lewis6991/hover.nvim
                  :opts {:init (fn []
                                 (require :hover.providers.lsp))}}
@@ -18,9 +19,6 @@
                 navic (require :nvim-navic)
                 servers {:fennel_ls {}
                          :csharp_ls {}
-                         :harper_ls {:linters {:SentenceCapitalization false
-                                               :SpellCheck false}}
-                         :jdtls {}
                          ; :omnisharp {:cmd [:omnisharp
                          ;                   :-z
                          ;                   :--hostPID
@@ -32,7 +30,18 @@
                          :marksman {}
                          :jsonls {:settings {:json {:schemas ((. (require :schemastore)
                                                                  :json :schemas))
-                                                    :validate {:enable true}}}}}
+                                                    :validate {:enable true}}}}
+                         :tsgo {:cmd [:tsgo :--lsp :-stdio]
+                                :filetypes [:javascript
+                                            :javascriptreact
+                                            :javascript.jsx
+                                            :typescript
+                                            :typescriptreact
+                                            :typescript.tsx]
+                                :root_markers [:tsconfig.json
+                                               :jsconfig.json
+                                               :package.json
+                                               :.git]}}
                 on-attach (fn [client bufnr]
                             (virtualtypes.on_attach client bufnr)
                             (navic.attach client bufnr))]
@@ -46,7 +55,10 @@
                                                                      :includeInlayPropertyDeclarationTypeHints true
                                                                      :includeInlayFunctionLikeReturnTypeHints true
                                                                      :includeInlayEnumMemberValueHints true
-                                                                     :hostInfo :neovim}}}})
+                                                                     :importModuleSpecifierPreference :relative
+                                                                     :jsxAttributeCompletionStyle :auto
+                                                                     :hostInfo :neovim}
+                                                       :maxTsServerMemory 8192}}})
             (vim.diagnostic.config {:virtual_text false :virtual_lines true})
             (vim.api.nvim_create_autocmd :LspAttach
                                          {:callback (fn [args] ; (vim.keymap.del :n :K {:buffer args.buf})
@@ -103,8 +115,5 @@
               (set config.capabilities
                    (cmp.get_lsp_capabilities config.capabilities))
               (vim.lsp.config server
-                              (vim.tbl_extend :force
-                                              config
-                                              {: on-attach}))
+                              (vim.tbl_extend :force config {: on-attach}))
               (vim.lsp.enable server)))}
-

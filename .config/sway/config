@@ -8,6 +8,9 @@ exec_always {
     gsettings set $gnome-schema cursor-theme 'Paper'
     gsettings set $gnome-schema cursor-size 50
     gsettings set $gnome-schema font-name 'Victor Mono SemiBold 20'
+    gsettings set $gnome-schema font-antialiasing 'rgba'
+    gsettings set $gnome-schema font-hinting 'none'
+    gsettings set $gnome-schema font-rgba-order 'rgb'
 }
 
 seat seat0 xcursor_theme Paper 50

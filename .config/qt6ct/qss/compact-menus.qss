@@ -9,6 +9,15 @@ QMenu::item {
     margin: 0px;
 }
 
+QMenu::item:selected {
+    background-color: palette(highlight);
+    color: palette(highlighted-text);
+}
+
+QMenu::item:disabled {
+    color: palette(disabled-text);
+}
+
 QMenu::separator {
     height: 1px;
     margin: 2px 0px;
@@ -21,6 +30,11 @@ QMenuBar {
 QMenuBar::item {
     padding: 4px 8px;
     margin: 0px;
+}
+
+QMenuBar::item:selected {
+    background-color: palette(highlight);
+    color: palette(highlighted-text);
 }
 
 /* Compact combo boxes */
@@ -37,16 +51,39 @@ QComboBox QAbstractItemView::item {
     min-height: 18px;
 }
 
+QComboBox QAbstractItemView::item:selected {
+    background-color: palette(highlight);
+    color: palette(highlighted-text);
+}
+
 /* Compact list views */
 QListView::item {
     padding: 2px 4px;
     min-height: 18px;
 }
 
+QListView::item:selected {
+    background-color: palette(highlight);
+    color: palette(highlighted-text);
+}
+
+QListView::item:hover {
+    background-color: palette(midlight);
+}
+
 /* Compact tree views */
 QTreeView::item {
     padding: 2px 4px;
     min-height: 18px;
+}
+
+QTreeView::item:selected {
+    background-color: palette(highlight);
+    color: palette(highlighted-text);
+}
+
+QTreeView::item:hover {
+    background-color: palette(midlight);
 }
 
 /* Compact buttons */

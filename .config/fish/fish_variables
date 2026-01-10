@@ -1,0 +1,4 @@
+# This file contains fish universal variable definitions.
+# VERSION: 3.0
+SETUVAR __fish_initialized:4300
+SETUVAR fish_user_paths:/home/igneo676/\x2etmux/plugins/tmuxifier/bin\x1e/home/igneo676/go/bin\x1e/home/igneo676/\x2edotnet/tools\x1e/home/igneo676/\x2ecargo/bin\x1e/home/igneo676/\x2ebin\x1e/home/igneo676/\x2econfig/n/bin\x1e/home/igneo676/\x2elocal/bin\x1e/home/igneo676/\x2eandroid\x2dsdk\x2dlinux/cmdline\x2dtools/latest/bin\x1e/home/igneo676/\x2eandroid\x2dsdk\x2dlinux/tools/bin\x1e/home/igneo676/\x2eandroid\x2dsdk\x2dlinux/platform\x2dtools\x1e/home/igneo676/\x2eandroid\x2dsdk\x2dlinux/emulator\x1e/usr/bin/core_perl\x1e/usr/local/games\x1e/bin\x1e/usr/local/bin\x1e/sbin\x1e/usr/sbin\x1e/usr/bin

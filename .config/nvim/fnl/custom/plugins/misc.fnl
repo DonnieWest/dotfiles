@@ -1,56 +1,49 @@
 [;; Generic Plugins
- :tpope/vim-repeat
- {1 :kylechui/nvim-surround :opts {}}
- :duggiefresh/vim-easydir
- :tpope/vim-eunuch
- :tpope/vim-abolish
- {1 :kaymmm/bullets.nvim :opts {}}
+ {1 :tpope/vim-repeat :event :VeryLazy}
+ {1 :kylechui/nvim-surround :event :VeryLazy :opts {}}
+ {1 :tpope/vim-eunuch :event :VeryLazy}
+ {1 :tpope/vim-abolish :event :VeryLazy}
+ {1 :kaymmm/bullets.nvim :ft [:markdown :text] :opts {}}
  ;; VIM Quirks fixes
- :lervag/file-line
- :pbrisbin/vim-mkdir
- :eugen0329/vim-esearch
- :airblade/vim-rooter
- :Valloric/ListToggle
- :pgdouyon/vim-evanesco
- :kshenoy/vim-signature
+ :lervag/file-line ;; Must load early for file:line opening to work
+ {1 :eugen0329/vim-esearch :keys [{1 :<leader>ff 2 "<cmd>call esearch#init()<cr>"}]}
+ {1 :airblade/vim-rooter :event :VeryLazy}
+ {1 :Valloric/ListToggle :cmd [:LToggle :QToggle]}
+ {1 :pgdouyon/vim-evanesco :event :VeryLazy}
+ {1 :kshenoy/vim-signature :event :BufReadPost}
  ;; UI
  {1 :catgoose/nvim-colorizer.lua :event :BufReadPre :opts {}}
- :blueyed/vim-diminactive
- :folke/lsp-colors.nvim
+ {1 :blueyed/vim-diminactive :event :WinEnter}
  ;; Generic IDE features
- :rhysd/clever-f.vim
- :kassio/neoterm
- :nvim-lua/popup.nvim
- :gpanders/editorconfig.nvim
- :rafamadriz/friendly-snippets
- :RRethy/vim-illuminate
- :stevearc/quicker.nvim
- ; Quickfix changes
- ;; :kevinhwang91/nvim-bqf ; A Different Quickfix List
+ {1 :rhysd/clever-f.vim :keys [:f :F :t :T]}
+ {1 :kassio/neoterm :cmd [:T :Tnew :Topen :Ttoggle]}
+ {1 :nvim-lua/popup.nvim :lazy true} ;; Dependency, loaded when needed
+ {1 :rafamadriz/friendly-snippets :event :InsertEnter}
+ {1 :RRethy/vim-illuminate :event :BufReadPost}
+ {1 :stevearc/quicker.nvim :event :QuickFixCmdPost}
  ;; Git plugins
- :sindrets/diffview.nvim
- :tpope/vim-fugitive
- :tpope/vim-rhubarb
- :almo7aya/openingh.nvim
+ {1 :sindrets/diffview.nvim :cmd [:DiffviewOpen :DiffviewFileHistory]}
+ {1 :tpope/vim-fugitive :cmd [:Git :G :Gread :Gwrite :Gdiffsplit :Gvdiffsplit]}
+ {1 :tpope/vim-rhubarb :cmd [:GBrowse] :dependencies [:tpope/vim-fugitive]}
+ {1 :almo7aya/openingh.nvim :cmd [:OpenInGHRepo :OpenInGHFile :OpenInGHFileLines]}
  ;; HTML and CSS Plugins
- :mattn/emmet-vim
+ {1 :mattn/emmet-vim :ft [:html :css :scss :javascript :javascriptreact :typescript :typescriptreact]}
  :windwp/nvim-ts-autotag
  ;; Javascript Plugins
- :pangloss/vim-javascript
- :maxmellon/vim-jsx-pretty
- :mvolkmann/vim-react
- :benjie/local-npm-bin.vim
- ;; Java/Android/Gradle plugins
+ {1 :pangloss/vim-javascript :ft [:javascript :javascriptreact]}
+ {1 :maxmellon/vim-jsx-pretty :ft [:javascript :javascriptreact :typescriptreact]}
+ {1 :mvolkmann/vim-react :ft [:javascript :javascriptreact :typescriptreact]}
+ {1 :benjie/local-npm-bin.vim :ft [:javascript :typescript :javascriptreact :typescriptreact]}
  ;; SQL
- :tpope/vim-dadbod
- :kristijanhusak/vim-dadbod-ui
+ {1 :tpope/vim-dadbod :cmd [:DB]}
+ {1 :kristijanhusak/vim-dadbod-ui :cmd [:DBUI :DBUIToggle] :dependencies [:tpope/vim-dadbod]}
  ;; Clojure
- :dmac/vim-cljfmt
- :clojure-vim/clojure.vim
+ {1 :dmac/vim-cljfmt :ft :clojure}
+ {1 :clojure-vim/clojure.vim :ft :clojure}
  ;; Lisp
- {1 :dundalek/parpar.nvim :opts {}}
+ {1 :dundalek/parpar.nvim :ft [:clojure :fennel :lisp :scheme] :opts {}}
  ;; Fennel
- :Olical/fennel.vim
- :HiPhish/rainbow-delimiters.nvim
- {1 :fwcd/kotlin-language-server :build "./gradlew :server:installDist"}
- {1 :microsoft/vscode-gradle :build "./gradlew :server:installDist"}]
+ {1 :Olical/fennel.vim :ft :fennel}
+ {1 :HiPhish/rainbow-delimiters.nvim :event :BufReadPost}
+ {1 :fwcd/kotlin-language-server :ft :kotlin :build "./gradlew :server:installDist"}
+ {1 :microsoft/vscode-gradle :ft [:kotlin :java :gradle] :build "./gradlew :server:installDist"}]

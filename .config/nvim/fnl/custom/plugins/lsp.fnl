@@ -1,21 +1,10 @@
 {1 :neovim/nvim-lspconfig
  :dependencies [:nvim-lua/plenary.nvim
                 :pmizio/typescript-tools.nvim
-                :jubnzv/virtual-types.nvim
                 :SmiteshP/nvim-navic
-                :b0o/schemastore.nvim
-                ; {1 :Wansmer/symbol-usage.nvim
-                ;  :event :LspAttach
-                ;  :opts {:vt_position :end_of_line
-                ;         :request_pending_text false}}
-                {1 :lewis6991/hover.nvim
-                 :opts {:init (fn []
-                                (require :hover.providers.lsp))}}
-                "https://git.sr.ht/~whynothugo/lsp_lines.nvim"]
+                :b0o/schemastore.nvim]
  :config #(let [cmp (require :blink.cmp)
-                lsp_lines (require :lsp_lines)
                 typescript (require :typescript-tools)
-                virtualtypes (require :virtualtypes)
                 navic (require :nvim-navic)
                 servers {:fennel_ls {}
                          :csharp_ls {}
@@ -43,9 +32,7 @@
                                                :package.json
                                                :.git]}}
                 on-attach (fn [client bufnr]
-                            (virtualtypes.on_attach client bufnr)
                             (navic.attach client bufnr))]
-            (lsp_lines.setup {})
             (typescript.setup {: on-attach
                                :server {:init_options {:preferences {:allowIncompleteCompletions false
                                                                      :includeInlayParameterNameHints :all
@@ -89,11 +76,8 @@
                                                                       "<c-]>"
                                                                       vim.lsp.buf.definition)
                                                       (vim.keymap.set :n :K
-                                                                      (. (require :hover)
-                                                                         :hover))
-                                                      ; (vim.api.nvim_create_autocmd :CursorHold
-                                                      ;                              {:callback (. (require :hover)
-                                                      ;                                            :hover)})
+                                                                      vim.lsp.buf.hover)
+                                                      (vim.lsp.inlay_hint.enable true {:bufnr bufnr})
                                                       (vim.keymap.set :n :<c-k>
                                                                       vim.lsp.buf.signature_help)
                                                       (vim.keymap.set :n :gW

@@ -10,22 +10,6 @@
 (set vim.g.ts_highlight_lua true)
 
 (local opt vim.opt)
-(set opt.inccommand :split)
-(set opt.smartcase true)
-(set opt.ignorecase true)
-(set opt.number true)
-(set opt.splitbelow true)
-(set opt.splitright true)
-(set opt.signcolumn :yes)
-(set opt.shada ["'10" :<0 :s10 :h])
-(set opt.swapfile false)
-(opt.formatoptions:remove :o)
-(set opt.wrap true)
-(set opt.linebreak true)
-(set opt.tabstop 4)
-(set opt.shiftwidth 4)
-(set opt.more false)
-(set opt.foldmethod :manual)
 
 ;; General settings
 (set opt.termguicolors true)
@@ -34,6 +18,14 @@
 (set opt.ttimeoutlen 50)
 (set opt.timeoutlen 500)
 (set opt.inccommand :split)
+(set opt.signcolumn :yes)
+(set opt.shada ["'10" :<0 :s10 :h])
+(set opt.swapfile false)
+(opt.formatoptions:remove :o)
+(set opt.wrap true)
+(set opt.linebreak true)
+(set opt.more false)
+(set opt.foldmethod :manual)
 (set opt.background :dark)
 (set opt.scrolloff 10)
 (set opt.laststatus 2)
@@ -96,4 +88,11 @@
 (vim.api.nvim_create_autocmd [:BufNewFile :BufRead]
                              {:pattern :.eslintrc
                               :callback #(set vim.opt_local.filetype :json)})
+
+;; Auto-create parent directories when saving (replaces vim-mkdir/vim-easydir)
+(vim.api.nvim_create_autocmd :BufWritePre
+                             {:callback (fn [event]
+                                          (when (not (event.match:match "^%w%w+:[\\/][\\/]"))
+                                            (let [file (or (vim.uv.fs_realpath event.match) event.match)]
+                                              (vim.fn.mkdir (vim.fn.fnamemodify file ":p:h") "p"))))})
 

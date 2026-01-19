@@ -51,13 +51,16 @@
 (set theme.command theme.normal)
 (set theme.terminal theme.insert)
 
+(fn lsp_progress []
+  (vim.lsp.status))
+
 {1 :nvim-lualine/lualine.nvim
- :dependencies [:arkav/lualine-lsp-progress :SmiteshP/nvim-navic]
+ :dependencies [:SmiteshP/nvim-navic]
  :opts {:always_show_tabline true
         :options {: theme}
         :sections {:lualine_c [#(or (vim.b.vista_nearest_method_or_function) "")
                                attached_lsp
-                               :lsp_progress]}
+                               lsp_progress]}
         :tabline {:lualine_a [:buffers]
                   :lualine_b []
                   :lualine_c []

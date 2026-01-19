@@ -57,8 +57,10 @@
          (colorscheme-fixes)
          (vim.api.nvim_create_autocmd [:ColorScheme]
                                       {:callback colorscheme-fixes}))
- :opts {:ensure_installed :all
-        :ignore_install [:php :phpdoc]
+ :opts {:ensure_installed [:lua :fennel :javascript :typescript :tsx
+                            :html :css :json :yaml :toml :markdown
+                            :python :java :kotlin :clojure :sql
+                            :vim :vimdoc :query :bash :http :diff :regex]
         :query_linter {:enable true
                        :use_virtual_text true
                        :lint_events [:BufWrite :CursorHold]}
@@ -91,6 +93,6 @@
                                          :ac "@comment.outer"}
                                :enable true}}
         :autotag {:enable true}
-        :highlight {:enable true :additional_vim_regex_highlighting true}
+        :highlight {:enable true :additional_vim_regex_highlighting false}
         :indent {:enable true}}}
 

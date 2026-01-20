@@ -51,6 +51,9 @@ output eDP-1 scale 1
 exec libinput-gestures-setup start
 # exec alsactl --file ~/.config/asound.state restore
 
+# Restore tmux sessions and application windows
+exec ~/.bin/sway-session-restore
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -387,6 +390,7 @@ bar {
 # exec blueman-applet
 # exec eventd
 exec mako
+exec tasksync start -D
 exec sudo -u igneo676 udiskie
 exec nextcloud
 # exec opensnitch-ui

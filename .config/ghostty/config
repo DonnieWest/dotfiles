@@ -7,3 +7,4 @@ link-url = true
 confirm-close-surface = false
 working-directory = home
 window-inherit-working-directory = false
+keybind = shift+enter=text:\x1b\r

@@ -146,9 +146,9 @@ alias cp='cp -i'                    # prompt for overwrite
 alias mv='mv -i'                    # prompt for overwrite
 alias df='df -h'                    # human readable
 alias du='du -h'                    # human readable
-alias ls='ls -hF --color=always'    # colour, readable sizes, indicator
-alias ll='ls -hlF --color=always'   # long format to show sizes
-alias la='ls -lF'                   # all but . and ..
+alias ll='eza --git -l'             # long format with git status
+alias la='eza --git -la'            # all files with git status
+alias tree='eza --tree'             # tree view
 
 ## Stack
 
@@ -248,6 +248,7 @@ plugins=(
 plugin-load $plugins
 
 ZSH_GIT_PROMPT_FORCE_BLANK=1
+ZSH_GIT_PROMPT_SHOW_STASH=1
 ZSH_GIT_PROMPT_SHOW_UPSTREAM="symbol"
 ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg_bold[default]%} "
 ZSH_THEME_GIT_PROMPT_SUFFIX=""
@@ -294,6 +295,7 @@ export PATH="$PATH:/usr/bin:/usr/sbin:/sbin:/usr/local/bin:/bin:/usr/local/games
 export PATH="$ANDROID_HOME/emulator:$PATH"
 export PATH="$ANDROID_HOME/platform-tools:$PATH"
 export PATH="$ANDROID_HOME/tools/bin:$PATH"
+export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
 
 export PATH="$PATH:$GRAALVM_HOME/bin"
 export PATH="$PATH:$HOME/.local/bin"
@@ -331,6 +333,17 @@ sn() {
 pass() {
   if hash bw 2>/dev/null; then
     bw get item "$(bw list items | jq '.[] | "\(.name) | username: \(.login.username) | id: \(.id)" ' | fzy | awk '{print $(NF -0)}' | sed 's/\"//g')" | jq '.login.password' | sed 's/\"//g' | wl-copy
+  fi
+}
+
+b-pass() {
+  if hash rbw 2>/dev/null; then
+    local selected
+    selected=$(rbw list | fzf --prompt="Search password: " --bind "change:reload:rbw search {q} || true")
+    if [ -n "$selected" ]; then
+      rbw get "$selected" | wl-copy
+      echo "Password copied to clipboard"
+    fi
   fi
 }
 
@@ -375,7 +388,7 @@ tmuxattach() {
   tmux attach-session -t $(tmux ls | fzf | sed 's/:.*//')
 }
 
-alias ls='exa --git'
+alias ls='eza --git'
 alias filpidcat='pidcat -i EGL_emulation -i HostConnection -i GnssHAL_GnssInterface -i android.os.Debug -i netmgr -i Phenix -i chatty -i WorkerManager -i ResolverController -i AppOps -i wifi_forwarder -i KeyguardClockSwitch -i memtrack -i GCoreFlp -i audio_hw_generic -i BeaconBle -i InputReader -i gralloc_ranchu'
 
 alias sedremovespace="sed -E '/^[[:space:]]*$/d;s/^[[:space:]]+//;s/[[:space:]]+$//'"
@@ -683,3 +696,99 @@ alias ua-update-all='export TMPFILE="$(mktemp)"; \
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+
+# Android Studio quick launcher - auto-detects Gradle projects
+studio() {
+  local gradle_root=$(find . -maxdepth 3 -name 'build.gradle' -o -name 'build.gradle.kts' | head -1 | xargs dirname)
+  [[ -n "$gradle_root" ]] && /opt/android-studio/bin/studio.sh "$gradle_root" &
+}
+
+# React Native - Device management
+list-android-devices() {
+  echo "Connected devices:"
+  adb devices -l
+  echo "\nAvailable emulators:"
+  emulator -list-avds
+}
+
+android-reverse() {
+  # Set up reverse proxy for Metro bundler
+  adb reverse tcp:8081 tcp:8081
+  echo "✓ Metro bundler port forwarded (8081)"
+}
+
+rn-shake() {
+  # Open React Native dev menu
+  adb shell input keyevent 82
+}
+
+rn-reload() {
+  # Reload React Native app
+  adb shell input text "RR"
+}
+
+# React Native - Logging
+rn-logs() {
+  adb logcat -c && adb logcat *:S ReactNative:V ReactNativeJS:V
+}
+
+# React Native - Bundle size analysis
+rn-bundle-size() {
+  npx react-native bundle \
+    --platform android \
+    --dev false \
+    --entry-file index.js \
+    --bundle-output /tmp/bundle.js \
+    --assets-dest /tmp/assets
+
+  echo "\nBundle size:"
+  du -h /tmp/bundle.js
+
+  echo "\nDetailed breakdown (requires source-map-explorer):"
+  npx source-map-explorer /tmp/bundle.js 2>/dev/null || echo "Install with: npm i -g source-map-explorer"
+}
+
+# Watchman management (React Native uses this heavily)
+watchman-status() {
+  watchman watch-list
+}
+
+watchman-reset() {
+  watchman shutdown-server
+  watchman watch-del-all
+  echo "Watchman reset complete"
+}
+
+# Maestro - Mobile UI testing
+maestro-test() {
+  local device=$(adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 --prompt="Select device: " | awk '{ print $1 }')
+  if [ -n "$device" ]; then
+    local flow=$(find . -name "*.yaml" -o -name "*.yml" | grep -iE "(maestro|flow|test)" | fzf --prompt="Select test flow: ")
+    if [ -n "$flow" ]; then
+      echo "Running maestro test on $device..."
+      maestro test --device $device "$flow"
+    fi
+  fi
+}
+
+maestro-studio() {
+  local device=$(adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 --prompt="Select device: " | awk '{ print $1 }')
+  if [ -n "$device" ]; then
+    echo "Launching maestro studio on $device..."
+    maestro studio --device $device
+  fi
+}
+
+maestro-record() {
+  local device=$(adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 --prompt="Select device: " | awk '{ print $1 }')
+  if [ -n "$device" ]; then
+    echo "Recording flow on $device... (Ctrl+C to stop)"
+    maestro record --device $device
+  fi
+}
+
+# Command-not-found handler - suggests packages for missing commands
+[[ -f /usr/share/doc/pkgfile/command-not-found.zsh ]] && source /usr/share/doc/pkgfile/command-not-found.zsh
+
+# Zoxide - smarter directory navigation with frecency
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"

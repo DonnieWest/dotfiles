@@ -12,20 +12,26 @@
 import qutebrowser.api.interceptor
 
 def rewrite(request: qutebrowser.api.interceptor.Request):
-    if request.request_url.host() == 'www.reddit.com' and request.request_url.path() != '/media':
+    if request.request_url.host() in ('www.reddit.com', 'reddit.com') and request.request_url.path() != '/media':
         request.request_url.setHost('old.reddit.com')
         try:
             request.redirect(request.request_url)
         except:
             pass
-    if request.request_url.host() == 'www.medium.com':
+    if request.request_url.host() in ('medium.com', 'www.medium.com'):
         request.request_url.setHost('scribe.rip')
         try:
             request.redirect(request.request_url)
         except:
             pass
-    if request.request_url.host() == 'medium.com':
-        request.request_url.setHost('scribe.rip')
+    if request.request_url.host() in ('youtube.com', 'www.youtube.com', 'm.youtube.com'):
+        request.request_url.setHost('piped.video')
+        try:
+            request.redirect(request.request_url)
+        except:
+            pass
+    if request.request_url.host() in ('quora.com', 'www.quora.com'):
+        request.request_url.setHost('quetre.iket.me')
         try:
             request.redirect(request.request_url)
         except:
@@ -39,19 +45,34 @@ config.load_autoconfig(False)
 # Aliases for commands. The keys of the given dictionary are the
 # aliases, while the values are the commands they map to.
 # Type: Dict
-c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript ~/.config/qutebrowser/userscripts/qute-bitwarden', 'mpv': 'spawn --userscript ~/.config/qutebrowser/userscripts/view_in_mpv', 'pushwebsite': 'spawn --userscript ~/.config/qutebrowser/userscripts/pushwebsite', 'readability': 'spawn --userscript ~/.config/qutebrowser/userscripts/readability-js', 'add-to-wallabag': 'spawn --userscript ~/.config/qutebrowser/userscripts/wallabag-add', 'copy-page-to-markdown': 'spawn --userscript ~/.config/qutebrowser/userscripts/copy-as-markdown'}
+c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript ~/.config/qutebrowser/userscripts/qute-bitwarden', 'mpv': 'spawn --userscript ~/.config/qutebrowser/userscripts/view_in_mpv', 'linkwarden': 'spawn --userscript ~/.config/qutebrowser/userscripts/linkwarden', 'pushwebsite': 'spawn --userscript ~/.config/qutebrowser/userscripts/pushwebsite', 'readability': 'spawn --userscript ~/.config/qutebrowser/userscripts/readability-js', 'add-to-wallabag': 'spawn --userscript ~/.config/qutebrowser/userscripts/wallabag-add', 'copy-page-to-markdown': 'spawn --userscript ~/.config/qutebrowser/userscripts/copy-as-markdown'}
 
 # Additional arguments to pass to Qt, without leading `--`. With
 # QtWebEngine, some Chromium arguments (see
 # https://peter.sh/experiments/chromium-command-line-switches/ for a
 # list) will work.
 # Type: List of String
-c.qt.args = ['enable-zero-copy' 'use-gl=egl' 'enable-accelerated-video-decode', 'enable-webrtc-pipewire-capturer', 'enable-gpu-rasterization', 'ignore-gpu-blacklist', 'enable-accelerated-video-decode', 'enable-native-gpu-memory-buffers', 'num-raster-threads=4' 'enable-webgpu']
+c.qt.args = [
+    'enable-zero-copy',
+    'use-gl=egl',
+    'enable-accelerated-video-decode',
+    'enable-webrtc-pipewire-capturer',
+    'enable-gpu-rasterization',
+    'ignore-gpu-blacklist',
+    'enable-native-gpu-memory-buffers',
+    'num-raster-threads=4',
+    'enable-webgpu',
+    'disable-font-subpixel-positioning',
+    'enable-font-antialiasing'
+]
 
 # Additional environment variables to set. Setting an environment
 # variable to null/None will unset it.
 # Type: Dict
-c.qt.environ = {'NODE_PATH': '~/.config/n/lib/node_modules', 'XCURSOR_SIZE': '25'}
+c.qt.environ = {
+    'NODE_PATH': '~/.config/n/lib/node_modules',
+    'XCURSOR_SIZE': '25',
+}
 
 # Force a Qt platform to use. This sets the `QT_QPA_PLATFORM`
 # environment variable and is useful to force using the XCB plugin when
@@ -200,22 +221,6 @@ config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/{w
 # JavaScript requires a restart.
 # Type: FormatString
 config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version} Edg/{upstream_browser_version}', 'https://accounts.google.com/*')
-
-# User agent to send.  The following placeholders are defined:  *
-# `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
-# The underlying WebKit version (set to a fixed value   with
-# QtWebEngine). * `{qt_key}`: "Qt" for QtWebKit, "QtWebEngine" for
-# QtWebEngine. * `{qt_version}`: The underlying Qt version. *
-# `{upstream_browser_key}`: "Version" for QtWebKit, "Chrome" for
-# QtWebEngine. * `{upstream_browser_version}`: The corresponding
-# Safari/Chrome version. * `{qutebrowser_version}`: The currently
-# running qutebrowser version.  The default value is equal to the
-# unchanged user agent of QtWebKit/QtWebEngine.  Note that the value
-# read from JavaScript is always the global value. With QtWebEngine
-# between 5.12 and 5.14 (inclusive), changing the value exposed to
-# JavaScript requires a restart.
-# Type: FormatString
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99 Safari/537.36', 'https://*.slack.com/*')
 
 # Load images automatically in web pages.
 # Type: Bool
@@ -518,7 +523,16 @@ c.fonts.default_family = 'Victor Mono SemiBold'
 # either a float value with a "pt" suffix, or an integer value with a
 # "px" suffix.
 # Type: String
-c.fonts.default_size = '10pt'
+c.fonts.default_size = '12pt'
+
+# Font rendering hints - disable hinting for smoothest rendering on HiDPI
+# Type: String
+# Valid values:
+#   - none: Disable hinting (smoothest on HiDPI)
+#   - minimal: Minimal hinting
+#   - medium: Medium hinting
+#   - full: Full hinting (sharpest but most distortion)
+c.fonts.hints = 'none'
 
 # Bindings for normal mode
 config.bind(',d', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/css/darculized-all-sites.css ""')

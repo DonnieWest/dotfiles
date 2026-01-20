@@ -2,7 +2,8 @@
  :dependencies [:nvim-lua/plenary.nvim
                 :pmizio/typescript-tools.nvim
                 :SmiteshP/nvim-navic
-                :b0o/schemastore.nvim]
+                :b0o/schemastore.nvim
+                :nvim-java/nvim-java]
  :config #(let [cmp (require :blink.cmp)
                 typescript (require :typescript-tools)
                 navic (require :nvim-navic)
@@ -16,6 +17,7 @@
                          ;                   :--encoding
                          ;                   :utf-8
                          ;                   :--languageserver]}
+                         :jdtls {}
                          :marksman {}
                          :jsonls {:settings {:json {:schemas ((. (require :schemastore)
                                                                  :json :schemas))

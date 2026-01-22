@@ -11,31 +11,44 @@
 #   qute://help/settings.html
 import qutebrowser.api.interceptor
 
+
 def rewrite(request: qutebrowser.api.interceptor.Request):
-    if request.request_url.host() in ('www.reddit.com', 'reddit.com') and request.request_url.path() != '/media':
-        request.request_url.setHost('old.reddit.com')
+    if (
+        request.request_url.host() in ("www.reddit.com", "reddit.com")
+        and request.request_url.path() != "/media"
+    ):
+        request.request_url.setHost("old.reddit.com")
         try:
             request.redirect(request.request_url)
         except:
             pass
-    if request.request_url.host() in ('medium.com', 'www.medium.com'):
-        request.request_url.setHost('scribe.rip')
+    if request.request_url.host() in ("medium.com", "www.medium.com"):
+        path = request.request_url.path()
+        path_parts = [p for p in path.split("/") if p]
+        if path.startswith("/u/") or (path.startswith("/@") and len(path_parts) == 1):
+            return
+        request.request_url.setHost("scribe.rip")
         try:
             request.redirect(request.request_url)
         except:
             pass
-    if request.request_url.host() in ('youtube.com', 'www.youtube.com', 'm.youtube.com'):
-        request.request_url.setHost('piped.video')
+    if request.request_url.host() in (
+        "youtube.com",
+        "www.youtube.com",
+        "m.youtube.com",
+    ):
+        request.request_url.setHost("piped.video")
         try:
             request.redirect(request.request_url)
         except:
             pass
-    if request.request_url.host() in ('quora.com', 'www.quora.com'):
-        request.request_url.setHost('quetre.iket.me')
+    if request.request_url.host() in ("quora.com", "www.quora.com"):
+        request.request_url.setHost("quetre.iket.me")
         try:
             request.redirect(request.request_url)
         except:
             pass
+
 
 qutebrowser.api.interceptor.register(rewrite)
 
@@ -45,7 +58,20 @@ config.load_autoconfig(False)
 # Aliases for commands. The keys of the given dictionary are the
 # aliases, while the values are the commands they map to.
 # Type: Dict
-c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save', 'wqa': 'quit --save', 'pass': 'spawn --userscript ~/.config/qutebrowser/userscripts/qute-bitwarden', 'mpv': 'spawn --userscript ~/.config/qutebrowser/userscripts/view_in_mpv', 'linkwarden': 'spawn --userscript ~/.config/qutebrowser/userscripts/linkwarden', 'pushwebsite': 'spawn --userscript ~/.config/qutebrowser/userscripts/pushwebsite', 'readability': 'spawn --userscript ~/.config/qutebrowser/userscripts/readability-js', 'add-to-wallabag': 'spawn --userscript ~/.config/qutebrowser/userscripts/wallabag-add', 'copy-page-to-markdown': 'spawn --userscript ~/.config/qutebrowser/userscripts/copy-as-markdown'}
+c.aliases = {
+    "q": "close",
+    "qa": "quit",
+    "w": "session-save",
+    "wq": "quit --save",
+    "wqa": "quit --save",
+    "pass": "spawn --userscript ~/.config/qutebrowser/userscripts/qute-bitwarden",
+    "mpv": "spawn --userscript ~/.config/qutebrowser/userscripts/view_in_mpv",
+    "linkwarden": "spawn --userscript ~/.config/qutebrowser/userscripts/linkwarden",
+    "pushwebsite": "spawn --userscript ~/.config/qutebrowser/userscripts/pushwebsite",
+    "readability": "spawn --userscript ~/.config/qutebrowser/userscripts/readability-js",
+    "add-to-wallabag": "spawn --userscript ~/.config/qutebrowser/userscripts/wallabag-add",
+    "copy-page-to-markdown": "spawn --userscript ~/.config/qutebrowser/userscripts/copy-as-markdown",
+}
 
 # Additional arguments to pass to Qt, without leading `--`. With
 # QtWebEngine, some Chromium arguments (see
@@ -53,32 +79,32 @@ c.aliases = {'q': 'close', 'qa': 'quit', 'w': 'session-save', 'wq': 'quit --save
 # list) will work.
 # Type: List of String
 c.qt.args = [
-    'enable-zero-copy',
-    'use-gl=egl',
-    'enable-accelerated-video-decode',
-    'enable-webrtc-pipewire-capturer',
-    'enable-gpu-rasterization',
-    'ignore-gpu-blacklist',
-    'enable-native-gpu-memory-buffers',
-    'num-raster-threads=4',
-    'enable-webgpu',
-    'disable-font-subpixel-positioning',
-    'enable-font-antialiasing'
+    "enable-zero-copy",
+    "use-gl=egl",
+    "enable-accelerated-video-decode",
+    "enable-webrtc-pipewire-capturer",
+    "enable-gpu-rasterization",
+    "ignore-gpu-blacklist",
+    "enable-native-gpu-memory-buffers",
+    "num-raster-threads=4",
+    "enable-webgpu",
+    "disable-font-subpixel-positioning",
+    "enable-font-antialiasing",
 ]
 
 # Additional environment variables to set. Setting an environment
 # variable to null/None will unset it.
 # Type: Dict
 c.qt.environ = {
-    'NODE_PATH': '~/.config/n/lib/node_modules',
-    'XCURSOR_SIZE': '25',
+    "NODE_PATH": "~/.config/n/lib/node_modules",
+    "XCURSOR_SIZE": "25",
 }
 
 # Force a Qt platform to use. This sets the `QT_QPA_PLATFORM`
 # environment variable and is useful to force using the XCB plugin when
 # running QtWebEngine on Wayland.
 # Type: String
-c.qt.force_platform = 'wayland'
+c.qt.force_platform = "wayland"
 
 # Turn on Qt HighDPI scaling. This is equivalent to setting
 # QT_AUTO_SCREEN_SCALE_FACTOR=1 or QT_ENABLE_HIGHDPI_SCALING=1 (Qt >=
@@ -119,7 +145,7 @@ c.auto_save.session = True
 #   - no-3rdparty: Accept cookies from the same origin only. This is known to break some sites, such as GMail.
 #   - no-unknown-3rdparty: Accept cookies from the same origin only, unless a cookie is already set for the domain. On QtWebEngine, this is the same as no-3rdparty.
 #   - never: Don't accept cookies at all.
-config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
+config.set("content.cookies.accept", "all", "chrome-devtools://*")
 
 # Which cookies to accept. With QtWebEngine, this setting also controls
 # other features with tracking capabilities similar to those of cookies;
@@ -143,7 +169,7 @@ config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
 #   - no-3rdparty: Accept cookies from the same origin only. This is known to break some sites, such as GMail.
 #   - no-unknown-3rdparty: Accept cookies from the same origin only, unless a cookie is already set for the domain. On QtWebEngine, this is the same as no-3rdparty.
 #   - never: Don't accept cookies at all.
-config.set('content.cookies.accept', 'all', 'devtools://*')
+config.set("content.cookies.accept", "all", "devtools://*")
 
 # Allow websites to share screen content.
 # Type: BoolAsk
@@ -151,12 +177,12 @@ config.set('content.cookies.accept', 'all', 'devtools://*')
 #   - true
 #   - false
 #   - ask
-config.set('content.desktop_capture', True, 'https://meet.google.com')
+config.set("content.desktop_capture", True, "https://meet.google.com")
 
 # Value to send in the `Accept-Language` header. Note that the value
 # read from JavaScript is always the global value.
 # Type: String
-config.set('content.headers.accept_language', '', 'https://matchmaker.krunker.io/*')
+config.set("content.headers.accept_language", "", "https://matchmaker.krunker.io/*")
 
 # User agent to send.  The following placeholders are defined:  *
 # `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
@@ -172,7 +198,11 @@ config.set('content.headers.accept_language', '', 'https://matchmaker.krunker.io
 # between 5.12 and 5.14 (inclusive), changing the value exposed to
 # JavaScript requires a restart.
 # Type: FormatString
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0', 'https://docs.google.com/*')
+config.set(
+    "content.headers.user_agent",
+    "Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0",
+    "https://docs.google.com/*",
+)
 
 # User agent to send.  The following placeholders are defined:  *
 # `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
@@ -188,7 +218,11 @@ config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:71.0) Gecko
 # between 5.12 and 5.14 (inclusive), changing the value exposed to
 # JavaScript requires a restart.
 # Type: FormatString
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0', 'https://drive.google.com/*')
+config.set(
+    "content.headers.user_agent",
+    "Mozilla/5.0 ({os_info}; rv:71.0) Gecko/20100101 Firefox/71.0",
+    "https://drive.google.com/*",
+)
 
 # User agent to send.  The following placeholders are defined:  *
 # `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
@@ -204,7 +238,11 @@ config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}; rv:71.0) Gecko
 # between 5.12 and 5.14 (inclusive), changing the value exposed to
 # JavaScript requires a restart.
 # Type: FormatString
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}', 'https://web.whatsapp.com/')
+config.set(
+    "content.headers.user_agent",
+    "Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version}",
+    "https://web.whatsapp.com/",
+)
 
 # User agent to send.  The following placeholders are defined:  *
 # `{os_info}`: Something like "X11; Linux x86_64". * `{webkit_version}`:
@@ -220,15 +258,19 @@ config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/{w
 # between 5.12 and 5.14 (inclusive), changing the value exposed to
 # JavaScript requires a restart.
 # Type: FormatString
-config.set('content.headers.user_agent', 'Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version} Edg/{upstream_browser_version}', 'https://accounts.google.com/*')
+config.set(
+    "content.headers.user_agent",
+    "Mozilla/5.0 ({os_info}) AppleWebKit/{webkit_version} (KHTML, like Gecko) {upstream_browser_key}/{upstream_browser_version} Safari/{webkit_version} Edg/{upstream_browser_version}",
+    "https://accounts.google.com/*",
+)
 
 # Load images automatically in web pages.
 # Type: Bool
-config.set('content.images', True, 'chrome-devtools://*')
+config.set("content.images", True, "chrome-devtools://*")
 
 # Load images automatically in web pages.
 # Type: Bool
-config.set('content.images', True, 'devtools://*')
+config.set("content.images", True, "devtools://*")
 
 # Allow JavaScript to read from or write to the clipboard. With
 # QtWebEngine, writing the clipboard as response to a user interaction
@@ -238,31 +280,39 @@ config.set('content.images', True, 'devtools://*')
 #   - none: Disable access to clipboard.
 #   - access: Allow reading from and writing to the clipboard.
 #   - access-paste: Allow accessing the clipboard and pasting clipboard content.
-c.content.javascript.clipboard = 'access'
+c.content.javascript.clipboard = "access"
 
 # Enable JavaScript.
 # Type: Bool
-config.set('content.javascript.enabled', True, 'chrome-devtools://*')
+config.set("content.javascript.enabled", True, "chrome-devtools://*")
 
 # Enable JavaScript.
 # Type: Bool
-config.set('content.javascript.enabled', True, 'devtools://*')
+config.set("content.javascript.enabled", True, "devtools://*")
 
 # Enable JavaScript.
 # Type: Bool
-config.set('content.javascript.enabled', True, 'chrome://*/*')
+config.set("content.javascript.enabled", True, "chrome://*/*")
 
 # Enable JavaScript.
 # Type: Bool
-config.set('content.javascript.enabled', True, 'qute://*/*')
+config.set("content.javascript.enabled", True, "qute://*/*")
 
 # Allow locally loaded documents to access remote URLs.
 # Type: Bool
-config.set('content.local_content_can_access_remote_urls', True, 'file:///home/igneo676/.local/share/qutebrowser/userscripts/*')
+config.set(
+    "content.local_content_can_access_remote_urls",
+    True,
+    "file:///home/igneo676/.local/share/qutebrowser/userscripts/*",
+)
 
 # Allow locally loaded documents to access other local URLs.
 # Type: Bool
-config.set('content.local_content_can_access_file_urls', False, 'file:///home/igneo676/.local/share/qutebrowser/userscripts/*')
+config.set(
+    "content.local_content_can_access_file_urls",
+    False,
+    "file:///home/igneo676/.local/share/qutebrowser/userscripts/*",
+)
 
 # Allow websites to record audio.
 # Type: BoolAsk
@@ -270,7 +320,7 @@ config.set('content.local_content_can_access_file_urls', False, 'file:///home/ig
 #   - true
 #   - false
 #   - ask
-config.set('content.media.audio_capture', True, 'https://meet.google.com')
+config.set("content.media.audio_capture", True, "https://meet.google.com")
 
 # Allow websites to record audio and video.
 # Type: BoolAsk
@@ -278,7 +328,7 @@ config.set('content.media.audio_capture', True, 'https://meet.google.com')
 #   - true
 #   - false
 #   - ask
-config.set('content.media.audio_video_capture', True, 'https://meet.google.com')
+config.set("content.media.audio_video_capture", True, "https://meet.google.com")
 
 # Allow websites to record video.
 # Type: BoolAsk
@@ -286,7 +336,7 @@ config.set('content.media.audio_video_capture', True, 'https://meet.google.com')
 #   - true
 #   - false
 #   - ask
-config.set('content.media.video_capture', True, 'https://meet.google.com')
+config.set("content.media.video_capture", True, "https://meet.google.com")
 
 # Allow websites to show notifications.
 # Type: BoolAsk
@@ -294,7 +344,7 @@ config.set('content.media.video_capture', True, 'https://meet.google.com')
 #   - true
 #   - false
 #   - ask
-config.set('content.notifications.enabled', False, 'https://meet.google.com')
+config.set("content.notifications.enabled", False, "https://meet.google.com")
 
 # Allow websites to show notifications.
 # Type: BoolAsk
@@ -302,7 +352,7 @@ config.set('content.notifications.enabled', False, 'https://meet.google.com')
 #   - true
 #   - false
 #   - ask
-config.set('content.notifications.enabled', False, 'https://www.reddit.com')
+config.set("content.notifications.enabled", False, "https://www.reddit.com")
 
 # Allow websites to show notifications.
 # Type: BoolAsk
@@ -310,7 +360,7 @@ config.set('content.notifications.enabled', False, 'https://www.reddit.com')
 #   - true
 #   - false
 #   - ask
-config.set('content.notifications.enabled', True, 'https://outlook.office.com')
+config.set("content.notifications.enabled", True, "https://outlook.office.com")
 
 # Display PDF files via PDF.js in the browser without showing a download
 # prompt. Note that the files can still be downloaded by clicking the
@@ -327,7 +377,9 @@ c.content.pdfjs = True
 #   - true
 #   - false
 #   - ask
-config.set('content.register_protocol_handler', False, 'https://calendar.google.com?cid=%25s')
+config.set(
+    "content.register_protocol_handler", False, "https://calendar.google.com?cid=%25s"
+)
 
 # Allow websites to register protocol handlers via
 # `navigator.registerProtocolHandler`.
@@ -336,7 +388,11 @@ config.set('content.register_protocol_handler', False, 'https://calendar.google.
 #   - true
 #   - false
 #   - ask
-config.set('content.register_protocol_handler', False, 'https://mail.google.com?extsrc=mailto&url=%25s')
+config.set(
+    "content.register_protocol_handler",
+    False,
+    "https://mail.google.com?extsrc=mailto&url=%25s",
+)
 
 # Allow websites to register protocol handlers via
 # `navigator.registerProtocolHandler`.
@@ -345,7 +401,11 @@ config.set('content.register_protocol_handler', False, 'https://mail.google.com?
 #   - true
 #   - false
 #   - ask
-config.set('content.register_protocol_handler', False, 'https://outlook.office.com?mailtouri=%25s')
+config.set(
+    "content.register_protocol_handler",
+    False,
+    "https://outlook.office.com?mailtouri=%25s",
+)
 
 # Allow websites to register protocol handlers via
 # `navigator.registerProtocolHandler`.
@@ -354,7 +414,11 @@ config.set('content.register_protocol_handler', False, 'https://outlook.office.c
 #   - true
 #   - false
 #   - ask
-config.set('content.register_protocol_handler', False, 'https://outlook.office365.com?mailtouri=%25s')
+config.set(
+    "content.register_protocol_handler",
+    False,
+    "https://outlook.office365.com?mailtouri=%25s",
+)
 
 # List of user stylesheet filenames to use.
 # Type: List of File, or File
@@ -379,7 +443,7 @@ c.completion.min_chars = 2
 # Valid values:
 #   - top
 #   - bottom
-c.downloads.position = 'bottom'
+c.downloads.position = "bottom"
 
 # Duration (in milliseconds) to wait before removing finished downloads.
 # If set to -1, downloads are never removed.
@@ -401,7 +465,7 @@ c.scrolling.smooth = True
 #   - startpage: Load the start page.
 #   - default-page: Load the default page.
 #   - close: Close the window.
-c.tabs.last_close = 'close'
+c.tabs.last_close = "close"
 
 # Position of new tabs opened from another tab. See
 # `tabs.new_position.stacking` for controlling stacking behavior.
@@ -411,7 +475,7 @@ c.tabs.last_close = 'close'
 #   - next: After the current tab.
 #   - first: At the beginning.
 #   - last: At the end.
-c.tabs.new_position.related = 'last'
+c.tabs.new_position.related = "last"
 
 # Maximum width (in pixels) of tabs (-1 for no maximum). This setting
 # only applies when tabs are horizontal. This setting does not apply to
@@ -440,7 +504,7 @@ c.tabs.max_width = 256
 # the search engine name to the search term, e.g. `:open google
 # qutebrowser`.
 # Type: Dict
-c.url.searchengines = {'DEFAULT': 'https://search.brave.com/search?q={}'}
+c.url.searchengines = {"DEFAULT": "https://search.brave.com/search?q={}"}
 
 # Hide the window decoration.  This setting requires a restart on
 # Wayland.
@@ -449,56 +513,56 @@ c.window.hide_decoration = False
 
 # Default zoom level.
 # Type: Perc
-c.zoom.default = '100%'
+c.zoom.default = "100%"
 
 # Background color of the statusbar.
 # Type: QssColor
-c.colors.statusbar.normal.bg = '#03090e'
+c.colors.statusbar.normal.bg = "#03090e"
 
 # Background color of the statusbar in command mode.
 # Type: QssColor
-c.colors.statusbar.command.bg = '#03090e'
+c.colors.statusbar.command.bg = "#03090e"
 
 # Background color of the tab bar.
 # Type: QssColor
-c.colors.tabs.bar.bg = '#03090e'
+c.colors.tabs.bar.bg = "#03090e"
 
 # Background color of unselected odd tabs.
 # Type: QtColor
-c.colors.tabs.odd.bg = '#03090e'
+c.colors.tabs.odd.bg = "#03090e"
 
 # Background color of unselected even tabs.
 # Type: QtColor
-c.colors.tabs.even.bg = '#03090e'
+c.colors.tabs.even.bg = "#03090e"
 
 # Background color of selected odd tabs.
 # Type: QtColor
-c.colors.tabs.selected.odd.bg = '#093748'
+c.colors.tabs.selected.odd.bg = "#093748"
 
 # Background color of selected even tabs.
 # Type: QtColor
-c.colors.tabs.selected.even.bg = '#093748'
+c.colors.tabs.selected.even.bg = "#093748"
 
 # Background color of pinned unselected odd tabs.
 # Type: QtColor
-c.colors.tabs.pinned.odd.bg = '#03090e'
+c.colors.tabs.pinned.odd.bg = "#03090e"
 
 # Background color of pinned unselected even tabs.
 # Type: QtColor
-c.colors.tabs.pinned.even.bg = '#03090e'
+c.colors.tabs.pinned.even.bg = "#03090e"
 
 # Background color of pinned selected odd tabs.
 # Type: QtColor
-c.colors.tabs.pinned.selected.odd.bg = '#093748'
+c.colors.tabs.pinned.selected.odd.bg = "#093748"
 
 # Background color of pinned selected even tabs.
 # Type: QtColor
-c.colors.tabs.pinned.selected.even.bg = '#093748'
+c.colors.tabs.pinned.selected.even.bg = "#093748"
 
 # Background color for webpages if unset (or empty to use the theme's
 # color).
 # Type: QtColor
-c.colors.webpage.bg = 'white'
+c.colors.webpage.bg = "white"
 
 # Value to use for `prefers-color-scheme:` for websites. The "light"
 # value is only available with QtWebEngine 5.15.2+. On older versions,
@@ -510,20 +574,20 @@ c.colors.webpage.bg = 'white'
 #   - auto: Use the system-wide color scheme setting.
 #   - light: Force a light theme.
 #   - dark: Force a dark theme.
-c.colors.webpage.preferred_color_scheme = 'dark'
+c.colors.webpage.preferred_color_scheme = "dark"
 
 # Default font families to use. Whenever "default_family" is used in a
 # font setting, it's replaced with the fonts listed here. If set to an
 # empty value, a system-specific monospace default is used.
 # Type: List of Font, or Font
-c.fonts.default_family = 'Victor Mono SemiBold'
+c.fonts.default_family = "Victor Mono SemiBold"
 
 # Default font size to use. Whenever "default_size" is used in a font
 # setting, it's replaced with the size listed here. Valid values are
 # either a float value with a "pt" suffix, or an integer value with a
 # "px" suffix.
 # Type: String
-c.fonts.default_size = '12pt'
+c.fonts.default_size = "12pt"
 
 # Font rendering hints - disable hinting for smoothest rendering on HiDPI
 # Type: String
@@ -532,25 +596,28 @@ c.fonts.default_size = '12pt'
 #   - minimal: Minimal hinting
 #   - medium: Medium hinting
 #   - full: Full hinting (sharpest but most distortion)
-c.fonts.hints = 'none'
+c.fonts.hints = "none"
 
 # Bindings for normal mode
-config.bind(',d', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/css/darculized-all-sites.css ""')
-config.bind(',s', 'spawn --userscript rebuild-qutebrowser-grease-styles.py')
-config.bind(';b', 'hint all tab')
-config.bind('<Ctrl+Del>', 'tab-close')
-config.bind('<Ctrl+Left>', 'tab-prev')
-config.bind('<Ctrl+Right>', 'tab-next')
-config.bind('<Ctrl+h>', 'tab-prev')
-config.bind('<Ctrl+j>', 'tab-prev')
-config.bind('<Ctrl+k>', 'tab-next')
-config.bind('<Ctrl+l>', 'tab-next')
-config.bind('<Ctrl+l>', 'tab-next')
-config.bind('<Ctrl+;>', 'tab-next')
-config.bind('F', 'hint all tab-bg')
-config.unbind('d')
-config.bind('dd', 'tab-close')
-config.bind('j', 'cmd-repeat 3 scroll down')
-config.bind('k', 'cmd-repeat 3 scroll up')
-config.bind('t', 'open -t about:blank')
-config.bind('x', 'tab-close')
+config.bind(
+    ",d",
+    'config-cycle content.user_stylesheets ~/.config/qutebrowser/css/darculized-all-sites.css ""',
+)
+config.bind(",s", "spawn --userscript rebuild-qutebrowser-grease-styles.py")
+config.bind(";b", "hint all tab")
+config.bind("<Ctrl+Del>", "tab-close")
+config.bind("<Ctrl+Left>", "tab-prev")
+config.bind("<Ctrl+Right>", "tab-next")
+config.bind("<Ctrl+h>", "tab-prev")
+config.bind("<Ctrl+j>", "tab-prev")
+config.bind("<Ctrl+k>", "tab-next")
+config.bind("<Ctrl+l>", "tab-next")
+config.bind("<Ctrl+l>", "tab-next")
+config.bind("<Ctrl+;>", "tab-next")
+config.bind("F", "hint all tab-bg")
+config.unbind("d")
+config.bind("dd", "tab-close")
+config.bind("j", "cmd-repeat 3 scroll down")
+config.bind("k", "cmd-repeat 3 scroll up")
+config.bind("t", "open -t about:blank")
+config.bind("x", "tab-close")

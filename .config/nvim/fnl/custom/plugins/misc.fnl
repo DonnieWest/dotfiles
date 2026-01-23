@@ -23,6 +23,7 @@
  {1 :stevearc/quicker.nvim :event :QuickFixCmdPost}
  ;; Git plugins
  {1 :sindrets/diffview.nvim :cmd [:DiffviewOpen :DiffviewFileHistory]}
+ {1 :esmuellert/codediff.nvim :dependencies [:MunifTanjim/nui.nvim] :cmd [:CodeDiff]}
  {1 :tpope/vim-fugitive :cmd [:Git :G :Gread :Gwrite :Gdiffsplit :Gvdiffsplit]}
  {1 :tpope/vim-rhubarb :cmd [:GBrowse] :dependencies [:tpope/vim-fugitive]}
  {1 :almo7aya/openingh.nvim :cmd [:OpenInGHRepo :OpenInGHFile :OpenInGHFileLines]}
@@ -44,6 +45,7 @@
  {1 :dundalek/parpar.nvim :ft [:clojure :fennel :lisp :scheme] :opts {}}
  ;; Fennel
  {1 :Olical/fennel.vim :ft :fennel}
+ {1 :tris203/precognition.nvim :opts {:startVisible true :disabled_fts [:startify]}}
  {1 :HiPhish/rainbow-delimiters.nvim :event :BufReadPost}
  {1 :fwcd/kotlin-language-server :ft :kotlin :build "./gradlew :server:installDist"}
  {1 :microsoft/vscode-gradle :ft [:kotlin :java :gradle] :build "./gradlew :gradle-language-server:installDist"}

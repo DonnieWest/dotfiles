@@ -3,7 +3,7 @@ Host imap.gmail.com
 Port  993
 User igneo676@gmail.com
 PassCmd "pass mailwizard-igneo676@gmail.com"
-SSLType IMAPS
+TLSType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 MaildirStore igneo676@gmail.com-local
@@ -26,7 +26,7 @@ Host imap.fastmail.com
 Port  993
 User me@donniewest.com
 PassCmd "pass mailwizard-me@donniewest.com"
-SSLType IMAPS
+TLSType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 MaildirStore me@donniewest.com-local

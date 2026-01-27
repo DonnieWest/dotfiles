@@ -77,6 +77,8 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history # share command history data
 setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_reduce_blanks
 
 alias history='fc -l 1'
 alias docker='podman'

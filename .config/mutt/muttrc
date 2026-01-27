@@ -41,12 +41,17 @@ bind index gg       first-entry
 bind index G        last-entry
 
 bind index R        group-reply
+bind index A        group-reply  # Reply-all
 bind index <tab>    sync-mailbox
 bind index <space>  collapse-thread
 
 # Ctrl-R to mark all as read
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
 
+# Vim-like index navigation
+bind index j next-entry
+bind index k previous-entry
+bind index n search-next
 # Sync email
 macro index O "<shell-escape>mbsync -a -c ~/.config/isync/mbsyncrc<enter>" "run mbsync to sync all mail"
 macro index o "<shell-escape>mbsync -a -c ~/.config/isync/mbsyncrc<enter>" "run mbsync to sync all mail"
@@ -136,6 +141,7 @@ bind pager gg top
 bind pager G  bottom
 
 bind pager R  group-reply
+bind pager A  group-reply  # Reply-all
 
 # View attachments properly.
 bind attach <return> view-mailcap

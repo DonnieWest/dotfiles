@@ -1,0 +1,247 @@
+#!/usr/bin/env bash
+
+WATCH_LATER_PLAYLIST_ID=1
+DB_PATH=""
+
+find_db() {
+    if [[ -n "$DB_PATH" ]]; then
+        echo "$DB_PATH"
+        return
+    fi
+
+    local db_file
+    db_file=$(find . -maxdepth 2 -name "newpipe.db" -type f 2>/dev/null | head -n 1)
+
+    if [[ -z "$db_file" ]]; then
+        echo "Error: No newpipe.db found. Use --db to specify a path." >&2
+        exit 1
+    fi
+
+    echo "$db_file"
+}
+
+extract_channel_id() {
+    local url="$1"
+    echo "$url" | grep -o '[^/]\{24\}$'
+}
+
+fetch_videos() {
+    local channel_id="$1"
+    local channel_name="$2"
+    local rss_url="https://www.youtube.com/feeds/videos.xml?channel_id=$channel_id"
+    
+    curl -s "$rss_url" | xmlstarlet sel -t -m "//_:entry" \
+        -v "_:published" -o ":::::" \
+        -v "_:title" -o ":::::" \
+        -v "_:link[@rel='alternate']/@href" -o ":::::" \
+        -o "$channel_name" -n >> "$RAW_VIDEOS"
+}
+
+reconstruct_videos() {
+    python3 -c "
+import sys
+from datetime import datetime
+
+videos = []
+for line in open('$RAW_VIDEOS'):
+    line = line.strip()
+    if line:
+        parts = line.split(':::::')
+        if len(parts) == 4:
+            published = parts[0].strip()
+            title = parts[1].strip()
+            url = parts[2].strip()
+            channel = parts[3].strip()
+            videos.append((published, channel, title, url))
+
+# Sort by published date (newest first)
+videos.sort(key=lambda x: x[0], reverse=True)
+
+# Output without the date
+for published, channel, title, url in videos:
+    print(f'{channel} | {title} | {url}')
+"
+}
+
+get_subscriptions() {
+    local db="$1"
+    sqlite3 "$db" -separator $'\t' \
+        "SELECT name, url FROM subscriptions"
+}
+
+fetch_subscription_videos() {
+    local db="$1"
+    echo "Fetching subscriptions..." >&2
+    while IFS=$'\t' read -r name url; do
+        channel_id=$(extract_channel_id "$url")
+        if [[ -n "$channel_id" ]]; then
+            echo "Fetching $name..." >&2
+            fetch_videos "$channel_id" "$name" &
+        fi
+    done < <(get_subscriptions "$db")
+    wait
+}
+
+fetch_watch_later_videos() {
+    local db="$1"
+    local saved_videos="$2"
+    sqlite3 "$db" -separator " | " \
+        "SELECT s.title, s.uploader, s.url \
+        FROM streams s \
+        JOIN playlist_stream_join psj ON s.uid = psj.stream_id \
+        WHERE psj.playlist_id = $WATCH_LATER_PLAYLIST_ID \
+        ORDER BY psj.join_index ASC" > "$saved_videos"
+}
+
+main_subs() {
+    local output="${1:-wofi}"
+    local TMP_DIR=$(mktemp -d)
+    local RAW_VIDEOS="$TMP_DIR/raw_videos.txt"
+    local SORTED_VIDEOS="$TMP_DIR/sorted_videos.txt"
+
+    trap "rm -rf $TMP_DIR" EXIT
+
+    mkdir -p "$TMP_DIR"
+    fetch_subscription_videos "$DB_PATH"
+
+    if [[ ! -s "$RAW_VIDEOS" ]]; then
+        echo "No videos found" >&2
+        exit 1
+    fi
+
+    reconstruct_videos > "$SORTED_VIDEOS"
+
+    if [[ "$output" == "stdout" ]]; then
+        cat "$SORTED_VIDEOS"
+        return 0
+    fi
+
+    if [[ "$output" == "fzf" ]]; then
+        selected=$(cat "$SORTED_VIDEOS" | fzf)
+        if [[ -n "$selected" ]]; then
+            url=$(echo "$selected" | awk -F' | ' '{print $NF}')
+            mpv "$url"
+        fi
+    else
+        selected=$(cat "$SORTED_VIDEOS" | wofi --dmenu)
+        if [[ -n "$selected" ]]; then
+            url=$(echo "$selected" | awk -F' | ' '{print $NF}')
+            mpv "$url"
+        fi
+    fi
+}
+
+main_watch_later() {
+    local output="${1:-wofi}"
+    local TMP_DIR=$(mktemp -d)
+    local VIDEOS_FILE="$TMP_DIR/videos.txt"
+
+    trap "rm -rf $TMP_DIR" EXIT
+
+    mkdir -p "$TMP_DIR"
+    fetch_watch_later_videos "$DB_PATH" "$VIDEOS_FILE"
+
+    if [[ ! -s "$VIDEOS_FILE" ]]; then
+        echo "No videos found" >&2
+        exit 1
+    fi
+
+    if [[ "$output" == "stdout" ]]; then
+        cat "$VIDEOS_FILE"
+        return 0
+    fi
+
+    if [[ "$output" == "fzf" ]]; then
+        selected=$(cat "$VIDEOS_FILE" | fzf --delimiter $'\t' --with-nth 1)
+        if [[ -n "$selected" ]]; then
+            url=$(echo "$selected" | cut -f2)
+            mpv "$url"
+        fi
+    else
+        selected=$(cat "$VIDEOS_FILE" | wofi -dmenu -i)
+        if [[ -n "$selected" ]]; then
+            url=$(echo "$selected" | awk -F' \\| ' '{print $NF}')
+            mpv "$url"
+        fi
+    fi
+}
+
+print_usage() {
+    cat << EOF
+Usage: pipe-manager <command> [options]
+
+Commands:
+  subs, subscriptions    View and select from subscription videos
+  watch-later, saved     View and select from watch later playlist
+
+Options:
+  --db <path>           Path to newpipe.db (default: auto-detect in current dir)
+  --stdout              Output video list to stdout
+  --fzf                 Select using fzf
+  --wofi                Select using wofi (default)
+
+Examples:
+  pipe-manager subs
+  pipe-manager subscriptions --fzf
+  pipe-manager watch-later --stdout
+  pipe-manager saved --db /path/to/newpipe.db
+EOF
+}
+
+if [[ $# -eq 0 ]]; then
+    print_usage
+    exit 1
+fi
+
+COMMAND=""
+OUTPUT="wofi"
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        subs|subscriptions)
+            COMMAND="subs"
+            shift
+            ;;
+        watch-later|saved)
+            COMMAND="watch-later"
+            shift
+            ;;
+        --db)
+            DB_PATH="$2"
+            shift 2
+            ;;
+        --stdout)
+            OUTPUT="stdout"
+            shift
+            ;;
+        --fzf)
+            OUTPUT="fzf"
+            shift
+            ;;
+        --wofi)
+            OUTPUT="wofi"
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1" >&2
+            print_usage
+            exit 1
+            ;;
+    esac
+done
+
+DB_PATH=$(find_db)
+
+case "$COMMAND" in
+    subs)
+        main_subs "$OUTPUT"
+        ;;
+    watch-later)
+        main_watch_later "$OUTPUT"
+        ;;
+    *)
+        echo "Error: No command specified" >&2
+        print_usage
+        exit 1
+        ;;
+esac

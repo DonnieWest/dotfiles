@@ -49,4 +49,5 @@
  {1 :HiPhish/rainbow-delimiters.nvim :event :BufReadPost}
  {1 :fwcd/kotlin-language-server :ft :kotlin :build "./gradlew :server:installDist"}
  {1 :microsoft/vscode-gradle :ft [:kotlin :java :gradle] :build "./gradlew :gradle-language-server:installDist"}
+ {1 :obsidian-nvim/obsidian.nvim :ft :markdown :opts {:workspaces [{:name :personal :path "~/Nextcloud/Notes/"}]}}
  {1 :idelice/jls :ft :java :build "mvn package -DskipTests"}]

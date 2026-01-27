@@ -71,6 +71,8 @@ c.aliases = {
     "readability": "spawn --userscript ~/.config/qutebrowser/userscripts/readability-js",
     "add-to-wallabag": "spawn --userscript ~/.config/qutebrowser/userscripts/wallabag-add",
     "copy-page-to-markdown": "spawn --userscript ~/.config/qutebrowser/userscripts/copy-as-markdown",
+    "clip-selection": "spawn --userscript ~/.config/qutebrowser/userscripts/markdown-selection",
+    "clip-article": "spawn --userscript ~/.config/qutebrowser/userscripts/markdown-article",
 }
 
 # Additional arguments to pass to Qt, without leading `--`. With
@@ -621,3 +623,9 @@ config.bind("j", "cmd-repeat 3 scroll down")
 config.bind("k", "cmd-repeat 3 scroll up")
 config.bind("t", "open -t about:blank")
 config.bind("x", "tab-close")
+config.bind(
+    ",m", "spawn --userscript ~/.config/qutebrowser/userscripts/markdown-selection"
+)
+config.bind(
+    ",a", "spawn --userscript ~/.config/qutebrowser/userscripts/markdown-article"
+)

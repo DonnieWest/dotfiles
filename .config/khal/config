@@ -9,6 +9,8 @@ path = ~/.calendars/fastmail/*
 type = discover
 
 [locale]
+local_timezone= America/Chicago
+default_timezone= America/Chicago
 timeformat = %I:%M %p
 dateformat = %m/%d/%Y
 longdateformat = %m/%d/%Y

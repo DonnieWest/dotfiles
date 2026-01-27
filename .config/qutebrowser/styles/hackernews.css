@@ -276,7 +276,7 @@ pre:hover {
   height: 10px;
   border: 0px;
   margin: 3px 2px 6px;
-  background: url("grayarrow.gif") no-repeat;
+  filter: brightness(1.8);
 }
 
 .votelinks.nosee div.votearrow.rotate180 {
@@ -291,7 +291,6 @@ table.padtab td {
   only screen and (min-device-pixel-ratio: 2) {
   .votearrow {
     background-size: 10px;
-    background-image: url("grayarrow2x.gif");
   }
 }
 

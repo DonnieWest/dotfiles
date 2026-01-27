@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+/home/igneo676/.bin/linkwarden-push $QUTE_URL
+

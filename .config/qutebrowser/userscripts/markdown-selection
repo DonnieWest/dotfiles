@@ -1,0 +1,186 @@
+#!/usr/bin/env python3
+import os
+import sys
+
+qute_fifo = os.environ.get('QUTE_FIFO')
+
+def qute_command(command):
+    with open(qute_fifo, 'w') as f:
+        f.write(command + '\n')
+        f.flush()
+
+if not qute_fifo:
+    sys.stderr.write("QUTE_FIFO not set\n")
+    sys.exit(1)
+
+# JavaScript code for interactive element picking with markdown export
+# Uses simple inline HTML-to-Markdown conversion
+script = r"""
+(function() {
+    if (window.qutePickerActive) return;
+    window.qutePickerActive = true;
+
+    // Inject overlay to capture all events
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999999;background:transparent;cursor:crosshair;';
+    document.body.appendChild(overlay);
+
+    // Create highlight box
+    const highlight = document.createElement('div');
+    highlight.style.cssText = 'position:fixed;outline:2px solid #00ff00;background:rgba(0,255,0,0.15);pointer-events:none;z-index:10000000;display:none;';
+    document.body.appendChild(highlight);
+
+    // Show hint
+    const hint = document.createElement('div');
+    hint.style.cssText = 'position:fixed;top:10px;right:10px;background:#1a1a1a;color:#00ff00;padding:8px 12px;border-radius:4px;z-index:2147483647;font-family:monospace;font-size:12px;border:1px solid #00ff00;';
+    hint.textContent = 'Esc to cancel, click to select';
+    document.body.appendChild(hint);
+
+    let active = true;
+    let currentEl = null;
+
+    function showHighlight(el) {
+        const rect = el.getBoundingClientRect();
+        highlight.style.display = 'block';
+        highlight.style.top = rect.top + 'px';
+        highlight.style.left = rect.left + 'px';
+        highlight.style.width = rect.width + 'px';
+        highlight.style.height = rect.height + 'px';
+    }
+
+    function htmlToMarkdown(el) {
+        // Simple HTML to Markdown converter
+        const clone = el.cloneNode(true);
+        const unwanted = clone.querySelectorAll('script, style, iframe, noscript');
+        unwanted.forEach(n => n.remove());
+        
+        let html = clone.innerHTML || clone.textContent || '';
+        
+        // Basic markdown formatting
+        html = html.replace(/<h([1-6])[^>]*>(.*?)<\/h\1>/gi, (m, n, c) => '#'.repeat(+n) + ' ' + c.trim() + '\n\n');
+        html = html.replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**');
+        html = html.replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**');
+        html = html.replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*');
+        html = html.replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*');
+        html = html.replace(/<code[^>]*>(.*?)<\/code>/gi, '`$1`');
+        html = html.replace(/<a[^>]+href=["'"]([^"']*)["''][^>]*>(.*?)<\/a>/gi, '[$2]($1)');
+        html = html.replace(/<img[^>]+src=["'"]([^"']*)["'"][^>]+alt=["'"]([^"']*)["'"][^>]*>/gi, '![$2]($1)');
+        html = html.replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n\n');
+        html = html.replace(/<div[^>]*>(.*?)<\/div>/gi, '$1');
+        html = html.replace(/<br\s*\/?>/gi, '\n');
+        html = html.replace(/<[^>]+>/g, '');
+        
+        html = html.replace(/&nbsp;/g, ' ');
+        html = html.replace(/&amp;/g, '&');
+        html = html.replace(/&lt;/g, '<');
+        html = html.replace(/&gt;/g, '>');
+        
+        return html.trim();
+    }
+
+    function getElementAtPoint(x, y) {
+        overlay.style.display = 'none';
+        const el = document.elementFromPoint(x, y);
+        overlay.style.display = 'block';
+        return el;
+    }
+
+    function onMouseMove(e) {
+        if (!active) return;
+        const el = getElementAtPoint(e.clientX, e.clientY);
+        if (el && el !== document.body && el !== document.documentElement && !hint.contains(el) && !highlight.contains(el)) {
+            currentEl = el;
+            showHighlight(el);
+        }
+    }
+
+    function cleanup() {
+        active = false;
+        overlay.remove();
+        highlight.remove();
+        hint.remove();
+        document.removeEventListener('mousemove', onMouseMove, true);
+        document.removeEventListener('click', onClick, true);
+        document.removeEventListener('keydown', onKeyDown);
+        window.qutePickerActive = false;
+    }
+
+    function onKeyDown(e) {
+        if (e.key === 'Escape' && active) {
+            cleanup();
+        }
+    }
+
+    function copyToClipboard(text) {
+        // Try modern clipboard API first
+        if (navigator.clipboard) {
+            return navigator.clipboard.writeText(text);
+        }
+        // Fallback for older browsers
+        const el = document.createElement('textarea');
+        el.value = text;
+        el.style.position = 'fixed';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        el.remove();
+        return Promise.resolve();
+    }
+
+    function onClick(e) {
+        if (!active) return;
+        const el = getElementAtPoint(e.clientX, e.clientY);
+        
+        if (!el || el === document.body || el === document.documentElement || el === hint || el === highlight || el === overlay) {
+            return;
+        }
+        
+        cleanup();
+        
+        const md = htmlToMarkdown(el);
+        copyToClipboard(md).then(() => {
+            const msg = document.createElement('div');
+            msg.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);background:green;color:white;padding:8px 16px;border-radius:4px;z-index:2147483647;font-family:sans-serif;';
+            msg.textContent = 'Markdown copied ✓';
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 2000);
+        }).catch(err => {
+            console.error('Copy failed:', err);
+            const errEl = document.createElement('div');
+            errEl.textContent = 'Copy failed: ' + err.message;
+            errEl.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);background:red;color:white;padding:8px 16px;border-radius:4px;z-index:2147483647;';
+            document.body.appendChild(errEl);
+            setTimeout(() => errEl.remove(), 2000);
+        });
+    }
+
+    document.addEventListener('mousemove', onMouseMove, true);
+    document.addEventListener('click', onClick, true);
+    document.addEventListener('keydown', onKeyDown);
+})()
+"""
+
+# Write JS to a temporary file for jseval to read
+import tempfile
+import os
+
+temp_dir = tempfile.mkdtemp()
+js_file = os.path.join(temp_dir, 'picker.js')
+with open(js_file, 'w') as f:
+    f.write(script)
+
+qute_command(f'jseval -f {js_file}')
+qute_command('message-info "Element picker active - hover to highlight, click to select, Esc to cancel"')
+
+# Clean up temp dir after a delay
+import atexit
+def cleanup():
+    import shutil
+    import time
+    time.sleep(2)  # Give qutebrowser time to read the file
+    try:
+        shutil.rmtree(temp_dir)
+    except:
+        pass
+atexit.register(cleanup)

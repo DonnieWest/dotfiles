@@ -1,0 +1,44 @@
+#!/bin/bash
+# Sway Session Restore Script
+# This script restores your tmux sessions and application windows
+
+# Wait for sway to fully initialize
+sleep 2
+
+HOSTNAME=$(hostname)
+
+# Create tmux sessions using smug (detached) - only on phoenix
+if [[ "$HOSTNAME" == "phoenix" ]]; then
+    smug start sml-maintenance --detach
+    smug start system --detach
+fi
+
+# Launch qutebrowser on workspace 1
+swaymsg "workspace 1: Browser; exec qutebrowser"
+sleep 1
+
+# Launch weechat in ghostty on workspace 2
+swaymsg "workspace 2: Chat; exec ghostty -e weechat"
+sleep 1
+
+# Launch ghostty terminals with tmux sessions on workspace 3 - only on phoenix
+if [[ "$HOSTNAME" == "phoenix" ]]; then
+    swaymsg "workspace 3: Terminal; exec ghostty -e tmux attach-session -t sml-maintenance"
+    sleep 1
+fi
+
+# Launch Obsidian
+swaymsg "workspace 8: Code; exec obsidian"
+sleep 1
+
+if [[ "$HOSTNAME" == "phoenix" ]]; then
+    swaymsg "workspace 9: Code; exec ghostty -e tmux attach-session -t system"
+    sleep 1
+
+    # Launch teams on workspace 10
+    swaymsg "workspace 10: Code; exec teams-for-linux"
+    sleep 1
+fi
+
+# Focus back to the Browser workspace
+swaymsg "workspace 1: Browser"

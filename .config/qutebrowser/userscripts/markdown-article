@@ -15,9 +15,52 @@ if not qute_fifo:
     sys.stderr.write("QUTE_FIFO not set\n")
     sys.exit(1)
 
-# JavaScript to get page content and convert to markdown
+# JavaScript for detecting and clipping main article content
 script = r"""
 (function() {
+    function findMainArticle() {
+        const selectors = [
+            'article',
+            '[role="main"]',
+            'main',
+            '.article',
+            '.post',
+            '.content',
+            '.entry-content',
+            '#content',
+            '#main-content',
+            '[class*="article"]',
+            '[class*="post"]',
+            '[id*="article"]',
+            '[id*="post"]',
+        ];
+        
+        for (const selector of selectors) {
+            const el = document.querySelector(selector);
+            if (el) {
+                const score = el.textContent.length * (el.querySelector('p') ? 2 : 1);
+                return { el, score, selector };
+            }
+        }
+        
+        const allDivs = document.querySelectorAll('div, section, article');
+        let best = null;
+        let maxP = 0;
+        
+        allDivs.forEach(div => {
+            const pCount = div.querySelectorAll('p').length;
+            if (pCount > maxP && pCount >= 3) {
+                const textLen = div.textContent.length;
+                if (textLen > 200 && textLen < 50000) {
+                    maxP = pCount;
+                    best = div;
+                }
+            }
+        });
+        
+        return { el: best, score: maxP };
+    }
+
     function htmlToMarkdown(el) {
         const clone = el.cloneNode(true);
         const unwanted = clone.querySelectorAll('script, style, iframe, noscript, nav, footer, header, aside, .ads, .advertisement, [class*="ad-"]');
@@ -57,31 +100,19 @@ script = r"""
         return html.trim();
     }
 
-    function findBodyContent() {
-        const selectors = [
-            'article',
-            '[role="main"]',
-            'main',
-            '.article',
-            '.post',
-            '.content',
-            '.entry-content',
-            '#content',
-            '#main-content',
-        ];
-        
-        for (const selector of selectors) {
-            const el = document.querySelector(selector);
-            if (el) {
-                return el;
-            }
-        }
-        
-        return document.body;
+    const result = findMainArticle();
+    
+    if (!result.el) {
+        console.error('Could not find main article content');
+        const errEl = document.createElement('div');
+        errEl.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);background:red;color:white;padding:8px 16px;border-radius:4px;z-index:2147483647;';
+        errEl.textContent = 'No article content found';
+        document.body.appendChild(errEl);
+        setTimeout(() => errEl.remove(), 2000);
+        return;
     }
 
-    const content = findBodyContent();
-    const md = htmlToMarkdown(content);
+    const md = htmlToMarkdown(result.el);
     const url = window.location.href;
     const title = document.title;
     const date = new Date().toISOString().slice(0, 10);
@@ -106,7 +137,7 @@ script = r"""
     copyToClipboard(finalMd).then(() => {
         const msg = document.createElement('div');
         msg.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);background:green;color:white;padding:8px 16px;border-radius:4px;z-index:2147483647;font-family:sans-serif;';
-        msg.textContent = 'Page copied as Markdown ✓';
+        msg.textContent = 'Article copied as Markdown ✓';
         document.body.appendChild(msg);
         setTimeout(() => msg.remove(), 2000);
     }).catch(err => {
@@ -120,14 +151,16 @@ script = r"""
 })()
 """
 
+# Write JS to a temporary file
 temp_dir = tempfile.mkdtemp()
-js_file = os.path.join(temp_dir, 'page_clipper.js')
+js_file = os.path.join(temp_dir, 'article_clipper.js')
 with open(js_file, 'w') as f:
     f.write(script)
 
 qute_command(f'jseval -f {js_file}')
-qute_command('message-info "Converting page to Markdown..."')
+qute_command('message-info "Clipping article as Markdown..."')
 
+# Clean up temp dir after a delay
 import atexit
 def cleanup():
     import time

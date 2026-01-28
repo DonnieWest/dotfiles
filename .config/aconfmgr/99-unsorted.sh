@@ -482,7 +482,7 @@ AddPackage --foreign ponymix-git # CLI PulseAudio Volume Control
 AddPackage --foreign qt6-webengine-widevine # A browser plugin designed for the viewing of premium video content (E.g. Spotify)
 AddPackage --foreign quickjs # Small and embeddable JavaScript engine
 AddPackage --foreign reactotron # A desktop app for inspecting your React JS and React Native projects
-AddPackage --foreign rvm # RVM is a command-line tool which allows you to easily install, manage, and work with multiple ruby environments from interpreters to sets of gems.
+AddPackage --foreign rvm # RVM is a command-line tool which allows to display images in the terminal, written in C++
 AddPackage --foreign sauceconnect # Sauce Connect untility for Sauce Labs testing
 AddPackage --foreign smug # A session manager for tmux written in Go
 AddPackage --foreign snitch-bin # a friendlier ss/netstat for humans
@@ -731,3 +731,18 @@ SetFileProperty /data owner igneo676
 if [[ "$HOSTNAME" == "phoenix" ]]; then
     SetFileProperty /etc/fangfrisch/fangfrisch-has-news.sh group clamav
 fi
+AddPackage calibre
+AddPackage clojure
+AddPackage cloudflared
+AddPackage deno
+AddPackage dolphin-emu
+AddPackage flatpak
+AddPackage gamemode
+AddPackage gparted
+AddPackage keybase
+AddPackage neovim
+AddPackage shotwell
+AddPackage taskwarrior-tui
+AddPackage --foreign android-studio-beta
+AddPackage --foreign qutebrowser-git
+AddPackage --foreign winetricks-git

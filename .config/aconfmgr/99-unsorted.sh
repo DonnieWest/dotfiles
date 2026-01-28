@@ -570,12 +570,10 @@ CreateLink /etc/fonts/conf.d/69-urw-standard-symbols-ps.conf /usr/share/fontconf
 CreateLink /etc/fonts/conf.d/69-urw-z003.conf /usr/share/fontconfig/conf.default/69-urw-z003.conf
 CreateLink /etc/fonts/conf.d/80-delicious.conf /usr/share/fontconfig/conf.default/80-delicious.conf
 CreateLink /etc/fonts/conf.d/90-synthetic.conf /usr/share/fontconfig/conf.default/90-synthetic.conf
-CopyFile /etc/fstab
 CopyFile /etc/fuse.conf
 CopyFile /etc/fwupd/fwupd.conf
 CopyFile /etc/group
 CopyFile /etc/haproxy/haproxy.cfg
-CopyFile /etc/hostname
 CreateFile /etc/hostsctl/disabled.hosts > /dev/null
 CreateFile /etc/hostsctl/enabled.hosts > /dev/null
 CopyFile /etc/hostsctl/orig.hosts

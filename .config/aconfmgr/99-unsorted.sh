@@ -1,5 +1,3 @@
-
-
 # Tue Jan 27 06:52:45 PM CST 2026 - Unknown packages
 
 
@@ -18,7 +16,6 @@ AddPackage aspell # A spell checker designed to eventually replace Ispell
 AddPackage aspell-en # English dictionary for aspell
 AddPackage aspnet-runtime # The ASP.NET Core runtime
 AddPackage aspnet-runtime-8.0 # The ASP.NET Core runtime
-AddPackage audacity # A program that lets you manipulate digital audio waveforms
 AddPackage auto-cpufreq # Automatic CPU speed & power optimizer
 AddPackage aws-cli-v2 # Universal Command Line Interface for Amazon Web Services (version 2)
 AddPackage base # Minimal package set to define a basic Arch Linux installation
@@ -44,7 +41,6 @@ AddPackage chromium # A web browser built for speed, simplicity, and security
 AddPackage cjson # Ultralightweight JSON parser in ANSI C
 AddPackage cloudflare-warp-bin # Cloudflare Warp Client
 AddPackage cmus # Feature-rich ncurses-based music player
-AddPackage cockatrice # A cross-platform virtual tabletop for multiplayer card games
 AddPackage cocogitto # Set of CLI tools for the conventional commit and semver specifications
 AddPackage composer # Dependency Manager for PHP
 AddPackage cpio # A tool to copy files into or out of a cpio or tar archive
@@ -77,12 +73,9 @@ AddPackage eza # A modern replacement for ls (community fork of exa)
 AddPackage faad2 # Freeware Advanced Audio (AAC) Decoder
 AddPackage fd # Simple, fast and user-friendly alternative to find
 AddPackage fennel # A Lua Lisp language
-AddPackage festival # A general multi-lingual speech synthesis system
-AddPackage festival-us # American Male/Female and Scottish English Male speaker
 AddPackage ffmpeg # Complete solution to record, convert and stream audio and video
 AddPackage ffnvcodec-headers # FFmpeg version of headers required to interface with Nvidias codec APIs
 AddPackage file-roller # Create and modify archives
-AddPackage finch # A ncurses-based messaging client
 AddPackage firefox-developer-edition # Fast, Private & Safe Web Browser (Developer Edition)
 AddPackage fish # Smart and user friendly shell intended mostly for interactive use
 AddPackage fnlfmt # A formatter for Fennel code
@@ -156,7 +149,6 @@ AddPackage jdk17-openjdk # OpenJDK Java 17 development kit
 AddPackage jdk21-openjdk # OpenJDK Java 21 development kit
 AddPackage jq # Command-line JSON processor
 AddPackage jre8-openjdk # OpenJDK Java 8 full runtime environment
-AddPackage jujutsu # Git-compatible VCS that is both simple and powerful
 AddPackage jwt-cli # A super fast CLI tool to decode and encode JWTs
 AddPackage kanshi # Dynamic output configuration for Wayland WMs
 AddPackage khal # CLI calendar application built around CalDAV
@@ -232,11 +224,8 @@ AddPackage obsidian # A powerful knowledge base that works on top of a local fol
 AddPackage odt2txt # extracts the text out of OpenDocument Texts
 AddPackage ollama # Create, run and share large language models (LLMs)
 AddPackage omnisharp-roslyn # OmniSharp server (STDIO) based on Roslyn workspaces
-AddPackage openconnect # Open client for Cisco AnyConnect VPN
-AddPackage opensnitch # A GNU/Linux application firewall
 AddPackage openssh # SSH protocol implementation for remote login, command execution and file transfer
 AddPackage opusfile # Library for opening, seeking, and decoding .opus files
-AddPackage orca # Screen reader for individuals who are blind or visually impaired
 AddPackage otf-font-awesome-4 # Iconic font designed for Bootstrap (version 4.x)
 AddPackage pam-u2f # Universal 2nd Factor (U2F) PAM authentication module from Yubico
 AddPackage pandoc-cli # Conversion between documentation formats
@@ -248,8 +237,6 @@ AddPackage pass # Stores, retrieves, generates, and synchronizes passwords secur
 AddPackage pass-otp # A pass extension for managing one-time-password (OTP) tokens.
 AddPackage pavucontrol # PulseAudio Volume Control
 AddPackage pdfjs # PDF reader in javascript
-AddPackage php-apache # Apache SAPI for PHP
-AddPackage php-fpm # FastCGI Process Manager for PHP
 AddPackage picard # Official MusicBrainz tagger
 AddPackage pipewire # Low-latency audio/video router and processor
 AddPackage pipewire-alsa # Low-latency audio/video router and processor - ALSA configuration
@@ -307,7 +294,9 @@ AddPackage seahorse # GNOME application for managing PGP keys
 AddPackage sedutil # TCG OPAL 2.00 SED Management Program
 AddPackage signal-desktop # Signal Private Messenger for Linux
 AddPackage signalbackup-tools-git # Tool to work with Signal Backup files
+if [[ "$HOSTNAME" == "phoenix" ]]; then
 AddPackage slack-desktop # Slack Desktop (Beta) for Linux
+fi
 AddPackage slurp # Select a region in a Wayland compositor
 AddPackage smartmontools # Control and monitor S.M.A.R.T. enabled ATA and SCSI Hard Drives
 AddPackage sof-firmware # Sound Open Firmware
@@ -329,7 +318,9 @@ AddPackage system-config-printer # A CUPS printer configuration tool and status 
 AddPackage systembus-notify # System bus notification daemon
 AddPackage tailscale # A mesh VPN that makes it easy to connect your devices, wherever they are.
 AddPackage tcpdump # Powerful command-line packet analyzer
+if [[ "$HOSTNAME" == "phoenix" ]]; then
 AddPackage teams-for-linux # Unofficial Microsoft Teams client for Linux using Electron.
+fi
 AddPackage telegram-desktop # Official Telegram Desktop client
 AddPackage termdown # Countdown timer and stopwatch in your terminal
 AddPackage texlive-bin # TeX Live binaries
@@ -340,7 +331,6 @@ AddPackage thunar # Modern, fast and easy-to-use file manager for Xfce
 AddPackage thunar-archive-plugin # Adds archive operations to the Thunar file context menus
 AddPackage thunar-media-tags-plugin # Adds special features for media files to the Thunar File Manager
 AddPackage thunar-volman # Automatic management of removable drives and media for Thunar
-AddPackage thunderbird # Standalone mail and news reader from mozilla.org
 AddPackage tig # Text-mode interface for Git.
 AddPackage tmux # Terminal multiplexer
 AddPackage tree-sitter # Incremental parsing library
@@ -427,6 +417,17 @@ AddPackage zoom # Video Conferencing and Web Conferencing Service
 AddPackage zoxide # A smarter cd command for your terminal
 AddPackage zram-generator # Systemd unit generator for zram devices
 AddPackage zsh # A very advanced and programmable command interpreter (shell) for UNIX
+AddPackage calibre
+AddPackage clojure
+AddPackage cloudflared
+AddPackage deno
+AddPackage dolphin-emu
+AddPackage flatpak
+AddPackage gamemode
+AddPackage gparted
+AddPackage keybase
+AddPackage shotwell
+AddPackage taskwarrior-tui
 
 
 # Tue Jan 27 06:53:11 PM CST 2026 - Unknown foreign packages
@@ -444,7 +445,6 @@ AddPackage --foreign chatgpt.sh # Wrapper for ChatGPT, STT, and TTS. Features Ol
 AddPackage --foreign chruby # Changes the current ruby. Supports both zsh and bash.
 AddPackage --foreign claude-code # An agentic coding tool that lives in your terminal
 AddPackage --foreign claude-desktop-bin # Claude AI Desktop Application (Official Binary - Linux Compatible)
-AddPackage --foreign cloudflared-bin # Cloudflare Tunnel client (formerly Argo Tunnel)
 AddPackage --foreign corrupter-bin # Simple image glitcher for producing nice i3lock backgrounds - Binary version
 AddPackage --foreign cpufreqctl # A intel_pstate CPU freq controller for regular user (extracted from extension 'CPU Power Manager for Gnome')
 AddPackage --foreign cpulimit # Limit cpu usage of a process in percentage. Actually sends SIGSTOP/SIGCONT POSIX signals to processes
@@ -454,7 +454,7 @@ AddPackage --foreign elinks-git # An advanced and well-established feature-rich 
 AddPackage --foreign fennel-ls-git # Language Server for Fennel
 AddPackage --foreign freerdp2 # Free implementation of the Remote Desktop Protocol (RDP)
 AddPackage --foreign frpc-bin # A fast reverse proxy to help you expose a local server behind a NAT or firewall to the internet. (Client)
-AddPackage --foreign google-java-format-git # Reformats Java source code to comply with Google Java Style
+AddPackage --foreign google-java-format  # Reformats Java source code to comply with Google Java Style
 AddPackage --foreign hostsctl # block advertisements, trackers, and other malicious activity by manipulating /etc/hosts
 AddPackage --foreign i7z # A better i7 (and now i3, i5) reporting tool for Linux
 AddPackage --foreign java-debug # The debug server implementation for Java.
@@ -463,8 +463,6 @@ AddPackage --foreign jdtls # Eclipse Java language server
 AddPackage --foreign lazysql # A cross-platform TUI database management tool written in Go
 AddPackage --foreign lyrus-git # A Python curses lyrics player primarily for cmus, with playerctl as a fallback
 AddPackage --foreign maestro-dev # End-to-end testing for Mobile and Web apps
-AddPackage --foreign mbrola # A phoneme-to-audio converter used by many TTS (Text-to-speech) programs
-AddPackage --foreign mbrola-voices-us1 # An American English female voice for the MBROLA synthesizer
 AddPackage --foreign msodbcsql # Microsoft® ODBC Driver 18 for SQL Server®
 AddPackage --foreign mssql-tools # Microsoft SQL Server Tools for Linux
 AddPackage --foreign mutt-wizard # Easily auto-configure neomutt and isync/mpop with safe passwords (IMAP/POP3/SMTP)
@@ -474,10 +472,7 @@ AddPackage --foreign oauth2ms-git # XOAUTH2 compatible O365 token fetcher
 AddPackage --foreign odin4-cli # an Odin4 binary for flashing Samsung firmware
 AddPackage --foreign opencode-bin # The AI coding agent built for the terminal.
 AddPackage --foreign opencode-desktop-bin # OpenCode desktop client
-AddPackage --foreign openconnect-sso # Wrapper script for OpenConnect supporting Azure AD (SAMLv2) authentication
-AddPackage --foreign openssl-1.0 # The Open Source toolkit for Secure Sockets Layer and Transport Layer Security
 AddPackage --foreign pass-import # A pass extension for importing data from most existing password managers.
-AddPackage --foreign pidgin # Multi-protocol instant messaging client
 AddPackage --foreign ponymix-git # CLI PulseAudio Volume Control
 AddPackage --foreign qt6-webengine-widevine # A browser plugin designed for the viewing of premium video content (E.g. Spotify)
 AddPackage --foreign quickjs # Small and embeddable JavaScript engine
@@ -487,21 +482,19 @@ AddPackage --foreign sauceconnect # Sauce Connect untility for Sauce Labs testin
 AddPackage --foreign smug # A session manager for tmux written in Go
 AddPackage --foreign snitch-bin # a friendlier ss/netstat for humans
 AddPackage --foreign spell # A clone of the standard Unix program of the same name, implemented as a wrapper for Ispell
-AddPackage --foreign sway-nvidia # Helper files to make sway a better experience for us poor NVIDIA users.
+if [[ "$HOSTNAME" == "phoenix" ]]; then
 AddPackage --foreign teams # Microsoft Teams for Linux is your chat-centered workspace in Office 365
-AddPackage --foreign tinty-git # A base16 and base24 color scheme manager
+fi
 AddPackage --foreign ttf-juliamono # JuliaMono is a monospace typeface designed for programming in Julia.
 AddPackage --foreign ttf-victor-mono # Unoffical Victor Mono(TTF) AUR package
 AddPackage --foreign urlview # A curses URL parser for text files
 AddPackage --foreign usql # A universal command-line interface for SQL databases
-AddPackage --foreign vpn-slice # vpnc-script replacement for easy and secure split-tunnel VPN setup
 AddPackage --foreign wayland-pipewire-idle-inhibit # Inhibit wayland idle when computer is playing sound
 AddPackage --foreign wl-clip-persist-git # Keep Wayland clipboard even after programs close
-AddPackage --foreign wlinhibit # Simple, stupid idle inhibitor for wayland.
 AddPackage --foreign youtube-dl # A command-line program to download videos from YouTube.com and a few more sites
 AddPackage --foreign yubikey-manager-qt # Cross-platform application for configuring any YubiKey over all USB transports
 AddPackage --foreign zeal-git # Offline documentation browser
-AddPackage --foreign zephyr-sdk-bin # SDK for Zephyr real-time operating system
+AddPackage --foreign android-studio-beta
 
 
 # Tue Jan 27 06:53:16 PM CST 2026 - New / changed files
@@ -731,18 +724,3 @@ SetFileProperty /data owner igneo676
 if [[ "$HOSTNAME" == "phoenix" ]]; then
     SetFileProperty /etc/fangfrisch/fangfrisch-has-news.sh group clamav
 fi
-AddPackage calibre
-AddPackage clojure
-AddPackage cloudflared
-AddPackage deno
-AddPackage dolphin-emu
-AddPackage flatpak
-AddPackage gamemode
-AddPackage gparted
-AddPackage keybase
-AddPackage neovim
-AddPackage shotwell
-AddPackage taskwarrior-tui
-AddPackage --foreign android-studio-beta
-AddPackage --foreign qutebrowser-git
-AddPackage --foreign winetricks-git

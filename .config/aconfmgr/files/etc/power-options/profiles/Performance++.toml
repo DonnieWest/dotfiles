@@ -1,0 +1,83 @@
+profile_name = "Performance++"
+base_profile = "Ultraperformance"
+
+[sleep_settings]
+turn_off_screen_after = 45
+suspend_after = 60
+
+[cpu_settings]
+mode = "active"
+governor = "performance"
+energy_perf_ratio = "performance"
+min_freq = 400
+max_freq = 4800
+min_perf_pct = 30
+max_perf_pct = 100
+boost = true
+hwp_dyn_boost = true
+
+[cpu_core_settings]
+
+[screen_settings]
+
+[radio_settings]
+block_wifi = false
+block_nfc = false
+block_bt = false
+
+[network_settings]
+disable_ethernet = false
+disable_wifi_7 = false
+disable_wifi_6 = false
+disable_wifi_5 = false
+enable_power_save = false
+power_level = 5
+power_scheme = 1
+enable_uapsd = false
+
+[aspm_settings]
+mode = "performance"
+
+[pci_settings]
+enable_power_management = false
+
+[pci_settings.whiteblacklist]
+items = []
+list_type = "Blacklist"
+
+[usb_settings]
+enable_pm = false
+autosuspend_delay_ms = 10000
+
+[usb_settings.whiteblacklist]
+items = []
+list_type = "Blacklist"
+
+[sata_settings]
+active_link_pm_policy = "max_performance"
+
+[kernel_settings]
+disable_nmi_watchdog = true
+vm_writeback = 15
+laptop_mode = 2
+
+[firmware_settings]
+platform_profile = "performance"
+
+[audio_settings]
+idle_timeout = 25
+
+[gpu_settings]
+intel_min = 640
+intel_max = 1150
+intel_boost = 1150
+
+[rapl_settings.package]
+long_term_limit = 51
+short_term_limit = 51
+
+[rapl_settings.core]
+long_term_limit = 0
+
+[rapl_settings.uncore]
+long_term_limit = 0

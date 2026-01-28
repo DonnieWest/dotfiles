@@ -1,0 +1,2 @@
+clamav ALL = (ALL) NOPASSWD: SETENV: /usr/bin/notify-send
+

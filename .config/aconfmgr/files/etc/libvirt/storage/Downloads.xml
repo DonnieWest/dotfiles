@@ -1,0 +1,19 @@
+<!--
+WARNING: THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE
+OVERWRITTEN AND LOST. Changes to this xml configuration should be made using:
+  virsh pool-edit Downloads
+or other application using the libvirt API.
+-->
+
+<pool type='dir'>
+  <name>Downloads</name>
+  <uuid>52ad1f19-763f-42e3-9aff-e12f3b6fbf7c</uuid>
+  <capacity unit='bytes'>0</capacity>
+  <allocation unit='bytes'>0</allocation>
+  <available unit='bytes'>0</available>
+  <source>
+  </source>
+  <target>
+    <path>/home/igneo676/Downloads</path>
+  </target>
+</pool>

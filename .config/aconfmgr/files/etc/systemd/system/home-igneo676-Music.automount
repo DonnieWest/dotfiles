@@ -1,0 +1,9 @@
+[Unit]
+Description=Automount for Music SSHFS
+
+[Automount]
+Where=/home/igneo676/Music
+TimeoutIdleSec=0
+
+[Install]
+WantedBy=multi-user.target

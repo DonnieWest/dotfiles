@@ -1,0 +1,14 @@
+# kmonad.service file
+[Unit]
+Description=laptop keyboard kmonad
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/kmonad /home/igneo676/.config/kmonad/igneo676.kbd
+Restart=always
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

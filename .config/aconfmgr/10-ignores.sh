@@ -21,6 +21,32 @@ IgnorePath '/var/lib/containers/*'
 # Waydroid Images
 IgnorePath '/var/lib/waydroid/*'
 
+# Flatpak (System-wide installs)
+IgnorePath '/var/lib/flatpak/*'
+
+# Samba
+IgnorePath '/var/lib/samba/*'
+
+# Tor
+IgnorePath '/var/lib/tor/*'
+
+# Games (Luanti/Minetest)
+IgnorePath '/var/lib/luanti/*'
+IgnorePath '/var/lib/minetest/*'
+
+# Resilio Sync
+IgnorePath '/var/lib/rslsync/*'
+
+# ALSA State
+IgnorePath '/var/lib/alsa/*'
+
+# XKB Compiled Keymaps
+IgnorePath '/var/lib/xkb/*'
+
+# TLP & Colord
+IgnorePath '/var/lib/tlp/*'
+IgnorePath '/var/lib/colord/*'
+
 # ClamAV Definitions
 IgnorePath '/var/lib/clamav/*'
 

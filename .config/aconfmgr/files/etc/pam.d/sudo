@@ -2,6 +2,7 @@
 
 auth sufficient pam_u2f.so cue authfile=/etc/u2f_keys
 auth sufficient pam_fprintd.so
+auth sufficient pam_unix.so try_first_pass likeauth nullok
 auth		include		system-auth
 account		include		system-auth
 session		include		system-auth

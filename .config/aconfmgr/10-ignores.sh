@@ -238,3 +238,38 @@ IgnorePath '/var/.updated'
 # Package default permissions (no need to track)
 IgnorePath '/usr/bin/groupmems'          # shadow package default
 IgnorePath '/usr/lib/utempter/utempter'  # libutempter package default
+
+# -------------------------------------------------------------------
+# Automated Ignores (Temporary, Backup, and Machine-Specific Noise)
+# -------------------------------------------------------------------
+
+# Systemd temporary files
+IgnorePath '/etc/systemd/system/getty@tty1.service.d/.#*'
+
+# Backup files
+IgnorePath '/etc/resolv.conf.bak'
+
+# Binary firmware files (machine-specific/generated)
+IgnorePath '/usr/lib/fwupd/efi/fwupdx64.efi'
+
+# Machine-specific Java and Pipewire symlinks
+IgnorePath '/usr/lib/jvm/default'
+IgnorePath '/usr/lib/jvm/default-runtime'
+IgnorePath '/etc/systemd/user/pipewire-session-manager.service'
+
+# User requested: Firefox, hostsctl, fstab, hosts
+IgnorePath '/usr/lib/firefox-developer-edition/*'
+IgnorePath '/etc/hostsctl/*'
+IgnorePath '/etc/fstab'
+IgnorePath '/etc/hosts'
+IgnorePath '/etc/hostname'
+
+# Machine-specific IDs and User Databases
+IgnorePath '/etc/machine-id'
+IgnorePath '/etc/passwd*'
+IgnorePath '/etc/group*'
+IgnorePath '/etc/shadow*'
+IgnorePath '/etc/gshadow*'
+IgnorePath '/etc/subuid*'
+IgnorePath '/etc/subgid*'
+IgnorePath '/etc/crypttab'

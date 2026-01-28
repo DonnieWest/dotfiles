@@ -268,7 +268,9 @@ AddPackage pyenv # Easily switch between multiple versions of Python
 AddPackage pyright # Type checker for the Python language
 AddPackage python-adblock # Brave's adblock library in Python
 AddPackage python-beautifulsoup4 # A Python HTML/XML parser designed for quick turnaround projects like screen-scraping
-AddPackage python-fangfrisch # Freshclam like utility that allows downloading unofficial virus definition files
+if [[ "$HOSTNAME" == "phoenix" ]]; then
+    AddPackage python-fangfrisch # Freshclam like utility that allows downloading unofficial virus definition files
+fi
 AddPackage python-flake8 # The modular source code checker: pep8, pyflakes and co
 AddPackage python-internetarchive # A Python and Command-Line Interface to Archive.org
 AddPackage python-lsp-server # Fork of the python-language-server project, maintained by the Spyder IDE team and the community
@@ -514,8 +516,10 @@ CreateDir /etc/audit/plugins.d 750
 CreateDir /etc/audit/rules.d
 CopyFile /etc/avahi/avahi-daemon.conf
 CopyFile /etc/caddy/conf.d/localhost.caddy 664 caddy igneo676
-CopyFile /etc/clamav/clamd.conf
-CopyFile /etc/clamav/virus-event.bash 755
+if [[ "$HOSTNAME" == "phoenix" ]]; then
+    CopyFile /etc/clamav/clamd.conf
+    CopyFile /etc/clamav/virus-event.bash 755
+fi
 CopyFile /etc/conf.d/lm_sensors
 CopyFile /etc/containers/containers.conf
 CreateDir /etc/containers/networks
@@ -626,12 +630,16 @@ CopyFile /etc/security/limits.conf
 CopyFile /etc/speech-dispatcher/speechd.conf
 CopyFile /etc/subgid
 CopyFile /etc/subuid
-CopyFile /etc/sudoers.d/clamav
+if [[ "$HOSTNAME" == "phoenix" ]]; then
+    CopyFile /etc/sudoers.d/clamav
+fi
 CopyFile /etc/sysctl.d/99-performance.conf
 CopyFile /etc/sysctl.d/99-swappiness.conf
 CopyFile /etc/systemd/resolved.conf
 CreateLink /etc/systemd/system/bluetooth.target.wants/bluetooth.service /usr/lib/systemd/system/bluetooth.service
-CopyFile /etc/systemd/system/clamav-clamonacc.service.d/override.conf
+if [[ "$HOSTNAME" == "phoenix" ]]; then
+    CopyFile /etc/systemd/system/clamav-clamonacc.service.d/override.conf
+fi
 CreateLink /etc/systemd/system/dbus-org.bluez.service /usr/lib/systemd/system/bluetooth.service
 CreateLink /etc/systemd/system/dbus-org.freedesktop.Avahi.service /usr/lib/systemd/system/avahi-daemon.service
 CreateLink /etc/systemd/system/dbus-org.freedesktop.resolve1.service /usr/lib/systemd/system/systemd-resolved.service
@@ -649,9 +657,11 @@ CreateLink /etc/systemd/system/local-fs.target.wants/ananicy-cpp.service /usr/li
 CreateLink /etc/systemd/system/multi-user.target.wants/auto-cpufreq.service /usr/lib/systemd/system/auto-cpufreq.service
 CreateLink /etc/systemd/system/multi-user.target.wants/avahi-daemon.service /usr/lib/systemd/system/avahi-daemon.service
 CreateLink /etc/systemd/system/multi-user.target.wants/caddy.service /usr/lib/systemd/system/caddy.service
-CreateLink /etc/systemd/system/multi-user.target.wants/clamav-clamonacc.service /usr/lib/systemd/system/clamav-clamonacc.service
-CreateLink /etc/systemd/system/multi-user.target.wants/clamav-daemon.service /usr/lib/systemd/system/clamav-daemon.service
-CreateLink /etc/systemd/system/multi-user.target.wants/clamav-freshclam.service /usr/lib/systemd/system/clamav-freshclam.service
+if [[ "$HOSTNAME" == "phoenix" ]]; then
+    CreateLink /etc/systemd/system/multi-user.target.wants/clamav-clamonacc.service /usr/lib/systemd/system/clamav-clamonacc.service
+    CreateLink /etc/systemd/system/multi-user.target.wants/clamav-daemon.service /usr/lib/systemd/system/clamav-daemon.service
+    CreateLink /etc/systemd/system/multi-user.target.wants/clamav-freshclam.service /usr/lib/systemd/system/clamav-freshclam.service
+fi
 CreateLink /etc/systemd/system/multi-user.target.wants/dhcpcd.service /usr/lib/systemd/system/dhcpcd.service
 CreateLink /etc/systemd/system/multi-user.target.wants/earlyoom.service /usr/lib/systemd/system/earlyoom.service
 CreateLink /etc/systemd/system/multi-user.target.wants/home-igneo676-Music.automount /etc/systemd/system/home-igneo676-Music.automount
@@ -669,7 +679,9 @@ CreateLink /etc/systemd/system/multi-user.target.wants/vpnagentd.service /usr/li
 CreateLink /etc/systemd/system/multi-user.target.wants/warp-svc.service /usr/lib/systemd/system/warp-svc.service
 CopyFile /etc/systemd/system/rtkit-daemon.service.d/override.conf
 CreateLink /etc/systemd/system/sockets.target.wants/avahi-daemon.socket /usr/lib/systemd/system/avahi-daemon.socket
-CreateLink /etc/systemd/system/sockets.target.wants/clamav-daemon.socket /usr/lib/systemd/system/clamav-daemon.socket
+if [[ "$HOSTNAME" == "phoenix" ]]; then
+    CreateLink /etc/systemd/system/sockets.target.wants/clamav-daemon.socket /usr/lib/systemd/system/clamav-daemon.socket
+fi
 CreateLink /etc/systemd/system/sockets.target.wants/cups.socket /usr/lib/systemd/system/cups.socket
 CreateLink /etc/systemd/system/sockets.target.wants/libvirtd-admin.socket /usr/lib/systemd/system/libvirtd-admin.socket
 CreateLink /etc/systemd/system/sockets.target.wants/libvirtd-ro.socket /usr/lib/systemd/system/libvirtd-ro.socket
@@ -681,7 +693,9 @@ CreateLink /etc/systemd/system/sockets.target.wants/virtlogd-admin.socket /usr/l
 CreateLink /etc/systemd/system/sockets.target.wants/virtlogd.socket /usr/lib/systemd/system/virtlogd.socket
 CreateLink /etc/systemd/system/sysinit.target.wants/systemd-resolved.service /usr/lib/systemd/system/systemd-resolved.service
 CreateLink /etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service /usr/lib/systemd/system/systemd-timesyncd.service
-CreateLink /etc/systemd/system/timers.target.wants/fangfrisch.timer /usr/lib/systemd/system/fangfrisch.timer
+if [[ "$HOSTNAME" == "phoenix" ]]; then
+    CreateLink /etc/systemd/system/timers.target.wants/fangfrisch.timer /usr/lib/systemd/system/fangfrisch.timer
+fi
 CreateLink /etc/systemd/system/timers.target.wants/fstrim.timer /usr/lib/systemd/system/fstrim.timer
 CopyFile /etc/systemd/timesyncd.conf
 CreateLink /etc/systemd/user/graphical-session-pre.target.wants/xdg-user-dirs.service /usr/lib/systemd/user/xdg-user-dirs.service
@@ -714,4 +728,6 @@ SetFileProperty /data/gitolite owner igneo676
 SetFileProperty /data group igneo676
 SetFileProperty /data mode 777
 SetFileProperty /data owner igneo676
-SetFileProperty /etc/fangfrisch/fangfrisch-has-news.sh group clamav
+if [[ "$HOSTNAME" == "phoenix" ]]; then
+    SetFileProperty /etc/fangfrisch/fangfrisch-has-news.sh group clamav
+fi

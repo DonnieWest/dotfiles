@@ -23,6 +23,7 @@
  {1 :stevearc/quicker.nvim :event :QuickFixCmdPost}
  ;; Git plugins
  {1 :sindrets/diffview.nvim :cmd [:DiffviewOpen :DiffviewFileHistory]}
+ {:url "https://codeberg.org/trevorhauter/gitportal.nvim"}
  {1 :esmuellert/codediff.nvim :dependencies [:MunifTanjim/nui.nvim] :cmd [:CodeDiff]}
  {1 :tpope/vim-fugitive :cmd [:Git :G :Gread :Gwrite :Gdiffsplit :Gvdiffsplit]}
  {1 :tpope/vim-rhubarb :cmd [:GBrowse] :dependencies [:tpope/vim-fugitive]}

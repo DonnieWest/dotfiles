@@ -1,4 +1,4 @@
-{1 :ggandor/leap.nvim
+{:url "https://codeberg.org/andyg/leap.nvim"
  :config (fn []
            (vim.keymap.set [:n :x :o] :s "<Plug>(leap-forward)")
            (vim.keymap.set [:n :x :o] :S "<Plug>(leap-backward)")

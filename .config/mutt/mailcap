@@ -1,7 +1,36 @@
 text/plain; $EDITOR %s ;
 text/html; xdg-open %s &> /dev/null &; nametemplate=%s.html
-text/html; w3m -I %{charset} -T text/html; copiousoutput;
+text/html; elinks -dump -dump-charset utf-8 -force-html %s; copiousoutput;
 image/*; xdg-open %s &> /dev/null &;
 video/*; setsid mpv --quiet %s &; copiousoutput
 application/pdf; xdg-open %s &> /dev/null &;
 application/pgp-encrypted; gpg -d '%s'; copiousoutput;
+
+# Calendar
+text/calendar; khal import %s; copiousoutput;
+
+# vCard
+text/x-vcard; khard show %s; copiousoutput;
+text/vcard; khard show %s; copiousoutput;
+
+# Office documents
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; pandoc -f docx -t gfm %s; copiousoutput;
+application/vnd.oasis.opendocument.text; pandoc -f odt -t gfm %s; copiousoutput;
+
+# JSON
+application/json; jq -C . %s; copiousoutput;
+
+# Diffs/Patches
+text/x-diff; bat --color=always --style=plain -l diff %s; copiousoutput;
+text/x-patch; bat --color=always --style=plain -l diff %s; copiousoutput;
+
+# Archives
+application/zip; unzip -l %s; copiousoutput;
+application/x-tar; tar -tvf %s; copiousoutput;
+application/gzip; tar -tzvf %s; copiousoutput;
+
+# Markdown
+text/markdown; bat --color=always --style=plain -l md %s; copiousoutput;
+
+# Audio
+audio/*; mpv --quiet %s &; copiousoutput;

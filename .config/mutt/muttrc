@@ -65,9 +65,20 @@ macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 macro index <esc>U <pipe-entry>~/.config/mutt/scripts/unsubscribe.py<enter> 'Unsubscribe from this mailing list.'
 macro pager <esc>U <pipe-entry>~/.config/mutt/scripts/unsubscribe.py<enter><exit> 'Unsubscribe from this mailing list.'
 
-auto_view text/html            # automatically show html (mailcap uses w3m)
+auto_view text/html
 auto_view application/pgp-encrypted
-auto_view text/x-vcard         # vcard attachments viewed through mutt.vcard.filter
+auto_view text/x-vcard
+auto_view text/vcard
+auto_view text/calendar
+auto_view application/vnd.openxmlformats-officedocument.wordprocessingml.document
+auto_view application/vnd.oasis.opendocument.text
+auto_view application/json
+auto_view text/x-diff
+auto_view text/x-patch
+auto_view application/zip
+auto_view application/x-tar
+auto_view application/gzip
+auto_view text/markdown
 set implicit_autoview=yes      # Load in pager if setting in .mailcap says 'copiousoutput'.
 alternative_order text/plain text/enriched text/html
 

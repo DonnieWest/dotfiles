@@ -1,0 +1,645 @@
+/* Arc-Dark with gotham-noir-ultra colors - GTK4 version */
+/* Preserves Arc's styling with custom palette */
+
+@define-color theme_bg_color #03090e;
+@define-color theme_fg_color #e6f9f7;
+@define-color theme_base_color #0c2132;
+@define-color theme_text_color #e6f9f7;
+@define-color theme_selected_bg_color #1e425a;
+@define-color theme_selected_fg_color #e6f9f7;
+
+@define-color accent_bg_color #8be9fd;
+@define-color accent_fg_color #03090e;
+@define-color accent_color #8be9fd;
+
+/* Window */
+window {
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
+}
+
+window.csd {
+    background-color: @theme_bg_color;
+}
+
+/* Headerbar */
+headerbar {
+  background-color: #03090e;
+  color: #e6f9f7;
+  border-bottom: 1px solid #1e425a;
+}
+
+headerbar:backdrop {
+    background-color: #0a1a28;
+    color: #b0e3e4;
+}
+
+/* Buttons */
+button {
+    background-color: #0c2132;
+    color: #e6f9f7;
+    border: 1px solid #1e425a;
+}
+
+button:hover {
+    background-color: #1e425a;
+}
+
+button:active {
+    background-color: #2b7a9c;
+}
+
+button:checked {
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
+}
+
+button.flat {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+button.flat:hover {
+    background-color: #1e425a;
+}
+
+button.suggested-action {
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
+}
+
+button.destructive-action {
+    background-color: #ff5555;
+    color: #03090e;
+}
+
+/* Entries */
+entry {
+    background-color: #03090e;
+    color: #e6f9f7;
+    border: 1px solid #1e425a;
+}
+
+entry:focus {
+    border-color: @accent_color;
+}
+
+entry selection {
+    background-color: #1e425a;
+    color: #e6f9f7;
+}
+
+/* TextView */
+textview {
+    background-color: #0c2132;
+    color: #e6f9f7;
+}
+
+textview text selection {
+    background-color: #1e425a;
+}
+
+/* Lists */
+listview,
+list {
+    background-color: #0c2132;
+    color: #e6f9f7;
+}
+
+listview row:selected,
+list row:selected {
+    background-color: #1e425a;
+    color: #e6f9f7;
+}
+
+listview row:hover,
+list row:hover {
+    background-color: #152d3d;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #0c2132;
+    color: #e6f9f7;
+}
+
+.sidebar row:selected {
+    background-color: #1e425a;
+    color: #e6f9f7;
+}
+
+/* Treeview */
+treeview {
+    background-color: #0c2132;
+    color: #e6f9f7;
+}
+
+treeview:selected {
+    background-color: #1e425a;
+}
+
+/* Notebook */
+notebook {
+    background-color: #03090e;
+}
+
+notebook header {
+    background-color: #0c2132;
+}
+
+notebook tab {
+    background-color: #0c2132;
+    color: #e6f9f7;
+}
+
+notebook tab:selected {
+    background-color: #03090e;
+    color: #e6f9f7;
+}
+
+/* Menus */
+popover.menu {
+  background-color: #03090e !important;
+  background: #03090e !important;
+  background-image: none !important;
+  color: #e6f9f7 !important;
+  border: 1px solid #1e425a !important;
+}
+
+popover.menu modelbutton {
+  background-color: transparent !important;
+  background: transparent !important;
+  color: #e6f9f7 !important;
+}
+
+popover.menu modelbutton:hover {
+  background-color: #1e425a !important;
+  background: #1e425a !important;
+  background-image: none !important;
+}
+
+modelbutton:hover {
+  background-color: #1e425a;
+  background-image: none;
+}
+
+modelbutton:selected {
+  background-color: @accent_bg_color;
+  color: @accent_fg_color;
+}
+
+/* Popovers */
+popover {
+    background-color: #0c2132;
+    color: #e6f9f7;
+    border: 1px solid #1e425a;
+}
+
+popover contents {
+    background-color: #0c2132;
+}
+
+/* Tooltips */
+tooltip {
+    background-color: #0c2132;
+    color: #e6f9f7;
+    border: 1px solid #1e425a;
+}
+
+/* Dialogs */
+dialog {
+    background-color: #03090e;
+    color: #e6f9f7;
+}
+
+messagedialog {
+    background-color: #03090e;
+}
+
+messagedialog .dialog-action-area button {
+    background-color: #0c2132;
+    color: #e6f9f7;
+}
+
+/* Scrollbars */
+scrollbar {
+    background-color: #03090e;
+}
+
+scrollbar slider {
+    background-color: #0c2132;
+    border: 1px solid #1e425a;
+}
+
+scrollbar slider:hover {
+    background-color: #1e425a;
+}
+
+/* Progress bars */
+progressbar {
+    background-color: #0c2132;
+}
+
+progressbar trough {
+    background-color: #0c2132;
+    border: 1px solid #1e425a;
+}
+
+progressbar progress {
+    background-color: @accent_bg_color;
+}
+
+/* Scales */
+scale {
+    background-color: transparent;
+}
+
+scale trough {
+    background-color: #0c2132;
+    border: 1px solid #1e425a;
+}
+
+scale highlight {
+    background-color: @accent_bg_color;
+}
+
+scale slider {
+    background-color: #0c2132;
+    border: 1px solid #1e425a;
+}
+
+/* Check/Radio buttons */
+check,
+radio {
+    background-color: #0c2132;
+    border: 1px solid #1e425a;
+    color: @accent_color;
+}
+
+check:checked,
+radio:checked {
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
+}
+
+/* Switch */
+switch {
+    background-color: #0c2132;
+    border: 1px solid #1e425a;
+}
+
+switch:checked {
+    background-color: @accent_bg_color;
+}
+
+switch slider {
+    background-color: #d3ebe9;
+}
+
+/* Links */
+link {
+    color: #8be9fd;
+}
+
+link:visited {
+    color: #bd93f9;
+}
+
+/* Spinbutton */
+spinbutton {
+    background-color: #03090e;
+    color: #e6f9f7;
+    border: 1px solid #1e425a;
+}
+
+spinbutton button {
+    background-color: #0c2132;
+    border-color: #1e425a;
+}
+
+/* Search entry */
+searchentry {
+    background-color: #03090e;
+    color: #e6f9f7;
+    border: 1px solid #1e425a;
+}
+
+/* Calendar */
+calendar {
+    background-color: #0c2132;
+    color: #e6f9f7;
+}
+
+calendar:selected {
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
+}
+
+calendar.highlight {
+    color: @accent_color;
+}
+
+/* Frame */
+frame,
+.frame {
+    border: 1px solid #1e425a;
+}
+
+frame > label {
+    color: #e6f9f7;
+}
+
+/* Separator */
+separator {
+    background-color: #1e425a;
+    min-width: 1px;
+    min-height: 1px;
+}
+
+/* Infobar */
+infobar {
+    background-color: #0c2132;
+    color: #e6f9f7;
+}
+
+infobar.info {
+    background-color: #1e425a;
+}
+
+infobar.warning {
+    background-color: #ffb86c;
+    color: #03090e;
+}
+
+infobar.error {
+    background-color: #ff5555;
+    color: #03090e;
+}
+
+/* Actionbar */
+actionbar {
+    background-color: #0c2132;
+    color: #e6f9f7;
+    border-top: 1px solid #1e425a;
+}
+
+/* Statuspage */
+statuspage {
+    background-color: #03090e;
+    color: #e6f9f7;
+}
+
+/* Preferences page */
+preferencespage {
+    background-color: #03090e;
+}
+
+preferencesgroup {
+    background-color: #0c2132;
+}
+
+/* OSD */
+.osd {
+    background-color: rgba(3, 9, 14, 0.95);
+    color: #e6f9f7;
+    border: 1px solid #1e425a;
+}
+
+/* Toast */
+toast {
+    background-color: #0c2132;
+    color: #e6f9f7;
+    border: 1px solid #1e425a;
+}
+
+/* Title buttons (CSD) */
+button.titlebutton {
+    background-color: transparent;
+    border: none;
+    min-width: 24px;
+    min-height: 24px;
+}
+
+button.titlebutton:hover {
+    background-color: #1e425a;
+}
+
+button.titlebutton.close:hover {
+    background-color: #ff5555;
+}
+
+/* Paned */
+paned > separator {
+    background-color: #1e425a;
+    min-width: 4px;
+    min-height: 4px;
+}
+
+paned > separator:hover {
+    background-color: @accent_color;
+}
+
+/* Selection mode */
+.view:selected,
+.content.view:selected {
+    background-color: #1e425a;
+    color: #e6f9f7;
+}
+
+/* Rubberband selection */
+.rubberband {
+    background-color: rgba(139, 233, 253, 0.3);
+    border: 1px solid @accent_color;
+}
+
+/* Flowbox */
+flowbox {
+    background-color: #03090e;
+}
+
+flowbox child:selected {
+    background-color: #1e425a;
+}
+
+/* Gridview */
+gridview {
+    background-color: #03090e;
+}
+
+gridview child:selected {
+    background-color: #1e425a;
+}
+
+/* Columnview */
+columnview {
+    background-color: #0c2132;
+}
+
+columnview row:selected {
+    background-color: #1e425a;
+}
+
+/* Filechooser */
+filechooser {
+    background-color: #03090e;
+}
+
+filechooser placessidebar {
+    background-color: #0c2132;
+}
+
+filechooser placessidebar row:selected {
+    background-color: #1e425a;
+}
+
+/* Emoji chooser */
+emojichooser {
+    background-color: #03090e;
+}
+
+/* Color chooser */
+colorchooser {
+    background-color: #03090e;
+}
+
+/* Font chooser */
+fontchooser {
+    background-color: #03090e;
+}
+
+/* Print dialog */
+printdialog {
+    background-color: #03090e;
+}
+
+/* Focus styles */
+:focus-visible {
+    outline-color: @accent_color;
+    outline-width: 2px;
+    outline-style: solid;
+    outline-offset: 2px;
+}
+
+/* Accent color classes */
+.accent {
+    color: @accent_color;
+}
+
+.success {
+    color: #50fa7b;
+}
+
+.warning {
+    color: #ffb86c;
+}
+
+.error {
+    color: #ff5555;
+}
+
+/* Dimmed/insensitive */
+.dim-label,
+.dim-label:focus,
+.dim-label:hover {
+    color: rgba(230, 249, 247, 0.6);
+}
+
+/* Backdrop state */
+*:backdrop {
+    color: rgba(230, 249, 247, 0.8);
+}
+
+/* Card style (Libadwaita apps) */
+.card {
+    background-color: #0c2132;
+    border: 1px solid #1e425a;
+}
+
+/* Toolbar view (Libadwaita) */
+toolbarview {
+    background-color: #03090e;
+}
+
+/* Banner (Libadwaita) */
+banner {
+    background-color: #0c2132;
+    color: #e6f9f7;
+}
+
+banner.revealed {
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
+}
+
+/* Avatar (Libadwaita) */
+avatar {
+    background-color: #1e425a;
+    color: #e6f9f7;
+}
+
+/* Clamp (Libadwaita) - no background */
+clamp {
+    background-color: transparent;
+}
+
+/* Carousel (Libadwaita) */
+carousel {
+    background-color: #03090e;
+}
+
+/* Navigation view (Libadwaita) */
+navigationview {
+    background-color: #03090e;
+}
+
+/* Navigation split view (Libadwaita) */
+navigationsplitview {
+    background-color: #03090e;
+}
+
+/* Overlay split view (Libadwaita) */
+overlaysplitview {
+    background-color: #03090e;
+}
+
+/* Bottom sheet (Libadwaita) */
+bottomsheet {
+    background-color: #03090e;
+}
+
+/* Tab overview (Libadwaita) */
+taboverview {
+    background-color: #03090e;
+}
+
+taboverview tabthumbnail:selected {
+    border-color: @accent_color;
+}
+
+/* View switcher (Libadwaita) */
+viewswitcher {
+    background-color: #0c2132;
+}
+
+viewswitcher button:checked {
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
+}
+
+/* Preferences window (Libadwaita) */
+preferenceswindow {
+    background-color: #03090e;
+}
+
+/* About window (Libadwaita) */
+aboutwindow {
+    background-color: #03090e;
+}
+
+aboutwindow .main-page {
+    background-color: #03090e;
+}
+
+aboutwindow .details-page {
+    background-color: #0c2132;
+}

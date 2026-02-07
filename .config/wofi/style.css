@@ -1,5 +1,5 @@
 window {
-  background: rgba(12, 16, 20, 0.8);
+  background: rgba(3, 9, 14, 0.95);
   font-size: 40px;
   font-family: Victor Mono SemiBold;
   text-align: center;
@@ -18,7 +18,7 @@ window {
 }
 
 #entry:selected {
-  background: #d8dee9;
+  background: #1e425a;
   border-radius: 0;
 }
 

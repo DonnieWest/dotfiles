@@ -2,16 +2,16 @@
 theme = "solarized-dark"
 [theme.overrides]
 idle_bg = "#03090e"
-separator_bg = "#03090e"
-idle_fg = "#e6e9ea"
 info_bg = "#03090e"
-info_fg = "#e6e9ea"
 good_bg = "#03090e"
-good_fg = "#e6e9ea"
 warning_bg = "#03090e"
-warning_fg = "#e6e9ea"
-critical_bg = "#D12820"
-critical_fg = "#e6e9ea"
+critical_bg = "#ff5555"
+separator_bg = "#03090e"
+idle_fg = "#e6f9f7"
+info_fg = "#e6f9f7"
+good_fg = "#e6f9f7"
+warning_fg = "#ffb86c"
+critical_fg = "#03090e"
 
 [icons]
 icons = "awesome5"
@@ -36,6 +36,11 @@ interval = 60
 block = "net"
 device = "wlan0"
 format = "$ssid $ip|disconnected"
+
+[[block]]
+block = "custom"
+command = "/home/igneo676/.config/i3status-rust/check-vpn"
+interval = 5
 
 [[block]]
 block = "github"

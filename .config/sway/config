@@ -20,6 +20,7 @@ set $alt Mod1
 
 exec kanshi
 
+# exec polkit-dumb-agent
 include /etc/sway/config.d/*
 
 # exec wl-clip-persist --clipboard both
@@ -27,7 +28,6 @@ include /etc/sway/config.d/*
 # exec /home/igneo676/.bin/mail-checker
 # exec nightshift -l 39.0315533:-94.4954291 -d -m wayland
 
-exec xrdb -merge ~/.Xresources
 
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec hash dbus-update-activation-environment 2>/dev/null && \
@@ -42,11 +42,13 @@ exec swayidle \
     before-sleep '~/.bin/swaylock-wrapper'
 
 # output * bg ~/Wallpapers/armed_society_wallpaper.png fill
-# output * bg ~/Wallpapers/MK1-Dark.png fill
+output * bg ~/Wallpapers/ghibli-fire-girl.jpg fill
 # output * bg ~/Wallpapers/the_big_one_by_grivetart-d7mrqvp.jpg fill
 # output * bg ~/Wallpapers/Dragon_Fire_Fantasy_4813x4018.jpg fill
-output * bg ~/Wallpapers/PlasmaNoir.png fill
-output eDP-1 scale 1
+# output * bg ~/Wallpapers/PlasmaNoir.png fill
+
+output eDP-1 scale 1 render_bit_depth 10 color_profile icc ~/.local/share/icc/TPLCD_4161.icm
+output HEADLESS-1 mode 2000x1200
 
 exec libinput-gestures-setup start
 # exec alsactl --file ~/.config/asound.state restore
@@ -369,7 +371,7 @@ bindsym $mod+Control+Left resize shrink width 5 px or 5 ppt
 bar {
   position top
   status_command i3status-rs
-  font pango:Victor Mono SemiBold 24
+  font pango:Victor Mono SemiBold 26
   pango_markup enabled
   # strip_workspace_numbers yes
 
@@ -378,9 +380,9 @@ bar {
     background #03090e
     statusline #e6f9f7
     focused_workspace #0c2132 #0c2132 #50fa7b
-    active_workspace #223543 #223543 #e6e9ea
-    inactive_workspace #03090e #03090e #e6e9ea
-    urgent_workspace #D12820 #D12820 #f5fafd
+    active_workspace #0c2132 #0c2132 #e6f9f7
+    inactive_workspace #03090e #03090e #e6f9f7
+    urgent_workspace #ff5555 #ff5555 #f5fafd
   }
 }
 

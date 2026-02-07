@@ -16,6 +16,12 @@ set icons
 set incsearch
 set incfilter
 
+# Gotham-Noir-Ultra color scheme
+# Colors are applied via LS_COLORS environment variable
+# Add to your shell rc: source ~/.config/lf/gotham-ls-colors.sh
+# Or set LS_COLORS directly in your shell configuration
+set dircounts true
+
 %[ $LF_LEVEL -eq 1 ] || echo "Warning: You're in a nested lf instance!"
 
 # set internal field separator (IFS) to "\n" for shell commands

@@ -1,0 +1,234 @@
+# Yazi theme configuration - Gotham-Noir-Ultra
+# Based on yazi preset structure: https://github.com/sxyazi/yazi/blob/main/yazi-config/preset/theme-dark.toml
+
+# : App {{{
+
+[app]
+overall = { bg = "#03090e" }
+
+# : }}}
+
+# : Manager {{{
+
+[mgr]
+cwd = { fg = "#8be9fd" }
+
+# Find
+find_keyword  = { fg = "#ffd700", bold = true, italic = true, underline = true }
+find_position = { fg = "#ff79c6", bg = "reset", bold = true, italic = true }
+
+# Symlink
+symlink_target = { italic = true, fg = "#539daf" }
+
+# Marker
+marker_copied   = { fg = "#50fa7b",  bg = "#50fa7b" }
+marker_cut      = { fg = "#ff5555",    bg = "#ff5555" }
+marker_marked   = { fg = "#8be9fd",   bg = "#8be9fd" }
+marker_selected = { fg = "#ffd700", bg = "#ffd700" }
+
+# Count
+count_copied   = { fg = "#03090e", bg = "#50fa7b" }
+count_cut      = { fg = "#03090e", bg = "#ff5555" }
+count_selected = { fg = "#03090e", bg = "#ffd700" }
+
+# Border
+border_symbol = "│"
+border_style  = { fg = "#2b7a9c" }
+
+# Highlighting
+syntect_theme = ""
+
+# Hovered file
+hovered = { fg = "#e6f9f7", bg = "#1e425a" }
+
+# : }}}
+
+# : Tabs {{{
+
+[tabs]
+active   = { bg = "#8be9fd", fg = "#03090e", bold = true }
+inactive = { fg = "#8be9fd", bg = "#0c2132" }
+
+# Separator
+sep_inner = { open = "", close = "" }
+sep_outer = { open = "", close = "" }
+
+# : }}}
+
+# : Mode {{{
+
+[mode]
+normal_main = { bg = "#8be9fd", fg = "#03090e", bold = true }
+normal_alt  = { fg = "#8be9fd", bg = "#0c2132" }
+
+# Select mode
+select_main = { bg = "#ff79c6", fg = "#03090e", bold = true }
+select_alt  = { fg = "#ff79c6", bg = "#0c2132" }
+
+# Unset mode
+unset_main = { bg = "#50fa7b", fg = "#03090e", bold = true }
+unset_alt  = { fg = "#50fa7b", bg = "#0c2132" }
+
+# : }}}
+
+# : Indicator of hovered file {{{
+
+[indicator]
+parent  = { reversed = true }
+current = { reversed = true }
+preview = { underline = true }
+padding = { open = "", close = "" }
+
+# : }}}
+
+# : Status bar {{{
+
+[status]
+overall   = { bg = "#03090e" }
+sep_left  = { open = "", close = "" }
+sep_right = { open = "", close = "" }
+
+# Permissions
+perm_sep   = { fg = "#2b7a9c" }
+perm_type  = { fg = "#50fa7b" }
+perm_read  = { fg = "#8be9fd" }
+perm_write = { fg = "#ff5555" }
+perm_exec  = { fg = "#50fa7b" }
+
+# Progress
+progress_label  = { fg = "#e6f9f7", bold = true }
+progress_normal = { fg = "#8be9fd", bg = "#0c2132" }
+progress_error  = { fg = "#ff5555", bg = "#0c2132" }
+
+# : }}}
+
+# : Which {{{
+
+[which]
+cols            = 3
+mask            = { bg = "#03090e" }
+cand            = { fg = "#8be9fd" }
+rest            = { fg = "#539daf" }
+desc            = { fg = "#b0e3e4" }
+separator       = "  "
+separator_style = { fg = "#1e425a" }
+
+# : }}}
+
+# : Confirmation {{{
+
+[confirm]
+border     = { fg = "#8be9fd" }
+title      = { fg = "#8be9fd" }
+body       = { fg = "#e6f9f7" }
+list       = { fg = "#e6f9f7" }
+btn_yes    = { reversed = true }
+btn_no     = {}
+btn_labels = [ "  [Y]es  ", "  (N)o  " ]
+
+# : }}}
+
+# : Spotter {{{
+
+[spot]
+border = { fg = "#8be9fd" }
+title  = { fg = "#8be9fd" }
+
+# Table
+tbl_col  = { fg = "#8be9fd" }
+tbl_cell = { fg = "#ffd700", reversed = true }
+
+# : }}}
+
+# : Notification {{{
+
+[notify]
+title_info  = { fg = "#50fa7b" }
+title_warn  = { fg = "#ffb86c" }
+title_error = { fg = "#ff5555" }
+
+# Icons
+icon_info  = ""
+icon_warn  = ""
+icon_error = ""
+
+# : }}}
+
+# : Picker {{{
+
+[pick]
+border   = { fg = "#8be9fd" }
+active   = { fg = "#ff79c6", bold = true }
+inactive = { fg = "#e6f9f7" }
+
+# : }}}
+
+# : Input {{{
+
+[input]
+border   = { fg = "#1e425a" }
+title    = { fg = "#e6f9f7" }
+value    = { fg = "#e6f9f7" }
+selected = { bg = "#1e425a" }
+
+# : }}}
+
+# : Completion {{{
+
+[cmp]
+border   = { fg = "#1e425a" }
+active   = { reversed = true }
+inactive = {}
+
+# Icons
+icon_file    = ""
+icon_folder  = ""
+icon_command = ""
+
+# : }}}
+
+# : Task manager {{{
+
+[tasks]
+border  = { fg = "#1e425a" }
+title   = { fg = "#e6f9f7" }
+hovered = { fg = "#ff79c6", bold = true }
+
+# : }}}
+
+# : Help menu {{{
+
+[help]
+on      = { fg = "#8be9fd" }
+run     = { fg = "#e6f9f7" }
+desc    = { fg = "#539daf" }
+hovered = { reversed = true, bold = true }
+footer  = { fg = "#03090e", bg = "#8be9fd" }
+
+# : }}}
+
+# : File-specific styles {{{
+
+[filetype]
+rules = [
+	# Image
+	{ mime = "image/*", fg = "#bd93f9" },
+	# Media
+	{ mime = "{audio,video}/*", fg = "#ffb86c" },
+	# Archive
+	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#ff79c6" },
+	# Document
+	{ mime = "application/{pdf,doc,rtf}", fg = "#33c2de" },
+	# Virtual file system
+	{ mime = "vfs/{absent,stale}", fg = "#539daf" },
+	# Special file
+	{ url = "*", is = "orphan", bg = "#ff5555" },
+	{ url = "*", is = "exec", fg = "#50fa7b" },
+	# Dummy file
+	{ url = "*", is = "dummy", bg = "#ff5555" },
+	{ url = "*/", is = "dummy", bg = "#ff5555" },
+	# Fallback
+	{ url = "*/", fg = "#8be9fd" }
+]
+
+# : }}}

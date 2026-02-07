@@ -1,1 +1,811 @@
+/* Arc-Dark with gotham-noir-ultra colors */
+/* Preserves Arc's styling (rounded corners, shadows) with custom palette */
+
+@define-color theme_bg_color #03090e;
+@define-color theme_fg_color #e6f9f7;
+@define-color theme_base_color #0c2132;
+@define-color theme_text_color #e6f9f7;
+@define-color theme_selected_bg_color #1e425a;
+@define-color theme_selected_fg_color #e6f9f7;
+
+@define-color theme_tooltip_bg_color #0c2132;
+@define-color theme_tooltip_fg_color #e6f9f7;
+
+/* Accent colors */
+@define-color theme_accent_color #8be9fd;
+@define-color theme_accent_fg_color #03090e;
+@define-color accent_bg_color #8be9fd;
+@define-color accent_fg_color #03090e;
+
+/* Button colors */
+@define-color button_bg_color #03090e;
+@define-color button_fg_color #e6f9f7;
+@define-color button_border_color #1e425a;
+@define-color button_hover_bg_color #1e425a;
+@define-color button_active_bg_color #2b7a9c;
+@define-color button_active_fg_color #e6f9f7;
+
+/* Entry/Input colors */
+@define-color entry_bg_color #03090e;
+@define-color entry_fg_color #e6f9f7;
+@define-color entry_border_color #1e425a;
+@define-color entry_selection_bg_color #1e425a;
+@define-color entry_selection_fg_color #e6f9f7;
+
+/* Window decoration */
+@define-color window_bg_color #03090e;
+@define-color window_fg_color #e6f9f7;
+@define-color headerbar_bg_color #03090e;
+@define-color headerbar_fg_color #e6f9f7;
+@define-color headerbar_border_color #1e425a;
+
+/* Menu colors */
+@define-color menu_bg_color #03090e;
+@define-color menu_fg_color #e6f9f7;
+@define-color menu_border_color #1e425a;
+@define-color menu_hover_bg_color #1e425a;
+@define-color menu_hover_fg_color #e6f9f7;
+@define-color menu_selected_bg_color #8be9fd;
+@define-color menu_selected_fg_color #03090e;
+
+/* Sidebar colors */
+@define-color sidebar_bg_color #03090e;
+@define-color sidebar_fg_color #e6f9f7;
+@define-color sidebar_hover_bg_color #1e425a;
+@define-color sidebar_selected_bg_color #1e425a;
+@define-color sidebar_selected_fg_color #e6f9f7;
+
+/* Link colors */
+@define-color link_color #8be9fd;
+@define-color link_visited_color #bd93f9;
+
+/* Warning/Success/Error colors */
+@define-color warning_color #ffb86c;
+@define-color error_color #ff5555;
+@define-color success_color #50fa7b;
+
+/* Scrollbar colors */
+@define-color scrollbar_bg_color #03090e;
+@define-color scrollbar_slider_color #0c2132;
+@define-color scrollbar_slider_hover_color #1e425a;
+@define-color scrollbar_slider_active_color #2b7a9c;
+
+/* Keep window decorations hidden */
 .titlebar.default-decoration { margin: -200px; opacity: 0; }
+
+/* General styling */
+.background,
+window.background,
+window.background.csd {
+    background-color: #03090e !important;
+    background: #03090e !important;
+    background-image: none !important;
+    color: #e6f9f7 !important;
+}
+
+.view,
+.view text,
+textview text {
+    background-color: @theme_base_color;
+    color: @theme_text_color;
+    selection {
+        background-color: @theme_selected_bg_color;
+        color: @theme_selected_fg_color;
+    }
+}
+
+/* Buttons */
+button {
+    background-color: @button_bg_color;
+    color: @button_fg_color;
+    border: 1px solid @button_border_color;
+}
+
+button:hover {
+    background-color: @button_hover_bg_color;
+}
+
+button:active {
+    background-color: @button_active_bg_color;
+    color: @button_active_fg_color;
+}
+
+button:checked {
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
+}
+
+/* Entries */
+entry {
+    background-color: @entry_bg_color;
+    color: @entry_fg_color;
+    border: 1px solid @entry_border_color;
+    selection {
+        background-color: @entry_selection_bg_color;
+        color: @entry_selection_fg_color;
+    }
+}
+
+/* Headerbar */
+headerbar,
+headerbar.titlebar,
+.titlebar:not(headerbar),
+headerbar.default-decoration,
+.csd headerbar,
+.maximized headerbar {
+    background-color: #03090e !important;
+    background: #03090e !important;
+    background-image: none !important;
+    color: #e6f9f7 !important;
+    border-bottom: 1px solid #1e425a !important;
+    box-shadow: none !important;
+}
+
+headerbar:backdrop,
+.titlebar:backdrop:not(headerbar) {
+    background-color: #03090e !important;
+    background: #03090e !important;
+    color: rgba(230, 249, 247, 0.7) !important;
+}
+
+/* Menus - Ultra aggressive override for Arc theme */
+/* Arc uses #333640 for menu backgrounds, we need to override aggressively */
+
+menu,
+menu menu,
+.context-menu,
+.context-menu menu,
+.menu,
+.popup,
+.popup menu,
+window.popup menu,
+decoration.popup menu,
+menu.popup,
+.popup decoration,
+window.popup,
+decoration.popup,
+.popup.background,
+window.popup.background {
+    background-color: #03090e !important;
+    background: #03090e !important;
+    background-image: none !important;
+    background-image: -gtk-gradient(linear, left top, left bottom, from(#03090e), to(#03090e)) !important;
+    color: #e6f9f7 !important;
+    border: 1px solid #1e425a !important;
+}
+
+/* Menubar - Top level menu bar */
+menubar,
+.menubar,
+menubar.primary,
+window > menubar,
+headerbar menubar,
+.primary-toolbar menubar {
+    background-color: #03090e !important;
+    background: #03090e !important;
+    background-image: none !important;
+    background-image: -gtk-gradient(linear, left top, left bottom, from(#03090e), to(#03090e)) !important;
+    color: #e6f9f7 !important;
+    border: none !important;
+}
+
+menu *,
+.context-menu *,
+.popup *,
+.popup menu * {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+menuitem,
+menuitem:hover,
+menuitem:active,
+menuitem:checked,
+menuitem:selected,
+.menuitem,
+.menuitem:hover,
+menu menuitem,
+menu menuitem:hover {
+    background-color: transparent !important;
+    background: transparent !important;
+    background-image: none !important;
+    color: #e6f9f7 !important;
+}
+
+menu menuitem:hover,
+menuitem:hover,
+.menuitem:hover,
+menuitem:selected,
+menuitem:active {
+    background-color: #1e425a !important;
+    background: #1e425a !important;
+    background-image: none !important;
+}
+
+menubar > menuitem,
+.menubar > menuitem {
+    background-color: transparent !important;
+    background: transparent !important;
+    background-image: none !important;
+}
+
+menubar > menuitem:hover,
+.menubar > menuitem:hover {
+    background-color: #1e425a !important;
+    background: #1e425a !important;
+    background-image: none !important;
+}
+
+/* Arc-specific menu selectors */
+.popup decoration,
+.popup menu decoration,
+window.popup decoration {
+    background-color: #03090e !important;
+    background: #03090e !important;
+    background-image: none !important;
+    border: 1px solid #1e425a !important;
+}
+
+/* Arc menu window decoration override */
+.background.popup,
+.popup .background,
+window.popup .background,
+decoration.popup .background {
+    background-color: #03090e !important;
+    background: #03090e !important;
+    background-image: none !important;
+}
+
+/* Menu separators */
+menu separator,
+.context-menu separator,
+.popup separator {
+    background-color: #1e425a !important;
+    background: #1e425a !important;
+    background-image: none !important;
+    min-height: 1px !important;
+}
+
+/* Menu check/radio items */
+menu check,
+menu radio,
+.context-menu check,
+.context-menu radio {
+    color: #8be9fd !important;
+}
+
+menu check:checked,
+menu radio:checked {
+    background-color: #8be9fd !important;
+    color: #03090e !important;
+}
+
+/* Model buttons in menus */
+modelbutton {
+    background-color: transparent !important;
+    background: transparent !important;
+    color: #e6f9f7 !important;
+}
+
+modelbutton:hover {
+    background-color: #1e425a !important;
+    background: #1e425a !important;
+    background-image: none !important;
+}
+
+/* Popover buttons */
+popover modelbutton {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+popover modelbutton:hover {
+    background-color: #1e425a !important;
+    background: #1e425a !important;
+    background-image: none !important;
+}
+
+/* Additional selectors for Arc menubar */
+headerbar .menubar,
+.titlebar .menubar,
+headerbar menubar,
+.titlebar menubar {
+    background-color: #03090e !important;
+    background: #03090e !important;
+    background-image: none !important;
+}
+
+/* Treeview/Sidebar */
+treeview,
+treeview.view {
+    background-color: @sidebar_bg_color;
+    color: @sidebar_fg_color;
+}
+
+treeview:selected,
+treeview.view:selected {
+    background-color: @sidebar_selected_bg_color;
+    color: @sidebar_selected_fg_color;
+}
+
+/* Scrollbars */
+scrollbar {
+    background-color: @scrollbar_bg_color;
+}
+
+scrollbar slider {
+    background-color: @scrollbar_slider_color;
+}
+
+scrollbar slider:hover {
+    background-color: @scrollbar_slider_hover_color;
+}
+
+/* Links */
+link {
+    color: @link_color;
+}
+
+link:visited {
+    color: @link_visited_color;
+}
+
+/* Tooltips */
+tooltip {
+    background-color: @theme_tooltip_bg_color;
+    color: @theme_tooltip_fg_color;
+    border: 1px solid @menu_border_color;
+}
+
+/* Progress bars */
+progressbar {
+    background-color: @theme_base_color;
+    color: @theme_fg_color;
+}
+
+progressbar trough {
+    background-color: @theme_base_color;
+    border: 1px solid @button_border_color;
+}
+
+progressbar progress {
+    background-color: @accent_bg_color;
+}
+
+/* Scale/sliders */
+scale {
+    background-color: transparent;
+}
+
+scale trough {
+    background-color: @theme_base_color;
+    border: 1px solid @button_border_color;
+}
+
+scale highlight {
+    background-color: @accent_bg_color;
+}
+
+scale slider {
+    background-color: @button_bg_color;
+    border: 1px solid @button_border_color;
+}
+
+scale slider:hover {
+    background-color: @button_hover_bg_color;
+}
+
+/* Checkboxes and radio buttons */
+check,
+radio {
+    background-color: @theme_base_color;
+    border: 1px solid @button_border_color;
+    color: @accent_bg_color;
+}
+
+check:checked,
+radio:checked {
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
+}
+
+/* Switch */
+switch {
+    background-color: @theme_base_color;
+    border: 1px solid @button_border_color;
+}
+
+switch:checked {
+    background-color: @accent_bg_color;
+}
+
+switch slider {
+    background-color: @button_bg_color;
+}
+
+/* Notebook/Tabs */
+notebook {
+    background-color: @theme_bg_color;
+}
+
+notebook header {
+    background-color: @headerbar_bg_color;
+}
+
+tab {
+    background-color: @button_bg_color;
+    color: @button_fg_color;
+}
+
+tab:checked {
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
+}
+
+/* Lists */
+list {
+    background-color: @theme_base_color;
+    color: @theme_text_color;
+}
+
+list row:selected {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+list row:hover {
+    background-color: @sidebar_hover_bg_color;
+}
+
+/* Popovers */
+popover {
+    background-color: @menu_bg_color;
+    color: @menu_fg_color;
+    border: 1px solid @menu_border_color;
+}
+
+/* Info bars */
+infobar {
+    background-color: @headerbar_bg_color;
+    color: @headerbar_fg_color;
+}
+
+infobar.info {
+    background-color: #1e425a;
+}
+
+infobar.warning {
+    background-color: #ffb86c;
+    color: #03090e;
+}
+
+infobar.error {
+    background-color: #ff5555;
+    color: #03090e;
+}
+
+/* Calendar */
+calendar {
+    background-color: @theme_base_color;
+    color: @theme_text_color;
+}
+
+calendar:selected {
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
+}
+
+calendar.highlight {
+    color: @accent_bg_color;
+}
+
+/* Dialogs */
+dialog {
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
+}
+
+messagedialog {
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
+}
+
+/* Search entry */
+searchentry {
+    background-color: @entry_bg_color;
+    color: @entry_fg_color;
+    border: 1px solid @entry_border_color;
+}
+
+/* Combobox */
+combobox {
+    background-color: @button_bg_color;
+    color: @button_fg_color;
+}
+
+combobox window.popup {
+    background-color: @menu_bg_color;
+    color: @menu_fg_color;
+}
+
+/* Spinbutton */
+spinbutton {
+    background-color: @entry_bg_color;
+    color: @entry_fg_color;
+    border: 1px solid @entry_border_color;
+}
+
+spinbutton button {
+    background-color: @button_bg_color;
+    color: @button_fg_color;
+}
+
+/* Separator */
+separator {
+    background-color: @button_border_color;
+    min-width: 1px;
+    min-height: 1px;
+}
+
+/* Statusbar */
+statusbar {
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
+}
+
+statusbar frame {
+    border: none;
+}
+
+/* Toolbar */
+toolbar,
+.inline-toolbar,
+.primary-toolbar,
+.primary-toolbar:not(.libreoffice-toolbar) {
+    background-color: #03090e !important;
+    color: #e6f9f7 !important;
+}
+
+toolbar button {
+    background-color: transparent;
+    border: none;
+}
+
+toolbar button:hover {
+    background-color: @button_hover_bg_color;
+    border: 1px solid @button_border_color;
+}
+
+toolbar separator {
+    background-color: @button_border_color;
+}
+
+/* Frame */
+frame {
+    border: 1px solid @button_border_color;
+}
+
+frame > label {
+    color: @theme_fg_color;
+}
+
+/* Paned */
+paned > separator {
+    background-color: @button_border_color;
+    min-width: 4px;
+    min-height: 4px;
+}
+
+paned > separator:hover {
+    background-color: @accent_bg_color;
+}
+
+/* Terminal (vte) */
+.terminal-screen,
+vte-terminal {
+    background-color: #03090e;
+    color: #e6f9f7;
+}
+
+/* Flat button variant */
+button.flat {
+    background-color: transparent;
+    border: none;
+}
+
+button.flat:hover {
+    background-color: @button_hover_bg_color;
+}
+
+button.flat:active {
+    background-color: @button_active_bg_color;
+}
+
+/* Destructive action button */
+button.destructive-action {
+    background-color: #ff5555;
+    color: #03090e;
+    border: 1px solid #ff5555;
+}
+
+button.destructive-action:hover {
+    background-color: #ff6b6b;
+}
+
+/* Suggested action button */
+button.suggested-action {
+    background-color: @accent_bg_color;
+    color: @accent_fg_color;
+    border: 1px solid @accent_bg_color;
+}
+
+button.suggested-action:hover {
+    background-color: #a2edfd;
+}
+
+/* OSD (On Screen Display) */
+.osd {
+    background-color: rgba(3, 9, 14, 0.95);
+    color: #e6f9f7;
+    border: 1px solid #1e425a;
+}
+
+/* CSD close button */
+button.titlebutton.close:hover {
+    background-color: #ff5555;
+}
+
+/* Selection highlighting */
+selection {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+/* Keyboard focus indicator */
+:focus {
+    outline-color: @accent_bg_color;
+    outline-width: 2px;
+    outline-offset: -2px;
+}
+
+/* Accessibility: High contrast focus */
+*:focus-visible {
+    outline-color: @accent_bg_color;
+    outline-width: 2px;
+    outline-style: solid;
+    outline-offset: 2px;
+}
+
+/* Ensure dark theme for WebKitGTK */
+webkitwebview {
+    color-scheme: dark;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================
+   FINAL OVERRIDE - Menu backgrounds
+   Must be at end of file to win specificity battle
+   ============================================ */
+
+/* Override Arc's #333640 menu color with maximum specificity */
+.background.popup,
+window.popup .background,
+decoration.popup .background,
+.popup.background,
+.popup .background,
+.popup decoration,
+window.popup decoration,
+decoration.popup,
+.popup menu decoration,
+.popup .menu decoration,
+menu decoration,
+.context-menu decoration {
+    background: #03090e !important;
+    background-color: #03090e !important;
+    background-image: none !important;
+    border: 1px solid #1e425a !important;
+}
+
+/* Direct menu background override */
+window.background.popup > decoration,
+window.background.popup > * {
+    background: #03090e !important;
+    background-color: #03090e !important;
+}
+
+/* Menubar override - force black */
+menubar,
+.menubar,
+window menubar,
+window .menubar,
+.background menubar,
+.background .menubar,
+widget menubar,
+widget .menubar {
+    background: #03090e !important;
+    background-color: #03090e !important;
+    background-image: none !important;
+    color: #e6f9f7 !important;
+}
+
+/* Menu items in menubar */
+menubar > menuitem,
+.menubar > menuitem,
+menubar > .menuitem,
+.menubar > .menuitem {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #e6f9f7 !important;
+}
+
+menubar > menuitem:hover,
+.menubar > menuitem:hover,
+menubar > .menuitem:hover,
+.menubar > .menuitem:hover {
+    background: #1e425a !important;
+    background-color: #1e425a !important;
+    background-image: none !important;
+}
+
+/* Opened menus */
+menu,
+menu menu,
+.context-menu,
+.popup menu,
+window.popup menu,
+window.popup .menu,
+.popup .menu,
+.popup menu,
+.popup {
+    background: #03090e !important;
+    background-color: #03090e !important;
+    background-image: none !important;
+    color: #e6f9f7 !important;
+    border: 1px solid #1e425a !important;
+}
+
+/* Menu items */
+menu > menuitem,
+menu menuitem,
+.popup menuitem,
+.context-menu menuitem,
+menu > .menuitem,
+menu .menuitem {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #e6f9f7 !important;
+}
+
+menu > menuitem:hover,
+menu menuitem:hover,
+.popup menuitem:hover,
+.context-menu menuitem:hover,
+menu > .menuitem:hover,
+menu .menuitem:hover {
+    background: #1e425a !important;
+    background-color: #1e425a !important;
+    background-image: none !important;
+}
+
+/* GTK4 modelbutton in popover menus */
+modelbutton {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #e6f9f7 !important;
+}
+
+modelbutton:hover {
+    background: #1e425a !important;
+    background-color: #1e425a !important;
+    background-image: none !important;
+}

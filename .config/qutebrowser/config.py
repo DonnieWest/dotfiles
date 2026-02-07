@@ -539,11 +539,11 @@ c.colors.tabs.even.bg = "#03090e"
 
 # Background color of selected odd tabs.
 # Type: QtColor
-c.colors.tabs.selected.odd.bg = "#093748"
+c.colors.tabs.selected.odd.bg = "#1e425a"
 
 # Background color of selected even tabs.
 # Type: QtColor
-c.colors.tabs.selected.even.bg = "#093748"
+c.colors.tabs.selected.even.bg = "#1e425a"
 
 # Background color of pinned unselected odd tabs.
 # Type: QtColor
@@ -555,16 +555,112 @@ c.colors.tabs.pinned.even.bg = "#03090e"
 
 # Background color of pinned selected odd tabs.
 # Type: QtColor
-c.colors.tabs.pinned.selected.odd.bg = "#093748"
+c.colors.tabs.pinned.selected.odd.bg = "#1e425a"
 
 # Background color of pinned selected even tabs.
 # Type: QtColor
-c.colors.tabs.pinned.selected.even.bg = "#093748"
+c.colors.tabs.pinned.selected.even.bg = "#1e425a"
 
 # Background color for webpages if unset (or empty to use the theme's
 # color).
 # Type: QtColor
 c.colors.webpage.bg = "white"
+
+# ============================================
+# Gotham-Noir-Ultra Complete Color Theme
+# ============================================
+
+# Completion widget colors
+c.colors.completion.fg = ["#e6f9f7", "#e6f9f7", "#e6f9f7"]
+c.colors.completion.odd.bg = "#03090e"
+c.colors.completion.even.bg = "#0c2132"
+c.colors.completion.category.bg = "#0c2132"
+c.colors.completion.category.fg = "#e6f9f7"
+c.colors.completion.category.border.top = "#1e425a"
+c.colors.completion.category.border.bottom = "#1e425a"
+c.colors.completion.item.selected.bg = "#1e425a"
+c.colors.completion.item.selected.fg = "#e6f9f7"
+c.colors.completion.item.selected.border.top = "#1e425a"
+c.colors.completion.item.selected.border.bottom = "#1e425a"
+c.colors.completion.match.fg = "#8be9fd"
+c.colors.completion.scrollbar.bg = "#03090e"
+c.colors.completion.scrollbar.fg = "#1e425a"
+
+# Context menu colors
+c.colors.contextmenu.menu.bg = "#03090e"
+c.colors.contextmenu.menu.fg = "#e6f9f7"
+c.colors.contextmenu.selected.bg = "#1e425a"
+c.colors.contextmenu.selected.fg = "#e6f9f7"
+c.colors.contextmenu.disabled.bg = "#0c2132"
+c.colors.contextmenu.disabled.fg = "#539daf"
+
+# Download colors
+c.colors.downloads.bar.bg = "#03090e"
+c.colors.downloads.start.bg = "#8be9fd"
+c.colors.downloads.start.fg = "#03090e"
+c.colors.downloads.stop.bg = "#50fa7b"
+c.colors.downloads.stop.fg = "#03090e"
+c.colors.downloads.error.bg = "#ff5555"
+c.colors.downloads.error.fg = "#03090e"
+
+# Hint colors
+c.colors.hints.bg = "#8be9fd"
+c.colors.hints.fg = "#03090e"
+c.colors.hints.match.fg = "#50fa7b"
+
+# Keyhint colors
+c.colors.keyhint.bg = "rgba(3, 9, 14, 95%)"
+c.colors.keyhint.fg = "#e6f9f7"
+c.colors.keyhint.suffix.fg = "#8be9fd"
+
+# Message colors
+c.colors.messages.error.bg = "#ff5555"
+c.colors.messages.error.fg = "#03090e"
+c.colors.messages.error.border = "#ff5555"
+c.colors.messages.warning.bg = "#ffb86c"
+c.colors.messages.warning.fg = "#03090e"
+c.colors.messages.warning.border = "#ffb86c"
+c.colors.messages.info.bg = "#8be9fd"
+c.colors.messages.info.fg = "#03090e"
+c.colors.messages.info.border = "#8be9fd"
+
+# Prompt colors
+c.colors.prompts.bg = "#03090e"
+c.colors.prompts.fg = "#e6f9f7"
+c.colors.prompts.border = "1px solid #1e425a"
+c.colors.prompts.selected.bg = "#1e425a"
+c.colors.prompts.selected.fg = "#e6f9f7"
+
+# Statusbar additional colors
+c.colors.statusbar.normal.fg = "#e6f9f7"
+c.colors.statusbar.command.fg = "#e6f9f7"
+c.colors.statusbar.caret.bg = "#bd93f9"
+c.colors.statusbar.caret.fg = "#03090e"
+c.colors.statusbar.caret.selection.bg = "#bd93f9"
+c.colors.statusbar.caret.selection.fg = "#03090e"
+c.colors.statusbar.insert.bg = "#50fa7b"
+c.colors.statusbar.insert.fg = "#03090e"
+c.colors.statusbar.passthrough.bg = "#33c2de"
+c.colors.statusbar.passthrough.fg = "#03090e"
+c.colors.statusbar.private.bg = "#0c2132"
+c.colors.statusbar.private.fg = "#e6f9f7"
+c.colors.statusbar.progress.bg = "#8be9fd"
+c.colors.statusbar.url.error.fg = "#ff5555"
+c.colors.statusbar.url.fg = "#e6f9f7"
+c.colors.statusbar.url.hover.fg = "#8be9fd"
+c.colors.statusbar.url.success.http.fg = "#50fa7b"
+c.colors.statusbar.url.success.https.fg = "#50fa7b"
+c.colors.statusbar.url.warn.fg = "#ffb86c"
+
+# Tab additional colors
+c.colors.tabs.odd.fg = "#e6f9f7"
+c.colors.tabs.even.fg = "#e6f9f7"
+c.colors.tabs.selected.odd.fg = "#8be9fd"
+c.colors.tabs.selected.even.fg = "#8be9fd"
+c.colors.tabs.pinned.odd.fg = "#e6f9f7"
+c.colors.tabs.pinned.even.fg = "#e6f9f7"
+c.colors.tabs.pinned.selected.odd.fg = "#8be9fd"
+c.colors.tabs.pinned.selected.even.fg = "#8be9fd"
 
 # Value to use for `prefers-color-scheme:` for websites. The "light"
 # value is only available with QtWebEngine 5.15.2+. On older versions,

@@ -1,4 +1,5 @@
 # If running from tty1 start sway
 if [ "$(tty)" = "/dev/tty1" ]; then
-	exec sway --unsupported-gpu
+  export WLR_RENDERER=vulkan
+	exec sway
 fi

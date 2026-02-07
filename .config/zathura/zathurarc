@@ -1,0 +1,91 @@
+# Zathura - Document viewer configuration
+# Gotham-Noir-Ultra color scheme
+# Place at ~/.config/zathura/zathurarc
+
+# General settings
+set selection-clipboard clipboard
+set window-title-basename true
+set window-title-page true
+
+# Notification colors
+set notification-error-bg "#ff5555"
+set notification-error-fg "#03090e"
+set notification-warning-bg "#ffb86c"
+set notification-warning-fg "#03090e"
+set notification-bg "#03090e"
+set notification-fg "#e6f9f7"
+
+# Completion (command line) colors
+set completion-bg "#03090e"
+set completion-fg "#e6f9f7"
+set completion-group-bg "#0c2132"
+set completion-group-fg "#e6f9f7"
+set completion-highlight-bg "#1e425a"
+set completion-highlight-fg "#e6f9f7"
+
+# Index (table of contents) colors
+set index-bg "#03090e"
+set index-fg "#e6f9f7"
+set index-active-bg "#1e425a"
+set index-active-fg "#e6f9f7"
+
+# Input bar colors
+set inputbar-bg "#03090e"
+set inputbar-fg "#e6f9f7"
+
+# Status bar colors
+set statusbar-bg "#03090e"
+set statusbar-fg "#e6f9f7"
+
+# Highlight colors for search
+set highlight-color "rgba(139, 233, 253, 0.3)"  # Cyan transparent
+set highlight-active-color "rgba(139, 233, 253, 0.5)"  # Cyan more opaque
+
+# Default colors for rendering (dark mode)
+set default-bg "#03090e"
+set default-fg "#e6f9f7"
+
+# Recolor (dark mode for PDFs)
+set recolor true
+set recolor-lightcolor "#03090e"
+set recolor-darkcolor "#e6f9f7"
+set recolor-keephue true
+
+# Adjust font size
+set font "Victor Mono SemiBold 12"
+
+# Page padding
+set page-padding 10
+
+# Zoom settings
+set zoom-center true
+set zoom-step 10
+
+# Synctex (for LaTeX)
+set synctex true
+set synctex-editor-command "nvim --remote-silent +%{line} %{input}"
+
+# Key bindings (optional enhancements)
+# Copy selected text to clipboard
+map <C-c> feedkeys "<C-v>y"
+
+# Zoom in/out
+map + zoom in
+map - zoom out
+map = zoom reset
+
+# Toggle recolor (dark mode)
+map <C-r> recolor
+
+# Full screen
+map f toggle_fullscreen
+
+# Presentation mode
+map p toggle_presentation
+
+# Show/hide status bar
+map b toggle_statusbar
+
+# Navigation
+map [fullscreen] <C-f> toggle_fullscreen
+map [presentation] <C-f> toggle_presentation

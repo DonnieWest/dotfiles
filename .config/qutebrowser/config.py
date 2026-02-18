@@ -32,16 +32,6 @@ def rewrite(request: qutebrowser.api.interceptor.Request):
             request.redirect(request.request_url)
         except:
             pass
-    if request.request_url.host() in (
-        "youtube.com",
-        "www.youtube.com",
-        "m.youtube.com",
-    ):
-        request.request_url.setHost("piped.video")
-        try:
-            request.redirect(request.request_url)
-        except:
-            pass
     if request.request_url.host() in ("quora.com", "www.quora.com"):
         request.request_url.setHost("quetre.iket.me")
         try:
@@ -594,18 +584,18 @@ c.colors.contextmenu.selected.fg = "#e6f9f7"
 c.colors.contextmenu.disabled.bg = "#0c2132"
 c.colors.contextmenu.disabled.fg = "#539daf"
 
-# Download colors
+# Download colors (dark mode - dark bg with accent text)
 c.colors.downloads.bar.bg = "#03090e"
-c.colors.downloads.start.bg = "#8be9fd"
-c.colors.downloads.start.fg = "#03090e"
-c.colors.downloads.stop.bg = "#50fa7b"
-c.colors.downloads.stop.fg = "#03090e"
-c.colors.downloads.error.bg = "#ff5555"
-c.colors.downloads.error.fg = "#03090e"
+c.colors.downloads.start.bg = "#0c2132"
+c.colors.downloads.start.fg = "#8be9fd"
+c.colors.downloads.stop.bg = "#0c2132"
+c.colors.downloads.stop.fg = "#50fa7b"
+c.colors.downloads.error.bg = "#0c2132"
+c.colors.downloads.error.fg = "#ff5555"
 
-# Hint colors
-c.colors.hints.bg = "#8be9fd"
-c.colors.hints.fg = "#03090e"
+# Hint colors (dark mode - dark bg with accent text)
+c.colors.hints.bg = "rgba(3, 9, 14, 90%)"
+c.colors.hints.fg = "#8be9fd"
 c.colors.hints.match.fg = "#50fa7b"
 
 # Keyhint colors
@@ -613,15 +603,15 @@ c.colors.keyhint.bg = "rgba(3, 9, 14, 95%)"
 c.colors.keyhint.fg = "#e6f9f7"
 c.colors.keyhint.suffix.fg = "#8be9fd"
 
-# Message colors
-c.colors.messages.error.bg = "#ff5555"
-c.colors.messages.error.fg = "#03090e"
+# Message colors (dark mode - dark bg with accent text/border)
+c.colors.messages.error.bg = "#03090e"
+c.colors.messages.error.fg = "#ff5555"
 c.colors.messages.error.border = "#ff5555"
-c.colors.messages.warning.bg = "#ffb86c"
-c.colors.messages.warning.fg = "#03090e"
+c.colors.messages.warning.bg = "#03090e"
+c.colors.messages.warning.fg = "#ffb86c"
 c.colors.messages.warning.border = "#ffb86c"
-c.colors.messages.info.bg = "#8be9fd"
-c.colors.messages.info.fg = "#03090e"
+c.colors.messages.info.bg = "#03090e"
+c.colors.messages.info.fg = "#8be9fd"
 c.colors.messages.info.border = "#8be9fd"
 
 # Prompt colors
@@ -631,17 +621,17 @@ c.colors.prompts.border = "1px solid #1e425a"
 c.colors.prompts.selected.bg = "#1e425a"
 c.colors.prompts.selected.fg = "#e6f9f7"
 
-# Statusbar additional colors
+# Statusbar additional colors (dark mode - dark bg with accent text)
 c.colors.statusbar.normal.fg = "#e6f9f7"
 c.colors.statusbar.command.fg = "#e6f9f7"
-c.colors.statusbar.caret.bg = "#bd93f9"
-c.colors.statusbar.caret.fg = "#03090e"
-c.colors.statusbar.caret.selection.bg = "#bd93f9"
-c.colors.statusbar.caret.selection.fg = "#03090e"
-c.colors.statusbar.insert.bg = "#50fa7b"
-c.colors.statusbar.insert.fg = "#03090e"
-c.colors.statusbar.passthrough.bg = "#33c2de"
-c.colors.statusbar.passthrough.fg = "#03090e"
+c.colors.statusbar.caret.bg = "#03090e"
+c.colors.statusbar.caret.fg = "#bd93f9"
+c.colors.statusbar.caret.selection.bg = "#03090e"
+c.colors.statusbar.caret.selection.fg = "#bd93f9"
+c.colors.statusbar.insert.bg = "#03090e"
+c.colors.statusbar.insert.fg = "#50fa7b"
+c.colors.statusbar.passthrough.bg = "#03090e"
+c.colors.statusbar.passthrough.fg = "#33c2de"
 c.colors.statusbar.private.bg = "#0c2132"
 c.colors.statusbar.private.fg = "#e6f9f7"
 c.colors.statusbar.progress.bg = "#8be9fd"

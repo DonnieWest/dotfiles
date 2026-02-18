@@ -29,6 +29,19 @@
                                                                vim.lsp.buf.code_action
                                                                {:buffer 0
                                                                 :desc "jls code action"})))}
+                          :kotlin_language_server {:cmd [:/home/igneo676/Code/kotlin-language-server/server/build/install/server/bin/kotlin-language-server]
+                                                   :filetypes [:kotlin]
+                                                   :root_markers [:.git
+                                                                  :build.gradle
+                                                                  :build.gradle.kts
+                                                                  :settings.gradle
+                                                                  :settings.gradle.kts
+                                                                  :pom.xml]
+                                                   :settings {:kotlin {:compiler {:jvmTarget :1.8}}
+                                                              :hints {:parameterNames {:enabled true}
+                                                                      :typeHints {:enabled true}}}}
+                          ; IMPORTANT: For Android projects, ensure ANDROID_HOME is set
+                          ; and the project has been built at least once with './gradlew build'
                           :marksman {}
                           :jsonls {:settings {:json {:schemas ((. (require :schemastore)
                                                                   :json :schemas))

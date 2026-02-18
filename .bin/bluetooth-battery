@@ -4,12 +4,12 @@
 
 declare -a output_parts
 
-# Get all connected Bluetooth devices
+# Get all connected Bluetooth devices using interactive mode
 while IFS= read -r mac; do
   [ -z "$mac" ] && continue
 
-  # Get device name and battery
-  device_info=$(bluetoothctl info "$mac" 2>/dev/null)
+  # Get device name and battery using interactive mode
+  device_info=$(echo "info $mac" | bluetoothctl 2>/dev/null)
   name=$(echo "$device_info" | grep "Name:" | cut -d: -f2 | xargs)
   battery=$(echo "$device_info" | grep "Battery Percentage" | grep -oP '\(\K[0-9]+')
 
@@ -52,7 +52,7 @@ while IFS= read -r mac; do
   else
     output_parts+=("${name}: ${battery}%")
   fi
-done < <(bluetoothctl devices Connected | awk '{print $2}')
+done < <(echo "devices Connected" | bluetoothctl | awk '{print $2}')
 
 # Join output parts with separator
 if [ ${#output_parts[@]} -gt 0 ]; then

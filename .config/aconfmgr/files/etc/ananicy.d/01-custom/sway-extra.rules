@@ -1,0 +1,6 @@
+# Sway ecosystem components not covered by default rules
+{ "name": "swaybar", "type": "DEWM" }
+{ "name": "swayidle", "type": "DEWM" }
+{ "name": "swaylock", "type": "DEWM" }
+{ "name": "swaybg", "type": "DEWM" }
+{ "name": "swaynag", "type": "DEWM" }

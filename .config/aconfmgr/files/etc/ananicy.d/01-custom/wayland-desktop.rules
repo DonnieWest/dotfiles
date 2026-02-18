@@ -1,0 +1,7 @@
+# Wayland desktop utilities
+{ "name": "mako", "type": "notification-daemon" }
+{ "name": "kanshi", "type": "DEWM" }
+{ "name": "wofi", "type": "launcher" }
+{ "name": "wdisplays", "type": "DEWM" }
+{ "name": "wlr-randr", "type": "DEWM" }
+{ "name": "waybar", "type": "DEWM" }

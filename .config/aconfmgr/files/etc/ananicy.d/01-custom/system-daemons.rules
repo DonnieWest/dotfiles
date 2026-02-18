@@ -1,0 +1,17 @@
+# System-critical daemons
+{ "name": "earlyoom", "type": "system-critical" }
+
+# CPU/power management
+{ "name": "auto-cpufreq", "type": "service" }
+{ "name": "thermald", "type": "service" }
+{ "name": "thinkfan", "type": "service" }
+{ "name": "fwupd", "type": "service" }
+
+# Input handling - must be low latency
+{ "name": "kmonad", "type": "input-handler" }
+{ "name": "logiops", "type": "input-handler" }
+{ "name": "solaar", "type": "service" }
+{ "name": "libinput-gestures", "type": "input-handler" }
+
+# Fingerprint reader
+{ "name": "fprintd", "type": "service" }

@@ -1,0 +1,26 @@
+# Language servers and dev tooling - responsive but below editor priority
+{ "name": "pyright-langserver", "type": "lsp-server" }
+{ "name": "tsgo", "type": "lsp-server" }
+{ "name": "jdtls", "type": "lsp-server" }
+{ "name": "omnisharp", "type": "lsp-server" }
+{ "name": "OmniSharp", "type": "lsp-server" }
+{ "name": "harper-ls", "type": "lsp-server" }
+{ "name": "marksman", "type": "lsp-server" }
+{ "name": "fennel-ls", "type": "lsp-server" }
+{ "name": "lua-language-server", "type": "lsp-server" }
+{ "name": "language_server_linux_x64", "type": "lsp-server" }
+
+# Formatters/linters (batch-style, can be lower priority)
+{ "name": "stylua", "type": "compiler" }
+{ "name": "fnlfmt", "type": "compiler" }
+{ "name": "yapf", "type": "compiler" }
+{ "name": "flake8", "type": "compiler" }
+{ "name": "pylint", "type": "compiler" }
+{ "name": "google-java-format", "type": "compiler" }
+
+# Build tools
+{ "name": "mvn", "type": "compiler" }
+{ "name": "mvnd", "type": "compiler" }
+{ "name": "pnpm", "type": "compiler" }
+{ "name": "bun", "type": "compiler" }
+{ "name": "composer", "type": "compiler" }

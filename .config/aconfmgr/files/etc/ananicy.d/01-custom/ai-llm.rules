@@ -1,0 +1,6 @@
+# AI/LLM tools - heavy compute, deprioritize to keep desktop responsive
+{ "name": "ollama", "type": "llm-inference" }
+{ "name": "ollama_llama_server", "type": "llm-inference" }
+
+# Claude Code CLI - interactive, treat as document-editor
+{ "name": "claude", "type": "document-editor" }

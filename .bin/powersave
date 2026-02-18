@@ -1,0 +1,141 @@
+#!/bin/bash
+# Power management script — applies AC or battery profile
+# Handles everything except CPU frequency/governor (auto-cpufreq does that)
+
+set -euo pipefail
+
+apply_profile() {
+    local mode="$1"
+
+    case "$mode" in
+        ac)
+            local platform_profile="balanced"
+            local pcie_aspm="performance"
+            local pci_runtime_pm="on"
+            local usb_autosuspend="on"
+            local usb_autosuspend_delay="-1"
+            local gpu_max_freq="1150"
+            local gpu_boost_freq="1150"
+            local audio_power_save="15"
+            local audio_power_save_controller="N"
+            local wifi_power_save="off"
+            local dirty_writeback="1500"
+            local laptop_mode="2"
+            local nfc_block="unblock"
+            ;;
+        bat)
+            local platform_profile="low-power"
+            local pcie_aspm="powersave"
+            local pci_runtime_pm="auto"
+            local usb_autosuspend="auto"
+            local usb_autosuspend_delay="10000"
+            local gpu_max_freq="980"
+            local gpu_boost_freq="920"
+            local audio_power_save="5"
+            local audio_power_save_controller="Y"
+            local wifi_power_save="on"
+            local dirty_writeback="4500"
+            local laptop_mode="5"
+            local nfc_block="block"
+            ;;
+        *)
+            echo "Usage: powersave [ac|bat]" >&2
+            exit 1
+            ;;
+    esac
+
+    echo "Applying $mode profile..."
+
+    # Platform profile
+    if [[ -f /sys/firmware/acpi/platform_profile ]]; then
+        echo "$platform_profile" > /sys/firmware/acpi/platform_profile
+    fi
+
+    # PCIe ASPM (may be read-only at runtime depending on kernel config)
+    echo "$pcie_aspm" > /sys/module/pcie_aspm/parameters/policy 2>/dev/null || true
+
+    # PCI runtime power management
+    for f in /sys/bus/pci/devices/*/power/control; do
+        echo "$pci_runtime_pm" > "$f" 2>/dev/null || true
+    done
+
+    # USB autosuspend (skip keyboards, mice, yubikey)
+    local -A usb_exclude=(
+        [4653:0004]=1  # foostan Corne v4
+        [1532:0083]=1  # Razer Basilisk X HyperSpeed
+        [1050:0407]=1  # Yubico Yubikey 4/5
+    )
+    for dev in /sys/bus/usb/devices/*/power; do
+        local devdir="${dev%/power}"
+        if [[ -f "$devdir/idVendor" && -f "$devdir/idProduct" ]]; then
+            local vid pid
+            vid=$(cat "$devdir/idVendor")
+            pid=$(cat "$devdir/idProduct")
+            if [[ -n "${usb_exclude[$vid:$pid]+_}" ]]; then
+                [[ -f "$dev/control" ]] && echo "on" > "$dev/control" 2>/dev/null || true
+                continue
+            fi
+        fi
+        [[ -f "$dev/control" ]] && echo "$usb_autosuspend" > "$dev/control" 2>/dev/null || true
+        [[ -f "$dev/autosuspend_delay_ms" ]] && echo "$usb_autosuspend_delay" > "$dev/autosuspend_delay_ms" 2>/dev/null || true
+    done
+
+    # Intel GPU frequencies
+    for card in /sys/class/drm/card*/gt_max_freq_mhz; do
+        [[ -f "$card" ]] && echo "$gpu_max_freq" > "$card" 2>/dev/null || true
+    done
+    for card in /sys/class/drm/card*/gt_boost_freq_mhz; do
+        [[ -f "$card" ]] && echo "$gpu_boost_freq" > "$card" 2>/dev/null || true
+    done
+
+    # Audio power save
+    if [[ -f /sys/module/snd_hda_intel/parameters/power_save ]]; then
+        echo "$audio_power_save" > /sys/module/snd_hda_intel/parameters/power_save
+    fi
+    if [[ -f /sys/module/snd_hda_intel/parameters/power_save_controller ]]; then
+        echo "$audio_power_save_controller" > /sys/module/snd_hda_intel/parameters/power_save_controller
+    fi
+
+    # WiFi power save
+    for iface in /sys/class/net/wl*; do
+        [[ -d "$iface" ]] && iw dev "$(basename "$iface")" set power_save "$wifi_power_save" 2>/dev/null || true
+    done
+
+    # NMI watchdog
+    if [[ -f /proc/sys/kernel/nmi_watchdog ]]; then
+        echo "0" > /proc/sys/kernel/nmi_watchdog
+    fi
+
+    # VM dirty writeback
+    echo "$dirty_writeback" > /proc/sys/vm/dirty_writeback_centisecs
+    echo "$dirty_writeback" > /proc/sys/vm/dirty_expire_centisecs
+
+    # Laptop mode
+    echo "$laptop_mode" > /proc/sys/vm/laptop_mode
+
+    # Battery charge thresholds (same for both profiles)
+    for bat in /sys/class/power_supply/BAT*/charge_control_start_threshold; do
+        [[ -f "$bat" ]] && echo "75" > "$bat" 2>/dev/null || true
+    done
+    for bat in /sys/class/power_supply/BAT*/charge_control_end_threshold; do
+        [[ -f "$bat" ]] && echo "80" > "$bat" 2>/dev/null || true
+    done
+
+    # Radios: NFC (bluetooth left alone — may have active peripherals)
+    if command -v rfkill &>/dev/null; then
+        rfkill "$nfc_block" nfc 2>/dev/null || true
+    fi
+
+    echo "Applied $mode profile."
+}
+
+# Auto-detect AC/BAT if no argument given
+if [[ $# -eq 0 ]]; then
+    if [[ -f /sys/class/power_supply/AC/online ]] && [[ "$(cat /sys/class/power_supply/AC/online)" == "1" ]]; then
+        apply_profile ac
+    else
+        apply_profile bat
+    fi
+else
+    apply_profile "$1"
+fi

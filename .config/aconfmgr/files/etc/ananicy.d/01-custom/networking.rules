@@ -1,0 +1,12 @@
+# VPN / tunnel services
+{ "name": "warp-svc", "type": "VPN" }
+{ "name": "cloudflared", "type": "VPN" }
+{ "name": "openconnect", "type": "VPN" }
+{ "name": "frpc", "type": "server" }
+
+# Firewall
+{ "name": "opensnitchd", "type": "firewall" }
+
+# DNS (already have dnsmasq/unbound rules, but add caddy/haproxy)
+{ "name": "caddy", "type": "server" }
+{ "name": "haproxy", "type": "server" }

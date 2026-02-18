@@ -1,0 +1,6 @@
+# Container runtimes - background, should not starve interactive tasks
+{ "name": "podman", "type": "BG_CPUIO" }
+{ "name": "conmon", "type": "BG_CPUIO" }
+{ "name": "crun", "type": "BG_CPUIO" }
+{ "name": "aardvark-dns", "type": "service" }
+{ "name": "pasta", "type": "service" }

@@ -1,0 +1,5 @@
+# Screenshot and screen recording tools
+{ "name": "grim", "type": "screenshotter" }
+{ "name": "slurp", "type": "screenshotter" }
+{ "name": "wl-screenrec", "type": "screen-recorder" }
+{ "name": "wf-recorder", "type": "screen-recorder" }

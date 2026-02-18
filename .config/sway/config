@@ -48,7 +48,7 @@ output * bg ~/Wallpapers/ghibli-fire-girl.jpg fill
 # output * bg ~/Wallpapers/PlasmaNoir.png fill
 
 output eDP-1 scale 1 render_bit_depth 10
-exec_always [ "$(hostname)" = "phoenix" ] && swaymsg 'output eDP-1 color_profile icc ~/.local/share/icc/TPLCD_4161.icm'
+exec_always [ "$(hostname)" = "phoenix" ] && swaymsg 'output eDP-1 scale 1 subpixel rgb color_profile icc ~/.local/share/icc/TPLCD_4161.icm'
 output HEADLESS-1 mode 2000x1200
 
 exec libinput-gestures-setup start

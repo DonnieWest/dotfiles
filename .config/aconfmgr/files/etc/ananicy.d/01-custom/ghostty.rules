@@ -1,0 +1,2 @@
+# Ghostty terminal emulator: https://ghostty.org/
+{ "name": "ghostty", "type": "terminal" }

@@ -1,0 +1,10 @@
+[Unit]
+Description=Apply power management profile
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/igneo676/.bin/powersave
+
+[Install]
+WantedBy=multi-user.target

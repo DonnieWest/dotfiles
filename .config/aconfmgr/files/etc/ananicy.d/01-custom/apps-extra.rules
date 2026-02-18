@@ -1,0 +1,65 @@
+# Image viewer
+{ "name": "imv", "type": "image-viewer" }
+{ "name": "imv-wayland", "type": "image-viewer" }
+{ "name": "swayimg", "type": "image-viewer" }
+
+# System monitors
+{ "name": "btop", "type": "BG_CPUIO" }
+{ "name": "nvtop", "type": "BG_CPUIO" }
+{ "name": "s-tui", "type": "BG_CPUIO" }
+{ "name": "powertop", "type": "BG_CPUIO" }
+{ "name": "iotop", "type": "BG_CPUIO" }
+
+# RSS / calendar / notes
+{ "name": "newsboat", "type": "chat" }
+{ "name": "calcurse", "type": "document-editor" }
+{ "name": "khal", "type": "document-editor" }
+{ "name": "khard", "type": "document-editor" }
+
+# Audio editor
+{ "name": "audacity", "type": "image-editor" }
+
+# Music tagger
+{ "name": "picard", "type": "music-player" }
+
+# Password managers - must respond quickly
+{ "name": "bitwarden", "type": "document-editor" }
+{ "name": "rbw", "type": "common-utility" }
+
+# Document viewers
+{ "name": "mupdf", "type": "document-viewer" }
+
+# Chat apps not already covered
+{ "name": "element-desktop", "type": "chat" }
+
+# Remote play / mirroring
+{ "name": "chiaki", "type": "game" }
+{ "name": "scrcpy", "type": "video-player" }
+
+# Android emulation
+{ "name": "waydroid", "type": "VM" }
+
+# Game
+{ "name": "luanti", "type": "game" }
+{ "name": "cockatrice", "type": "game" }
+
+# Downloaders
+{ "name": "yt-dlp", "type": "BG_CPUIO" }
+{ "name": "aria2c", "type": "BG_CPUIO" }
+
+# Email
+{ "name": "mutt", "type": "email-client" }
+{ "name": "nstrstretch", "type": "email-client" }
+{ "name": "mbsync", "type": "BG_CPUIO" }
+{ "name": "msmtp", "type": "BG_CPUIO" }
+{ "name": "notmuch", "type": "BG_CPUIO" }
+{ "name": "oauth2ms", "type": "service" }
+
+# Misc CLI tools
+{ "name": "fzf", "type": "common-utility" }
+{ "name": "ripgrep", "type": "common-utility" }
+{ "name": "fd", "type": "common-utility" }
+{ "name": "bat", "type": "common-utility" }
+{ "name": "eza", "type": "common-utility" }
+{ "name": "jq", "type": "common-utility" }
+{ "name": "zoxide", "type": "common-utility" }

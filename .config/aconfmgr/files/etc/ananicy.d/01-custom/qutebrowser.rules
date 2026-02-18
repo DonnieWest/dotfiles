@@ -1,0 +1,3 @@
+# Qutebrowser: https://qutebrowser.org/
+# QtWebEngineProcess is already covered, but the main python process needs rules too
+{ "name": "qutebrowser", "type": "web-browser" }

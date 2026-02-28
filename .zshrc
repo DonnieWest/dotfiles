@@ -391,8 +391,6 @@ tmuxattach() {
 }
 
 alias ls='eza --git'
-alias filpidcat='pidcat -i EGL_emulation -i HostConnection -i GnssHAL_GnssInterface -i android.os.Debug -i netmgr -i Phenix -i chatty -i WorkerManager -i ResolverController -i AppOps -i wifi_forwarder -i KeyguardClockSwitch -i memtrack -i GCoreFlp -i audio_hw_generic -i BeaconBle -i InputReader -i gralloc_ranchu'
-
 alias sedremovespace="sed -E '/^[[:space:]]*$/d;s/^[[:space:]]+//;s/[[:space:]]+$//'"
 
 findAlias() {
@@ -418,71 +416,12 @@ unmount_drives() {
   fi
 }
 
-connectToDevice() {
-  adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 -m | awk '{ print $1 }' | while read device; do
-    scrcpy -s $device -p $(python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()') &!
-  done
-}
-
-launchEmulator() {
-  emulator -list-avds | fzf -m | while read emulator; do
-    QT_QPA_PLATFORM=xcb emulator -gpu host "@${emulator%.*}" 1>/dev/null 2>/dev/null &!
-  done
-}
-
-recordAndroidDevice() {
-  adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 -m | awk '{ print $1 }' | while read device; do
-    adb -s $device shell screenrecord /sdcard/$device.mp4
-    adb -s $device pull /sdcard/$device.mp4 ./
-  done
-}
-
-launchAPK() {
-  ./gradlew assembleDebug
-  adb devices -l | tail -n +2 | sed '/^\s*$/d' | awk '{ print $1, $5 }' | sed -e 's/model://g' | awk '{ print $1 }'  | fzf -1 -m | while read device; do
-    adb -s $device install-multiple -r -d $(find ./ -name "*.apk" | tr "\n" " " | tr "//" "/")
-
-    apk=$(find ./*/build/** -name "app-debug.apk")
-
-    mainId=$(apkanalyzer manifest print $apk | xmlstarlet sel -t -c "///activity[intent-filter/action[@android:name='android.intent.action.MAIN']]" | xmlstarlet sel -t -c "string(//*[local-name()='activity']/@android:name)")
-
-    appId=$(apkanalyzer manifest application-id $apk)
-
-    if [ "$appId/$mainId" != "/" ]
-    then
-      adb -s $device shell am start -n $appId/$mainId -a android.intent.action.MAIN -c android.intent.category.LAUNCHER
-    fi
-  done
-}
-
-launchReleaseAPK() {
-  ./gradlew assembleRelease
-  adb devices -l | tail -n +2 | sed '/^\s*$/d' | awk '{ print $1, $5 }' | sed -e 's/model://g' | awk '{ print $1 }'  | fzf -1 -m | while read device; do
-    adb -s $device install-multiple -r -d $(find ./ -name "*.apk" | tr "\n" " " | tr "//" "/")
-    appId=$(grep -r --include=\*.{gradle,kts} 'applicationId "' ./ | awk '{ print $3 }' | sed -e "s/\"//g")
-
-    if [ "x$appId" == "x" ]
-    then
-      appId=$(grep -r --include=\*.{gradle,kts} 'applicationId' ./ | awk '{ print $4 }' | sed -e "s/\"//g")
-    fi
-
-    if [ "x$appId" != "x" ]
-    then
-      adb -s $device shell monkey -p "$appId" 1 2>/dev/null >/dev/null
-    fi
-  done
-}
-
 watchCalendar() {
   while true; do clear ; gcalcli calw --no-military --noweekend --details description ; sleep 600s; done
 }
 
 watchGithub() {
   while true; do clear; gh pr status; gh issue status; sleep 600s; done
-}
-
-logsForDevice() {
-  device=$(adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 | awk '{ print $1 }') && pidcat -s $device --current
 }
 
 pushwebsite() {
@@ -698,96 +637,6 @@ alias ua-update-all='export TMPFILE="$(mktemp)"; \
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
-
-# Android Studio quick launcher - auto-detects Gradle projects
-studio() {
-  local gradle_root=$(find . -maxdepth 3 -name 'build.gradle' -o -name 'build.gradle.kts' | head -1 | xargs dirname)
-  [[ -n "$gradle_root" ]] && /opt/android-studio/bin/studio.sh "$gradle_root" &
-}
-
-# React Native - Device management
-list-android-devices() {
-  echo "Connected devices:"
-  adb devices -l
-  echo "\nAvailable emulators:"
-  emulator -list-avds
-}
-
-android-reverse() {
-  # Set up reverse proxy for Metro bundler
-  adb reverse tcp:8081 tcp:8081
-  echo "✓ Metro bundler port forwarded (8081)"
-}
-
-rn-shake() {
-  # Open React Native dev menu
-  adb shell input keyevent 82
-}
-
-rn-reload() {
-  # Reload React Native app
-  adb shell input text "RR"
-}
-
-# React Native - Logging
-rn-logs() {
-  adb logcat -c && adb logcat *:S ReactNative:V ReactNativeJS:V
-}
-
-# React Native - Bundle size analysis
-rn-bundle-size() {
-  npx react-native bundle \
-    --platform android \
-    --dev false \
-    --entry-file index.js \
-    --bundle-output /tmp/bundle.js \
-    --assets-dest /tmp/assets
-
-  echo "\nBundle size:"
-  du -h /tmp/bundle.js
-
-  echo "\nDetailed breakdown (requires source-map-explorer):"
-  npx source-map-explorer /tmp/bundle.js 2>/dev/null || echo "Install with: npm i -g source-map-explorer"
-}
-
-# Watchman management (React Native uses this heavily)
-watchman-status() {
-  watchman watch-list
-}
-
-watchman-reset() {
-  watchman shutdown-server
-  watchman watch-del-all
-  echo "Watchman reset complete"
-}
-
-# Maestro - Mobile UI testing
-maestro-test() {
-  local device=$(adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 --prompt="Select device: " | awk '{ print $1 }')
-  if [ -n "$device" ]; then
-    local flow=$(find . -name "*.yaml" -o -name "*.yml" | grep -iE "(maestro|flow|test)" | fzf --prompt="Select test flow: ")
-    if [ -n "$flow" ]; then
-      echo "Running maestro test on $device..."
-      maestro test --device $device "$flow"
-    fi
-  fi
-}
-
-maestro-studio() {
-  local device=$(adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 --prompt="Select device: " | awk '{ print $1 }')
-  if [ -n "$device" ]; then
-    echo "Launching maestro studio on $device..."
-    maestro studio --device $device
-  fi
-}
-
-maestro-record() {
-  local device=$(adb devices | tail -n +2 | sed '/^\s*$/d' | fzf -1 --prompt="Select device: " | awk '{ print $1 }')
-  if [ -n "$device" ]; then
-    echo "Recording flow on $device... (Ctrl+C to stop)"
-    maestro record --device $device
-  fi
-}
 
 # Command-not-found handler - suggests packages for missing commands
 [[ -f /usr/share/doc/pkgfile/command-not-found.zsh ]] && source /usr/share/doc/pkgfile/command-not-found.zsh

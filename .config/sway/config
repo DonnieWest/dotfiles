@@ -200,6 +200,7 @@ for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky
 assign [class="Pidgin"] 2: Chat
 assign [app_id="org.qutebrowser.qutebrowser"] 1: Browser
 assign [class="jetbrains-studio"] 5: Code
+assign [app_id="teams-for-linux"] 10: Code
 
 default_border pixel
 #Hide border if 1 window

@@ -4,8 +4,68 @@
 
 set -euo pipefail
 
+STATE_DIR="/var/lib/powersave"
+CHARGE_MODE_FILE="$STATE_DIR/charge_mode"
+
+usage() {
+    echo "Usage: powersave [ac|bat|full|normal]" >&2
+}
+
+detect_power_mode() {
+    if [[ -f /sys/class/power_supply/AC/online ]] && [[ "$(cat /sys/class/power_supply/AC/online)" == "1" ]]; then
+        echo "ac"
+    else
+        echo "bat"
+    fi
+}
+
+get_charge_mode() {
+    if [[ -f "$CHARGE_MODE_FILE" ]]; then
+        cat "$CHARGE_MODE_FILE"
+    else
+        echo "normal"
+    fi
+}
+
+set_charge_mode() {
+    local charge_mode="$1"
+
+    mkdir -p "$STATE_DIR"
+    printf '%s\n' "$charge_mode" > "$CHARGE_MODE_FILE"
+}
+
+apply_charge_thresholds() {
+    local charge_mode="$1"
+    local start_threshold end_threshold
+
+    case "$charge_mode" in
+        full)
+            start_threshold="0"
+            end_threshold="100"
+            ;;
+        normal)
+            start_threshold="75"
+            end_threshold="80"
+            ;;
+        *)
+            echo "Unknown charge mode: $charge_mode" >&2
+            exit 1
+            ;;
+    esac
+
+    for bat in /sys/class/power_supply/BAT*/charge_control_start_threshold; do
+        [[ -f "$bat" ]] && echo "$start_threshold" > "$bat" 2>/dev/null || true
+    done
+    for bat in /sys/class/power_supply/BAT*/charge_control_end_threshold; do
+        [[ -f "$bat" ]] && echo "$end_threshold" > "$bat" 2>/dev/null || true
+    done
+
+    echo "Applied $charge_mode charge thresholds ($start_threshold/$end_threshold)."
+}
+
 apply_profile() {
     local mode="$1"
+    local charge_mode="$2"
 
     case "$mode" in
         ac)
@@ -39,7 +99,7 @@ apply_profile() {
             local nfc_block="block"
             ;;
         *)
-            echo "Usage: powersave [ac|bat]" >&2
+            usage
             exit 1
             ;;
     esac
@@ -113,13 +173,7 @@ apply_profile() {
     # Laptop mode
     echo "$laptop_mode" > /proc/sys/vm/laptop_mode
 
-    # Battery charge thresholds (same for both profiles)
-    for bat in /sys/class/power_supply/BAT*/charge_control_start_threshold; do
-        [[ -f "$bat" ]] && echo "75" > "$bat" 2>/dev/null || true
-    done
-    for bat in /sys/class/power_supply/BAT*/charge_control_end_threshold; do
-        [[ -f "$bat" ]] && echo "80" > "$bat" 2>/dev/null || true
-    done
+    apply_charge_thresholds "$charge_mode"
 
     # Radios: NFC (bluetooth left alone — may have active peripherals)
     if command -v rfkill &>/dev/null; then
@@ -129,13 +183,20 @@ apply_profile() {
     echo "Applied $mode profile."
 }
 
-# Auto-detect AC/BAT if no argument given
 if [[ $# -eq 0 ]]; then
-    if [[ -f /sys/class/power_supply/AC/online ]] && [[ "$(cat /sys/class/power_supply/AC/online)" == "1" ]]; then
-        apply_profile ac
-    else
-        apply_profile bat
-    fi
+    apply_profile "$(detect_power_mode)" "$(get_charge_mode)"
 else
-    apply_profile "$1"
+    case "$1" in
+        ac|bat)
+            apply_profile "$1" "$(get_charge_mode)"
+            ;;
+        full|normal)
+            set_charge_mode "$1"
+            apply_profile "$(detect_power_mode)" "$1"
+            ;;
+        *)
+            usage
+            exit 1
+            ;;
+    esac
 fi

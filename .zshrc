@@ -303,6 +303,7 @@ export PATH="$PATH:$GRAALVM_HOME/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$HOME/.config/n/bin:$PATH"
 export PATH="$HOME/.config/npm/bin:$PATH"
+export PATH="$HOME/.bun/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.bin:$PATH"
 
@@ -643,3 +644,15 @@ eval "$(pyenv init -)"
 
 # Zoxide - smarter directory navigation with frecency
 command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+
+## Android Dev CLI
+# All Android functionality has been moved to 'adc' (Android Dev CLI)
+# Repository: ~/Code/adc
+# Binary: ~/.bin/adc
+# Usage: adc help
+
+# Keep Android Studio launcher (not in adc)
+studio() {
+  local gradle_root=$(find . -maxdepth 3 -name 'build.gradle' -o -name 'build.gradle.kts' | head -1 | xargs dirname)
+  [[ -n "$gradle_root" ]] && /opt/android-studio/bin/studio.sh "$gradle_root" &
+}

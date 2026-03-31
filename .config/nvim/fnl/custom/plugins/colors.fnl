@@ -136,9 +136,50 @@
                                              :functions "#b0e3e4"
                                              :keywords "#b0e3e4"
                                              :tags "#bd93f9"}))
+             ;; gotham-noir-ultra with targeted fixes:
+             ;; - comments raised to visible teal (#5fafc7)
+             ;; - variables dropped to foreground (red=error is misleading)
+             ;; - classes swapped to purple (gold/orange were too similar)
+             ;; - tags folded into orange (constants/literals)
+             (tset base16.themes :gotham-noir-ultra-v2
+                   (convert-theme-to-base16 {:background "#03090e"
+                                             :lighter-background "#0c2132"
+                                             :selection "#1e425a"
+                                             :comment "#5fafc7"
+                                             :dark-foreground "#539daf"
+                                             :foreground "#e6f9f7"
+                                             :light-foreground "#b0e3e4"
+                                             :light-background "#d3ebe9"
+                                             :variables "#e6f9f7"
+                                             :numbers "#ffb86c"
+                                             :classes "#bd93f9"
+                                             :strings "#33c2de"
+                                             :regex "#50fa7b"
+                                             :functions "#8be9fd"
+                                             :keywords "#ff79c6"
+                                             :tags "#ffb86c"}))
+             ;; Tonsky-inspired: 4 memorable syntax colors, everything else default foreground.
+             ;; cyan=string | orange=number/literal | purple=definition | amber=comment
+             ;; Keywords, variables, function calls all fall back to foreground (noise reduction).
+             (tset base16.themes :gotham-noir-focused
+                   (convert-theme-to-base16 {:background "#03090e"
+                                             :lighter-background "#0c2132"
+                                             :selection "#1e425a"
+                                             :comment "#c8a96e"
+                                             :dark-foreground "#539daf"
+                                             :foreground "#e6f9f7"
+                                             :light-foreground "#b0e3e4"
+                                             :light-background "#d3ebe9"
+                                             :variables "#e6f9f7"
+                                             :numbers "#ffb86c"
+                                             :classes "#bd93f9"
+                                             :strings "#33c2de"
+                                             :regex "#33c2de"
+                                             :functions "#e6f9f7"
+                                             :keywords "#e6f9f7"
+                                             :tags "#ffb86c"}))
              (base16 base16.themes.gotham-noir-ultra true {:lightline true}))
-
-              ;; Colorblind friendly diff colors: blue for add, red for delete (fg only, bg matches theme)
+           ;; Colorblind friendly diff colors: blue for add, red for delete (fg only, bg matches theme)
            (vim.api.nvim_set_hl 0 :DiffAdd {:fg "#8be9fd"})
            (vim.api.nvim_set_hl 0 :DiffDelete {:fg "#ff5555"})
            (vim.api.nvim_set_hl 0 :DiffChange {:fg "#ffb86c"})
@@ -146,7 +187,11 @@
            ;; Neogit specific diff highlights
            (vim.api.nvim_set_hl 0 :NeogitDiffAdd {:fg "#8be9fd"})
            (vim.api.nvim_set_hl 0 :NeogitDiffDelete {:fg "#ff5555"})
-           (vim.api.nvim_set_hl 0 :NeogitDiffAddHighlight {:fg "#8be9fd" :bold true})
-           (vim.api.nvim_set_hl 0 :NeogitDiffDeleteHighlight {:fg "#ff5555" :bold true})
-           (vim.api.nvim_set_hl 0 :NeogitDiffAddCursor {:fg "#8be9fd" :underline true})
-           (vim.api.nvim_set_hl 0 :NeogitDiffDeleteCursor {:fg "#ff5555" :underline true}))}
+           (vim.api.nvim_set_hl 0 :NeogitDiffAddHighlight
+                                {:fg "#8be9fd" :bold true})
+           (vim.api.nvim_set_hl 0 :NeogitDiffDeleteHighlight
+                                {:fg "#ff5555" :bold true})
+           (vim.api.nvim_set_hl 0 :NeogitDiffAddCursor
+                                {:fg "#8be9fd" :underline true})
+           (vim.api.nvim_set_hl 0 :NeogitDiffDeleteCursor
+                                {:fg "#ff5555" :underline true}))}

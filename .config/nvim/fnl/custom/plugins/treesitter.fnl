@@ -93,6 +93,7 @@
                                          :ac "@comment.outer"}
                                :enable true}}
         :autotag {:enable true}
-        :highlight {:enable true :additional_vim_regex_highlighting false}
+        :highlight {:enable true
+                    :disable [:markdown]
+                    :additional_vim_regex_highlighting false}
         :indent {:enable true}}}
-

@@ -95,4 +95,3 @@
                                           (when (not (event.match:match "^%w%w+:[\\/][\\/]"))
                                             (let [file (or (vim.uv.fs_realpath event.match) event.match)]
                                               (vim.fn.mkdir (vim.fn.fnamemodify file ":p:h") "p"))))})
-

@@ -28,8 +28,12 @@
                                       :max_line_len 400}})))
  :keys [{1 :<leader>td 2 :<cmd>TodoTelescope<cr> :desc "Todo list (Telescope)"}
         {1 "]t"
-         2 (fn [] ((require :todo-comments) .jump_next))
+         2 (fn []
+             (let [todo (require :todo-comments)]
+               (todo.jump_next)))
          :desc "Next todo comment"}
         {1 "[t"
-         2 (fn [] ((require :todo-comments) .jump_prev))
+         2 (fn []
+             (let [todo (require :todo-comments)]
+               (todo.jump_prev)))
          :desc "Previous todo comment"}]}

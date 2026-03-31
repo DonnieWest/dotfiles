@@ -26,7 +26,7 @@ local function ensure_installed(plugin, branch)
   return repo_path
 end
 local lazy_path = ensure_installed("folke/lazy.nvim", "stable")
-local hotpot_path = ensure_installed("rktjmp/hotpot.nvim", "v0.14.6")
+local hotpot_path = ensure_installed("rktjmp/hotpot.nvim", "v2.0.0")
 -- As per Lazy's install instructions, but also include hotpot
 vim.opt.runtimepath:prepend({hotpot_path, lazy_path})
 
@@ -40,13 +40,20 @@ vim.g.mapleader = ","
 local plugins = {
   {
     "rktjmp/hotpot.nvim",
+    version = "^2.0.0",
   },
 }
 
--- Configure hotpot.nvim
-require("hotpot").setup({
-  provide_require_fennel = true,
-})
+-- Hotpot v2 must be loaded before lazy.nvim alters module loading.
+require("hotpot")
+local hotpot_api = require("hotpot.api")
+local hotpot_context = assert(hotpot_api.context(vim.fn.stdpath("config")))
+local hotpot_destination = hotpot_context.locate("destination")
+vim.opt.runtimepath:prepend(hotpot_destination)
+local hotpot_ok, hotpot_err = hotpot_context.sync()
+if not hotpot_ok then
+  error(hotpot_err)
+end
 
 -- Add plugins to table
 local plugins_path = vim.fn.stdpath("config") .. "/fnl/custom/plugins"
@@ -60,4 +67,10 @@ if vim.loop.fs_stat(plugins_path) then
 end
 
 -- Configure lazy.nvim
-require("lazy").setup(plugins)
+require("lazy").setup(plugins, {
+  performance = {
+    rtp = {
+      paths = { hotpot_destination },
+    },
+  },
+})

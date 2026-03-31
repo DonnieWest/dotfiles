@@ -12,10 +12,14 @@
                               :telescope {:alsoSearchSnippetBody true}
                               :jsonFormatter :jq})))
  :keys [{1 :<leader>se
-         2 (fn [] ((require :scissors) .editSnippet))
+         2 (fn []
+             (let [scissors (require :scissors)]
+               (scissors.editSnippet)))
          :mode [:n :v]
          :desc "Edit snippet"}
         {1 :<leader>sa
-         2 (fn [] ((require :scissors) .addNewSnippet))
+         2 (fn []
+             (let [scissors (require :scissors)]
+               (scissors.addNewSnippet)))
          :mode [:n :v]
          :desc "Add new snippet"}]}

@@ -12,7 +12,7 @@
  {1 :pgdouyon/vim-evanesco :event :VeryLazy}
  {1 :kshenoy/vim-signature :event :BufReadPost}
  ;; UI
- {1 :catgoose/nvim-colorizer.lua :event :BufReadPre :opts {}}
+ {1 :catgoose/nvim-colorizer.lua :event :BufReadPre :opts {:user_default_options {:suppress_deprecation true}}}
  {1 :blueyed/vim-diminactive :event :WinEnter}
  ;; Generic IDE features
  {1 :rhysd/clever-f.vim :keys [:f :F :t :T]}
@@ -47,7 +47,7 @@
  ;; Fennel
  {1 :Olical/fennel.vim :ft :fennel}
  {1 :tris203/precognition.nvim :opts {:startVisible true :disabled_fts [:startify]}}
- {1 :HiPhish/rainbow-delimiters.nvim :event :BufReadPost}
  {1 :fwcd/kotlin-language-server :ft :kotlin :build "./gradlew :server:installDist"}
  {1 :microsoft/vscode-gradle :ft [:kotlin :java :gradle] :build "./gradlew :gradle-language-server:installDist"}
+  
  {1 :idelice/jls :ft :java :build "mvn package -DskipTests"}]

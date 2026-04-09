@@ -7,16 +7,14 @@
  ;; VIM Quirks fixes
  :lervag/file-line ;; Must load early for file:line opening to work
  {1 :eugen0329/vim-esearch :keys [{1 :<leader>ff 2 "<cmd>call esearch#init()<cr>"}]}
- {1 :airblade/vim-rooter :event :VeryLazy}
  {1 :Valloric/ListToggle :cmd [:LToggle :QToggle]}
  {1 :pgdouyon/vim-evanesco :event :VeryLazy}
- {1 :kshenoy/vim-signature :event :BufReadPost}
+ {1 :chentoast/marks.nvim :event :BufReadPost :opts {}}
  ;; UI
  {1 :catgoose/nvim-colorizer.lua :event :BufReadPre :opts {:user_default_options {:suppress_deprecation true}}}
  {1 :blueyed/vim-diminactive :event :WinEnter}
  ;; Generic IDE features
  {1 :rhysd/clever-f.vim :keys [:f :F :t :T]}
- {1 :kassio/neoterm :cmd [:T :Tnew :Topen :Ttoggle]}
  {1 :nvim-lua/popup.nvim :lazy true} ;; Dependency, loaded when needed
  {1 :rafamadriz/friendly-snippets :event :InsertEnter}
  {1 :RRethy/vim-illuminate :event :BufReadPost}
@@ -30,11 +28,6 @@
  {1 :almo7aya/openingh.nvim :cmd [:OpenInGHRepo :OpenInGHFile :OpenInGHFileLines]}
  ;; HTML and CSS Plugins
  {1 :mattn/emmet-vim :ft [:html :css :scss :javascript :javascriptreact :typescript :typescriptreact]}
- :windwp/nvim-ts-autotag
- ;; Javascript Plugins
- {1 :pangloss/vim-javascript :ft [:javascript :javascriptreact]}
- {1 :maxmellon/vim-jsx-pretty :ft [:javascript :javascriptreact :typescriptreact]}
- {1 :mvolkmann/vim-react :ft [:javascript :javascriptreact :typescriptreact]}
  {1 :benjie/local-npm-bin.vim :ft [:javascript :typescript :javascriptreact :typescriptreact]}
  ;; SQL
  {1 :tpope/vim-dadbod :cmd [:DB]}

@@ -55,16 +55,18 @@
   (vim.lsp.status))
 
 {1 :nvim-lualine/lualine.nvim
- :dependencies [:SmiteshP/nvim-navic]
+ :dependencies [:SmiteshP/nvim-navic
+                :stevearc/aerial.nvim]
  :opts {:always_show_tabline true
         :options {: theme}
-        :sections {:lualine_c [#(or (vim.b.vista_nearest_method_or_function) "")
-                               attached_lsp
-                               lsp_progress]}
+        :sections {:lualine_c [{1 "aerial"
+                               :dense true
+                               :depth -1}
+                                attached_lsp
+                                lsp_progress]}
         :tabline {:lualine_a [:buffers]
                   :lualine_b []
                   :lualine_c []
                   :lualine_x []
                   :lualine_y []
                   :lualine_z []}}}
-

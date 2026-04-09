@@ -49,7 +49,7 @@
 (keymap.set :v :<Leader>c :gc {:noremap false :silent true})
 
 ;; Grep for TODOs
-(keymap.set :n :<Leader>t ":GrepperRg TODO: <CR>")
+(keymap.set :n :<Leader>t ":TodoQuickFix<CR>")
 
 (fn stripTrailingWhitespace []
   (let [pos (vim.fn.getpos ".")]
@@ -86,4 +86,3 @@
 (keymap.set :n ",tf" #(let [neotest (require :neotest)] (neotest.run.run (vim.fn.expand "%"))) {:desc "Run current file tests"})
 (keymap.set :n ",ts" #(let [neotest (require :neotest)] (neotest.summary.toggle)) {:desc "Toggle test summary"})
 (keymap.set :n ",to" #(let [neotest (require :neotest)] (neotest.output.open {:enter true})) {:desc "Open test output"})
-

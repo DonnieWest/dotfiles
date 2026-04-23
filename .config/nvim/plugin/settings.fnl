@@ -44,7 +44,7 @@
 (set opt.expandtab true)
 (set opt.showcmd true)
 (set opt.undofile true)
-(set opt.undodir (.. (vim.fn.stdpath :data) :/undo))  ;; Persistent undo directory
+(set opt.undodir (.. (vim.fn.stdpath :data) :/undo)) ;; Persistent undo directory
 (set opt.secure true)
 (set opt.exrc true)
 (set opt.splitbelow true)
@@ -93,5 +93,8 @@
 (vim.api.nvim_create_autocmd :BufWritePre
                              {:callback (fn [event]
                                           (when (not (event.match:match "^%w%w+:[\\/][\\/]"))
-                                            (let [file (or (vim.uv.fs_realpath event.match) event.match)]
-                                              (vim.fn.mkdir (vim.fn.fnamemodify file ":p:h") "p"))))})
+                                            (let [file (or (vim.uv.fs_realpath event.match)
+                                                           event.match)]
+                                              (vim.fn.mkdir (vim.fn.fnamemodify file
+                                                                                ":p:h")
+                                                            :p))))})

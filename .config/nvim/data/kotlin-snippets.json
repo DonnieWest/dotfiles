@@ -1,0 +1,577 @@
+{
+  "ktc": {
+    "prefix": "ktc",
+    "body": [
+      "class ${1:Name} {",
+      "    ${0:// TODO}",
+      "}"
+    ],
+    "description": "Kotlin class"
+  },
+  "ktdc": {
+    "prefix": "ktdc",
+    "body": [
+      "data class ${1:Name}(",
+      "    val ${2:id}: ${3:Int},",
+      "    val ${4:name}: ${5:String},",
+      ") {${0}}"
+    ],
+    "description": "Kotlin data class"
+  },
+  "ktsc": {
+    "prefix": "ktsc",
+    "body": [
+      "sealed class ${1:Name} {",
+      "    data class Success(val ${2:data}: ${3:Any}) : ${1:Name}()",
+      "    data class Error(val ${4:message}: String) : ${1:Name}()",
+      "    object Loading : ${1:Name}()",
+      "}",
+      "${0}"
+    ],
+    "description": "Sealed class"
+  },
+  "ktec": {
+    "prefix": "ktec",
+    "body": [
+      "enum class ${1:Name} {",
+      "    ${2:OPTION_ONE},",
+      "    ${3:OPTION_TWO},",
+      "    ${4:OPTION_THREE},",
+      "}",
+      "${0}"
+    ],
+    "description": "Enum class"
+  },
+  "ktobj": {
+    "prefix": "ktobj",
+    "body": [
+      "object ${1:Name} {",
+      "    ${0:// TODO}",
+      "}"
+    ],
+    "description": "Object singleton"
+  },
+  "ktint": {
+    "prefix": "ktint",
+    "body": [
+      "interface ${1:Name} {",
+      "    ${0:// TODO}",
+      "}"
+    ],
+    "description": "Interface"
+  },
+  "ktabsc": {
+    "prefix": "ktabsc",
+    "body": [
+      "abstract class ${1:Name} {",
+      "    abstract fun ${2:method}(): ${3:Unit}",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Abstract class"
+  },
+  "ktvm": {
+    "prefix": "ktvm",
+    "body": [
+      "class ${1:Name}ViewModel : ViewModel() {",
+      "",
+      "    private val _${2:state} = MutableStateFlow<${3:String}>(${4:\"\"})",
+      "    val ${2:state}: StateFlow<${3:String}> = _${2:state}.asStateFlow()",
+      "",
+      "    fun ${5:loadData}() {",
+      "        viewModelScope.launch {",
+      "            ${0:// TODO}",
+      "        }",
+      "    }",
+      "}"
+    ],
+    "description": "ViewModel with StateFlow"
+  },
+  "ktrep": {
+    "prefix": "ktrep",
+    "body": [
+      "class ${1:Name}Repository(",
+      "    private val ${2:dao}: ${3:NameDao},",
+      ") {",
+      "",
+      "    fun getAll(): Flow<List<${4:Name}>> = ${2:dao}.${5:getAll}()",
+      "",
+      "    suspend fun insert(${6:item}: ${4:Name}) {",
+      "        ${2:dao}.${7:insert}(${6:item})",
+      "    }",
+      "",
+      "    suspend fun delete(${6:item}: ${4:Name}) {",
+      "        ${2:dao}.${8:delete}(${6:item})",
+      "    }",
+      "",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Repository"
+  },
+  "ktent": {
+    "prefix": "ktent",
+    "body": [
+      "@Entity(tableName = \"${2:items}\")",
+      "data class ${1:Name}(",
+      "    @PrimaryKey(autoGenerate = true)",
+      "    val id: Int = 0,",
+      "    val ${3:name}: ${4:String},",
+      "    val ${5:createdAt}: Long = System.currentTimeMillis(),",
+      ")",
+      "${0}"
+    ],
+    "description": "Room entity"
+  },
+  "ktdao": {
+    "prefix": "ktdao",
+    "body": [
+      "@Dao",
+      "interface ${1:Name}Dao {",
+      "",
+      "    @Query(\"SELECT * FROM ${2:items} ORDER BY id DESC\")",
+      "    fun getAll(): Flow<List<${1:Name}>>",
+      "",
+      "    @Query(\"SELECT * FROM ${2:items} WHERE id = :id\")",
+      "    suspend fun getById(id: Int): ${1:Name}?",
+      "",
+      "    @Insert(onConflict = OnConflictStrategy.REPLACE)",
+      "    suspend fun insert(item: ${1:Name})",
+      "",
+      "    @Delete",
+      "    suspend fun delete(item: ${1:Name})",
+      "",
+      "    @Update",
+      "    suspend fun update(item: ${1:Name})",
+      "",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Room DAO"
+  },
+  "ktdb": {
+    "prefix": "ktdb",
+    "body": [
+      "@Database(",
+      "    entities = [${1:Name}::class],",
+      "    version = ${2:1},",
+      "    exportSchema = false,",
+      ")",
+      "abstract class ${3:Name}Database : RoomDatabase() {",
+      "",
+      "    abstract fun ${4:nameDao}(): ${1:Name}Dao",
+      "",
+      "    companion object {",
+      "        @Volatile private var INSTANCE: ${3:Name}Database? = null",
+      "",
+      "        fun getDatabase(context: Context): ${3:Name}Database =",
+      "            INSTANCE ?: synchronized(this) {",
+      "                Room.databaseBuilder(",
+      "                    context.applicationContext,",
+      "                    ${3:Name}Database::class.java,",
+      "                    \"${5:name_database}\"",
+      "                ).build().also { INSTANCE = it }",
+      "            }",
+      "}",
+      "${0}"
+    ],
+    "description": "Room database"
+  },
+  "ktcf": {
+    "prefix": "ktcf",
+    "body": [
+      "@Composable",
+      "fun ${1:MyScreen}(${2}) {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Composable function"
+  },
+  "ktcfs": {
+    "prefix": "ktcfs",
+    "body": [
+      "@Composable",
+      "fun ${1:MyScreen}(${2}) {",
+      "    var ${3:value} by remember { mutableStateOf(${4:\"\"}) }",
+      "",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Composable with remember state"
+  },
+  "ktprev": {
+    "prefix": "ktprev",
+    "body": [
+      "@Preview(showBackground = true)",
+      "@Composable",
+      "fun ${1:MyScreen}Preview() {",
+      "    ${1:MyScreen}(${2})",
+      "}"
+    ],
+    "description": "Composable preview"
+  },
+  "ktscaffold": {
+    "prefix": "ktscaffold",
+    "body": [
+      "@OptIn(ExperimentalMaterial3Api::class)",
+      "@Composable",
+      "fun ${1:MyScreen}() {",
+      "    Scaffold(",
+      "        topBar = {",
+      "            TopAppBar(title = { Text(\"${2:Title}\") })",
+      "        },",
+      "        floatingActionButton = {",
+      "            FloatingActionButton(onClick = { ${3} }) {",
+      "                Icon(Icons.Default.${4:Add}, contentDescription = \"${5:Action}\")",
+      "            }",
+      "        },",
+      "    ) { padding ->",
+      "        Column(modifier = Modifier.padding(padding).fillMaxSize()) {",
+      "            ${0}",
+      "        }",
+      "    }",
+      "}"
+    ],
+    "description": "Material3 scaffold"
+  },
+  "ktlazycol": {
+    "prefix": "ktlazycol",
+    "body": [
+      "LazyColumn(",
+      "    contentPadding = PaddingValues(${1:16}.dp),",
+      "    verticalArrangement = Arrangement.spacedBy(${2:8}.dp),",
+      "    modifier = Modifier.fillMaxSize(),",
+      ") {",
+      "    items(${3:items}) { ${4:item} ->",
+      "        ${0}",
+      "    }",
+      "}"
+    ],
+    "description": "LazyColumn"
+  },
+  "ktlazyr": {
+    "prefix": "ktlazyr",
+    "body": [
+      "LazyRow(",
+      "    contentPadding = PaddingValues(horizontal = ${1:16}.dp),",
+      "    horizontalArrangement = Arrangement.spacedBy(${2:8}.dp),",
+      ") {",
+      "    items(${3:items}) { ${4:item} ->",
+      "        ${0}",
+      "    }",
+      "}"
+    ],
+    "description": "LazyRow"
+  },
+  "ktlazysgrid": {
+    "prefix": "ktlazysgrid",
+    "body": [
+      "LazyVerticalStaggeredGrid(",
+      "    columns = StaggeredGridCells.Fixed(${1:2}),",
+      "    contentPadding = PaddingValues(${2:16}.dp),",
+      "    horizontalArrangement = Arrangement.spacedBy(${3:12}.dp),",
+      "    verticalItemSpacing = ${4:12}.dp,",
+      "    modifier = Modifier.fillMaxSize(),",
+      ") {",
+      "    items(${5:items}) { ${6:item} ->",
+      "        ${0}",
+      "    }",
+      "}"
+    ],
+    "description": "LazyVerticalStaggeredGrid"
+  },
+  "ktcard": {
+    "prefix": "ktcard",
+    "body": [
+      "Card(",
+      "    colors = CardDefaults.cardColors(",
+      "        containerColor = MaterialTheme.colorScheme.${1:surfaceVariant},",
+      "    ),",
+      "    shape = MaterialTheme.shapes.${2:medium},",
+      "    modifier = Modifier.${3:fillMaxWidth()}(),",
+      ") {",
+      "    Column(modifier = Modifier.padding(${4:16}.dp)) {",
+      "        ${0}",
+      "    }",
+      "}"
+    ],
+    "description": "Material3 card"
+  },
+  "ktrow": {
+    "prefix": "ktrow",
+    "body": [
+      "Row(",
+      "    horizontalArrangement = Arrangement.${1:spacedBy(8.dp)},",
+      "    verticalAlignment = Alignment.${2:CenterVertically},",
+      "    modifier = Modifier.${3:fillMaxWidth()}(),",
+      ") {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Row layout"
+  },
+  "ktcol": {
+    "prefix": "ktcol",
+    "body": [
+      "Column(",
+      "    verticalArrangement = Arrangement.${1:spacedBy(8.dp)},",
+      "    horizontalAlignment = Alignment.${2:CenterHorizontally},",
+      "    modifier = Modifier.${3:fillMaxSize()}(),",
+      ") {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Column layout"
+  },
+  "ktalertd": {
+    "prefix": "ktalertd",
+    "body": [
+      "AlertDialog(",
+      "    onDismissRequest = ${1:onDismiss},",
+      "    title = { Text(\"${2:Title}\") },",
+      "    text = {",
+      "        ${0}",
+      "    },",
+      "    confirmButton = {",
+      "        Button(onClick = ${3:onConfirm}) {",
+      "            Text(\"${4:Confirm}\")",
+      "        }",
+      "    },",
+      "    dismissButton = {",
+      "        TextButton(onClick = ${1:onDismiss}) {",
+      "            Text(\"${5:Cancel}\")",
+      "        }",
+      "    },",
+      ")"
+    ],
+    "description": "AlertDialog"
+  },
+  "ktbottomsheet": {
+    "prefix": "ktbottomsheet",
+    "body": [
+      "@OptIn(ExperimentalMaterial3Api::class)",
+      "val sheetState = rememberModalBottomSheetState()",
+      "var showSheet by remember { mutableStateOf(false) }",
+      "",
+      "if (showSheet) {",
+      "    ModalBottomSheet(",
+      "        onDismissRequest = { showSheet = false },",
+      "        sheetState = sheetState,",
+      "    ) {",
+      "        Column(modifier = Modifier.padding(16.dp)) {",
+      "            ${0}",
+      "        }",
+      "    }",
+      "}"
+    ],
+    "description": "ModalBottomSheet"
+  },
+  "kttab": {
+    "prefix": "kttab",
+    "body": [
+      "@OptIn(ExperimentalMaterial3Api::class)",
+      "TopAppBar(",
+      "    title = { Text(\"${1:Title}\") },",
+      "    navigationIcon = {",
+      "        ${2:IconButton(onClick = ${3:onBack}) {",
+      "            Icon(Icons.Default.ArrowBack, contentDescription = \"Back\")",
+      "        }}",
+      "    },",
+      "    actions = {",
+      "        ${0}",
+      "    },",
+      ")"
+    ],
+    "description": "TopAppBar"
+  },
+  "ktnav": {
+    "prefix": "ktnav",
+    "body": [
+      "@Composable",
+      "fun ${1:AppNavigation}() {",
+      "    val navController = rememberNavController()",
+      "",
+      "    NavHost(",
+      "        navController = navController,",
+      "        startDestination = \"${2:home}\",",
+      "    ) {",
+      "        composable(\"${2:home}\") {",
+      "            ${3:HomeScreen}(navController = navController)",
+      "        }",
+      "        composable(\"${4:detail}/{id}\") { backStackEntry ->",
+      "            val id = backStackEntry.arguments?.getString(\"id\")",
+      "            ${5:DetailScreen}(id = id, navController = navController)",
+      "        }",
+      "        ${0}",
+      "    }",
+      "}"
+    ],
+    "description": "NavHost setup"
+  },
+  "ktstate": {
+    "prefix": "ktstate",
+    "body": [
+      "var ${1:value} by remember { mutableStateOf(${2:\"\"}) }${0}"
+    ],
+    "description": "remember mutableStateOf"
+  },
+  "ktsflow": {
+    "prefix": "ktsflow",
+    "body": [
+      "private val _${1:state} = MutableStateFlow<${2:String}>(${3:\"\"})",
+      "val ${1:state}: StateFlow<${2:String}> = _${1:state}.asStateFlow()${0}"
+    ],
+    "description": "MutableStateFlow + StateFlow"
+  },
+  "ktcollect": {
+    "prefix": "ktcollect",
+    "body": [
+      "val ${1:value} by ${2:viewModel}.${3:state}.collectAsState()${0}"
+    ],
+    "description": "collectAsState"
+  },
+  "ktlaunch": {
+    "prefix": "ktlaunch",
+    "body": [
+      "LaunchedEffect(${1:key1}) {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "LaunchedEffect"
+  },
+  "ktsideef": {
+    "prefix": "ktsideef",
+    "body": [
+      "SideEffect {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "SideEffect"
+  },
+  "ktdisposable": {
+    "prefix": "ktdisposable",
+    "body": [
+      "DisposableEffect(${1:key1}) {",
+      "    ${2:// setup}",
+      "    onDispose {",
+      "        ${0:// cleanup}",
+      "    }",
+      "}"
+    ],
+    "description": "DisposableEffect"
+  },
+  "ktderived": {
+    "prefix": "ktderived",
+    "body": [
+      "val ${1:derived} by remember {",
+      "    derivedStateOf { ${0} }",
+      "}"
+    ],
+    "description": "derivedStateOf"
+  },
+  "ktcoro": {
+    "prefix": "ktcoro",
+    "body": [
+      "viewModelScope.launch {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "viewModelScope.launch"
+  },
+  "ktio": {
+    "prefix": "ktio",
+    "body": [
+      "withContext(Dispatchers.IO) {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "withContext IO"
+  },
+  "ktasync": {
+    "prefix": "ktasync",
+    "body": [
+      "val ${1:result} = async {",
+      "    ${0}",
+      "}.await()"
+    ],
+    "description": "async/await"
+  },
+  "ktfun": {
+    "prefix": "ktfun",
+    "body": [
+      "fun ${1:functionName}(${2}): ${3:Unit} {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Function"
+  },
+  "ktsfun": {
+    "prefix": "ktsfun",
+    "body": [
+      "suspend fun ${1:functionName}(${2}): ${3:Unit} {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Suspend function"
+  },
+  "ktef": {
+    "prefix": "ktef",
+    "body": [
+      "fun ${1:String}.${2:extensionName}(${3}): ${4:Unit} {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Extension function"
+  },
+  "ktlambda": {
+    "prefix": "ktlambda",
+    "body": [
+      "val ${1:name}: (${2:String}) -> ${3:Unit} = { ${4:it} ->",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Lambda"
+  },
+  "ktwhen": {
+    "prefix": "ktwhen",
+    "body": [
+      "when (${1:value}) {",
+      "    ${2:condition1} -> ${3}",
+      "    ${4:condition2} -> ${5}",
+      "    else -> ${0}",
+      "}"
+    ],
+    "description": "when expression"
+  },
+  "ktwhenresult": {
+    "prefix": "ktwhenresult",
+    "body": [
+      "when (val result = ${1:result}) {",
+      "    is ${2:UiState}.Loading -> ${3:LoadingView()}",
+      "    is ${2:UiState}.Success -> ${4:SuccessView(result.data)}",
+      "    is ${2:UiState}.Error -> ${0:ErrorView(result.message)}",
+      "}"
+    ],
+    "description": "when sealed result"
+  },
+  "kthiltvm": {
+    "prefix": "kthiltvm",
+    "body": [
+      "@HiltViewModel",
+      "class ${1:Name}ViewModel @Inject constructor(",
+      "    private val ${2:repository}: ${3:NameRepository},",
+      ") : ViewModel() {",
+      "",
+      "    private val _${4:state} = MutableStateFlow<${5:String}>(${6:\"\"})",
+      "    val ${4:state}: StateFlow<${5:String}> = _${4:state}.asStateFlow()",
+      "",
+      "    fun ${7:loadData}() {",
+      "        viewModelScope.launch {",
+      "            ${0:// TODO}",
+      "        }",
+      "    }",
+      "}"
+    ],
+    "description": "Hilt ViewModel"
+  }
+}

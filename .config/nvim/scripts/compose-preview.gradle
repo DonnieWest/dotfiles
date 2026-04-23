@@ -1,0 +1,62 @@
+// Compose Preview Screenshot Generation
+// Auto-injected by adc (Android Dev CLI)
+
+def previewConfigured = false
+
+gradle.beforeProject { project ->
+    if (previewConfigured) return
+    
+    project.plugins.withId("com.android.application") {
+        configurePreview(project)
+    }
+    project.plugins.withId("com.android.library") {
+        configurePreview(project)
+    }
+}
+
+ext.configurePreview = { project ->
+    previewConfigured = true
+    
+    project.dependencies {
+        debugImplementation "androidx.compose.ui:ui-tooling:1.6.0"
+        debugImplementation "androidx.compose.ui:ui-tooling-preview:1.6.0"
+        androidTestImplementation "androidx.test:runner:1.5.2"
+        androidTestImplementation "androidx.test:rules:1.5.0"
+    }
+    
+    project.tasks.register("generateComposePreviews") {
+        group = "compose"
+        description = "Generate preview images for @Preview composables"
+        
+        dependsOn project.tasks.named("compileDebugKotlin")
+        
+        doLast {
+            def manifestFile = new File(project.buildDir, "preview-manifest.json")
+            def outputDir = new File(project.buildDir, "outputs/compose-preview")
+            
+            if (!manifestFile.exists()) {
+                println "No preview manifest found at ${manifestFile}"
+                return
+            }
+            
+            outputDir.mkdirs()
+            println "Preview generation ready"
+            println "Manifest: ${manifestFile}"
+            println "Output: ${outputDir}"
+            
+            // Copy manifest for reference
+            def manifestCopy = new File(outputDir, "manifest.json")
+            manifestCopy.text = manifestFile.text
+        }
+    }
+    
+    project.tasks.register("generatePaparazziPreviews") {
+        group = "compose"
+        description = "Generate Paparazzi screenshots (no device needed)"
+        
+        doLast {
+            println "Add Paparazzi dependency: testImplementation 'app.cash.paparazzi:paparazzi:1.3.2'"
+            println "Then run: ./gradlew test --tests '*.PaparazziPreviewTest'"
+        }
+    }
+}

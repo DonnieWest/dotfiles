@@ -82,7 +82,19 @@
                                                         (vim.fn.getpos "'\""))})
 
 ;; Neotest keybindings
-(keymap.set :n ",tr" #(let [neotest (require :neotest)] (neotest.run.run)) {:desc "Run nearest test"})
-(keymap.set :n ",tf" #(let [neotest (require :neotest)] (neotest.run.run (vim.fn.expand "%"))) {:desc "Run current file tests"})
-(keymap.set :n ",ts" #(let [neotest (require :neotest)] (neotest.summary.toggle)) {:desc "Toggle test summary"})
-(keymap.set :n ",to" #(let [neotest (require :neotest)] (neotest.output.open {:enter true})) {:desc "Open test output"})
+(keymap.set :n ",tr" #(let [neotest (require :neotest)] (neotest.run.run))
+            {:desc "Run nearest test"})
+
+(keymap.set :n ",tf"
+            #(let [neotest (require :neotest)]
+               (neotest.run.run (vim.fn.expand "%")))
+            {:desc "Run current file tests"})
+
+(keymap.set :n ",ts" #(let [neotest (require :neotest)]
+                        (neotest.summary.toggle))
+            {:desc "Toggle test summary"})
+
+(keymap.set :n ",to"
+            #(let [neotest (require :neotest)]
+               (neotest.output.open {:enter true}))
+            {:desc "Open test output"})

@@ -44,7 +44,6 @@ local plugins = {
   },
 }
 
--- Hotpot v2 must be loaded before lazy.nvim alters module loading.
 require("hotpot")
 local hotpot_api = require("hotpot.api")
 local hotpot_context = assert(hotpot_api.context(vim.fn.stdpath("config")))

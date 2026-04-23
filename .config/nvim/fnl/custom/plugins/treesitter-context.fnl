@@ -2,9 +2,10 @@
  :event :BufReadPost
  :opts {:enable true
         :on_attach (fn [bufnr]
-                     (let [filetype (vim.api.nvim_get_option_value "filetype" {:buf bufnr})
+                     (let [filetype (vim.api.nvim_get_option_value :filetype
+                                                                   {:buf bufnr})
                            name (vim.api.nvim_buf_get_name bufnr)]
-                       (not (or (= filetype "markdown")
+                       (not (or (= filetype :markdown)
                                 (not= (name:match "%.mdx?$") nil)
                                 (not= (name:match "%.markdown$") nil)))))
         :max_lines 3

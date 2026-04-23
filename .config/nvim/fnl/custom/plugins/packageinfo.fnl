@@ -5,4 +5,3 @@
                                       {:pattern :package.json
                                        :callback (. (require :package-info)
                                                     :show)}))}
-

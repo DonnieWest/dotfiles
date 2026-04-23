@@ -5,4 +5,3 @@
                       :next :<M-Space>
                       :right :<M-Right>
                       :up :<M-Up>}}}
-

@@ -5,4 +5,3 @@
         :hide {:underline true :virtual_text true :signs true}
         :priority 100
         :disable {}}}
-

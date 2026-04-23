@@ -1,12 +1,12 @@
 {1 :ThePrimeagen/harpoon
  :branch :harpoon2
  :dependencies [:nvim-lua/plenary.nvim]
- :opts {:settings {:save_on_toggle true
-                   :sync_on_ui_close true}}
+ :opts {:settings {:save_on_toggle true :sync_on_ui_close true}}
  :keys [{1 :<leader>ha
          2 (fn []
              (let [harpoon (require :harpoon)]
-               (harpoon:list):add))
+               (harpoon:list)
+               :add))
          :desc "Harpoon add file"}
         {1 :<leader>hh
          2 (fn []

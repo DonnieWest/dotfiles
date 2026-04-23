@@ -6,4 +6,3 @@
                 :topdelete {:text "‾"}
                 :changedelete {:text "~-"}
                 :untracked {:text "┆"}}}}
-

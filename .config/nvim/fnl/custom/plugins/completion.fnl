@@ -6,10 +6,12 @@
                 :Kaiser-Yang/blink-cmp-avante
                 :PaterJason/cmp-conjure]
  :init (fn []
-         (let [cmp (require :blink.cmp)]
-           (vim.keymap.set :i :<C-x><C-o>
-                           (fn []
-                             (cmp.show)
+          (let [cmp (require :blink.cmp)
+                kotlin-completion (require :custom.kotlin_completion)]
+            (kotlin-completion.register)
+            (vim.keymap.set :i :<C-x><C-o>
+                            (fn []
+                              (cmp.show)
                              (cmp.show_documentation)
                              (cmp.hide_documentation))
                            {:silent false})))
@@ -47,4 +49,3 @@
                               :conjure {:name :conjure
                                         :module :blink.compat.source}}}}
  :build "cargo build --release"}
-

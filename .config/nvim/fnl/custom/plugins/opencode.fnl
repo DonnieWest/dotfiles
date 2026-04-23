@@ -1,8 +1,8 @@
 {1 :NickvanDyke/opencode.nvim
  :dependencies [:folke/snacks.nvim]
  :config (fn []
-            ;; Configuration options
-            (set vim.g.opencode_opts {})
+           ;; Configuration options
+           (set vim.g.opencode_opts {})
            ;; Required for opts.events.reload
            (set vim.o.autoread true)
            ;; Helper local for cleaner code

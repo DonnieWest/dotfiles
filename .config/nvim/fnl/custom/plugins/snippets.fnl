@@ -3,7 +3,9 @@
 {1 :chrisgrieser/nvim-scissors
  :dependencies [:L3MON4D3/LuaSnip :nvim-telescope/telescope.nvim]
  :config (fn []
-           (let [scissors (require :scissors)]
+           (let [scissors (require :scissors)
+                 vscode-loader (. (require :luasnip.loaders.from_vscode) :lazy_load)]
+             (vscode-loader {:paths [(.. (vim.fn.stdpath :config) :/snippets)]})
              (scissors.setup {:snippetDir (.. (vim.fn.stdpath :config)
                                               :/snippets)
                               :editSnippetPopup {:height 0.4

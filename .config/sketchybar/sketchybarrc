@@ -1,0 +1,89 @@
+#!/usr/bin/env sh
+
+CONFIG_DIR="$HOME/.config/sketchybar"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+FONT="Victor Mono:Semibold:14.0"
+BG=0xff03090e
+FG=0xffe6f9f7
+GREEN=0xff50fa7b
+CYAN=0xff8be9fd
+BLUE=0xff0c2132
+RED=0xffff5555
+YELLOW=0xffffb86c
+
+sketchybar --bar height=40 \
+  position=top \
+  color=$BG \
+  shadow=off \
+  sticky=on \
+  padding_left=8 \
+  padding_right=8
+
+sketchybar --default \
+  icon.font="$FONT" \
+  label.font="$FONT" \
+  icon.color=$FG \
+  label.color=$FG \
+  background.color=$BG \
+  background.height=28 \
+  background.corner_radius=6 \
+  padding_left=6 \
+  padding_right=6
+
+for sid in 1 2 3 4 5 6 7 8 9 10; do
+  case "$sid" in
+    1) label="Browser" ;;
+    2) label="Chat" ;;
+    3) label="Terminal" ;;
+    4) label="Emulator" ;;
+    *) label="Code" ;;
+  esac
+
+  sketchybar --add space space.$sid left \
+    --set space.$sid \
+      space=$sid \
+      icon="$sid" \
+      label="$label" \
+      background.drawing=on \
+      background.color=$BG \
+      script="$PLUGIN_DIR/space.sh" \
+    --subscribe space.$sid space_change windows_on_spaces window_focus
+done
+
+sketchybar --add item separator left \
+  --set separator icon="|" label.drawing=off icon.color=$CYAN background.drawing=off
+
+sketchybar --add item weather right \
+  --set weather update_freq=600 script="$PLUGIN_DIR/weather.sh"
+
+sketchybar --add item media right \
+  --set media script="$PLUGIN_DIR/media.sh" \
+  --subscribe media media_change
+
+sketchybar --add item bluetooth right \
+  --set bluetooth update_freq=60 script="$PLUGIN_DIR/bluetooth.sh"
+
+sketchybar --add item wifi right \
+  --set wifi update_freq=30 script="$PLUGIN_DIR/wifi.sh"
+
+sketchybar --add item vpn right \
+  --set vpn update_freq=5 script="$PLUGIN_DIR/vpn.sh"
+
+sketchybar --add item github right \
+  --set github update_freq=300 script="$PLUGIN_DIR/github.sh"
+
+sketchybar --add item memory right \
+  --set memory update_freq=10 script="$PLUGIN_DIR/memory.sh"
+
+sketchybar --add item volume right \
+  --set volume script="$PLUGIN_DIR/volume.sh" \
+  --subscribe volume volume_change
+
+sketchybar --add item battery right \
+  --set battery update_freq=30 script="$PLUGIN_DIR/battery.sh"
+
+sketchybar --add item clock right \
+  --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh"
+
+sketchybar --hotload on

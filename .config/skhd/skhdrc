@@ -1,0 +1,83 @@
+# Sway-style keybindings for yabai on macOS.
+
+# Terminal and launcher
+cmd - return : open -na Ghostty
+cmd - d : open -na Raycast
+cmd - f9 : open -na Raycast
+
+# Window lifecycle
+cmd - q : yabai -m window --close
+
+# Focus windows
+cmd - left  : yabai -m window --focus west
+cmd - down  : yabai -m window --focus south
+cmd - up    : yabai -m window --focus north
+cmd - right : yabai -m window --focus east
+
+cmd - j     : yabai -m window --focus west
+cmd - k     : yabai -m window --focus south
+cmd - l     : yabai -m window --focus north
+cmd - ';'   : yabai -m window --focus east
+
+# Move windows within the BSP tree
+cmd + shift - h     : yabai -m window --swap west
+cmd + shift - j     : yabai -m window --swap south
+cmd + shift - k     : yabai -m window --swap north
+cmd + shift - l     : yabai -m window --swap east
+cmd + shift - left  : yabai -m window --swap west
+cmd + shift - down  : yabai -m window --swap south
+cmd + shift - up    : yabai -m window --swap north
+cmd + shift - right : yabai -m window --swap east
+
+# Resize windows
+cmd + ctrl - h     : yabai -m window --resize left:-40:0 || yabai -m window --resize right:-40:0
+cmd + ctrl - j     : yabai -m window --resize bottom:0:40 || yabai -m window --resize top:0:40
+cmd + ctrl - k     : yabai -m window --resize bottom:0:-40 || yabai -m window --resize top:0:-40
+cmd + ctrl - l     : yabai -m window --resize right:40:0 || yabai -m window --resize left:40:0
+cmd + ctrl - left  : yabai -m window --resize left:-40:0 || yabai -m window --resize right:-40:0
+cmd + ctrl - down  : yabai -m window --resize bottom:0:40 || yabai -m window --resize top:0:40
+cmd + ctrl - up    : yabai -m window --resize bottom:0:-40 || yabai -m window --resize top:0:-40
+cmd + ctrl - right : yabai -m window --resize right:40:0 || yabai -m window --resize left:40:0
+
+# Layout toggles
+cmd + alt - f : yabai -m window --toggle zoom-fullscreen
+cmd + shift - space : yabai -m window --toggle float
+cmd - space : yabai -m window --toggle float
+cmd - e : yabai -m space --layout bsp
+
+# Focus spaces
+cmd - 1 : yabai -m space --focus 1
+cmd - 2 : yabai -m space --focus 2
+cmd - 3 : yabai -m space --focus 3
+cmd - 4 : yabai -m space --focus 4
+cmd - 5 : yabai -m space --focus 5
+cmd - 6 : yabai -m space --focus 6
+cmd - 7 : yabai -m space --focus 7
+cmd - 8 : yabai -m space --focus 8
+cmd - 9 : yabai -m space --focus 9
+cmd - 0 : yabai -m space --focus 10
+
+# Move windows to spaces and follow
+cmd + shift - 1 : yabai -m window --space 1; yabai -m space --focus 1
+cmd + shift - 2 : yabai -m window --space 2; yabai -m space --focus 2
+cmd + shift - 3 : yabai -m window --space 3; yabai -m space --focus 3
+cmd + shift - 4 : yabai -m window --space 4; yabai -m space --focus 4
+cmd + shift - 5 : yabai -m window --space 5; yabai -m space --focus 5
+cmd + shift - 6 : yabai -m window --space 6; yabai -m space --focus 6
+cmd + shift - 7 : yabai -m window --space 7; yabai -m space --focus 7
+cmd + shift - 8 : yabai -m window --space 8; yabai -m space --focus 8
+cmd + shift - 9 : yabai -m window --space 9; yabai -m space --focus 9
+cmd + shift - 0 : yabai -m window --space 10; yabai -m space --focus 10
+
+# Next / previous space
+alt + ctrl - right : yabai -m space --focus next
+alt + ctrl - left  : yabai -m space --focus prev
+alt + ctrl - ';'   : yabai -m space --focus next
+alt + ctrl - j     : yabai -m space --focus prev
+
+# Apps
+cmd - w : open -na qutebrowser || open -na "Firefox Developer Edition"
+cmd - f : open -na Ghostty --args -e yazi "$HOME"
+
+# Screenshot to clipboard; use macOS' native selector.
+print : screencapture -i -c

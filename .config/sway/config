@@ -32,6 +32,7 @@ include /etc/sway/config.d/*
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec hash dbus-update-activation-environment 2>/dev/null && \
      dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec systemctl --user restart ntfy-links-notify.service
 
 # exec wlsunset -l 39.099724 -L -94.578331
 

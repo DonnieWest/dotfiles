@@ -1,5 +1,6 @@
 {1 :saghen/blink.cmp
- :dependencies [:rafamadriz/friendly-snippets
+ :dependencies [:saghen/blink.lib
+                :rafamadriz/friendly-snippets
                 :saghen/blink.compat
                 :kristijanhusak/vim-dadbod-completion
                 {1 :David-Kunz/cmp-npm :ft :json :opts {}}
@@ -48,4 +49,6 @@
                                        :module :vim_dadbod_completion.blink}
                               :conjure {:name :conjure
                                         :module :blink.compat.source}}}}
- :build "cargo build --release"}
+ :build (fn []
+          (let [cmp (require :blink.cmp)]
+            ((. (cmp.build) :wait) 60000)))}

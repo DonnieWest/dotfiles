@@ -81,8 +81,10 @@ setopt hist_save_no_dups
 setopt hist_reduce_blanks
 
 alias history='fc -l 1'
-alias docker='podman'
-alias docker-compose='podman-compose'
+if [[ "$(uname)" == "Linux" ]]; then
+  alias docker='podman'
+  alias docker-compose='podman-compose'
+fi
 
 ## Completion
 
@@ -161,12 +163,12 @@ alias dh='dirs -v'
 ## GPG Agent
 
 unset SSH_AGENT_PID
-if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+if [[ "$(uname)" == "Linux" && "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]]; then
   export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
 fi
 
 # Start the gpg-agent if not already running
-if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
+if command -v gpg-connect-agent >/dev/null 2>&1 && ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
   gpg-connect-agent /bye >/dev/null 2>&1
 fi
 
@@ -174,7 +176,7 @@ fi
 export GPG_TTY=$(tty)
 
 # Refresh gpg-agent tty in case user switches into an X session
-gpg-connect-agent updatestartuptty /bye >/dev/null
+command -v gpg-connect-agent >/dev/null 2>&1 && gpg-connect-agent updatestartuptty /bye >/dev/null
 
 ## Misc
 
@@ -271,7 +273,6 @@ RPS1='%{$fg[white]%}%2~$(gitprompt) %{$fg_bold[blue]%}%{$reset_color%}'
 # Setup Env variables
 export N_PREFIX=$HOME/.config/n
 export GRADLE_HOME="$HOME/.gradle"
-export ANDROID_HOME="$HOME/.android-sdk-linux"
 export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
 export STEAM_RUNTIME=0
@@ -282,13 +283,27 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 export EDITOR="nvim"
 
-export JAVA_HOME="/usr/lib/jvm/default"
-export STUDIO_JDK="/usr/lib/jvm/default"
+case "$(uname)" in
+  Darwin)
+    export BROWSER="open"
+    export ANDROID_HOME="$HOME/Library/Android/sdk"
+    export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+    if [[ -x /usr/libexec/java_home ]]; then
+      export JAVA_HOME="$(/usr/libexec/java_home 2>/dev/null)"
+      export STUDIO_JDK="$JAVA_HOME"
+    fi
+    ;;
+  Linux)
+    export ANDROID_HOME="$HOME/.android-sdk-linux"
+    export JAVA_HOME="/usr/lib/jvm/default"
+    export STUDIO_JDK="/usr/lib/jvm/default"
+    export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+    ;;
+esac
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=red"
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
 export JDTLS_JVM_ARGS="-javaagent:$HOME/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar"
 
 # Setup PATH
@@ -319,8 +334,8 @@ export PATH="$HOME/.tmux/plugins/tmuxifier/bin:$PATH"
 
 # Taken from https://gist.github.com/jhass/8839655bb038e829fba1 but also useful for system ruby on arch
 
-source /usr/share/chruby/chruby.sh
-source /usr/share/chruby/auto.sh
+[[ -f /usr/share/chruby/chruby.sh ]] && source /usr/share/chruby/chruby.sh
+[[ -f /usr/share/chruby/auto.sh ]] && source /usr/share/chruby/auto.sh
 RUBIES=(/opt/ruby* $HOME/.rubies/*)
 
 sn() {
@@ -333,9 +348,17 @@ sn() {
   fi
 }
 
+copy_clipboard() {
+  if command -v pbcopy >/dev/null 2>&1; then
+    pbcopy
+  else
+    wl-copy
+  fi
+}
+
 pass() {
   if hash bw 2>/dev/null; then
-    bw get item "$(bw list items | jq '.[] | "\(.name) | username: \(.login.username) | id: \(.id)" ' | fzy | awk '{print $(NF -0)}' | sed 's/\"//g')" | jq '.login.password' | sed 's/\"//g' | wl-copy
+    bw get item "$(bw list items | jq '.[] | "\(.name) | username: \(.login.username) | id: \(.id)" ' | fzy | awk '{print $(NF -0)}' | sed 's/\"//g')" | jq '.login.password' | sed 's/\"//g' | copy_clipboard
   fi
 }
 
@@ -344,7 +367,7 @@ b-pass() {
     local selected
     selected=$(rbw list | fzf --prompt="Search password: " --bind "change:reload:rbw search {q} || true")
     if [ -n "$selected" ]; then
-      rbw get "$selected" | wl-copy
+      rbw get "$selected" | copy_clipboard
       echo "Password copied to clipboard"
     fi
   fi
@@ -457,15 +480,37 @@ pr-checkout() {
 }
 
 delete-branches() {
-  git branch |
-    grep --invert-match '\*' |
-    cut -c 3- |
-    fzf --multi --preview="git log {}" |
-    xargs --no-run-if-empty git branch --delete --force
+  local branches
+  branches=$(
+    git branch |
+      grep --invert-match '\*' |
+      cut -c 3- |
+      fzf --multi --preview="git log {}"
+  )
+
+  if [[ -n "$branches" ]]; then
+    print -r -- "$branches" | xargs git branch --delete --force
+  fi
 }
 
 open-ebook() {
   epy "$(find $HOME/Calibre\ Library -name '*.epub' -o -name '*.azw3' -o -name '*.mobi' -o -name '*.epub3' -o -name '*.azw' | fzf)"
+}
+
+format_epoch_time() {
+    if [[ "$(uname)" == "Darwin" ]]; then
+        date -r "$1" +%I:%M
+    else
+        date -d "@$1" +%I:%M
+    fi
+}
+
+notify_pomo() {
+    if [[ "$(uname)" == "Darwin" ]]; then
+        osascript -e 'on run argv' -e 'display notification (item 1 of argv) with title "pomo"' -e 'end run' "$*"
+    else
+        notify-send -u critical -i /usr/share/icons/Arc/status/128/messagebox_critical.png -a pomo "$*"
+    fi
 }
 
 pomo() {
@@ -485,12 +530,12 @@ pomo() {
     while [ "$(date +%s)" -lt "$timeout" ]; do
         clear
 
-        echo "$(date -d "@$timeout" +%I:%M) $msg" > /tmp/pomo
+        echo "$(format_epoch_time "$timeout") $msg" > /tmp/pomo
 
-        echo "$(date '+%I:%M') - $(date -d "@$timeout" +%I:%M) ${msg:?}" && sleep 10s
+        echo "$(date '+%I:%M') - $(format_epoch_time "$timeout") ${msg:?}" && sleep 10s
     done
 
-    notify-send -u critical -i /usr/share/icons/Arc/status/128/messagebox_critical.png -a pomo "${msg:?}"
+    notify_pomo "${msg:?}"
 
     echo "Done ${msg:?}"
 }
@@ -527,7 +572,7 @@ httpstatuslist () { curl -s 'https://httpstat.us/' | htmlq -t 'dl' | sedremovesp
 
 tinyurl()  {
     local u=$(curl -sS "https://tinyurl.com/create.php?source=index&alias=&url=$1" | grep '://tinyurl.com/' | grep 'target' | grep -E 'https://tinyurl.com/\w+' -o | head -1)
-    echo -n "$u" | wl-copy
+    echo -n "$u" | copy_clipboard
 }
 
 #/ unshorten <url>: reveal shortened URL
@@ -626,18 +671,20 @@ add-missing-jira-fix-versions() {
   done
 }
 
-alias ua-drop-caches='sudo paccache -rk3; yay -Sc --aur --noconfirm'
-alias ua-update-all='export TMPFILE="$(mktemp)"; \
-    sudo true; \
-    rate-mirrors --save=$TMPFILE arch --max-delay=21600 \
-      && sudo mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist-backup \
-      && sudo mv $TMPFILE /etc/pacman.d/mirrorlist \
-      && ua-drop-caches \
-      && yay -Syyu --noconfirm'
+if [[ -f /etc/arch-release ]]; then
+  alias ua-drop-caches='sudo paccache -rk3; yay -Sc --aur --noconfirm'
+  alias ua-update-all='export TMPFILE="$(mktemp)"; \
+      sudo true; \
+      rate-mirrors --save=$TMPFILE arch --max-delay=21600 \
+        && sudo mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist-backup \
+        && sudo mv $TMPFILE /etc/pacman.d/mirrorlist \
+        && ua-drop-caches \
+        && yay -Syyu --noconfirm'
+fi
 
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+command -v pyenv >/dev/null && eval "$(pyenv init -)"
 
 # Command-not-found handler - suggests packages for missing commands
 [[ -f /usr/share/doc/pkgfile/command-not-found.zsh ]] && source /usr/share/doc/pkgfile/command-not-found.zsh
@@ -654,5 +701,11 @@ command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 # Keep Android Studio launcher (not in adc)
 studio() {
   local gradle_root=$(find . -maxdepth 3 -name 'build.gradle' -o -name 'build.gradle.kts' | head -1 | xargs dirname)
-  [[ -n "$gradle_root" ]] && /opt/android-studio/bin/studio.sh "$gradle_root" &
+  if [[ -n "$gradle_root" ]]; then
+    if [[ "$(uname)" == "Darwin" ]]; then
+      open -a "Android Studio" "$gradle_root"
+    else
+      /opt/android-studio/bin/studio.sh "$gradle_root" &
+    fi
+  fi
 }

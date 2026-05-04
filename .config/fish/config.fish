@@ -1,5 +1,5 @@
 # Source profile (sway startup logic)
-if test (tty) = "/dev/tty1"
+if test (uname) = Linux; and test (tty) = "/dev/tty1"
     exec sway
 end
 
@@ -14,16 +14,29 @@ set -gx EDITOR nvim
 # Development paths
 set -gx N_PREFIX $HOME/.config/n
 set -gx GRADLE_HOME $HOME/.gradle
-set -gx ANDROID_HOME $HOME/.android-sdk-linux
 set -gx ANDROID_EMULATOR_USE_SYSTEM_LIBS 1
 set -gx POWERLINE_CONFIG_COMMAND $HOME/.local/bin/powerline-config
 set -gx STEAM_RUNTIME 0
 set -gx GRAALVM_HOME $HOME/.config/graalvm-ce
-set -gx JAVA_HOME /usr/lib/jvm/default
-set -gx STUDIO_JDK /usr/lib/jvm/default
-set -gx DOCKER_HOST unix://$XDG_RUNTIME_DIR/podman/podman.sock
 set -gx JDTLS_JVM_ARGS "-javaagent:$HOME/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar"
 set -gx FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git'
+
+switch (uname)
+    case Darwin
+        set -gx BROWSER open
+        set -gx ANDROID_HOME $HOME/Library/Android/sdk
+        fish_add_path /opt/homebrew/bin
+        fish_add_path /opt/homebrew/sbin
+        if test -x /usr/libexec/java_home
+            set -gx JAVA_HOME (/usr/libexec/java_home 2>/dev/null)
+            set -gx STUDIO_JDK $JAVA_HOME
+        end
+    case Linux
+        set -gx ANDROID_HOME $HOME/.android-sdk-linux
+        set -gx JAVA_HOME /usr/lib/jvm/default
+        set -gx STUDIO_JDK /usr/lib/jvm/default
+        set -gx DOCKER_HOST unix://$XDG_RUNTIME_DIR/podman/podman.sock
+end
 
 # Python
 set -gx PYENV_ROOT $HOME/.pyenv
@@ -57,12 +70,12 @@ fish_add_path $PYENV_ROOT/bin
 
 ## GPG Agent
 set -e SSH_AGENT_PID
-if test "$gnupg_SSH_AUTH_SOCK_by" != "$fish_pid"
+if test (uname) = Linux; and test "$gnupg_SSH_AUTH_SOCK_by" != "$fish_pid"
     set -gx SSH_AUTH_SOCK /run/user/$UID/gnupg/S.gpg-agent.ssh
 end
 
 # Start the gpg-agent if not already running
-if not pgrep -x -u $USER gpg-agent >/dev/null 2>&1
+if command -v gpg-connect-agent >/dev/null 2>&1; and not pgrep -x -u $USER gpg-agent >/dev/null 2>&1
     gpg-connect-agent /bye >/dev/null 2>&1
 end
 
@@ -70,7 +83,9 @@ end
 set -gx GPG_TTY (tty)
 
 # Refresh gpg-agent tty
-gpg-connect-agent updatestartuptty /bye >/dev/null
+if command -v gpg-connect-agent >/dev/null 2>&1
+    gpg-connect-agent updatestartuptty /bye >/dev/null
+end
 
 ## Misc Settings
 
@@ -80,8 +95,10 @@ ulimit -n 2048
 ## Aliases
 
 alias history='history --max=500000'
-alias docker='podman'
-alias docker-compose='podman-compose'
+if test (uname) = Linux
+    alias docker='podman'
+    alias docker-compose='podman-compose'
+end
 alias less='less -R'
 alias grep='grep --color=auto'
 alias ..='cd ../'
@@ -97,14 +114,16 @@ alias tree='eza --tree'
 alias ssh='TERM=xterm-256color ssh'
 alias filpidcat='pidcat -i EGL_emulation -i HostConnection -i GnssHAL_GnssInterface -i android.os.Debug -i netmgr -i Phenix -i chatty -i WorkerManager -i ResolverController -i AppOps -i wifi_forwarder -i KeyguardClockSwitch -i memtrack -i GCoreFlp -i audio_hw_generic -i BeaconBle -i InputReader -i gralloc_ranchu'
 alias sedremovespace="sed -E '/^[[:space:]]*\$/d;s/^[[:space:]]+//;s/[[:space:]]+\$//'"
-alias ua-drop-caches='sudo paccache -rk3; yay -Sc --aur --noconfirm'
-alias ua-update-all='export TMPFILE="(mktemp)"; \
-    sudo true; \
-    rate-mirrors --save=$TMPFILE arch --max-delay=21600 \
-      && sudo mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist-backup \
-      && sudo mv $TMPFILE /etc/pacman.d/mirrorlist \
-      && ua-drop-caches \
-      && yay -Syyu --noconfirm'
+if test -f /etc/arch-release
+    alias ua-drop-caches='sudo paccache -rk3; yay -Sc --aur --noconfirm'
+    alias ua-update-all='export TMPFILE="(mktemp)"; \
+        sudo true; \
+        rate-mirrors --save=$TMPFILE arch --max-delay=21600 \
+          && sudo mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist-backup \
+          && sudo mv $TMPFILE /etc/pacman.d/mirrorlist \
+          && ua-drop-caches \
+          && yay -Syyu --noconfirm'
+end
 
 ## Functions
 
@@ -118,7 +137,15 @@ end
 
 function pass
     if command -v bw >/dev/null
-        bw get item (bw list items | jq '.[] | "\(.name) | username: \(.login.username) | id: \(.id)" ' | fzy | awk '{print $(NF -0)}' | sed 's/"//g') | jq '.login.password' | sed 's/"//g' | wl-copy
+        bw get item (bw list items | jq '.[] | "\(.name) | username: \(.login.username) | id: \(.id)" ' | fzy | awk '{print $(NF -0)}' | sed 's/"//g') | jq '.login.password' | sed 's/"//g' | copy_clipboard
+    end
+end
+
+function copy_clipboard
+    if command -v pbcopy >/dev/null 2>&1
+        pbcopy
+    else
+        wl-copy
     end
 end
 
@@ -250,11 +277,30 @@ function pr-checkout
 end
 
 function delete-branches
-    git branch | grep --invert-match '\*' | cut -c 3- | fzf --multi --preview="git log {}" | xargs --no-run-if-empty git branch --delete --force
+    set branches (git branch | grep --invert-match '\*' | cut -c 3- | fzf --multi --preview="git log {}")
+    if test (count $branches) -gt 0
+        git branch --delete --force $branches
+    end
 end
 
 function open-ebook
     epy (find $HOME/Calibre\ Library -name '*.epub' -o -name '*.azw3' -o -name '*.mobi' -o -name '*.epub3' -o -name '*.azw' | fzf)
+end
+
+function format_epoch_time
+    if test (uname) = Darwin
+        date -r $argv[1] +%I:%M
+    else
+        date -d "@$argv[1]" +%I:%M
+    end
+end
+
+function notify_pomo
+    if test (uname) = Darwin
+        osascript -e 'on run argv' -e 'display notification (item 1 of argv) with title "pomo"' -e 'end run' "$argv"
+    else
+        notify-send -u critical -i /usr/share/icons/Arc/status/128/messagebox_critical.png -a pomo "$argv"
+    end
 end
 
 function pomo
@@ -277,12 +323,12 @@ function pomo
 
     while test (date +%s) -lt $timeout
         clear
-        echo (date -d "@$timeout" +%I:%M) $msg >/tmp/pomo
-        echo (date '+%I:%M') - (date -d "@$timeout" +%I:%M) $msg
+        echo (format_epoch_time $timeout) $msg >/tmp/pomo
+        echo (date '+%I:%M') - (format_epoch_time $timeout) $msg
         sleep 10s
     end
 
-    notify-send -u critical -i /usr/share/icons/Arc/status/128/messagebox_critical.png -a pomo "$msg"
+    notify_pomo "$msg"
     echo "Done $msg"
     rm -f /tmp/pomo
 end
@@ -321,7 +367,7 @@ end
 
 function tinyurl
     set u (curl -sS "https://tinyurl.com/create.php?source=index&alias=&url=$argv[1]" | grep '://tinyurl.com/' | grep 'target' | grep -E 'https://tinyurl.com/\w+' -o | head -1)
-    echo -n "$u" | wl-copy
+    echo -n "$u" | copy_clipboard
 end
 
 function unshorten
@@ -425,7 +471,11 @@ end
 function studio
     set gradle_root (find . -maxdepth 3 -name 'build.gradle' -o -name 'build.gradle.kts' | head -1 | xargs dirname)
     if test -n "$gradle_root"
-        /opt/android-studio/bin/studio.sh "$gradle_root" &
+        if test (uname) = Darwin
+            open -a "Android Studio" "$gradle_root"
+        else
+            /opt/android-studio/bin/studio.sh "$gradle_root" &
+        end
     end
 end
 

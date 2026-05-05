@@ -1,0 +1,176 @@
+# Sway-inspired Aerospace setup for macOS.
+
+config-version = 2
+start-at-login = true
+after-startup-command = [
+  'exec-and-forget sketchybar',
+]
+
+exec-on-workspace-change = [
+  '/bin/sh',
+  '-c',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$AEROSPACE_FOCUSED_WORKSPACE"',
+]
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+accordion-padding = 30
+persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+automatically-unhide-macos-hidden-apps = false
+
+[gaps]
+inner.horizontal = 0
+inner.vertical = 0
+outer.left = 0
+outer.bottom = 0
+outer.top = 40
+outer.right = 0
+
+[key-mapping]
+preset = 'qwerty'
+
+[mode.main.binding]
+# Terminal and launcher
+cmd-enter = 'exec-and-forget open -na Ghostty'
+cmd-d = 'exec-and-forget open -na Raycast'
+cmd-f9 = 'exec-and-forget open -na Raycast'
+
+# Window lifecycle
+cmd-q = 'close'
+
+# Focus windows
+cmd-left = 'focus left'
+cmd-down = 'focus down'
+cmd-up = 'focus up'
+cmd-right = 'focus right'
+cmd-j = 'focus left'
+cmd-k = 'focus down'
+cmd-l = 'focus up'
+cmd-semicolon = 'focus right'
+
+# Move windows within the tree
+cmd-shift-h = 'move left'
+cmd-shift-j = 'move down'
+cmd-shift-k = 'move up'
+cmd-shift-l = 'move right'
+cmd-shift-left = 'move left'
+cmd-shift-down = 'move down'
+cmd-shift-up = 'move up'
+cmd-shift-right = 'move right'
+
+# Resize windows
+cmd-ctrl-h = 'resize width -50'
+cmd-ctrl-j = 'resize height +50'
+cmd-ctrl-k = 'resize height -50'
+cmd-ctrl-l = 'resize width +50'
+cmd-ctrl-left = 'resize width -50'
+cmd-ctrl-down = 'resize height +50'
+cmd-ctrl-up = 'resize height -50'
+cmd-ctrl-right = 'resize width +50'
+
+# Layout toggles
+cmd-alt-f = 'fullscreen'
+cmd-shift-space = 'layout floating tiling'
+cmd-space = 'layout floating tiling'
+cmd-h = 'split horizontal'
+cmd-v = 'split vertical'
+cmd-e = 'layout tiles horizontal vertical'
+cmd-s = 'layout accordion horizontal vertical'
+cmd-t = 'layout accordion horizontal vertical'
+cmd-r = 'mode resize'
+cmd-shift-c = 'reload-config'
+cmd-z = 'workspace-back-and-forth'
+
+# Focus workspaces
+cmd-1 = 'workspace 1'
+cmd-2 = 'workspace 2'
+cmd-3 = 'workspace 3'
+cmd-4 = 'workspace 4'
+cmd-5 = 'workspace 5'
+cmd-6 = 'workspace 6'
+cmd-7 = 'workspace 7'
+cmd-8 = 'workspace 8'
+cmd-9 = 'workspace 9'
+cmd-0 = 'workspace 10'
+
+# Move windows to workspaces and follow
+cmd-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
+cmd-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
+cmd-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
+cmd-shift-4 = ['move-node-to-workspace 4', 'workspace 4']
+cmd-shift-5 = ['move-node-to-workspace 5', 'workspace 5']
+cmd-shift-6 = ['move-node-to-workspace 6', 'workspace 6']
+cmd-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
+cmd-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
+cmd-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
+cmd-shift-0 = ['move-node-to-workspace 10', 'workspace 10']
+
+# Next / previous workspace
+alt-ctrl-right = 'workspace next'
+alt-ctrl-left = 'workspace prev'
+alt-ctrl-semicolon = 'workspace next'
+alt-ctrl-j = 'workspace prev'
+
+# Apps
+cmd-w = 'exec-and-forget open -na qutebrowser || open -na "Firefox Developer Edition"'
+cmd-f = 'exec-and-forget open -na Ghostty --args -e yazi "$HOME"'
+
+# Aerospace does not support binding the raw Print key. Use a native selector
+# on a supported chord instead.
+cmd-shift-s = 'exec-and-forget screencapture -i -c'
+
+[mode.resize.binding]
+h = 'resize width -50'
+j = 'resize height +50'
+k = 'resize height -50'
+l = 'resize width +50'
+left = 'resize width -50'
+down = 'resize height +50'
+up = 'resize height -50'
+right = 'resize width +50'
+enter = 'mode main'
+esc = 'mode main'
+cmd-r = 'mode main'
+
+# App placement rules. App IDs may need small tweaks after checking
+# `aerospace list-windows --all` on the target Mac.
+[[on-window-detected]]
+if.app-id = 'org.qutebrowser.qutebrowser'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefoxdeveloperedition'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'org.whispersystems.signal-desktop'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.google.android.studio'
+run = 'move-node-to-workspace 5'
+
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = 'move-node-to-workspace 9'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systemsettings'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.calculator'
+run = 'layout floating'

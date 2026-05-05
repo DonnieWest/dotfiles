@@ -40,15 +40,15 @@ for sid in 1 2 3 4 5 6 7 8 9 10; do
     *) label="Code" ;;
   esac
 
-  sketchybar --add space space.$sid left \
-    --set space.$sid \
-      space=$sid \
+  sketchybar --add item aerospace.$sid left \
+    --set aerospace.$sid \
       icon="$sid" \
       label="$label" \
       background.drawing=on \
       background.color=$BG \
       script="$PLUGIN_DIR/space.sh" \
-    --subscribe space.$sid space_change windows_on_spaces window_focus
+      click_script="aerospace workspace $sid" \
+    --subscribe aerospace.$sid aerospace_workspace_change
 done
 
 sketchybar --add item separator left \
@@ -87,3 +87,4 @@ sketchybar --add item clock right \
   --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh"
 
 sketchybar --hotload on
+sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused 2>/dev/null)"

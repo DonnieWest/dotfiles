@@ -1,6 +1,9 @@
 #!/usr/bin/env sh
 
-if [ "$SELECTED" = "true" ]; then
+workspace="${NAME#aerospace.}"
+focused="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused 2>/dev/null)}"
+
+if [ "$focused" = "$workspace" ]; then
   sketchybar --set "$NAME" \
     background.color=0xff0c2132 \
     icon.color=0xff50fa7b \

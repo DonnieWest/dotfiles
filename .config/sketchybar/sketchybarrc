@@ -44,12 +44,6 @@ sketchybar --add item aerospace.workspaces left \
     script="$PLUGIN_DIR/aerospace_workspaces.sh" \
   --subscribe aerospace.workspaces aerospace_workspace_change
 
-sketchybar --add item battery right \
-  --set battery update_freq=30 script="$PLUGIN_DIR/battery.sh"
-
-sketchybar --add item clock right \
-  --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh"
-
 sketchybar --add item weather right \
   --set weather update_freq=600 script="$PLUGIN_DIR/weather.sh"
 
@@ -63,6 +57,9 @@ sketchybar --add item bluetooth right \
 sketchybar --add item wifi right \
   --set wifi update_freq=5 script="$PLUGIN_DIR/wifi.sh"
 
+sketchybar --add item github right \
+  --set github update_freq=300 script="$PLUGIN_DIR/github.sh"
+
 sketchybar --add item memory right \
   --set memory update_freq=10 script="$PLUGIN_DIR/memory.sh"
 
@@ -70,13 +67,13 @@ sketchybar --add item volume right \
   --set volume script="$PLUGIN_DIR/volume.sh" \
   --subscribe volume volume_change
 
+sketchybar --add item battery right \
+  --set battery update_freq=30 script="$PLUGIN_DIR/battery.sh"
+
+sketchybar --add item clock right \
+  --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh"
+
 sketchybar \
-  --set battery icon= \
-    icon.padding_left=14 icon.padding_right=8 \
-    label.padding_left=4 label.padding_right=16 \
-  --set clock icon= \
-    icon.padding_left=14 icon.padding_right=8 \
-    label.padding_left=4 label.padding_right=16 \
   --set weather icon= \
     icon.padding_left=14 icon.padding_right=8 \
     label.padding_left=4 label.padding_right=16 \
@@ -89,10 +86,19 @@ sketchybar \
   --set wifi icon= \
     icon.padding_left=14 icon.padding_right=8 \
     label.padding_left=4 label.padding_right=16 \
+  --set github icon= \
+    icon.padding_left=14 icon.padding_right=8 \
+    label.padding_left=4 label.padding_right=16 \
   --set memory icon= \
     icon.padding_left=14 icon.padding_right=8 \
     label.padding_left=4 label.padding_right=16 \
   --set volume icon= \
+    icon.padding_left=14 icon.padding_right=8 \
+    label.padding_left=4 label.padding_right=16 \
+  --set battery icon= \
+    icon.padding_left=14 icon.padding_right=8 \
+    label.padding_left=4 label.padding_right=16 \
+  --set clock icon= \
     icon.padding_left=14 icon.padding_right=8 \
     label.padding_left=4 label.padding_right=16
 

@@ -8,8 +8,17 @@ BLUE=0xff0c2132
 CACHE_DIR="${TMPDIR:-/tmp}/sketchybar-aerospace"
 WORKSPACES_FILE="$CACHE_DIR/workspaces"
 CURRENT_FILE="$CACHE_DIR/workspaces.current"
+LOCK_DIR="$CACHE_DIR/lock"
 
 mkdir -p "$CACHE_DIR"
+
+attempt=0
+while ! mkdir "$LOCK_DIR" 2>/dev/null; do
+  attempt=$((attempt + 1))
+  [ "$attempt" -ge 20 ] && exit 0
+  sleep 0.05
+done
+trap 'rmdir "$LOCK_DIR" 2>/dev/null' EXIT INT TERM
 
 item_name() {
   printf 'aerospace.%s' "$(printf '%s' "$1" | tr -c '[:alnum:]_-' '_')"
@@ -26,37 +35,36 @@ workspace_label() {
   esac
 }
 
-aerospace list-workspaces --all 2>/dev/null > "$CURRENT_FILE"
+sort_workspaces() {
+  awk '
+    /^[0-9]+$/ { printf "0 %010d %s\n", $0, $0; next }
+    { printf "1 %s %s\n", tolower($0), $0 }
+  ' | sort -k1,1 -k2,2 | cut -d " " -f 3-
+}
 
-if [ ! -s "$CURRENT_FILE" ]; then
+aerospace list-workspaces --all 2>/dev/null | sort_workspaces > "$CURRENT_FILE.$$"
+
+if [ ! -s "$CURRENT_FILE.$$" ]; then
   focused_fallback="$(aerospace list-workspaces --focused 2>/dev/null)"
-  [ -n "$focused_fallback" ] && printf '%s\n' "$focused_fallback" > "$CURRENT_FILE"
+  [ -n "$focused_fallback" ] && printf '%s\n' "$focused_fallback" > "$CURRENT_FILE.$$"
 fi
+
+mv "$CURRENT_FILE.$$" "$CURRENT_FILE"
 
 focused="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused 2>/dev/null)}"
 
 set --
 
-# A direct call from sketchybarrc is a rebuild. Remove cached items first so
-# reloads do not depend on sketchybar retaining prior item state.
-if [ -z "${SENDER:-}" ]; then
-  # Clean up the previous static 1..10 items from the pre-dynamic config.
-  for legacy_workspace in 1 2 3 4 5 6 7 8 9 10; do
-    set -- "$@" --remove "$legacy_workspace"
-  done
+# Clean up the previous static 1..10 items from the pre-dynamic config.
+for legacy_workspace in 1 2 3 4 5 6 7 8 9 10; do
+  set -- "$@" --remove "$legacy_workspace"
+done
 
-  if [ -f "$WORKSPACES_FILE" ]; then
-    while IFS= read -r workspace; do
-      [ -n "$workspace" ] && set -- "$@" --remove "$(item_name "$workspace")"
-    done < "$WORKSPACES_FILE"
-  fi
-fi
-
-if [ -f "$WORKSPACES_FILE" ] && [ -n "${SENDER:-}" ]; then
+# Rebuild workspace items every time. This preserves Aerospace's dynamic
+# workspace behavior while keeping sketchybar order deterministic.
+if [ -f "$WORKSPACES_FILE" ]; then
   while IFS= read -r workspace; do
-    if [ -n "$workspace" ] && ! grep -Fxq "$workspace" "$CURRENT_FILE"; then
-      set -- "$@" --remove "$(item_name "$workspace")"
-    fi
+    [ -n "$workspace" ] && set -- "$@" --remove "$(item_name "$workspace")"
   done < "$WORKSPACES_FILE"
 fi
 
@@ -66,22 +74,20 @@ while IFS= read -r workspace; do
   item="$(item_name "$workspace")"
   label="$(workspace_label "$workspace")"
 
-  if [ ! -f "$WORKSPACES_FILE" ] || [ -z "${SENDER:-}" ] || ! grep -Fxq "$workspace" "$WORKSPACES_FILE"; then
-    set -- "$@" \
-      --add item "$item" left \
-      --set "$item" \
-        icon="$workspace" \
-        icon.padding_left=10 \
-        icon.padding_right=6 \
-        label="$label" \
-        label.padding_left=4 \
-        label.padding_right=10 \
-        background.drawing=on \
-        background.color=$BG \
-        click_script="aerospace workspace '$workspace'" \
-        script="$0" \
-      --subscribe "$item" aerospace_workspace_change
-  fi
+  set -- "$@" \
+    --add item "$item" left \
+    --set "$item" \
+      icon="$workspace" \
+      icon.padding_left=6 \
+      icon.padding_right=4 \
+      label="$label" \
+      label.padding_left=2 \
+      label.padding_right=6 \
+      background.drawing=on \
+      background.color=$BG \
+      click_script="aerospace workspace '$workspace'" \
+      script="$0" \
+    --subscribe "$item" aerospace_workspace_change
 
   if [ "$focused" = "$workspace" ]; then
     set -- "$@" \

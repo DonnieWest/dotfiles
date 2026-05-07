@@ -13,15 +13,15 @@ BLUE=0xff0c2132
 RED=0xffff5555
 YELLOW=0xffffb86c
 
-sketchybar --bar height=40 \
+sketchybar \
+  --bar height=40 \
   position=top \
   color=$BG \
   shadow=off \
   sticky=on \
   padding_left=0 \
-  padding_right=0
-
-sketchybar --default \
+  padding_right=0 \
+  --default \
   icon.font="$ICON_FONT" \
   label.font="$FONT" \
   icon.color=$FG \
@@ -32,49 +32,47 @@ sketchybar --default \
   icon.padding_left=2 \
   icon.padding_right=2 \
   label.padding_left=2 \
-  label.padding_right=2
-
-sketchybar --add event "aerospace_workspace_change"
-
-sketchybar --add item aerospace.workspaces left \
+  label.padding_right=2 \
+  --add event aerospace_workspace_change \
+  --add item aerospace.workspaces left \
   --set aerospace.workspaces \
     drawing=off \
     updates=on \
     script="$PLUGIN_DIR/aerospace_workspaces.sh" \
-  --subscribe aerospace.workspaces aerospace_workspace_change
-
-sketchybar --add item wifi right \
-  --set wifi update_freq=5 script="$PLUGIN_DIR/wifi.sh"
-
-sketchybar --add item memory right \
-  --set memory update_freq=10 script="$PLUGIN_DIR/memory.sh"
-
-sketchybar --add item volume right \
+  --subscribe aerospace.workspaces aerospace_workspace_change \
+  --add item wifi right \
+  --set wifi \
+    update_freq=5 \
+    script="$PLUGIN_DIR/wifi.sh" \
+    icon= \
+    icon.padding_left=8 icon.padding_right=4 \
+    label.padding_left=2 label.padding_right=8 \
+  --add item memory right \
+  --set memory \
+    update_freq=10 \
+    script="$PLUGIN_DIR/memory.sh" \
+    icon= \
+    icon.padding_left=8 icon.padding_right=4 \
+    label.padding_left=2 label.padding_right=8 \
+  --add item volume right \
   --set volume script="$PLUGIN_DIR/volume.sh" \
-  --subscribe volume volume_change
-
-sketchybar --add item battery right \
-  --set battery update_freq=30 script="$PLUGIN_DIR/battery.sh"
-
-sketchybar --add item clock right \
-  --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh"
-
-sketchybar \
-  --set wifi icon= \
-    icon.padding_left=14 icon.padding_right=8 \
-    label.padding_left=4 label.padding_right=16 \
-  --set memory icon= \
-    icon.padding_left=14 icon.padding_right=8 \
-    label.padding_left=4 label.padding_right=16 \
-  --set volume icon= \
-    icon.padding_left=14 icon.padding_right=8 \
-    label.padding_left=4 label.padding_right=16 \
-  --set battery icon= \
-    icon.padding_left=14 icon.padding_right=8 \
-    label.padding_left=4 label.padding_right=16 \
-  --set clock icon= \
-    icon.padding_left=14 icon.padding_right=8 \
-    label.padding_left=4 label.padding_right=16
-
-sketchybar --hotload on
+    icon= \
+    icon.padding_left=8 icon.padding_right=4 \
+    label.padding_left=2 label.padding_right=8 \
+  --subscribe volume volume_change \
+  --add item battery right \
+  --set battery \
+    update_freq=30 \
+    script="$PLUGIN_DIR/battery.sh" \
+    icon= \
+    icon.padding_left=8 icon.padding_right=4 \
+    label.padding_left=2 label.padding_right=8 \
+  --add item clock right \
+  --set clock \
+    update_freq=10 \
+    script="$PLUGIN_DIR/clock.sh" \
+    icon= \
+    icon.padding_left=8 icon.padding_right=4 \
+    label.padding_left=2 label.padding_right=8 \
+  --hotload on
 "$PLUGIN_DIR/aerospace_workspaces.sh"

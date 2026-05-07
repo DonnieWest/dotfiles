@@ -1,0 +1,49 @@
+set hintfiltermode vimperator-reflow
+set hintnames short
+set hintdelay 100
+set tabopenpos last
+set relatedopenpos last
+set newtab about:blank
+
+" Use Brave Search when you explicitly invoke it from the command line.
+set searchurls.brave https://search.brave.com/search?q=%s
+set searchurls.b brave
+
+" Internal Firefox pages often block Tridactyl's commandline iframe.
+seturl ^about: noiframe true
+
+" qutebrowser-like tab navigation and tab lifecycle.
+bind <C-ArrowRight> tabnext
+bind <C-ArrowLeft> tabprev
+bind --mode=browser <C-ArrowRight> tabnext
+bind --mode=browser <C-ArrowLeft> tabprev
+bind <C-h> tabprev
+bind <C-j> tabprev
+bind <C-k> tabnext
+bind <C-l> tabnext
+bind <C-;> tabnext
+bind <C-Delete> tabclose
+unbind d
+bind dd tabclose
+bind x tabclose
+bind t tabopen moz-extension://e299a8c1-4153-4f09-bfef-24ace6695d3e/static/newtab.html
+
+" Match the faster qutebrowser scroll feel.
+bind j scrollline 30
+bind k scrollline -30
+
+" Match your qutebrowser hinting habits.
+bind F hint -b
+bind ;b hint -W tabopen
+
+" Simple ex aliases similar to qutebrowser.
+command q tabclose
+command qa qall
+
+" qutebrowser-style site rewrites.
+autocmd BeforeRequest https://www.reddit.com/* (details) => { const url = new URL(details.url); const redirectable = ["/r/", "/user/", "/u/", "/comments/", "/message/", "/prefs/", "/search"]; const blockedPrefixes = ["/media", "/gallery/", "/s/", "/poll/", "/avatar/", "/settings/", "/topics/"]; const blockedFragments = ["/s/", "/submit"]; if (!url.pathname || url.pathname === "/") return {}; if (!redirectable.some(prefix => url.pathname.startsWith(prefix))) return {}; if (blockedPrefixes.some(prefix => url.pathname.startsWith(prefix))) return {}; if (blockedFragments.some(fragment => url.pathname.includes(fragment))) return {}; if (url.search) return {}; url.hostname = "old.reddit.com"; return { redirectUrl: url.toString() }; }
+autocmd BeforeRequest https://reddit.com/* (details) => { const url = new URL(details.url); const redirectable = ["/r/", "/user/", "/u/", "/comments/", "/message/", "/prefs/", "/search"]; const blockedPrefixes = ["/media", "/gallery/", "/s/", "/poll/", "/avatar/", "/settings/", "/topics/"]; const blockedFragments = ["/s/", "/submit"]; if (!url.pathname || url.pathname === "/") return {}; if (!redirectable.some(prefix => url.pathname.startsWith(prefix))) return {}; if (blockedPrefixes.some(prefix => url.pathname.startsWith(prefix))) return {}; if (blockedFragments.some(fragment => url.pathname.includes(fragment))) return {}; if (url.search) return {}; url.hostname = "old.reddit.com"; return { redirectUrl: url.toString() }; }
+autocmd BeforeRequest https://medium.com/* (details) => { const url = new URL(details.url); const pathParts = url.pathname.split("/").filter(Boolean); if (url.pathname.startsWith("/u/")) return {}; if (url.pathname.startsWith("/@") && pathParts.length === 1) return {}; url.hostname = "scribe.rip"; return { redirectUrl: url.toString() }; }
+autocmd BeforeRequest https://www.medium.com/* (details) => { const url = new URL(details.url); const pathParts = url.pathname.split("/").filter(Boolean); if (url.pathname.startsWith("/u/")) return {}; if (url.pathname.startsWith("/@") && pathParts.length === 1) return {}; url.hostname = "scribe.rip"; return { redirectUrl: url.toString() }; }
+autocmd BeforeRequest https://quora.com/* (details) => { const url = new URL(details.url); url.hostname = "quetre.iket.me"; return { redirectUrl: url.toString() }; }
+autocmd BeforeRequest https://www.quora.com/* (details) => { const url = new URL(details.url); url.hostname = "quetre.iket.me"; return { redirectUrl: url.toString() }; }

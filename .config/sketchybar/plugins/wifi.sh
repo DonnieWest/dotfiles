@@ -1,11 +1,19 @@
 #!/usr/bin/env sh
 
-airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
+IP_ADDRESS=$(scutil --nwi | grep address | sed 's/.*://' | tr -d ' ' | head -1)
+IS_VPN=$(scutil --nwi | grep -m1 'utun' | awk '{ print $1 }')
 
-if [ -x "$airport" ]; then
-  ssid="$($airport -I 2>/dev/null | awk -F': ' '/ SSID/ {print $2; exit}')"
+if [[ $IS_VPN != "" ]]; then
+	ICON=
+	LABEL="VPN"
+elif [[ $IP_ADDRESS != "" ]]; then
+	ICON=
+	LABEL=$IP_ADDRESS
 else
-  ssid="$(networksetup -getairportnetwork en0 2>/dev/null | sed 's/^Current Wi-Fi Network: //')"
+	ICON=
+	LABEL="Not Connected"
 fi
 
-sketchybar --set "$NAME" label="${ssid:-disconnected}"
+sketchybar --set $NAME \
+	icon=$ICON \
+	label="$LABEL"

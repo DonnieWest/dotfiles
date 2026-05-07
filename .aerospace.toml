@@ -9,13 +9,14 @@ after-startup-command = [
 exec-on-workspace-change = [
   '/bin/sh',
   '-c',
-  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$AEROSPACE_FOCUSED_WORKSPACE"',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
-enable-normalization-flatten-containers = true
-enable-normalization-opposite-orientation-for-nested-containers = true
+enable-normalization-flatten-containers = false
+# focus-follows-mouse = true
+enable-normalization-opposite-orientation-for-nested-containers = false
 accordion-padding = 30
-persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+persistent-workspaces = []
 
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
@@ -28,7 +29,7 @@ inner.horizontal = 0
 inner.vertical = 0
 outer.left = 0
 outer.bottom = 0
-outer.top = 40
+outer.top = 0
 outer.right = 0
 
 [key-mapping]
@@ -37,8 +38,6 @@ preset = 'qwerty'
 [mode.main.binding]
 # Terminal and launcher
 cmd-enter = 'exec-and-forget open -na Ghostty'
-cmd-d = 'exec-and-forget open -na Raycast'
-cmd-f9 = 'exec-and-forget open -na Raycast'
 
 # Window lifecycle
 cmd-q = 'close'
@@ -117,7 +116,7 @@ alt-ctrl-semicolon = 'workspace next'
 alt-ctrl-j = 'workspace prev'
 
 # Apps
-cmd-w = 'exec-and-forget open -na qutebrowser || open -na "Firefox Developer Edition"'
+cmd-w = 'exec-and-forget open -na "Firefox"'
 cmd-f = 'exec-and-forget open -na Ghostty --args -e yazi "$HOME"'
 
 # Aerospace does not support binding the raw Print key. Use a native selector
@@ -145,6 +144,10 @@ run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
 if.app-id = 'org.mozilla.firefoxdeveloperedition'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]

@@ -17,8 +17,9 @@ sketchybar --bar height=40 \
   color=$BG \
   shadow=off \
   sticky=on \
-  padding_left=8 \
-  padding_right=8
+  notch_width=1000 \
+  padding_left=0 \
+  padding_right=0
 
 sketchybar --default \
   icon.font="$FONT" \
@@ -27,9 +28,9 @@ sketchybar --default \
   label.color=$FG \
   background.color=$BG \
   background.height=28 \
-  background.corner_radius=6 \
-  padding_left=6 \
-  padding_right=6
+  background.corner_radius=6
+
+sketchybar --add event "aerospace_workspace_change"
 
 for sid in 1 2 3 4 5 6 7 8 9 10; do
   case "$sid" in
@@ -40,19 +41,25 @@ for sid in 1 2 3 4 5 6 7 8 9 10; do
     *) label="Code" ;;
   esac
 
-  sketchybar --add item aerospace.$sid left \
-    --set aerospace.$sid \
+  sketchybar --add item $sid left \
+    --set $sid \
       icon="$sid" \
+      icon.padding_right="6" \
+      icon.padding_left="10" \
+      label.padding_right="10" \
       label="$label" \
       background.drawing=on \
       background.color=$BG \
       script="$PLUGIN_DIR/space.sh" \
       click_script="aerospace workspace $sid" \
-    --subscribe aerospace.$sid aerospace_workspace_change
+    --subscribe $sid aerospace_workspace_change
 done
 
-sketchybar --add item separator left \
-  --set separator icon="|" label.drawing=off icon.color=$CYAN background.drawing=off
+sketchybar --add item battery right \
+  --set battery update_freq=30 script="$PLUGIN_DIR/battery.sh"
+
+sketchybar --add item clock right \
+  --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh"
 
 sketchybar --add item weather right \
   --set weather update_freq=600 script="$PLUGIN_DIR/weather.sh"
@@ -65,13 +72,7 @@ sketchybar --add item bluetooth right \
   --set bluetooth update_freq=60 script="$PLUGIN_DIR/bluetooth.sh"
 
 sketchybar --add item wifi right \
-  --set wifi update_freq=30 script="$PLUGIN_DIR/wifi.sh"
-
-sketchybar --add item vpn right \
-  --set vpn update_freq=5 script="$PLUGIN_DIR/vpn.sh"
-
-sketchybar --add item github right \
-  --set github update_freq=300 script="$PLUGIN_DIR/github.sh"
+  --set wifi update_freq=5 script="$PLUGIN_DIR/wifi.sh"
 
 sketchybar --add item memory right \
   --set memory update_freq=10 script="$PLUGIN_DIR/memory.sh"
@@ -80,11 +81,6 @@ sketchybar --add item volume right \
   --set volume script="$PLUGIN_DIR/volume.sh" \
   --subscribe volume volume_change
 
-sketchybar --add item battery right \
-  --set battery update_freq=30 script="$PLUGIN_DIR/battery.sh"
-
-sketchybar --add item clock right \
-  --set clock update_freq=10 script="$PLUGIN_DIR/clock.sh"
 
 sketchybar --hotload on
 sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused 2>/dev/null)"

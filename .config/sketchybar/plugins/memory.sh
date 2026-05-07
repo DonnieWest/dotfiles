@@ -11,5 +11,6 @@ used="$(vm_stat | awk '
     printf "%.1fG", (active + wired + compressed) * 4096 / 1024 / 1024 / 1024
   }
 ')"
+total="$(sysctl -n hw.memsize 2>/dev/null | awk '{ printf "%.1fG", $1 / 1024 / 1024 / 1024 }')"
 
-sketchybar --set "$NAME" label="$used"
+sketchybar --set "$NAME" label="$used / $total"

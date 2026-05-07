@@ -1,9 +1,20 @@
 #!/usr/bin/env sh
 
-powered="$(system_profiler SPBluetoothDataType 2>/dev/null | awk -F': ' '/Bluetooth Power/ {print $2; exit}')"
+if ! command -v blueutil >/dev/null 2>&1; then
+  sketchybar --set "$NAME" icon="" label="blueutil?" label.color=0xffffb86c
+  exit 0
+fi
 
-if [ "$powered" = "On" ]; then
-  sketchybar --set "$NAME" label="BT"
+powered="$(blueutil -p 2>/dev/null)"
+
+if [ "$powered" = "1" ]; then
+  connected="$(blueutil --connected --format json 2>/dev/null | jq 'length' 2>/dev/null)"
+  connected="${connected:-0}"
+  if [ "$connected" = "0" ]; then
+    sketchybar --set "$NAME" icon="" label="on"
+  else
+    sketchybar --set "$NAME" icon="" label="$connected"
+  fi
 else
-  sketchybar --set "$NAME" label=""
+  sketchybar --set "$NAME" icon="" label="off" label.color=0xffff5555
 fi

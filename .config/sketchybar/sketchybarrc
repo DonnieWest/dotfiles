@@ -4,6 +4,7 @@ CONFIG_DIR="$HOME/.config/sketchybar"
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 
 FONT="Victor Mono:Semibold:14.0"
+ICON_FONT="VictorMono Nerd Font:Semibold:15.0"
 BG=0xff03090e
 FG=0xffe6f9f7
 GREEN=0xff50fa7b
@@ -22,38 +23,26 @@ sketchybar --bar height=40 \
   padding_right=0
 
 sketchybar --default \
-  icon.font="$FONT" \
+  icon.font="$ICON_FONT" \
   label.font="$FONT" \
   icon.color=$FG \
   label.color=$FG \
   background.color=$BG \
   background.height=28 \
-  background.corner_radius=6
+  background.corner_radius=6 \
+  icon.padding_left=8 \
+  icon.padding_right=6 \
+  label.padding_left=4 \
+  label.padding_right=8
 
 sketchybar --add event "aerospace_workspace_change"
 
-for sid in 1 2 3 4 5 6 7 8 9 10; do
-  case "$sid" in
-    1) label="Browser" ;;
-    2) label="Chat" ;;
-    3) label="Terminal" ;;
-    4) label="Emulator" ;;
-    *) label="Code" ;;
-  esac
-
-  sketchybar --add item $sid left \
-    --set $sid \
-      icon="$sid" \
-      icon.padding_right="6" \
-      icon.padding_left="10" \
-      label.padding_right="10" \
-      label="$label" \
-      background.drawing=on \
-      background.color=$BG \
-      script="$PLUGIN_DIR/space.sh" \
-      click_script="aerospace workspace $sid" \
-    --subscribe $sid aerospace_workspace_change
-done
+sketchybar --add item aerospace.workspaces left \
+  --set aerospace.workspaces \
+    drawing=off \
+    updates=on \
+    script="$PLUGIN_DIR/aerospace_workspaces.sh" \
+  --subscribe aerospace.workspaces aerospace_workspace_change
 
 sketchybar --add item battery right \
   --set battery update_freq=30 script="$PLUGIN_DIR/battery.sh"
@@ -81,6 +70,31 @@ sketchybar --add item volume right \
   --set volume script="$PLUGIN_DIR/volume.sh" \
   --subscribe volume volume_change
 
+sketchybar \
+  --set battery icon= \
+    icon.padding_left=14 icon.padding_right=8 \
+    label.padding_left=4 label.padding_right=16 \
+  --set clock icon= \
+    icon.padding_left=14 icon.padding_right=8 \
+    label.padding_left=4 label.padding_right=16 \
+  --set weather icon= \
+    icon.padding_left=14 icon.padding_right=8 \
+    label.padding_left=4 label.padding_right=16 \
+  --set media icon= \
+    icon.padding_left=14 icon.padding_right=8 \
+    label.padding_left=4 label.padding_right=16 \
+  --set bluetooth icon= \
+    icon.padding_left=14 icon.padding_right=8 \
+    label.padding_left=4 label.padding_right=16 \
+  --set wifi icon= \
+    icon.padding_left=14 icon.padding_right=8 \
+    label.padding_left=4 label.padding_right=16 \
+  --set memory icon= \
+    icon.padding_left=14 icon.padding_right=8 \
+    label.padding_left=4 label.padding_right=16 \
+  --set volume icon= \
+    icon.padding_left=14 icon.padding_right=8 \
+    label.padding_left=4 label.padding_right=16
 
 sketchybar --hotload on
-sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$(aerospace list-workspaces --focused 2>/dev/null)"
+"$PLUGIN_DIR/aerospace_workspaces.sh"

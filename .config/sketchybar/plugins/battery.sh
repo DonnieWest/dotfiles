@@ -1,10 +1,11 @@
 #!/usr/bin/env sh
 
-percent="$(pmset -g batt | awk -F '[%;]' '/%/ {print $2; exit}' | tr -d ' ')"
-charging="$(pmset -g batt | grep -q "AC Power" && echo true || echo false)"
+battery_info="$(pmset -g batt 2>/dev/null)"
+percent="$(printf '%s\n' "$battery_info" | grep -Eo '[0-9]+%' | head -1 | tr -d '%')"
+charging="$(printf '%s\n' "$battery_info" | grep -q 'AC Power' && echo true || echo false)"
 
 if [ "$charging" = "true" ]; then
-  sketchybar --set "$NAME" label="${percent:-0}%+" label.padding_left=10
+  sketchybar --set "$NAME" icon="" label="${percent:-0}%"
 else
-  sketchybar --set "$NAME" label="${percent:-0}%" label.padding_left=10
+  sketchybar --set "$NAME" icon="" label="${percent:-0}%"
 fi

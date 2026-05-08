@@ -680,22 +680,23 @@ acli-jira-format-issues() {
   jq -r '
     def items:
       if type == "array" then .[]
-      elif has("issues") then .issues[]
-      elif has("workItems") then .workItems[]
-      elif has("results") then .results[]
-      elif has("values") then .values[]
+      elif type == "object" and has("issues") then .issues[]
+      elif type == "object" and has("workItems") then .workItems[]
+      elif type == "object" and has("results") then .results[]
+      elif type == "object" and has("values") then .values[]
       else .
       end;
     def field($name):
-      if has($name) then .[$name]
-      elif .fields and (.fields | has($name)) then .fields[$name]
+      if type != "object" then null
+      elif has($name) then .[$name]
+      elif (.fields | type) == "object" and (.fields | has($name)) then .fields[$name]
       else null
       end;
     def text:
       if type == "object" then (.displayName // .name // .value // .key // .accountId // "")
       else (. // "")
       end;
-    items | [field("key") | text, field("status") | text, field("assignee") | text, field("summary") | text] | @tsv
+    items | select(type == "object") | [field("key") | text, field("status") | text, field("assignee") | text, field("summary") | text] | @tsv
   '
 }
 

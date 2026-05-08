@@ -671,6 +671,126 @@ add-missing-jira-fix-versions() {
   done
 }
 
+# Atlassian CLI Jira helpers. These intentionally avoid project-specific fields.
+acli-jira-default-jql() {
+  echo 'assignee = currentUser() AND statusCategory != Done ORDER BY updated DESC'
+}
+
+acli-jira-format-issues() {
+  jq -r '
+    def items:
+      if type == "array" then .[]
+      elif has("issues") then .issues[]
+      elif has("workItems") then .workItems[]
+      elif has("results") then .results[]
+      elif has("values") then .values[]
+      else .
+      end;
+    def field($name):
+      if has($name) then .[$name]
+      elif .fields and (.fields | has($name)) then .fields[$name]
+      else null
+      end;
+    def text:
+      if type == "object" then (.displayName // .name // .value // .key // .accountId // "")
+      else (. // "")
+      end;
+    items | [field("key") | text, field("status") | text, field("assignee") | text, field("summary") | text] | @tsv
+  '
+}
+
+acli-jira-issues() {
+  local jql="${*:-$(acli-jira-default-jql)}"
+  acli jira workitem search --jql "$jql" --fields 'key,status,assignee,summary' --paginate --json |
+    acli-jira-format-issues
+}
+
+acli-jira-list() {
+  local jql="${*:-$(acli-jira-default-jql)}"
+  acli-jira-issues "$jql" |
+    column -t -s $'\t'
+}
+
+acli-jira-search() {
+  local jql="${*:-$(acli-jira-default-jql)}"
+  acli jira workitem search --jql "$jql" --fields 'key,status,assignee,summary' --paginate
+}
+
+acli-jira-mine() {
+  acli-jira-list "$(acli-jira-default-jql)"
+}
+
+acli-jira-pick() {
+  local jql="${*:-$(acli-jira-default-jql)}"
+  acli-jira-issues "$jql" | fzf --delimiter=$'\t' --with-nth='1,2,3,4' --prompt='Jira issue: '
+}
+
+acli-jira-pick-key() {
+  local selected
+  selected="$(acli-jira-pick "$@")" || return
+  awk -F $'\t' '{print $1}' <<< "$selected"
+}
+
+acli-jira-pick-keys() {
+  local jql="${*:-$(acli-jira-default-jql)}"
+  acli-jira-issues "$jql" |
+    fzf --multi --delimiter=$'\t' --with-nth='1,2,3,4' --prompt='Jira issues: ' |
+    awk -F $'\t' '{print $1}' |
+    paste -sd, -
+}
+
+acli-jira-view() {
+  local issue="${1:-$(acli-jira-pick-key)}"
+  [[ -n "$issue" ]] && acli jira workitem view "$issue" --fields 'key,summary,status,assignee,reporter,description'
+}
+
+acli-jira-open() {
+  local issue="${1:-$(acli-jira-pick-key)}"
+  [[ -n "$issue" ]] && acli jira workitem view "$issue" --web
+}
+
+acli-jira-transition() {
+  local keys status
+  keys="$(acli-jira-pick-keys)" || return
+  [[ -z "$keys" ]] && return
+  status="$(printf 'To Do\nIn Progress\nIn Review\nDone\n' | fzf --print-query --prompt='Target status: ' | tail -1 | xargs)"
+  [[ -n "$status" ]] && acli jira workitem transition --key "$keys" --status "$status" --yes
+}
+
+acli-jira-assign-me() {
+  local keys
+  keys="$(acli-jira-pick-keys)" || return
+  [[ -n "$keys" ]] && acli jira workitem assign --key "$keys" --assignee '@me' --yes
+}
+
+acli-jira-comment() {
+  local issue body
+  issue="${1:-$(acli-jira-pick-key)}"
+  [[ -z "$issue" ]] && return
+  body="${*:2}"
+  if [[ -z "$body" ]]; then
+    acli jira workitem comment create --key "$issue" --editor
+    return
+  fi
+  acli jira workitem comment create --key "$issue" --body "$body"
+}
+
+acli-jira-copy-key() {
+  local issue="${1:-$(acli-jira-pick-key)}"
+  [[ -n "$issue" ]] && echo -n "$issue" | copy_clipboard
+}
+
+acli-jira-branch() {
+  local selected key summary branch
+  selected="$(acli-jira-pick "$@")" || return
+  [[ -z "$selected" ]] && return
+  key="$(awk -F $'\t' '{print $1}' <<< "$selected")"
+  summary="$(awk -F $'\t' '{print $4}' <<< "$selected")"
+  branch="${key}-$(tr '[:upper:]' '[:lower:]' <<< "$summary" | sed -E 's/[^a-z0-9]+/-/g;s/^-//;s/-$//;s/-+/-/g' | cut -c1-60)"
+  echo -n "$branch" | copy_clipboard
+  echo "$branch"
+}
+
 if [[ -f /etc/arch-release ]]; then
   alias ua-drop-caches='sudo paccache -rk3; yay -Sc --aur --noconfirm'
   alias ua-update-all='export TMPFILE="$(mktemp)"; \

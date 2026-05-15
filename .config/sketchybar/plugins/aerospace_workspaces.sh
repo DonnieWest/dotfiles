@@ -52,57 +52,96 @@ fi
 mv "$CURRENT_FILE.$$" "$CURRENT_FILE"
 
 focused="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused 2>/dev/null)}"
+previous="${PREVIOUS_WORKSPACE:-}"
+workspaces_changed=1
+
+if [ -f "$WORKSPACES_FILE" ] && cmp -s "$CURRENT_FILE" "$WORKSPACES_FILE"; then
+  first_workspace=""
+  IFS= read -r first_workspace < "$CURRENT_FILE"
+
+  if [ -n "$first_workspace" ] && sketchybar --query "$(item_name "$first_workspace")" >/dev/null 2>&1; then
+    workspaces_changed=0
+  fi
+fi
 
 set --
 
-# Clean up the previous static 1..10 items from the pre-dynamic config.
-for legacy_workspace in 1 2 3 4 5 6 7 8 9 10; do
-  set -- "$@" --remove "$legacy_workspace"
-done
+if [ "$workspaces_changed" -eq 1 ]; then
+  # Clean up the previous static 1..10 items from the pre-dynamic config.
+  for legacy_workspace in 1 2 3 4 5 6 7 8 9 10; do
+    set -- "$@" --remove "$legacy_workspace"
+  done
 
-# Rebuild workspace items every time. This preserves Aerospace's dynamic
-# workspace behavior while keeping sketchybar order deterministic.
-if [ -f "$WORKSPACES_FILE" ]; then
-  while IFS= read -r workspace; do
-    [ -n "$workspace" ] && set -- "$@" --remove "$(item_name "$workspace")"
-  done < "$WORKSPACES_FILE"
-fi
-
-while IFS= read -r workspace; do
-  [ -z "$workspace" ] && continue
-
-  item="$(item_name "$workspace")"
-  label="$(workspace_label "$workspace")"
-
-  set -- "$@" \
-    --add item "$item" left \
-    --set "$item" \
-      icon="$workspace" \
-      icon.padding_left=6 \
-      icon.padding_right=4 \
-      label="$label" \
-      label.padding_left=2 \
-      label.padding_right=6 \
-      background.drawing=on \
-      background.color=$BG \
-      click_script="aerospace workspace '$workspace'" \
-      script="$0" \
-    --subscribe "$item" aerospace_workspace_change
-
-  if [ "$focused" = "$workspace" ]; then
-    set -- "$@" \
-      --set "$item" \
-        background.color=$BLUE \
-        icon.color=$GREEN \
-        label.color=$GREEN
-  else
-    set -- "$@" \
-      --set "$item" \
-        background.color=$BG \
-        icon.color=$FG \
-        label.color=$FG
+  if [ -f "$WORKSPACES_FILE" ]; then
+    while IFS= read -r workspace; do
+      [ -n "$workspace" ] && set -- "$@" --remove "$(item_name "$workspace")"
+    done < "$WORKSPACES_FILE"
   fi
-done < "$CURRENT_FILE"
+
+  while IFS= read -r workspace; do
+    [ -z "$workspace" ] && continue
+
+    item="$(item_name "$workspace")"
+    label="$(workspace_label "$workspace")"
+
+    set -- "$@" \
+      --add item "$item" left \
+      --set "$item" \
+        icon="$workspace" \
+        icon.padding_left=6 \
+        icon.padding_right=4 \
+        label="$label" \
+        label.padding_left=2 \
+        label.padding_right=6 \
+        background.drawing=on \
+        background.color=$BG \
+        click_script="aerospace workspace '$workspace'"
+
+    if [ "$focused" = "$workspace" ]; then
+      set -- "$@" \
+        --set "$item" \
+          background.color=$BLUE \
+          icon.color=$GREEN \
+          label.color=$GREEN
+    else
+      set -- "$@" \
+        --set "$item" \
+          background.color=$BG \
+          icon.color=$FG \
+          label.color=$FG
+    fi
+  done < "$CURRENT_FILE"
+elif [ -n "$previous" ] && [ "$previous" != "$focused" ]; then
+  set -- "$@" \
+    --set "$(item_name "$previous")" \
+      background.color=$BG \
+      icon.color=$FG \
+      label.color=$FG
+
+  [ -n "$focused" ] && set -- "$@" \
+    --set "$(item_name "$focused")" \
+      background.color=$BLUE \
+      icon.color=$GREEN \
+      label.color=$GREEN
+else
+  while IFS= read -r workspace; do
+    [ -z "$workspace" ] && continue
+
+    if [ "$focused" = "$workspace" ]; then
+      set -- "$@" \
+        --set "$(item_name "$workspace")" \
+          background.color=$BLUE \
+          icon.color=$GREEN \
+          label.color=$GREEN
+    else
+      set -- "$@" \
+        --set "$(item_name "$workspace")" \
+          background.color=$BG \
+          icon.color=$FG \
+          label.color=$FG
+    fi
+  done < "$CURRENT_FILE"
+fi
 
 cp "$CURRENT_FILE" "$WORKSPACES_FILE"
 

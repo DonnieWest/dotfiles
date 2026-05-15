@@ -9,4 +9,4 @@ previous="${AEROSPACE_PREV_WORKSPACE:-}"
 [ -n "$focused" ] && printf '%s\n' "$focused" > "$CACHE_DIR/focused"
 [ -n "$previous" ] && printf '%s\n' "$previous" > "$CACHE_DIR/previous"
 
-sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$focused"
+sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE="$focused" PREVIOUS_WORKSPACE="$previous"

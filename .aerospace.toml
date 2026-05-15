@@ -77,12 +77,10 @@ cmd-alt-f = 'fullscreen'
 cmd-shift-space = 'layout floating tiling'
 cmd-space = 'layout floating tiling'
 cmd-h = 'split horizontal'
-cmd-v = 'split vertical'
 cmd-e = 'layout tiles horizontal vertical'
 cmd-s = 'layout accordion horizontal vertical'
 cmd-t = 'layout accordion horizontal vertical'
 cmd-r = 'mode resize'
-cmd-shift-c = 'reload-config'
 cmd-z = 'workspace-back-and-forth'
 
 # Focus workspaces

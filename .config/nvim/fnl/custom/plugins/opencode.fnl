@@ -7,6 +7,38 @@
            (set vim.o.autoread true)
            ;; Helper local for cleaner code
            (local oc (require :opencode))
+           (let [normalize-url (fn [target]
+                                 (let [target (vim.trim target)]
+                                   (if (= target "")
+                                       nil
+                                       (target:match "^%d+$")
+                                       (.. "http://localhost:" target)
+                                       (target:match "^https?://")
+                                       target
+                                       (.. "http://" target))))
+                 connect (fn [target]
+                           (let [url (normalize-url target)]
+                             (if (not url)
+                                 (vim.notify "Usage: OpencodeConnect <port-or-url>"
+                                             vim.log.levels.ERROR
+                                             {:title :opencode})
+                                 (let [server-mod (require :opencode.server)
+                                       promise (server-mod.new url)
+                                       connected-promise (promise:next (fn [server] (server:connect)))
+                                       notified-promise (connected-promise:next
+                                                         (fn [server]
+                                                           (vim.notify (.. "Connected to opencode at "
+                                                                           (server:display_name))
+                                                                       vim.log.levels.INFO
+                                                                       {:title :opencode})))]
+                                   (notified-promise:catch
+                                    (fn [err]
+                                      (vim.notify (or err (.. "Failed to connect to opencode at " url))
+                                                  vim.log.levels.ERROR
+                                                  {:title :opencode})))))))]
+             (vim.api.nvim_create_user_command :OpencodeConnect
+                                               (fn [opts] (connect opts.args))
+                                               {:nargs 1}))
            ;; Recommended/example keymaps
            (vim.keymap.set [:n :x] :<C-a>
                            (fn [] (oc.ask "@this: " {:submit true}))

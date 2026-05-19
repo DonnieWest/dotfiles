@@ -7,12 +7,12 @@
                 :Kaiser-Yang/blink-cmp-avante
                 :PaterJason/cmp-conjure]
  :init (fn []
-          (let [cmp (require :blink.cmp)
-                kotlin-completion (require :custom.kotlin_completion)]
-            (kotlin-completion.register)
-            (vim.keymap.set :i :<C-x><C-o>
-                            (fn []
-                              (cmp.show)
+         (let [cmp (require :blink.cmp)
+               kotlin-completion (require :custom.kotlin_completion)]
+           (kotlin-completion.register)
+           (vim.keymap.set :i :<C-x><C-o>
+                           (fn []
+                             (cmp.show)
                              (cmp.show_documentation)
                              (cmp.hide_documentation))
                            {:silent false})))
@@ -23,8 +23,14 @@
                            :<Down> [:select_next :fallback]
                            :<S-Tab> [:select_prev :fallback]}}
         :keymap {:preset :enter
-                 :<Tab> [:select_next :fallback]
-                 :<S-Tab> [:select_prev :fallback]}
+                 :<Tab> [(fn [cmp]
+                           (when (cmp.is_active)
+                             (cmp.insert_next)))
+                         :fallback]
+                 :<S-Tab> [(fn [cmp]
+                             (when (cmp.is_active)
+                               (cmp.insert_prev)))
+                           :fallback]}
         :signature {:enabled true}
         :completion {:ghost_text {:enabled false}
                      :menu {:draw {:treesitter [:lsp]}}

@@ -34,10 +34,18 @@
 
 (fn enable-treesitter [event]
   (let [bufnr event.buf
-        filetype (vim.api.nvim_get_option_value :filetype {:buf bufnr})]
+        filetype (vim.api.nvim_get_option_value :filetype {:buf bufnr})
+        skip-indent [:markdown
+                     :javascript
+                     :javascriptreact
+                     :javascript.jsx
+                     :typescript
+                     :typescriptreact
+                     :typescript.tsx
+                     :tsx]]
     (when (not= filetype :markdown)
       (let [(ok _) (pcall vim.treesitter.start bufnr)]
-        (when ok
+        (when (and ok (not (vim.tbl_contains skip-indent filetype)))
           (vim.api.nvim_set_option_value :indentexpr
                                          "v:lua.require'nvim-treesitter'.indentexpr()"
                                          {:buf bufnr}))))))
@@ -76,7 +84,6 @@
                           :yaml
                           :toml
                           :markdown
-                          :python
                           :java
                           :kotlin
                           :clojure

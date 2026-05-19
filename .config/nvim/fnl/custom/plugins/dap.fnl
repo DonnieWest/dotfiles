@@ -1,13 +1,16 @@
 {1 :mfussenegger/nvim-dap
- :dependencies [{1 :rcarriga/nvim-dap-ui :opts {}}
-                :nvim-neotest/nvim-nio
-                {1 :theHamsta/nvim-dap-virtual-text :opts {}}
-                :igorlfs/nvim-dap-view
-                :nvim-telescope/telescope-dap.nvim
-                {1 :mfussenegger/nvim-dap-python :ft :python}]
- :config (fn []
-           (let [dap (require :dap)
-                 dapui (require :dapui)]
+  :dependencies [{1 :rcarriga/nvim-dap-ui :opts {}}
+                 :nvim-neotest/nvim-nio
+                 {1 :theHamsta/nvim-dap-virtual-text :opts {}}
+                 :igorlfs/nvim-dap-view
+                 :nvim-telescope/telescope-dap.nvim
+                  {1 :mxsdev/nvim-dap-vscode-js
+                   :dependencies [{1 :microsoft/vscode-js-debug
+                                   :build "curl -L https://github.com/microsoft/vscode-js-debug/releases/download/v1.117.0/js-debug-dap-v1.117.0.tar.gz -o js-debug-dap.tar.gz && rm -rf out && tar -xzf js-debug-dap.tar.gz && mv js-debug out && rm js-debug-dap.tar.gz"}]}]
+  :config (fn []
+            (let [dap (require :dap)
+                  dapui (require :dapui)
+                  dap-vscode-js (require :dap-vscode-js)]
              ;; Auto-open/close UI
              (tset dap.listeners.before.event_terminated :dapui_config
                    (fn [] (dapui.close)))
@@ -15,85 +18,59 @@
                    (fn [] (dapui.close)))
              (tset dap.listeners.after.event_initialized :dapui_config
                    (fn [] (dapui.open)))
-             ;; Node.js debugger adapter - uses pwa-node (built-in inspector protocol)
-             (set dap.adapters.pwa-node
-                  {:type :server
-                   :host :localhost
-                   :port "${port}"
-                   :executable {:command :node
-                                :args [(vim.fn.expand "~/.local/share/nvim/dap-adapters/js-debug/src/dapDebugServer.js")
-                                       "${port}"]}})
-             ;; Chrome/React Native debugger (requires: npm install -g debugger-for-chrome)
-             (set dap.adapters.chrome
-                  {:type :executable
-                   :command :node
-                   :args [(vim.fn.expand "~/.local/share/nvim/dap-adapters/vscode-chrome-debug/out/src/chromeDebug.js")]})
-             ;; Configurations for JavaScript/TypeScript/React Native
-             (set dap.configurations.javascript
-                  [{:type :chrome
-                    :request :attach
-                    :name "Attach to Chrome (React Native)"
-                    :port 9222
-                    :sourceMaps true
-                    :webRoot (vim.fn.getcwd)
-                    :sourceMapPathOverrides {"webpack:///./*" "${webRoot}/*"
-                                             "webpack:///src/*" "${webRoot}/*"
-                                             "webpack:///*" "*"
-                                             "webpack:///./~/*" "${webRoot}/node_modules/*"}}])
+              (dap-vscode-js.setup {:debugger_path (.. (vim.fn.stdpath :data)
+                                                       :/lazy/vscode-js-debug)
+                                    :debugger_cmd [:node
+                                                   (.. (vim.fn.stdpath :data)
+                                                       :/lazy/vscode-js-debug/out/src/dapDebugServer.js)]
+                                    :adapters [:pwa-node
+                                               :pwa-chrome
+                                               :node-terminal
+                                               :pwa-extensionHost]})
+              ;; Configurations for JavaScript/TypeScript/Vite
+              (set dap.configurations.javascript
+                   [{:type :pwa-node
+                     :request :launch
+                     :name "Launch current file"
+                     :program "${file}"
+                     :cwd "${workspaceFolder}"
+                     :console :integratedTerminal
+                     :sourceMaps true
+                     :skipFiles ["<node_internals>/**" "node_modules/**"]}
+                    {:type :pwa-node
+                     :request :attach
+                     :name "Attach to Node process"
+                     :processId (fn [] ((. (require :dap.utils) :pick_process)))
+                     :cwd "${workspaceFolder}"
+                     :sourceMaps true
+                     :skipFiles ["<node_internals>/**" "node_modules/**"]}
+                    {:type :pwa-chrome
+                     :request :attach
+                     :name "Attach to Chrome (Vite)"
+                     :port 9222
+                     :url "http://localhost:5173"
+                     :webRoot "${workspaceFolder}"
+                     :sourceMaps true}
+                    {:type :pwa-node
+                     :request :launch
+                     :name "Debug Vitest current file"
+                     :runtimeExecutable :node
+                     :runtimeArgs [:--inspect-brk
+                                   "${workspaceFolder}/node_modules/vitest/vitest.mjs"
+                                   :run
+                                   "${file}"
+                                   :--no-file-parallelism]
+                     :cwd "${workspaceFolder}"
+                     :console :integratedTerminal
+                     :sourceMaps true
+                     :skipFiles ["<node_internals>/**" "node_modules/**"]}])
              ;; TypeScript/React use same configs
              (set dap.configurations.typescript dap.configurations.javascript)
              (set dap.configurations.typescriptreact
                   dap.configurations.javascript)
              (set dap.configurations.javascriptreact
                   dap.configurations.javascript)
-             ;; Python debugging (requires: pip install debugpy)
-             (let [dap-python (require :dap-python)]
-               ;; Use debugpy from current python environment
-               (dap-python.setup (or (vim.fn.exepath :python3) :python3))
-               ;; Python configurations
-               (set dap.configurations.python
-                    [{:type :python
-                      :request :launch
-                      :name "Launch file"
-                      :program "${file}"
-                      :pythonPath (fn []
-                                    (or (vim.fn.exepath :python)
-                                        (vim.fn.exepath :python3) :python3))}
-                     {:type :python
-                      :request :launch
-                      :name "Launch with arguments"
-                      :program "${file}"
-                      :args (fn []
-                              (let [args (vim.fn.input "Arguments: ")]
-                                (vim.split args " +")))
-                      :pythonPath (fn []
-                                    (or (vim.fn.exepath :python)
-                                        (vim.fn.exepath :python3) :python3))}
-                     {:type :python
-                      :request :launch
-                      :name "Pytest: Current File"
-                      :module :pytest
-                      :args ["${file}" :-v]
-                      :console :integratedTerminal
-                      :pythonPath (fn []
-                                    (or (vim.fn.exepath :python)
-                                        (vim.fn.exepath :python3) :python3))}
-                     {:type :python
-                      :request :launch
-                      :name "Pytest: All Tests"
-                      :module :pytest
-                      :args [:-v]
-                      :console :integratedTerminal
-                      :pythonPath (fn []
-                                    (or (vim.fn.exepath :python)
-                                        (vim.fn.exepath :python3) :python3))}
-                     {:type :python
-                      :request :attach
-                      :name "Attach to Remote"
-                      :connect {:host :localhost :port 5678}
-                      :pathMappings [{:localRoot (vim.fn.getcwd)
-                                      :remoteRoot "."}]}]))
-             ;; Java debugging (requires: JDTLS running with java-debug plugin)
+              ;; Java debugging (requires: JDTLS running with java-debug plugin)
              ;; The adapter will be configured by nvim-java/JDTLS
              ;; Java configurations for Maven and Gradle projects
              (set dap.configurations.java

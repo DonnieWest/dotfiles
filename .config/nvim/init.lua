@@ -57,11 +57,16 @@ end
 -- Add plugins to table
 local plugins_path = vim.fn.stdpath("config") .. "/fnl/custom/plugins"
 if vim.loop.fs_stat(plugins_path) then
+  local plugin_files = {}
   for file in vim.fs.dir(plugins_path) do
     local name = file:match("^(.*)%.fnl$")
     if name then
-      plugins[#plugins + 1] = require("custom.plugins." .. name)
+      plugin_files[#plugin_files + 1] = name
     end
+  end
+  table.sort(plugin_files)
+  for _, name in ipairs(plugin_files) do
+    plugins[#plugins + 1] = require("custom.plugins." .. name)
   end
 end
 

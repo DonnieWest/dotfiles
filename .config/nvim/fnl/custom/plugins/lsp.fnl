@@ -7,11 +7,34 @@
            (let [cmp (require :blink.cmp)
                  typescript (require :typescript-tools)
                  navic (require :nvim-navic)
+                 data-path (vim.fn.stdpath :data)
+                 lazy-path (fn [path] (.. data-path :/lazy/ path))
+                 sysname (. (vim.uv.os_uname) :sysname)
+                 jls-script (lazy-path (if (= sysname :Darwin)
+                                           :jls/dist/lang_server_mac.sh
+                                           :jls/dist/lang_server_linux.sh))
+                 kotlin-ls (lazy-path :kotlin-language-server/server/build/install/server/bin/kotlin-language-server)
+                 diagnostic-set vim.diagnostic.set
+                 filter-ts7016-diagnostics (fn [diagnostics]
+                                             (vim.tbl_filter (fn [diagnostic]
+                                                               (let [code (or diagnostic.code
+                                                                              (and diagnostic.user_data
+                                                                                   diagnostic.user_data.lsp
+                                                                                   diagnostic.user_data.lsp.code))]
+                                                                 (not= (tostring code)
+                                                                       :7016)))
+                                                             (or diagnostics [])))
+                 filter-ts7016 (fn [err result ctx config]
+                                 (when result
+                                   (set result.diagnostics
+                                        (filter-ts7016-diagnostics result.diagnostics)))
+                                 (vim.lsp.diagnostic.on_publish_diagnostics err
+                                                                            result
+                                                                            ctx
+                                                                            config))
                  servers {:fennel_ls {}
                           :csharp_ls {}
-                          :jls {:cmd [(.. (vim.fn.stdpath :data)
-                                          :/lazy/jls/dist/lang_server_linux.sh)
-                                      :--status]
+                          :jls {:cmd [jls-script :--status]
                                 :filetypes [:java]
                                 :root_markers [:.git
                                                :pom.xml
@@ -22,14 +45,8 @@
                                 :settings {:java {:classPath []
                                                   :externalDependencies []
                                                   :trace {:server :off}}}
-                                :init_options {}
-                                :on-attach (fn [client bufnr]
-                                             (when (= client.name :jls)
-                                               (vim.keymap.set :n :<leader>jla
-                                                               vim.lsp.buf.code_action
-                                                               {:buffer 0
-                                                                :desc "jls code action"})))}
-                          :kotlin_language_server {:cmd [:/home/igneo676/Code/kotlin-language-server/server/build/install/server/bin/kotlin-language-server]
+                                :init_options {}}
+                          :kotlin_language_server {:cmd [kotlin-ls]
                                                    :filetypes [:kotlin]
                                                    :root_markers [:.git
                                                                   :build.gradle
@@ -53,13 +70,20 @@
                                              :typescript
                                              :typescriptreact
                                              :typescript.tsx]
+                                 :handlers {[:textDocument/publishDiagnostics] filter-ts7016}
                                  :root_markers [:tsconfig.json
                                                 :jsconfig.json
                                                 :package.json
                                                 :.git]}}
                  on-attach (fn [client bufnr]
                              (navic.attach client bufnr))]
+             (set vim.diagnostic.set
+                  (fn [namespace bufnr diagnostics opts]
+                    (diagnostic-set namespace bufnr
+                                    (filter-ts7016-diagnostics diagnostics) opts)))
              (typescript.setup {: on-attach
+                                :settings {:tsserver_plugins ["@lit-labs/tsserver-plugin"]}
+                                :handlers {[:textDocument/publishDiagnostics] filter-ts7016}
                                 :server {:init_options {:preferences {:allowIncompleteCompletions false
                                                                       :includeInlayParameterNameHints :all
                                                                       :includeInlayParameterNameHintsWhenArgumentMatchesName true
@@ -83,39 +107,58 @@
                                                               (require :telescope.builtin))
                                                        (set vim.opt_local.omnifunc
                                                             "v:lua.vim.lsp.omnifunc")
-                                                       (vim.keymap.set :n :grr
-                                                                       builtin.lsp_references)
-                                                       (vim.keymap.set :n
-                                                                       :<F19>
-                                                                       vim.lsp.buf.rename)
-                                                       (vim.keymap.set :n :gd
-                                                                       builtin.lsp_definitions)
-                                                       (vim.keymap.set :n :gD
-                                                                       vim.lsp.buf.declaration)
-                                                       (vim.keymap.set :n
-                                                                       "<c-]>"
-                                                                       vim.lsp.buf.definition)
-                                                       (vim.keymap.set :n :K
-                                                                       vim.lsp.buf.hover)
+                                                       (local map
+                                                              (fn [lhs
+                                                                   rhs
+                                                                   desc]
+                                                                (vim.keymap.set :n
+                                                                                lhs
+                                                                                rhs
+                                                                                {:buffer bufnr
+                                                                                 : desc})))
+                                                       (map :grr
+                                                            builtin.lsp_references
+                                                            "LSP references")
+                                                       (map :<F19>
+                                                            vim.lsp.buf.rename
+                                                            "LSP rename")
+                                                       (map :gd
+                                                            builtin.lsp_definitions
+                                                            "LSP definitions")
+                                                       (map :gD
+                                                            vim.lsp.buf.declaration
+                                                            "LSP declaration")
+                                                       (map "<c-]>"
+                                                            vim.lsp.buf.definition
+                                                            "LSP definition")
+                                                       (map :K
+                                                            vim.lsp.buf.hover
+                                                            "LSP hover")
                                                        (vim.lsp.inlay_hint.enable true
                                                                                   {: bufnr})
-                                                       (vim.keymap.set :n
-                                                                       :<c-k>
-                                                                       vim.lsp.buf.signature_help)
-                                                       (vim.keymap.set :n :gW
-                                                                       builtin.lsp_workspace_symbols)
-                                                       (vim.keymap.set :n :gT
-                                                                       vim.lsp.buf.type_definition
-                                                                       {:buffer 0})
-                                                       (vim.keymap.set :n :grn
-                                                                       vim.lsp.buf.rename
-                                                                       {:buffer 0})
-                                                       (vim.keymap.set :n :gra
-                                                                       vim.lsp.buf.code_action
-                                                                       {:buffer 0})
-                                                       (vim.keymap.set :n :g0
-                                                                       builtin.lsp_document_symbols
-                                                                       {:buffer 0}))})
+                                                       (map :<c-k>
+                                                            vim.lsp.buf.signature_help
+                                                            "LSP signature help")
+                                                       (map :gW
+                                                            builtin.lsp_workspace_symbols
+                                                            "LSP workspace symbols")
+                                                       (map :gT
+                                                            vim.lsp.buf.type_definition
+                                                            "LSP type definition")
+                                                       (map :grn
+                                                            vim.lsp.buf.rename
+                                                            "LSP rename")
+                                                       (map :gra
+                                                            vim.lsp.buf.code_action
+                                                            "LSP code action")
+                                                       (map :g0
+                                                            builtin.lsp_document_symbols
+                                                            "LSP document symbols")
+                                                       (when (= client.name
+                                                                :jls)
+                                                         (map :<leader>jla
+                                                              vim.lsp.buf.code_action
+                                                              "jls code action")))})
              (each [server config (pairs servers)]
                (set config.capabilities
                     (cmp.get_lsp_capabilities config.capabilities))

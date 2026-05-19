@@ -1,10 +1,9 @@
 ;; Host programs for external language support
-(set vim.g.python_host_prog :/usr/bin/python2)
-(set vim.g.python3_host_prog :/usr/bin/python3)
 (set vim.g.node_host_prog "~/.config/npm/bin/neovim-node-host")
 
-;; Disable unnecessary providers for faster startup
+;; Disable unused providers for faster startup
 (set vim.g.loaded_python_provider 0)
+(set vim.g.loaded_python3_provider 0)
 
 ;; Enable Tree-sitter highlighting for Lua
 (set vim.g.ts_highlight_lua true)

@@ -3,6 +3,7 @@
 {1 :folke/todo-comments.nvim
  :dependencies [:nvim-lua/plenary.nvim :nvim-telescope/telescope.nvim]
  :event :VeryLazy
+ :cmd [:TodoQuickFix :TodoLocList :TodoTelescope]
  :config (fn []
            (let [todo (require :todo-comments)]
              (todo.setup {:signs true

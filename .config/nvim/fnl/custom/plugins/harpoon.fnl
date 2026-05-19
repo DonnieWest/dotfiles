@@ -5,8 +5,7 @@
  :keys [{1 :<leader>ha
          2 (fn []
              (let [harpoon (require :harpoon)]
-               (harpoon:list)
-               :add))
+                ((. (harpoon:list) :add) (harpoon:list))))
          :desc "Harpoon add file"}
         {1 :<leader>hh
          2 (fn []

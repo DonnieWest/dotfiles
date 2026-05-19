@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 
-IP_ADDRESS=$(scutil --nwi | grep address | sed 's/.*://' | tr -d ' ' | head -1)
-IS_VPN=$(scutil --nwi | grep -m1 'utun' | awk '{ print $1 }')
+network_info="$(scutil --nwi 2>/dev/null)"
+IP_ADDRESS="$(printf '%s\n' "$network_info" | awk -F: '/address/ { gsub(/[[:space:]]/, "", $2); print $2; exit }')"
+IS_VPN="$(printf '%s\n' "$network_info" | awk '/utun/ { print $1; exit }')"
 
 if [ -n "$IS_VPN" ]; then
 	ICON=""

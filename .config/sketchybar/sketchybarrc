@@ -42,34 +42,37 @@ sketchybar \
   --subscribe aerospace.workspaces aerospace_workspace_change \
   --add item wifi right \
   --set wifi \
-    update_freq=5 \
+    update_freq=30 \
     script="$PLUGIN_DIR/wifi.sh" \
     icon= \
     icon.padding_left=8 icon.padding_right=4 \
     label.padding_left=2 label.padding_right=8 \
   --add item memory right \
   --set memory \
-    update_freq=10 \
+    update_freq=30 \
     script="$PLUGIN_DIR/memory.sh" \
     icon= \
     icon.padding_left=8 icon.padding_right=4 \
     label.padding_left=2 label.padding_right=8 \
   --add item volume right \
-  --set volume script="$PLUGIN_DIR/volume.sh" \
+  --set volume \
+    updates=on \
+    update_freq=1 \
+    script="$PLUGIN_DIR/volume.sh" \
     icon= \
     icon.padding_left=8 icon.padding_right=4 \
     label.padding_left=2 label.padding_right=8 \
   --subscribe volume volume_change \
   --add item battery right \
   --set battery \
-    update_freq=30 \
+    update_freq=60 \
     script="$PLUGIN_DIR/battery.sh" \
     icon= \
     icon.padding_left=8 icon.padding_right=4 \
     label.padding_left=2 label.padding_right=8 \
   --add item clock right \
   --set clock \
-    update_freq=10 \
+    update_freq=60 \
     script="$PLUGIN_DIR/clock.sh" \
     icon= \
     icon.padding_left=8 icon.padding_right=4 \

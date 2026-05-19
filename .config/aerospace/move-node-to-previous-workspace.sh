@@ -4,7 +4,7 @@ CACHE_DIR="${TMPDIR:-/tmp}/aerospace-workspaces"
 previous=""
 
 if [ -f "$CACHE_DIR/previous" ]; then
-  previous="$(cat "$CACHE_DIR/previous")"
+  IFS= read -r previous < "$CACHE_DIR/previous"
 fi
 
 if [ -z "$previous" ]; then

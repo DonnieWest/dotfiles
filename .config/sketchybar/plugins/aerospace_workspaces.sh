@@ -12,25 +12,24 @@ LOCK_DIR="$CACHE_DIR/lock"
 
 mkdir -p "$CACHE_DIR"
 
-attempt=0
-while ! mkdir "$LOCK_DIR" 2>/dev/null; do
-  attempt=$((attempt + 1))
-  [ "$attempt" -ge 20 ] && exit 0
-  sleep 0.05
-done
-trap 'rmdir "$LOCK_DIR" 2>/dev/null' EXIT INT TERM
-
 item_name() {
   printf 'aerospace.%s' "$(printf '%s' "$1" | tr -c '[:alnum:]_-' '_')"
 }
 
 workspace_label() {
   case "$1" in
-    1) printf 'Browser' ;;
-    2) printf 'Chat' ;;
-    3) printf 'Terminal' ;;
-    4) printf 'Emulator' ;;
-    5|6|7|8|9|10) printf 'Code' ;;
+    01) printf 'Browser' ;;
+    02) printf 'Chat' ;;
+    03) printf 'Terminal' ;;
+    04) printf 'Emulator' ;;
+    05|06|07|08|09|10) printf 'Code' ;;
+    *) printf '%s' "$1" ;;
+  esac
+}
+
+workspace_icon() {
+  case "$1" in
+    0[1-9]) printf '%s' "${1#0}" ;;
     *) printf '%s' "$1" ;;
   esac
 }
@@ -42,6 +41,34 @@ sort_workspaces() {
   ' | sort -k1,1 -k2,2 | cut -d " " -f 3-
 }
 
+workspace_is_cached() {
+  [ -f "$WORKSPACES_FILE" ] && grep -Fxq -- "$1" "$WORKSPACES_FILE"
+}
+
+focused="${FOCUSED_WORKSPACE:-}"
+previous="${PREVIOUS_WORKSPACE:-}"
+
+if [ "${REBUILD_WORKSPACES:-0}" != "1" ] && [ -n "$focused" ] && [ -n "$previous" ] && [ "$previous" != "$focused" ] && workspace_is_cached "$focused" && workspace_is_cached "$previous"; then
+  sketchybar \
+    --set "$(item_name "$previous")" \
+      background.color=$BG \
+      icon.color=$FG \
+      label.color=$FG \
+    --set "$(item_name "$focused")" \
+      background.color=$BLUE \
+      icon.color=$GREEN \
+      label.color=$GREEN
+  exit 0
+fi
+
+attempt=0
+while ! mkdir "$LOCK_DIR" 2>/dev/null; do
+  attempt=$((attempt + 1))
+  [ "$attempt" -ge 20 ] && exit 0
+  sleep 0.05
+done
+trap 'rmdir "$LOCK_DIR" 2>/dev/null' EXIT INT TERM
+
 aerospace list-workspaces --all 2>/dev/null | sort_workspaces > "$CURRENT_FILE.$$"
 
 if [ ! -s "$CURRENT_FILE.$$" ]; then
@@ -51,8 +78,7 @@ fi
 
 mv "$CURRENT_FILE.$$" "$CURRENT_FILE"
 
-focused="${FOCUSED_WORKSPACE:-$(aerospace list-workspaces --focused 2>/dev/null)}"
-previous="${PREVIOUS_WORKSPACE:-}"
+focused="${focused:-$(aerospace list-workspaces --focused 2>/dev/null)}"
 workspaces_changed=1
 
 if [ -f "$WORKSPACES_FILE" ] && cmp -s "$CURRENT_FILE" "$WORKSPACES_FILE"; then
@@ -82,12 +108,13 @@ if [ "$workspaces_changed" -eq 1 ]; then
     [ -z "$workspace" ] && continue
 
     item="$(item_name "$workspace")"
+    icon="$(workspace_icon "$workspace")"
     label="$(workspace_label "$workspace")"
 
     set -- "$@" \
       --add item "$item" left \
       --set "$item" \
-        icon="$workspace" \
+        icon="$icon" \
         icon.padding_left=6 \
         icon.padding_right=4 \
         label="$label" \

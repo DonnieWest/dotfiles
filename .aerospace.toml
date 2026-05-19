@@ -84,34 +84,34 @@ cmd-r = 'mode resize'
 cmd-z = 'workspace-back-and-forth'
 
 # Focus workspaces
-cmd-1 = 'workspace --auto-back-and-forth 1'
-cmd-2 = 'workspace --auto-back-and-forth 2'
-cmd-3 = 'workspace --auto-back-and-forth 3'
-cmd-4 = 'workspace --auto-back-and-forth 4'
-cmd-5 = 'workspace --auto-back-and-forth 5'
-cmd-6 = 'workspace --auto-back-and-forth 6'
-cmd-7 = 'workspace --auto-back-and-forth 7'
-cmd-8 = 'workspace --auto-back-and-forth 8'
-cmd-9 = 'workspace --auto-back-and-forth 9'
-cmd-0 = 'workspace --auto-back-and-forth 10'
+cmd-1 = ['workspace --auto-back-and-forth 01', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-2 = ['workspace --auto-back-and-forth 02', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-3 = ['workspace --auto-back-and-forth 03', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-4 = ['workspace --auto-back-and-forth 04', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-5 = ['workspace --auto-back-and-forth 05', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-6 = ['workspace --auto-back-and-forth 06', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-7 = ['workspace --auto-back-and-forth 07', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-8 = ['workspace --auto-back-and-forth 08', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-9 = ['workspace --auto-back-and-forth 09', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-0 = ['workspace --auto-back-and-forth 10', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 # Move windows to workspaces and follow
-cmd-shift-1 = ['move-node-to-workspace 1', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-shift-2 = ['move-node-to-workspace 2', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-shift-3 = ['move-node-to-workspace 3', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-shift-4 = ['move-node-to-workspace 4', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-shift-5 = ['move-node-to-workspace 5', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-shift-6 = ['move-node-to-workspace 6', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-shift-7 = ['move-node-to-workspace 7', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-shift-8 = ['move-node-to-workspace 8', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-shift-9 = ['move-node-to-workspace 9', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-shift-1 = ['move-node-to-workspace 01', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-shift-2 = ['move-node-to-workspace 02', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-shift-3 = ['move-node-to-workspace 03', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-shift-4 = ['move-node-to-workspace 04', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-shift-5 = ['move-node-to-workspace 05', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-shift-6 = ['move-node-to-workspace 06', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-shift-7 = ['move-node-to-workspace 07', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-shift-8 = ['move-node-to-workspace 08', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-shift-9 = ['move-node-to-workspace 09', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 cmd-shift-0 = ['move-node-to-workspace 10', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 # Next / previous workspace
-alt-ctrl-right = 'exec-and-forget $HOME/.config/aerospace/workspace-next-prev.sh next'
-alt-ctrl-left = 'exec-and-forget $HOME/.config/aerospace/workspace-next-prev.sh prev'
-alt-ctrl-semicolon = 'exec-and-forget $HOME/.config/aerospace/workspace-next-prev.sh next'
-alt-ctrl-j = 'exec-and-forget $HOME/.config/aerospace/workspace-next-prev.sh prev'
+alt-ctrl-right = ['workspace --wrap-around next', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+alt-ctrl-left = ['workspace --wrap-around prev', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+alt-ctrl-semicolon = ['workspace --wrap-around next', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+alt-ctrl-j = ['workspace --wrap-around prev', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 # Move focused window to the previous workspace, matching Sway's back-and-forth move.
 cmd-shift-z = 'exec-and-forget $HOME/.config/aerospace/move-node-to-previous-workspace.sh'
@@ -141,31 +141,31 @@ cmd-r = 'mode main'
 # `aerospace list-windows --all` on the target Mac.
 [[on-window-detected]]
 if.app-id = 'org.qutebrowser.qutebrowser'
-run = ['move-node-to-workspace 1', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+run = ['move-node-to-workspace 01', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 [[on-window-detected]]
 if.app-id = 'org.mozilla.firefoxdeveloperedition'
-run = ['move-node-to-workspace 1', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+run = ['move-node-to-workspace 01', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 [[on-window-detected]]
 if.app-id = 'org.mozilla.firefox'
-run = ['move-node-to-workspace 1', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+run = ['move-node-to-workspace 01', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 [[on-window-detected]]
 if.app-id = 'com.hnc.Discord'
-run = ['move-node-to-workspace 2', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+run = ['move-node-to-workspace 02', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 [[on-window-detected]]
 if.app-id = 'org.whispersystems.signal-desktop'
-run = ['move-node-to-workspace 2', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+run = ['move-node-to-workspace 02', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 [[on-window-detected]]
 if.app-id = 'com.google.android.studio'
-run = ['move-node-to-workspace 5', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+run = ['move-node-to-workspace 05', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
-run = ['move-node-to-workspace 9', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+run = ['move-node-to-workspace 09', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.systempreferences'

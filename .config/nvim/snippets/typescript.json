@@ -1,0 +1,104 @@
+{
+  "LitElement component": {
+    "prefix": "lit-element",
+    "body": [
+      "import { LitElement, css, html } from 'lit';",
+      "import { customElement, property, state } from 'lit/decorators.js';",
+      "",
+      "@customElement('${1:my-element}')",
+      "export class ${2:MyElement} extends LitElement {",
+      "  @property({ type: String })",
+      "  accessor ${3:title} = '${4:Hello}';",
+      "",
+      "  @state()",
+      "  private accessor ${5:isActive} = false;",
+      "",
+      "  static styles = css`",
+      "    :host {",
+      "      display: block;",
+      "    }",
+      "  `;",
+      "",
+      "  render() {",
+      "    return html`",
+      "      <section>",
+      "        <h1>\\${this.${3:title}}</h1>",
+      "        $0",
+      "      </section>",
+      "    `;",
+      "  }",
+      "}",
+      "",
+      "declare global {",
+      "  interface HTMLElementTagNameMap {",
+      "    '${1:my-element}': ${2:MyElement};",
+      "  }",
+      "}"
+    ],
+    "description": "Create a Lit 3 custom element"
+  },
+  "Lit html template": {
+    "prefix": "lit-html",
+    "body": [
+      "html`",
+      "  $0",
+      "`"
+    ],
+    "description": "Lit html tagged template"
+  },
+  "Lit css template": {
+    "prefix": "lit-css",
+    "body": [
+      "css`",
+      "  $0",
+      "`"
+    ],
+    "description": "Lit css tagged template"
+  },
+  "Lit customElement decorator": {
+    "prefix": "lit-custom-element",
+    "body": "@customElement('${1:my-element}')",
+    "description": "Lit customElement decorator"
+  },
+  "Lit property decorator": {
+    "prefix": "lit-property",
+    "body": [
+      "@property({ type: ${1:String} })",
+      "accessor ${2:name} = ${3:''};"
+    ],
+    "description": "Lit reactive public property"
+  },
+  "Lit state decorator": {
+    "prefix": "lit-state",
+    "body": [
+      "@state()",
+      "private accessor ${1:isActive} = ${2:false};"
+    ],
+    "description": "Lit internal reactive state"
+  },
+  "Lit event handler": {
+    "prefix": "lit-event",
+    "body": "@${1:click}=\\${this.${2:handleClick}}",
+    "description": "Lit event binding"
+  },
+  "Lit repeat directive": {
+    "prefix": "lit-repeat",
+    "body": "\\${repeat(${1:items}, (${2:item}) => ${2:item}.${3:id}, (${2:item}) => html`$0`)}",
+    "description": "Lit repeat directive"
+  },
+  "Lit when directive": {
+    "prefix": "lit-when",
+    "body": "\\${when(${1:condition}, () => html`$2`, () => html`$3`)}",
+    "description": "Lit when directive"
+  },
+  "Lit classMap directive": {
+    "prefix": "lit-class-map",
+    "body": "class=\\${classMap({ ${1:active}: ${2:this.isActive} })}",
+    "description": "Lit classMap binding"
+  },
+  "Lit styleMap directive": {
+    "prefix": "lit-style-map",
+    "body": "style=\\${styleMap({ ${1:display}: ${2:'block'} })}",
+    "description": "Lit styleMap binding"
+  }
+}

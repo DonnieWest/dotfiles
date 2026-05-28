@@ -1,8 +1,12 @@
 source ~/.profile
 
+typeset -g ZSH_OS=${ZSH_OS:-$(uname)}
+
 autoload -Uz compinit promptinit
 if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
 	compinit;
+if [[ $ZSH_OS == Darwin ]]; then
+  export BROWSER=open
 else
 	compinit -C;
 fi;
@@ -81,7 +85,7 @@ setopt hist_save_no_dups
 setopt hist_reduce_blanks
 
 alias history='fc -l 1'
-if [[ "$(uname)" == "Linux" ]]; then
+if [[ $ZSH_OS == Linux ]]; then
   alias docker='podman'
   alias docker-compose='podman-compose'
 fi
@@ -283,7 +287,7 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 export EDITOR="nvim"
 
-case "$(uname)" in
+case "$ZSH_OS" in
   Darwin)
     export BROWSER="open"
     export ANDROID_HOME="$HOME/Library/Android/sdk"
@@ -498,7 +502,7 @@ open-ebook() {
 }
 
 format_epoch_time() {
-    if [[ "$(uname)" == "Darwin" ]]; then
+    if [[ $ZSH_OS == Darwin ]]; then
         date -r "$1" +%I:%M
     else
         date -d "@$1" +%I:%M
@@ -506,7 +510,7 @@ format_epoch_time() {
 }
 
 notify_pomo() {
-    if [[ "$(uname)" == "Darwin" ]]; then
+    if [[ $ZSH_OS == Darwin ]]; then
         osascript -e 'on run argv' -e 'display notification (item 1 of argv) with title "pomo"' -e 'end run' "$*"
     else
         notify-send -u critical -i /usr/share/icons/Arc/status/128/messagebox_critical.png -a pomo "$*"
@@ -823,7 +827,8 @@ command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
 studio() {
   local gradle_root=$(find . -maxdepth 3 -name 'build.gradle' -o -name 'build.gradle.kts' | head -1 | xargs dirname)
   if [[ -n "$gradle_root" ]]; then
-    if [[ "$(uname)" == "Darwin" ]]; then
+    if [[ $ZSH_OS == Darwin ]]; then
+      set-java-home
       open -a "Android Studio" "$gradle_root"
     else
       /opt/android-studio/bin/studio.sh "$gradle_root" &

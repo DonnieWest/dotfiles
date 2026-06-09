@@ -4,7 +4,6 @@
                 :saghen/blink.compat
                 :kristijanhusak/vim-dadbod-completion
                 {1 :David-Kunz/cmp-npm :ft :json :opts {}}
-                :Kaiser-Yang/blink-cmp-avante
                 :PaterJason/cmp-conjure]
  :init (fn []
          (let [cmp (require :blink.cmp)
@@ -38,8 +37,7 @@
                      :list {:selection {:preselect true
                                         :auto_insert (fn [ctx]
                                                        (= ctx.mode :cmdline))}}}
-        :sources {:default [:avante
-                            :lsp
+        :sources {:default [:lsp
                             :path
                             :easy-dotnet
                             :snippets
@@ -48,7 +46,6 @@
                             :npm
                             :dadbod]
                   :providers {:npm {:name :npm :module :blink.compat.source}
-                              :avante {:name :avante :module :blink-cmp-avante}
                               :easy-dotnet {:module :easy-dotnet.completion.blink
                                             :name :easy-dotnet}
                               :dadbod {:name :Dadbod
@@ -57,4 +54,4 @@
                                         :module :blink.compat.source}}}}
  :build (fn []
           (let [cmp (require :blink.cmp)]
-            ((. (cmp.build) :wait) 60000)))}
+            (: (cmp.build) :pwait)))}

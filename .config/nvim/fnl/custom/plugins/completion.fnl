@@ -19,10 +19,10 @@
                            {:silent false})))
  :opts {:appearance {:nerd_font_variant :mono :use_nvim_cmp_as_default true}
         :cmdline {:completion {:menu {:auto_show true}}
-                  :keymap {:<Tab> [:select_next :fallback]
+                  :keymap {:<Tab> [:show_and_insert_or_accept_single :select_next]
                            :<Up> [:select_prev :fallback]
                            :<Down> [:select_next :fallback]
-                           :<S-Tab> [:select_prev :fallback]}}
+                           :<S-Tab> [:show_and_insert_or_accept_single :select_prev]}}
         :keymap {:preset :enter
                  :<Tab> [(fn [cmp]
                            (when (cmp.is_active)

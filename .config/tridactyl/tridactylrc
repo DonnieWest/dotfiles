@@ -5,6 +5,19 @@ set tabopenpos last
 set relatedopenpos last
 set newtab about:blank
 
+set allowautofocus false
+seturl ^https://docs.google.com/ preventautofocusjackhammer true
+
+" Add helper commands that Mozillians think make Firefox irredeemably
+" insecure. For details, read the comment at the top of this file.
+command fixamo_quiet jsb tri.excmds.setpref("privacy.resistFingerprinting.block_mozAddonManager", "true").then(tri.excmds.setpref("extensions.webextensions.restrictedDomains", '""'))
+command fixamo js tri.excmds.setpref("privacy.resistFingerprinting.block_mozAddonManager", "true").then(tri.excmds.setpref("extensions.webextensions.restrictedDomains", '""').then(tri.excmds.fillcmdline_tmp(3000, "Permissions added to user.js. Please restart Firefox to make them take affect.")))
+
+" Make Tridactyl work on more sites at the expense of some security.
+" For details, read the comment at the top of this file.
+fixamo_quiet
+
+
 " Use Brave Search when you explicitly invoke it from the command line.
 set searchurls.brave https://search.brave.com/search?q=%s
 set searchurls.b brave

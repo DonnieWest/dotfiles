@@ -14,6 +14,8 @@
                                            :jls/dist/lang_server_mac.sh
                                            :jls/dist/lang_server_linux.sh))
                  kotlin-ls (lazy-path :kotlin-language-server/server/build/install/server/bin/kotlin-language-server)
+                 gradle-ls-bin (lazy-path :vscode-gradle/gradle-language-server/build/install/gradle-language-server/bin/gradle-language-server)
+                 gradle-ls-wrapper (.. (vim.fn.stdpath :config) :/scripts/vscode-gradle-language-server-stdio.js)
                  diagnostic-set vim.diagnostic.set
                  filter-ts7016-diagnostics (fn [diagnostics]
                                              (vim.tbl_filter (fn [diagnostic]
@@ -59,6 +61,13 @@
                                                                       :typeHints {:enabled true}}}}
                           ; IMPORTANT: For Android projects, ensure ANDROID_HOME is set
                           ; and the project has been built at least once with './gradlew build'
+                          :gradle_ls {:cmd [gradle-ls-wrapper gradle-ls-bin]
+                                      :filetypes [:groovy :gradle]
+                                      :root_markers [:settings.gradle
+                                                     :settings.gradle.kts
+                                                     :build.gradle
+                                                     :build.gradle.kts]
+                                      :init_options {:settings {:gradleWrapperEnabled true}}}
                           :marksman {}
                           :jsonls {:settings {:json {:schemas ((. (require :schemastore)
                                                                   :json :schemas))

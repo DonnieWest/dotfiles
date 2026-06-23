@@ -61,6 +61,6 @@
   :ft :kotlin
   :build "./gradlew :server:installDist"}
  {1 :microsoft/vscode-gradle
-  :ft [:kotlin :java :gradle]
   :build "./gradlew :gradle-language-server:installDist"}
+  :ft [:kotlin :java :gradle :groovy]
  {1 :idelice/jls :ft :java :build "mvn package -DskipTests"}]

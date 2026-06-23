@@ -8,6 +8,8 @@
  :init (fn []
          (let [cmp (require :blink.cmp)
                kotlin-completion (require :custom.kotlin_completion)]
+           (when (not (cmp.library_available))
+             (: (cmp.build) :pwait))
            (kotlin-completion.register)
            (vim.keymap.set :i :<C-x><C-o>
                            (fn []

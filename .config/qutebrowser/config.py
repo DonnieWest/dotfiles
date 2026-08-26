@@ -9,6 +9,8 @@
 # Documentation:
 #   qute://help/configuring.html
 #   qute://help/settings.html
+import sys
+
 import qutebrowser.api.interceptor
 
 
@@ -60,9 +62,8 @@ c.aliases = {
     "pushwebsite": "spawn --userscript ~/.config/qutebrowser/userscripts/pushwebsite",
     "readability": "spawn --userscript ~/.config/qutebrowser/userscripts/readability-js",
     "add-to-wallabag": "spawn --userscript ~/.config/qutebrowser/userscripts/wallabag-add",
-    "copy-page-to-markdown": "spawn --userscript ~/.config/qutebrowser/userscripts/copy-as-markdown",
-    "clip-selection": "spawn --userscript ~/.config/qutebrowser/userscripts/markdown-selection",
-    "clip-article": "spawn --userscript ~/.config/qutebrowser/userscripts/markdown-article",
+    "defuddle-copy": "spawn --userscript ~/.config/qutebrowser/userscripts/defuddle copy",
+    "defuddle-open": "spawn --userscript ~/.config/qutebrowser/userscripts/defuddle open",
 }
 
 # Additional arguments to pass to Qt, without leading `--`. With
@@ -72,9 +73,7 @@ c.aliases = {
 # Type: List of String
 c.qt.args = [
     "enable-zero-copy",
-    "use-gl=egl",
     "enable-accelerated-video-decode",
-    "enable-webrtc-pipewire-capturer",
     "enable-gpu-rasterization",
     "ignore-gpu-blacklist",
     "enable-native-gpu-memory-buffers",
@@ -83,6 +82,8 @@ c.qt.args = [
     "disable-font-subpixel-positioning",
     "enable-font-antialiasing",
 ]
+if sys.platform.startswith("linux"):
+    c.qt.args.extend(["use-gl=egl", "enable-webrtc-pipewire-capturer"])
 
 # Additional environment variables to set. Setting an environment
 # variable to null/None will unset it.
@@ -96,7 +97,8 @@ c.qt.environ = {
 # environment variable and is useful to force using the XCB plugin when
 # running QtWebEngine on Wayland.
 # Type: String
-c.qt.force_platform = "wayland"
+if sys.platform.startswith("linux"):
+    c.qt.force_platform = "wayland"
 
 # Turn on Qt HighDPI scaling. This is equivalent to setting
 # QT_AUTO_SCREEN_SCALE_FACTOR=1 or QT_ENABLE_HIGHDPI_SCALING=1 (Qt >=
@@ -709,9 +711,5 @@ config.bind("j", "cmd-repeat 3 scroll down")
 config.bind("k", "cmd-repeat 3 scroll up")
 config.bind("t", "open -t about:blank")
 config.bind("x", "tab-close")
-config.bind(
-    ",m", "spawn --userscript ~/.config/qutebrowser/userscripts/markdown-selection"
-)
-config.bind(
-    ",a", "spawn --userscript ~/.config/qutebrowser/userscripts/markdown-article"
-)
+config.bind(",m", "defuddle-copy")
+config.bind(",a", "defuddle-open")

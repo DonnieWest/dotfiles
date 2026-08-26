@@ -1,11 +1,9 @@
 {1 :neovim/nvim-lspconfig
  :dependencies [:nvim-lua/plenary.nvim
-                :pmizio/typescript-tools.nvim
                 :SmiteshP/nvim-navic
                 :b0o/schemastore.nvim]
  :config (fn []
            (let [cmp (require :blink.cmp)
-                 typescript (require :typescript-tools)
                  navic (require :nvim-navic)
                  data-path (vim.fn.stdpath :data)
                  lazy-path (fn [path] (.. data-path :/lazy/ path))
@@ -72,39 +70,30 @@
                           :jsonls {:settings {:json {:schemas ((. (require :schemastore)
                                                                   :json :schemas))
                                                      :validate {:enable true}}}}
-                          :tsgo {:cmd [:tsgo :--lsp :-stdio]
-                                 :filetypes [:javascript
-                                             :javascriptreact
-                                             :javascript.jsx
-                                             :typescript
-                                             :typescriptreact
-                                             :typescript.tsx]
-                                 :handlers {[:textDocument/publishDiagnostics] filter-ts7016}
-                                 :root_markers [:tsconfig.json
-                                                :jsconfig.json
-                                                :package.json
-                                                :.git]}}
+                          :tsc {:handlers {[:textDocument/publishDiagnostics] filter-ts7016}
+                                :settings {:js/ts {:inlayHints {:parameterNames {:enabled :all
+                                                                                :suppressWhenArgumentMatchesName false}
+                                                                    :parameterTypes {:enabled true}
+                                                                    :variableTypes {:enabled true}
+                                                                    :propertyDeclarationTypes {:enabled true}
+                                                                    :functionLikeReturnTypes {:enabled true}
+                                                                    :enumMemberValues {:enabled true}}}
+                                           :typescript {:preferences {:importModuleSpecifier :relative}}}}
+                          :custom_elements_ls {:filetypes [:html
+                                                           :javascript
+                                                           :javascriptreact
+                                                           :javascript.jsx
+                                                           :typescript
+                                                           :typescriptreact
+                                                           :typescript.tsx]
+                                               :handlers {[:textDocument/publishDiagnostics]
+                                                          (fn [])}}}
                  on-attach (fn [client bufnr]
                              (navic.attach client bufnr))]
              (set vim.diagnostic.set
                   (fn [namespace bufnr diagnostics opts]
                     (diagnostic-set namespace bufnr
                                     (filter-ts7016-diagnostics diagnostics) opts)))
-             (typescript.setup {: on-attach
-                                :settings {:tsserver_plugins ["@lit-labs/tsserver-plugin"]}
-                                :handlers {[:textDocument/publishDiagnostics] filter-ts7016}
-                                :server {:init_options {:preferences {:allowIncompleteCompletions false
-                                                                      :includeInlayParameterNameHints :all
-                                                                      :includeInlayParameterNameHintsWhenArgumentMatchesName true
-                                                                      :includeInlayFunctionParameterTypeHints true
-                                                                      :includeInlayVariableTypeHints true
-                                                                      :includeInlayPropertyDeclarationTypeHints true
-                                                                      :includeInlayFunctionLikeReturnTypeHints true
-                                                                      :includeInlayEnumMemberValueHints true
-                                                                      :importModuleSpecifierPreference :relative
-                                                                      :jsxAttributeCompletionStyle :auto
-                                                                      :hostInfo :neovim}
-                                                        :maxTsServerMemory 8192}}})
              (vim.diagnostic.config {:virtual_text false :virtual_lines true})
              (vim.api.nvim_create_autocmd :LspAttach
                                           {:callback (fn [args]
@@ -125,9 +114,27 @@
                                                                                 rhs
                                                                                 {:buffer bufnr
                                                                                  : desc})))
+                                                       (local toggle-diagnostic-inline
+                                                              (fn []
+                                                                (let [config (vim.diagnostic.config)
+                                                                      enabled (not (or config.virtual_text
+                                                                                       config.virtual_lines))]
+                                                                  (vim.diagnostic.config {:virtual_text enabled
+                                                                                          :virtual_lines enabled}))))
+                                                       (local toggle-inlay-hints
+                                                              (fn []
+                                                                (vim.lsp.inlay_hint.enable
+                                                                 (not (vim.lsp.inlay_hint.is_enabled {: bufnr}))
+                                                                 {: bufnr})))
                                                        (map :grr
                                                             builtin.lsp_references
                                                             "LSP references")
+                                                       (map :<leader>uv
+                                                            toggle-diagnostic-inline
+                                                            "Toggle diagnostic inline text")
+                                                       (map :<leader>uh
+                                                            toggle-inlay-hints
+                                                            "Toggle LSP inlay hints")
                                                        (map :<F19>
                                                             vim.lsp.buf.rename
                                                             "LSP rename")

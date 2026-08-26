@@ -78,3 +78,5 @@ require("lazy").setup(plugins, {
     },
   },
 })
+
+require("custom.host-loader").load(hotpot_destination)

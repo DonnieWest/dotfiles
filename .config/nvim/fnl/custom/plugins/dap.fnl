@@ -10,7 +10,16 @@
   :config (fn []
             (let [dap (require :dap)
                   dapui (require :dapui)
-                  dap-vscode-js (require :dap-vscode-js)]
+                  dap-vscode-js (require :dap-vscode-js)
+                  nearest-file (fn [name]
+                                 (let [start (vim.fs.dirname (vim.api.nvim_buf_get_name 0))
+                                       matches (vim.fs.find name {:path start
+                                                                  :upward true
+                                                                  :type :file})]
+                                   (. matches 1)))
+                  nearest-root (fn [markers]
+                                 (or (vim.fs.root (vim.api.nvim_buf_get_name 0) markers)
+                                     (vim.fn.getcwd)))]
              ;; Auto-open/close UI
              (tset dap.listeners.before.event_terminated :dapui_config
                    (fn [] (dapui.close)))
@@ -55,12 +64,18 @@
                      :request :launch
                      :name "Debug Vitest current file"
                      :runtimeExecutable :node
-                     :runtimeArgs [:--inspect-brk
-                                   "${workspaceFolder}/node_modules/vitest/vitest.mjs"
-                                   :run
-                                   "${file}"
-                                   :--no-file-parallelism]
-                     :cwd "${workspaceFolder}"
+                     :runtimeArgs (fn []
+                                    [:--inspect-brk
+                                     (assert (nearest-file :node_modules/vitest/vitest.mjs)
+                                             "Could not find vitest/vitest.mjs")
+                                     :run
+                                     "${file}"
+                                     :--no-file-parallelism])
+                     :cwd (fn []
+                            (nearest-root [:vitest.config.ts
+                                           :vitest.config.js
+                                           :vite.config.ts
+                                           :vite.config.js]))
                      :console :integratedTerminal
                      :sourceMaps true
                      :skipFiles ["<node_internals>/**" "node_modules/**"]}])

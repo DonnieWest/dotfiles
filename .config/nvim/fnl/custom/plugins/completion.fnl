@@ -10,6 +10,13 @@
                kotlin-completion (require :custom.kotlin_completion)]
            (when (not (cmp.library_available))
              (: (cmp.build) :pwait))
+           (cmp.add_source_provider :tabby
+                                    {:name :Tabby
+                                     :module :custom.blink_tabby
+                                     :async true
+                                     :timeout_ms 500
+                                     :max_items 1
+                                     :score_offset 100})
            (kotlin-completion.register)
            (vim.keymap.set :i :<C-x><C-o>
                            (fn []
@@ -44,6 +51,7 @@
                             :easy-dotnet
                             :snippets
                             :buffer
+                            :tabby
                             :conjure
                             :npm
                             :dadbod]

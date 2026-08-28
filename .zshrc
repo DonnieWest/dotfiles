@@ -1,15 +1,27 @@
 source ~/.profile
 
 typeset -g ZSH_OS=${ZSH_OS:-$(uname)}
+typeset -g ZSH_COMPLETION_DIR=${ZDOTDIR:-$HOME/.config/zsh}/completions
+[[ -d "$ZSH_COMPLETION_DIR/${ZSH_OS:l}" ]] && fpath=("$ZSH_COMPLETION_DIR/${ZSH_OS:l}" $fpath)
+[[ -d "$ZSH_COMPLETION_DIR/${HOST%%.*}" ]] && fpath=("$ZSH_COMPLETION_DIR/${HOST%%.*}" $fpath)
 
 autoload -Uz compinit promptinit
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-	compinit;
-if [[ $ZSH_OS == Darwin ]]; then
-  export BROWSER=open
+zcompdump=${ZDOTDIR:-$HOME}/.zcompdump
+typeset completion_file rebuild_compdump=
+for completion_file in \
+  "$ZSH_COMPLETION_DIR/${ZSH_OS:l}"/_*(N) \
+  "$ZSH_COMPLETION_DIR/${HOST%%.*}"/_*(N); do
+  if [[ ! -e $zcompdump || $completion_file -nt $zcompdump ]]; then
+    rebuild_compdump=1
+    break
+  fi
+done
+if [[ ! -s $zcompdump || -n ${zcompdump}(#qN.mh+24) || -n $rebuild_compdump ]]; then
+  compinit -u -d "$zcompdump"
 else
-	compinit -C;
-fi;
+  compinit -C -u -d "$zcompdump"
+fi
+unset completion_file rebuild_compdump
 promptinit
 
 setopt autocd
@@ -325,6 +337,10 @@ export PATH="$HOME/.config/npm/bin:$PATH"
 export PATH="$HOME/.bun/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.bin:$PATH"
+
+# Shared commands may be overridden by OS- and then host-specific versions.
+[[ -d "$HOME/.bin/${ZSH_OS:l}" ]] && path=("$HOME/.bin/${ZSH_OS:l}" $path)
+[[ -d "$HOME/.bin/${HOST%%.*}" ]] && path=("$HOME/.bin/${HOST%%.*}" $path)
 
 export PATH="$PATH:$HOME/.npm-global/bin"
 export PATH="$PATH":"$HOME/.pub-cache/bin"

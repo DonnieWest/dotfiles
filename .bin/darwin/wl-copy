@@ -1,0 +1,50 @@
+#!/bin/sh
+
+mime_type=
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    -t|--type)
+      [ "$#" -gt 1 ] || { printf 'wl-copy: %s requires a MIME type\n' "$1" >&2; exit 2; }
+      mime_type=$2
+      shift 2
+      ;;
+    -n|--trim-newline)
+      trim_newline=true
+      shift
+      ;;
+    -h|--help)
+      printf 'Usage: wl-copy [--type MIME] [--trim-newline] [TEXT]\n'
+      exit 0
+      ;;
+    -*)
+      printf 'wl-copy: unsupported option on macOS: %s\n' "$1" >&2
+      exit 2
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+[ "$#" -le 1 ] || { printf 'wl-copy: expected at most one text argument\n' >&2; exit 2; }
+
+if [ "$mime_type" = image/png ]; then
+  [ "$#" -eq 0 ] || { printf 'wl-copy: image/png input must be provided on stdin\n' >&2; exit 2; }
+  temporary_file=$(mktemp -t wl-copy.XXXXXX) || exit 1
+  trap 'rm -f "$temporary_file"' EXIT HUP INT TERM
+  cat > "$temporary_file" || exit 1
+  /usr/bin/osascript \
+    -e 'on run argv' \
+    -e 'set the clipboard to (read (POSIX file (item 1 of argv)) as «class PNGf»)' \
+    -e 'end run' \
+    "$temporary_file"
+elif [ -n "$mime_type" ] && [ "$mime_type" != text/plain ] && [ "$mime_type" != 'text/plain;charset=utf-8' ]; then
+  printf 'wl-copy: unsupported MIME type on macOS: %s\n' "$mime_type" >&2
+  exit 2
+elif [ "$#" -eq 1 ]; then
+  printf %s "$1" | /usr/bin/pbcopy
+elif [ "${trim_newline:-false}" = true ]; then
+  /usr/bin/perl -0777 -pe 's/\n\z//' | /usr/bin/pbcopy
+else
+  exec /usr/bin/pbcopy
+fi

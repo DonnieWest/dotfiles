@@ -1,0 +1,225 @@
+#!/bin/sh
+
+set -u
+
+usage() {
+  cat <<'EOF'
+Usage: yay OPERATION [OPTIONS] [PACKAGE...]
+
+Supported operations on macOS:
+  -S                 Install packages
+  -R, -Rs, -Rns      Uninstall packages
+  -Ss                Search packages
+  -Si, -Qi           Show package information
+  -Q, -Qe            List installed packages
+  -Qu                List outdated packages
+  -Sy                 Update Homebrew metadata
+  -Syu, -Syyu         Update metadata and upgrade formulae and casks
+  -Sc                 Remove stale packages and downloads
+  -Scc                Remove all cached downloads
+
+Supported options:
+  --cask              Treat package arguments as casks
+  --formula           Treat package arguments as formulae
+  --noconfirm         Do not ask for confirmation
+  -h, --help          Show this help
+
+Formulae are preferred when a package name exists as both a formula and cask.
+EOF
+}
+
+die() {
+  printf 'yay: %s\n' "$*" >&2
+  exit 2
+}
+
+command -v brew >/dev/null 2>&1 || die "Homebrew is not installed or not in PATH"
+
+operation=
+kind=
+no_confirm=false
+packages=
+
+append_package() {
+  if [ -z "$packages" ]; then
+    packages=$1
+  else
+    packages="$packages
+$1"
+  fi
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    -S|-R|-Rs|-Rns|-Ss|-Si|-Qi|-Q|-Qe|-Qu|-Sy|-Syu|-Syyu|-Sc|-Scc)
+      [ -z "$operation" ] || die "only one operation may be specified"
+      operation=$1
+      ;;
+    --cask)
+      [ "$kind" != formula ] || die "--cask and --formula cannot be combined"
+      kind=cask
+      ;;
+    --formula)
+      [ "$kind" != cask ] || die "--cask and --formula cannot be combined"
+      kind=formula
+      ;;
+    --noconfirm)
+      no_confirm=true
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --)
+      shift
+      while [ "$#" -gt 0 ]; do
+        append_package "$1"
+        shift
+      done
+      break
+      ;;
+    -*)
+      die "unsupported option: $1"
+      ;;
+    *)
+      append_package "$1"
+      ;;
+  esac
+  shift
+done
+
+[ -n "$operation" ] || { usage >&2; exit 2; }
+
+run_for_packages() {
+  action=$1
+  lookup=${2:-available}
+  [ -n "$packages" ] || die "$operation requires at least one package"
+
+  formulae=
+  casks=
+  unknown=
+  old_ifs=$IFS
+  IFS='
+'
+  for package in $packages; do
+    resolved_kind=$kind
+    if [ -z "$resolved_kind" ] && [ "$lookup" = installed ]; then
+      if brew list --formula "$package" >/dev/null 2>&1; then
+        resolved_kind=formula
+      elif brew list --cask "$package" >/dev/null 2>&1; then
+        resolved_kind=cask
+      else
+        unknown="${unknown}${unknown:+ }$package"
+        continue
+      fi
+    elif [ -z "$resolved_kind" ]; then
+      if brew info --formula "$package" >/dev/null 2>&1; then
+        resolved_kind=formula
+      elif brew info --cask "$package" >/dev/null 2>&1; then
+        resolved_kind=cask
+      else
+        unknown="${unknown}${unknown:+ }$package"
+        continue
+      fi
+    elif [ "$lookup" = installed ] && ! brew list "--$resolved_kind" "$package" >/dev/null 2>&1; then
+      unknown="${unknown}${unknown:+ }$package"
+      continue
+    elif [ "$lookup" != installed ] && ! brew info "--$resolved_kind" "$package" >/dev/null 2>&1; then
+      unknown="${unknown}${unknown:+ }$package"
+      continue
+    fi
+
+    if [ "$resolved_kind" = formula ]; then
+      formulae="${formulae}${formulae:+ }$package"
+    else
+      casks="${casks}${casks:+ }$package"
+    fi
+  done
+  IFS=$old_ifs
+
+  [ -z "$unknown" ] || die "package(s) not found in Homebrew: $unknown"
+
+  confirm_flag=
+  if [ "$no_confirm" = true ] && [ "$action" = install ]; then
+    confirm_flag=--yes
+  fi
+  status=0
+  if [ -n "$formulae" ]; then
+    # Package tokens cannot contain spaces, so intentional word splitting is safe here.
+    brew "$action" --formula $confirm_flag $formulae || status=$?
+  fi
+  if [ -n "$casks" ]; then
+    brew "$action" --cask $confirm_flag $casks || status=$?
+  fi
+  return "$status"
+}
+
+case "$operation" in
+  -S)
+    run_for_packages install
+    ;;
+  -R|-Rs|-Rns)
+    if [ "$operation" != -R ]; then
+      printf 'yay: Homebrew cannot reproduce pacman orphan-removal semantics; uninstalling only named packages\n' >&2
+    fi
+    run_for_packages uninstall installed
+    ;;
+  -Ss)
+    [ -n "$packages" ] || die "-Ss requires a search term"
+    # Search accepts formula and cask names together unless explicitly restricted.
+    old_ifs=$IFS
+    IFS='
+'
+    set -- $packages
+    IFS=$old_ifs
+    if [ -n "$kind" ]; then
+      brew search "--$kind" "$@"
+    else
+      brew search "$@"
+    fi
+    ;;
+  -Si)
+    run_for_packages info
+    ;;
+  -Qi)
+    run_for_packages info installed
+    ;;
+  -Q|-Qe)
+    [ -z "$packages" ] || die "$operation does not accept package arguments; use -Qi"
+    if [ -n "$kind" ]; then
+      brew list "--$kind"
+    else
+      brew list --formula
+      brew list --cask
+    fi
+    ;;
+  -Qu)
+    [ -z "$packages" ] || die "-Qu does not accept package arguments"
+    if [ -n "$kind" ]; then
+      brew outdated "--$kind"
+    else
+      brew outdated --formula
+      brew outdated --cask
+    fi
+    ;;
+  -Sy)
+    [ -z "$packages" ] || die "-Sy does not accept package arguments"
+    brew update
+    ;;
+  -Syu|-Syyu)
+    [ -z "$packages" ] || die "$operation does not accept package arguments"
+    brew update || exit $?
+    confirm_flag=
+    [ "$no_confirm" = false ] || confirm_flag=--yes
+    brew upgrade --formula $confirm_flag || exit $?
+    brew upgrade --cask $confirm_flag
+    ;;
+  -Sc)
+    [ -z "$packages" ] || die "-Sc does not accept package arguments"
+    brew cleanup
+    ;;
+  -Scc)
+    [ -z "$packages" ] || die "-Scc does not accept package arguments"
+    brew cleanup --prune=all
+    ;;
+esac

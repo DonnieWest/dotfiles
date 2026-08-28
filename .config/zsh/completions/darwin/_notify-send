@@ -1,0 +1,10 @@
+#compdef notify-send
+
+_arguments \
+  '(-a --app-name)'{-a,--app-name}'[set application subtitle]:application name:' \
+  '(-t --expire-time)'{-t,--expire-time}'[accept ignored expiry time]:milliseconds:' \
+  '(-i --icon)'{-i,--icon}'[accept ignored icon]:icon:_files' \
+  '(-u --urgency)'{-u,--urgency}'[accept ignored urgency]:urgency:(low normal critical)' \
+  '(-h --help)'{-h,--help}'[show help]' \
+  '1:summary:' \
+  '2:body:'

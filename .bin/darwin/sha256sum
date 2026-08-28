@@ -1,0 +1,33 @@
+#!/bin/sh
+
+args=
+for arg in "$@"; do
+  case "$arg" in
+    --check) arg=-c ;;
+    --binary) arg=-b ;;
+    --text) arg=-t ;;
+    --help)
+      printf 'Usage: sha256sum [--check] [--binary|--text] [FILE...]\n'
+      exit 0
+      ;;
+    --version)
+      printf 'sha256sum compatibility shim using shasum on macOS\n'
+      exit 0
+      ;;
+    --*)
+      printf 'sha256sum: unsupported option on macOS: %s\n' "$arg" >&2
+      exit 2
+      ;;
+  esac
+  args="${args}${args:+
+}$arg"
+done
+
+old_ifs=$IFS
+IFS='
+'
+set -f
+set -- $args
+set +f
+IFS=$old_ifs
+exec /usr/bin/shasum -a 256 "$@"

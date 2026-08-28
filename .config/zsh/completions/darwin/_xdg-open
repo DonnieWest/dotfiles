@@ -1,0 +1,6 @@
+#compdef xdg-open
+
+_arguments \
+  '(-h --help)'{-h,--help}'[show help]' \
+  '--version[show version]' \
+  '*:file or URL:_files'

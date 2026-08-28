@@ -1,0 +1,6 @@
+#compdef wl-paste
+
+_arguments \
+  '(-t --type)'{-t,--type}'[request MIME type]:MIME type:(text/plain text/plain\;charset=utf-8)' \
+  '(-n --no-newline)'{-n,--no-newline}'[remove one trailing newline]' \
+  '(-h --help)'{-h,--help}'[show help]'

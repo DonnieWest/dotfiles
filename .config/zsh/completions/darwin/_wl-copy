@@ -1,0 +1,7 @@
+#compdef wl-copy
+
+_arguments \
+  '(-t --type)'{-t,--type}'[specify MIME type]:MIME type:(text/plain text/plain\;charset=utf-8 image/png)' \
+  '(-n --trim-newline)'{-n,--trim-newline}'[remove one trailing newline]' \
+  '(-h --help)'{-h,--help}'[show help]' \
+  '1:text:'

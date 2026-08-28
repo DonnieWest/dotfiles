@@ -1,0 +1,46 @@
+#!/bin/sh
+
+usage() {
+  cat <<'EOF'
+Usage: svc COMMAND [SERVICE]
+
+Commands: list, start, stop, restart, status, enable, disable
+
+On macOS, enable/start register and start a Homebrew service; disable/stop
+stop and unregister it.
+EOF
+}
+
+command=${1:-}
+service=${2:-}
+[ "$#" -le 2 ] || { usage >&2; exit 2; }
+
+case "$command" in
+  list)
+    [ -z "$service" ] || { usage >&2; exit 2; }
+    exec brew services list
+    ;;
+  start|enable)
+    [ -n "$service" ] || { usage >&2; exit 2; }
+    exec brew services start "$service"
+    ;;
+  stop|disable)
+    [ -n "$service" ] || { usage >&2; exit 2; }
+    exec brew services stop "$service"
+    ;;
+  restart)
+    [ -n "$service" ] || { usage >&2; exit 2; }
+    exec brew services restart "$service"
+    ;;
+  status)
+    [ -n "$service" ] || { usage >&2; exit 2; }
+    exec brew services info "$service"
+    ;;
+  -h|--help|help)
+    usage
+    ;;
+  *)
+    usage >&2
+    exit 2
+    ;;
+esac

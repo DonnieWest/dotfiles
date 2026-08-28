@@ -1,0 +1,14 @@
+#compdef svc
+
+local context state state_descr line
+typeset -A opt_args
+
+_arguments \
+  '1:command:(list start stop restart status enable disable)' \
+  '2:service:->services'
+
+if [[ $state == services && $words[2] != list ]]; then
+  local -a services
+  services=(${${(f)"$(systemctl --user list-unit-files --type=service --no-legend 2>/dev/null)"}%%[[:space:]]*})
+  _describe -t services 'user service' services
+fi

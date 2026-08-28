@@ -1,0 +1,9 @@
+#compdef sha256sum
+
+_arguments \
+  '(-c --check)'{-c,--check}'[read checksums from files]' \
+  '(-b --binary)'{-b,--binary}'[read files in binary mode]' \
+  '(-t --text)'{-t,--text}'[read files in text mode]' \
+  '--help[show help]' \
+  '--version[show version]' \
+  '*:file:_files'

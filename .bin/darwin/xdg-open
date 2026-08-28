@@ -1,0 +1,19 @@
+#!/bin/sh
+
+case "${1:-}" in
+  -h|--help)
+    printf 'Usage: xdg-open FILE_OR_URL...\n'
+    exit 0
+    ;;
+  --version)
+    printf 'xdg-open compatibility shim for macOS\n'
+    exit 0
+    ;;
+  -*)
+    printf 'xdg-open: unsupported option on macOS: %s\n' "$1" >&2
+    exit 2
+    ;;
+esac
+
+[ "$#" -gt 0 ] || { printf 'xdg-open: missing file or URL\n' >&2; exit 2; }
+exec /usr/bin/open "$@"

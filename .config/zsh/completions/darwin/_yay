@@ -1,0 +1,57 @@
+#compdef yay
+
+local context state state_descr line
+typeset -A opt_args
+
+_arguments -s -S \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-S[install packages]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-R[uninstall packages]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Rs[uninstall named packages]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Rns[uninstall named packages]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Ss[search packages]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Si[show package information]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Qi[show installed package information]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Q[list installed packages]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Qe[list explicitly installed packages]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Qu[list outdated packages]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Sy[update Homebrew metadata]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Syu[update metadata and upgrade packages]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Syyu[update metadata and upgrade packages]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Sc[remove stale packages and downloads]' \
+  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Scc[remove all cached downloads]' \
+  '(--cask --formula)--cask[treat packages as casks]' \
+  '(--cask --formula)--formula[treat packages as formulae]' \
+  '--noconfirm[do not ask for confirmation]' \
+  '(-h --help)'{-h,--help}'[show help]' \
+  '*:package:->packages'
+
+if [[ $state == packages ]]; then
+  local operation=${${words[(r)-S|-R|-Rs|-Rns|-Ss|-Si|-Qi|-Q|-Qe|-Qu|-Sy|-Syu|-Syyu|-Sc|-Scc]}:-}
+  local -a packages
+
+  case $operation in
+    -R|-Rs|-Rns|-Qi)
+      if (( $words[(I)--cask] )); then
+        packages=(${(f)"$(brew list --cask 2>/dev/null)"})
+      elif (( $words[(I)--formula] )); then
+        packages=(${(f)"$(brew list --formula 2>/dev/null)"})
+      else
+        packages=(${(f)"$(brew list --formula 2>/dev/null)"} ${(f)"$(brew list --cask 2>/dev/null)"})
+      fi
+      _describe -t packages 'installed package' packages
+      ;;
+    -S|-Si)
+      if (( $words[(I)--cask] )); then
+        packages=(${(f)"$(brew casks 2>/dev/null)"})
+      elif (( $words[(I)--formula] )); then
+        packages=(${(f)"$(brew formulae 2>/dev/null)"})
+      else
+        packages=(${(f)"$(brew formulae 2>/dev/null)"} ${(f)"$(brew casks 2>/dev/null)"})
+      fi
+      _describe -t packages 'Homebrew package' packages
+      ;;
+    -Ss)
+      _message 'search term'
+      ;;
+  esac
+fi

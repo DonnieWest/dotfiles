@@ -1,0 +1,29 @@
+#!/bin/sh
+
+trim_newline=false
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    -t|--type)
+      [ "$#" -gt 1 ] || { printf 'wl-paste: %s requires a MIME type\n' "$1" >&2; exit 2; }
+      shift 2
+      ;;
+    -n|--no-newline)
+      trim_newline=true
+      shift
+      ;;
+    -h|--help)
+      printf 'Usage: wl-paste [--type MIME] [--no-newline]\n'
+      exit 0
+      ;;
+    *)
+      printf 'wl-paste: unsupported option or argument on macOS: %s\n' "$1" >&2
+      exit 2
+      ;;
+  esac
+done
+
+if [ "$trim_newline" = true ]; then
+  /usr/bin/pbpaste | /usr/bin/perl -0777 -pe 's/\n\z//'
+else
+  exec /usr/bin/pbpaste
+fi

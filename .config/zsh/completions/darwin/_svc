@@ -1,0 +1,14 @@
+#compdef svc
+
+local context state state_descr line
+typeset -A opt_args
+
+_arguments \
+  '1:command:(list start stop restart status enable disable)' \
+  '2:service:->services'
+
+if [[ $state == services && $words[2] != list ]]; then
+  local -a services
+  services=(${(f)"$(brew services list 2>/dev/null | awk 'NR > 1 { print $1 }')"})
+  _describe -t services 'Homebrew service' services
+fi

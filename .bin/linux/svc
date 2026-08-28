@@ -1,0 +1,32 @@
+#!/bin/sh
+
+usage() {
+  cat <<'EOF'
+Usage: svc COMMAND [SERVICE]
+
+Commands: list, start, stop, restart, status, enable, disable
+Services are managed with systemctl --user.
+EOF
+}
+
+command=${1:-}
+service=${2:-}
+[ "$#" -le 2 ] || { usage >&2; exit 2; }
+
+case "$command" in
+  list)
+    [ -z "$service" ] || { usage >&2; exit 2; }
+    exec systemctl --user list-units --type=service
+    ;;
+  start|stop|restart|enable|disable|status)
+    [ -n "$service" ] || { usage >&2; exit 2; }
+    exec systemctl --user "$command" "$service"
+    ;;
+  -h|--help|help)
+    usage
+    ;;
+  *)
+    usage >&2
+    exit 2
+    ;;
+esac

@@ -215,14 +215,13 @@ function plugin-load() {
 
 function plugin-update () {
   local d
-  for d in $ZPLUGINDIR/*/.git(/); do
+  for d in "$ZPLUGINDIR"/*/.git(N/); do
     print -r -- "Updating ${d:h:t}..."
-    command git -C "${d:h}" pull --ff-only --recurse-submodules --depth 1
+    command git -C "${d:h}" pull --ff --rebase --autostash --recurse-submodules --depth 1 origin HEAD
   done
 }
 
 function plugin-compile() {
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
   autoload -U zrecompile
   local f
   for f in $ZPLUGINDIR/**/*.zsh{,-theme}(N); do

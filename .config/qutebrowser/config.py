@@ -63,13 +63,7 @@ c.aliases = {
 # list) will work.
 # Type: List of String
 c.qt.args = [
-    "enable-zero-copy",
     "enable-accelerated-video-decode",
-    "enable-gpu-rasterization",
-    "ignore-gpu-blacklist",
-    "enable-native-gpu-memory-buffers",
-    "num-raster-threads=4",
-    "enable-webgpu",
     "disable-font-subpixel-positioning",
     "enable-font-antialiasing",
 ]

@@ -15,15 +15,6 @@ import qutebrowser.api.interceptor
 
 
 def rewrite(request: qutebrowser.api.interceptor.Request):
-    if (
-        request.request_url.host() in ("www.reddit.com", "reddit.com")
-        and request.request_url.path() != "/media"
-    ):
-        request.request_url.setHost("old.reddit.com")
-        try:
-            request.redirect(request.request_url)
-        except:
-            pass
     if request.request_url.host() in ("medium.com", "www.medium.com"):
         path = request.request_url.path()
         path_parts = [p for p in path.split("/") if p]

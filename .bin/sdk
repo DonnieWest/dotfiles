@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+SDKMAN_DIR=${SDKMAN_DIR:-$HOME/.sdkman}
+if [[ -r "$SDKMAN_DIR/bin/sdkman-init.sh" ]]; then
+  source "$SDKMAN_DIR/bin/sdkman-init.sh"
+elif [[ -r /usr/lib/sdkman/libexec/bin/sdkman-init.sh ]]; then
+  for script in /usr/lib/sdkman/libexec/src/sdkman-*.sh; do
+    source "$script"
+  done
+  unset script
+  source /usr/lib/sdkman/libexec/bin/sdkman-init.sh
+else
+  echo "SDKMAN initialization script not found" >&2
+  exit 1
+fi
+sdk "$@"

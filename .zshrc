@@ -287,7 +287,6 @@ export GRADLE_HOME="$HOME/.gradle"
 export ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
 export STEAM_RUNTIME=0
-export GRAALVM_HOME="$HOME/.config/graalvm-ce"
 
 
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -297,22 +296,16 @@ export EDITOR="nvim"
 case "$ZSH_OS" in
   Darwin)
     export ANDROID_HOME="$HOME/Library/Android/sdk"
+    export STUDIO_JDK="$JAVA_HOME"
     export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
     ;;
   Linux)
     export ANDROID_HOME="$HOME/.android-sdk-linux"
-    export JAVA_HOME="/usr/lib/jvm/default"
-    export STUDIO_JDK="/usr/lib/jvm/default"
+    export STUDIO_JDK="$JAVA_HOME"
     export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
     ;;
 esac
 
-set-java-home() {
-  if [[ $ZSH_OS == Darwin && -x /usr/libexec/java_home ]]; then
-    export JAVA_HOME="$(/usr/libexec/java_home 2>/dev/null)"
-    export STUDIO_JDK="$JAVA_HOME"
-  fi
-}
 export JDTLS_JVM_ARGS="-javaagent:$HOME/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar"
 
 # Setup PATH
@@ -323,7 +316,6 @@ export PATH="$ANDROID_HOME/platform-tools:$PATH"
 export PATH="$ANDROID_HOME/tools/bin:$PATH"
 export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
 
-export PATH="$PATH:$GRAALVM_HOME/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$HOME/.config/n/bin:$PATH"
 export PATH="$HOME/.config/npm/bin:$PATH"
@@ -855,7 +847,6 @@ studio() {
   local gradle_root=$(find . -maxdepth 3 -name 'build.gradle' -o -name 'build.gradle.kts' | head -1 | xargs dirname)
   if [[ -n "$gradle_root" ]]; then
     if [[ $ZSH_OS == Darwin ]]; then
-      set-java-home
       open -a "Android Studio" "$gradle_root"
     else
       /opt/android-studio/bin/studio.sh "$gradle_root" &

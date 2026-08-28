@@ -1,28 +1,15 @@
 source ~/.profile
 
-typeset -g ZSH_OS=${ZSH_OS:-$(uname)}
+case ${ZSH_OS:-$OSTYPE} in
+  Darwin|darwin*) typeset -gr ZSH_OS=Darwin ;;
+  Linux|linux*)   typeset -gr ZSH_OS=Linux ;;
+  *)              typeset -gr ZSH_OS=${OSTYPE%%-*} ;;
+esac
+typeset -gr ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
+
 typeset -g ZSH_COMPLETION_DIR=${ZDOTDIR:-$HOME/.config/zsh}/completions
 [[ -d "$ZSH_COMPLETION_DIR/${ZSH_OS:l}" ]] && fpath=("$ZSH_COMPLETION_DIR/${ZSH_OS:l}" $fpath)
 [[ -d "$ZSH_COMPLETION_DIR/${HOST%%.*}" ]] && fpath=("$ZSH_COMPLETION_DIR/${HOST%%.*}" $fpath)
-
-autoload -Uz compinit promptinit
-zcompdump=${ZDOTDIR:-$HOME}/.zcompdump
-typeset completion_file rebuild_compdump=
-for completion_file in \
-  "$ZSH_COMPLETION_DIR/${ZSH_OS:l}"/_*(N) \
-  "$ZSH_COMPLETION_DIR/${HOST%%.*}"/_*(N); do
-  if [[ ! -e $zcompdump || $completion_file -nt $zcompdump ]]; then
-    rebuild_compdump=1
-    break
-  fi
-done
-if [[ ! -s $zcompdump || -n ${zcompdump}(#qN.mh+24) || -n $rebuild_compdump ]]; then
-  compinit -u -d "$zcompdump"
-else
-  compinit -C -u -d "$zcompdump"
-fi
-unset completion_file rebuild_compdump
-promptinit
 
 setopt autocd
 setopt extendedglob
@@ -135,7 +122,7 @@ zstyle ':completion:*' users off
 
 # Use caching so that commands like apt and dpkg complete are useable
 zstyle ':completion::complete:*' use-cache 1
-zstyle ':completion::complete:*' cache-path $ZSH/cache/
+zstyle ':completion::complete:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completion"
 zstyle ':completion:*' rehash true
 
 # Complete targets first, then variables if none, then files if none
@@ -179,20 +166,15 @@ alias dh='dirs -v'
 ## GPG Agent
 
 unset SSH_AGENT_PID
-if [[ "$(uname)" == "Linux" && "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]]; then
-  export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
+export GPG_TTY=$TTY
+
+if command -v gpgconf >/dev/null 2>&1; then
+  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
-# Start the gpg-agent if not already running
-if command -v gpg-connect-agent >/dev/null 2>&1 && ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
-  gpg-connect-agent /bye >/dev/null 2>&1
+if command -v gpg-connect-agent >/dev/null 2>&1; then
+  gpg-connect-agent updatestartuptty /bye >/dev/null
 fi
-
-# Set GPG TTY
-export GPG_TTY=$(tty)
-
-# Refresh gpg-agent tty in case user switches into an X session
-command -v gpg-connect-agent >/dev/null 2>&1 && gpg-connect-agent updatestartuptty /bye >/dev/null
 
 ## Misc
 
@@ -205,33 +187,37 @@ ulimit -n 2048
 alias ssh='TERM=xterm-256color ssh'
 # Use custom dircolors
 
-# clone a plugin, identify its init file, source it, and add it to your fpath
+# Clone a plugin, identify its init file, source it, and add it to fpath.
 function plugin-load() {
-  local repo plugin_name plugin_dir initfile initfiles
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
-  for repo in $@; do
-    plugin_name=${repo:t}
-    plugin_dir=$ZPLUGINDIR/$plugin_name
-    initfile=$plugin_dir/$plugin_name.plugin.zsh
+  local repo plugin_dir clone_dir initfile
+  local -a initfiles
+  for repo in "$@"; do
+    plugin_dir=$ZPLUGINDIR/${repo:t}
+    initfile=$plugin_dir/${repo:t}.plugin.zsh
     if [[ ! -d $plugin_dir ]]; then
-      echo "Cloning $repo"
-      git clone -q --depth 1 --recursive --shallow-submodules https://github.com/$repo $plugin_dir
+      print -ru2 -- "Cloning $repo..."
+      clone_dir=$plugin_dir.tmp.$$
+      command git clone -q --depth 1 https://github.com/$repo "$clone_dir" || {
+        command rm -rf "$clone_dir"
+        continue
+      }
+      command mv "$clone_dir" "$plugin_dir"
     fi
     if [[ ! -e $initfile ]]; then
-      initfiles=($plugin_dir/*.plugin.{z,}sh(N) $plugin_dir/*.{z,}sh{-theme,}(N))
-      [[ ${#initfiles[@]} -gt 0 ]] || { echo >&2 "Plugin has no init file '$repo'." && continue }
-      ln -sf "${initfiles[1]}" "$initfile"
+      initfiles=($plugin_dir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
+      (( ${#initfiles} )) || { print -ru2 -- "No init file found for '$repo'."; continue; }
+      command ln -sf "$initfiles[1]" "$initfile"
     fi
-    fpath+=$plugin_dir
-    (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
+    fpath+=("$plugin_dir")
+    source "$initfile"
   done
 }
 
 function plugin-update () {
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
+  local d
   for d in $ZPLUGINDIR/*/.git(/); do
-    echo "Updating ${d:h:t}..."
-    command git -C "${d:h}" pull --ff --recurse-submodules --depth 1 --rebase --autostash
+    print -r -- "Updating ${d:h:t}..."
+    command git -C "${d:h}" pull --ff-only --recurse-submodules --depth 1
   done
 }
 
@@ -244,28 +230,24 @@ function plugin-compile() {
   done
 }
 
-# make list of the Zsh plugins you use
-plugins=(
-  # romkatv/zsh-defer
-  woefe/git-prompt.zsh
-
-  zsh-users/zsh-history-substring-search
-  zsh-users/zsh-completions
-  zsh-users/zsh-autosuggestions
-  zdharma-continuum/fast-syntax-highlighting
-  mafredri/zsh-async
-
-  jsahlen/tmux-vim-integration.plugin.zsh
-  laggardkernel/git-ignore
-
-  gradle/gradle-completion
+# Completion search paths must exist before compinit scans fpath.
+plugin-load \
+  zsh-users/zsh-completions \
   greymd/docker-zsh-completion
 
-  lukechilds/zsh-better-npm-completion
-  chrisands/zsh-yarn-completion
-)
+typeset -gr ZSH_CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}/zsh
+[[ -d $ZSH_CACHE_DIR ]] || command mkdir -p "$ZSH_CACHE_DIR"
+typeset -gr zcompdump=$ZSH_CACHE_DIR/zcompdump-${ZSH_VERSION}-${ZSH_OS:l}
+autoload -Uz compinit
+compinit -d "$zcompdump"
+[[ $zcompdump.zwc -nt $zcompdump ]] || zcompile "$zcompdump"
 
-plugin-load $plugins
+# These settings are read while their plugins are sourced.
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=red"
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+ZSH_AUTOSUGGEST_STRATEGY=(history)
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 
 ZSH_GIT_PROMPT_FORCE_BLANK=1
 ZSH_GIT_PROMPT_SHOW_STASH=1
@@ -284,7 +266,20 @@ ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑"
 ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔"
 
 PROMPT='%(?,%{$fg[green]%},%{$fg[red]%}) %% '
-RPS1='%{$fg[white]%}%2~$(gitprompt) %{$fg_bold[blue]%}%{$reset_color%}'
+RPROMPT='%{$fg[white]%}%2~$(gitprompt) %{$fg_bold[blue]%}%{$reset_color%}'
+
+# Plugins that register compdefs require an initialized completion system.
+# Prompt and widget plugins follow so the first command is fully usable.
+plugin-load \
+  gradle/gradle-completion \
+  lukechilds/zsh-better-npm-completion \
+  chrisands/zsh-yarn-completion \
+  woefe/git-prompt.zsh \
+  zsh-users/zsh-history-substring-search \
+  jsahlen/tmux-vim-integration.plugin.zsh \
+  laggardkernel/git-ignore \
+  zdharma-continuum/fast-syntax-highlighting \
+  zsh-users/zsh-autosuggestions
 
 # Setup Env variables
 export N_PREFIX=$HOME/.config/n
@@ -301,13 +296,8 @@ export EDITOR="nvim"
 
 case "$ZSH_OS" in
   Darwin)
-    export BROWSER="open"
     export ANDROID_HOME="$HOME/Library/Android/sdk"
     export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
-    if [[ -x /usr/libexec/java_home ]]; then
-      export JAVA_HOME="$(/usr/libexec/java_home 2>/dev/null)"
-      export STUDIO_JDK="$JAVA_HOME"
-    fi
     ;;
   Linux)
     export ANDROID_HOME="$HOME/.android-sdk-linux"
@@ -316,10 +306,13 @@ case "$ZSH_OS" in
     export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
     ;;
 esac
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=red"
-export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-export ZSH_AUTOSUGGEST_USE_ASYNC=1
-export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+set-java-home() {
+  if [[ $ZSH_OS == Darwin && -x /usr/libexec/java_home ]]; then
+    export JAVA_HOME="$(/usr/libexec/java_home 2>/dev/null)"
+    export STUDIO_JDK="$JAVA_HOME"
+  fi
+}
 export JDTLS_JVM_ARGS="-javaagent:$HOME/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar"
 
 # Setup PATH
@@ -336,6 +329,7 @@ export PATH="$HOME/.config/n/bin:$PATH"
 export PATH="$HOME/.config/npm/bin:$PATH"
 export PATH="$HOME/.bun/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
+[[ $ZSH_OS == Darwin ]] && export PATH="$HOME/.rustup/toolchains/stable-aarch64-apple-darwin/bin:$PATH"
 export PATH="$HOME/.bin:$PATH"
 
 # Shared commands may be overridden by OS- and then host-specific versions.
@@ -824,14 +818,31 @@ if [[ -f /etc/arch-release ]]; then
 fi
 
 export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-command -v pyenv >/dev/null && eval "$(pyenv init -)"
+[[ -d $PYENV_ROOT/bin ]] && path=($PYENV_ROOT/bin $path)
+if command -v pyenv >/dev/null 2>&1; then
+  pyenv() {
+    unset -f pyenv
+    eval "$(command pyenv init -)"
+    pyenv "$@"
+  }
+fi
 
 # Command-not-found handler - suggests packages for missing commands
 [[ -f /usr/share/doc/pkgfile/command-not-found.zsh ]] && source /usr/share/doc/pkgfile/command-not-found.zsh
 
 # Zoxide - smarter directory navigation with frecency
-command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+if command -v zoxide >/dev/null 2>&1; then
+  z() {
+    unset -f z zi
+    eval "$(zoxide init zsh)"
+    z "$@"
+  }
+  zi() {
+    unset -f z zi
+    eval "$(zoxide init zsh)"
+    zi "$@"
+  }
+fi
 
 ## Android Dev CLI
 # All Android functionality has been moved to 'adc' (Android Dev CLI)

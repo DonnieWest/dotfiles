@@ -7,5 +7,6 @@ link-url = true
 confirm-close-surface = false
 working-directory = home
 window-inherit-working-directory = false
+window-save-state = never
 keybind = shift+enter=text:\x1b\r
 keybind = alt+backspace=text:\x1b\x7f

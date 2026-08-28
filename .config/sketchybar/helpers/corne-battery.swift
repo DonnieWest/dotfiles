@@ -13,7 +13,7 @@ final class Reader: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var results: [Int: Int] = [:]
     private var done = false
 
-    func run(timeout: TimeInterval = 8) {
+    func run(timeout: TimeInterval = 3) {
         central = CBCentralManager(delegate: self, queue: DispatchQueue.main)
 
         let deadline = Date().addingTimeInterval(timeout)

@@ -13,7 +13,7 @@ exec-on-workspace-change = [
 ]
 
 enable-normalization-flatten-containers = false
-# focus-follows-mouse = true
+focus-follows-mouse.enabled = true
 enable-normalization-opposite-orientation-for-nested-containers = false
 accordion-padding = 30
 persistent-workspaces = []
@@ -84,16 +84,16 @@ cmd-r = 'mode resize'
 cmd-z = 'workspace-back-and-forth'
 
 # Focus workspaces
-cmd-1 = ['workspace --auto-back-and-forth 01', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-2 = ['workspace --auto-back-and-forth 02', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-3 = ['workspace --auto-back-and-forth 03', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-4 = ['workspace --auto-back-and-forth 04', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-5 = ['workspace --auto-back-and-forth 05', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-6 = ['workspace --auto-back-and-forth 06', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-7 = ['workspace --auto-back-and-forth 07', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-8 = ['workspace --auto-back-and-forth 08', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-9 = ['workspace --auto-back-and-forth 09', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-cmd-0 = ['workspace --auto-back-and-forth 10', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+cmd-1 = 'workspace --auto-back-and-forth 01'
+cmd-2 = 'workspace --auto-back-and-forth 02'
+cmd-3 = 'workspace --auto-back-and-forth 03'
+cmd-4 = 'workspace --auto-back-and-forth 04'
+cmd-5 = 'workspace --auto-back-and-forth 05'
+cmd-6 = 'workspace --auto-back-and-forth 06'
+cmd-7 = 'workspace --auto-back-and-forth 07'
+cmd-8 = 'workspace --auto-back-and-forth 08'
+cmd-9 = 'workspace --auto-back-and-forth 09'
+cmd-0 = 'workspace --auto-back-and-forth 10'
 
 # Move windows to workspaces and follow
 cmd-shift-1 = ['move-node-to-workspace 01', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
@@ -108,10 +108,10 @@ cmd-shift-9 = ['move-node-to-workspace 09', 'exec-and-forget $HOME/.config/aeros
 cmd-shift-0 = ['move-node-to-workspace 10', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 # Next / previous workspace
-alt-ctrl-right = ['workspace --wrap-around next', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-alt-ctrl-left = ['workspace --wrap-around prev', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-alt-ctrl-semicolon = ['workspace --wrap-around next', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
-alt-ctrl-j = ['workspace --wrap-around prev', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+alt-ctrl-right = 'workspace --wrap-around next'
+alt-ctrl-left = 'workspace --wrap-around prev'
+alt-ctrl-semicolon = 'workspace --wrap-around next'
+alt-ctrl-j = 'workspace --wrap-around prev'
 
 # Move focused window to the previous workspace, matching Sway's back-and-forth move.
 cmd-shift-z = 'exec-and-forget $HOME/.config/aerospace/move-node-to-previous-workspace.sh'
@@ -141,7 +141,7 @@ cmd-r = 'mode main'
 # `aerospace list-windows --all` on the target Mac.
 [[on-window-detected]]
 if.app-id = 'org.qutebrowser.qutebrowser'
-run = ['move-node-to-workspace 01', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
+run = ['layout tiling', 'move-node-to-workspace 01', 'exec-and-forget $HOME/.config/aerospace/trigger-sketchybar-workspaces.sh']
 
 [[on-window-detected]]
 if.app-id = 'org.mozilla.firefoxdeveloperedition'

@@ -35,23 +35,24 @@ sketchybar \
   icon.padding_right=2 \
   label.padding_left=2 \
   label.padding_right=2 \
+  --remove aerospace.workspaces \
   --add event aerospace_workspace_change \
-  --add item aerospace.workspaces left \
-  --set aerospace.workspaces \
+  --add item aerospace.watcher left \
+  --set aerospace.watcher \
     drawing=off \
     updates=on \
-    script="$PLUGIN_DIR/aerospace_workspaces.sh" \
-  --subscribe aerospace.workspaces aerospace_workspace_change \
+    script="$PLUGIN_DIR/aerospace_focus.sh" \
+  --subscribe aerospace.watcher aerospace_workspace_change \
   --add item wifi right \
   --set wifi \
-    update_freq=30 \
+    update_freq=60 \
     script="$PLUGIN_DIR/wifi.sh" \
     icon= \
     icon.padding_left=8 icon.padding_right=4 \
     label.padding_left=2 label.padding_right=8 \
   --add item memory right \
   --set memory \
-    update_freq=30 \
+    update_freq=60 \
     script="$PLUGIN_DIR/memory.sh" \
     icon= \
     icon.padding_left=8 icon.padding_right=4 \
@@ -59,7 +60,7 @@ sketchybar \
   --add item volume right \
   --set volume \
     updates=on \
-    update_freq=1 \
+    update_freq=2 \
     script="$PLUGIN_DIR/volume.sh" \
     icon= \
     icon.padding_left=8 icon.padding_right=4 \
@@ -74,11 +75,13 @@ sketchybar \
     label.padding_left=2 label.padding_right=8 \
   --add item battery right \
   --set battery \
+    updates=on \
     update_freq=60 \
     script="$PLUGIN_DIR/battery.sh" \
     icon= \
     icon.padding_left=8 icon.padding_right=4 \
     label.padding_left=2 label.padding_right=8 \
+  --subscribe battery power_source_change \
   --add item clock right \
   --set clock \
     update_freq=60 \
@@ -87,4 +90,33 @@ sketchybar \
     icon.padding_left=8 icon.padding_right=4 \
     label.padding_left=2 label.padding_right=8 \
   --hotload on
+
+for workspace in 01 02 03 04 05 06 07 08 09 10; do
+  case "$workspace" in
+    01) label=Browser ;;
+    02) label=Chat ;;
+    03) label=Terminal ;;
+    04) label=Emulator ;;
+    *) label=Code ;;
+  esac
+
+  icon="${workspace#0}"
+  item="aerospace.$workspace"
+
+  sketchybar \
+    --add item "$item" left \
+    --set "$item" \
+      drawing=off \
+      icon="$icon" \
+      icon.padding_left=6 \
+      icon.padding_right=4 \
+      label="$label" \
+      label.padding_left=2 \
+      label.padding_right=6 \
+      background.drawing=on \
+      background.color=$BG \
+      click_script="aerospace workspace '$workspace'"
+done
+
 "$PLUGIN_DIR/aerospace_workspaces.sh"
+NAME=volume SENDER=forced "$PLUGIN_DIR/volume.sh"

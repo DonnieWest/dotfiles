@@ -21,7 +21,19 @@
  {1 :nvim-lua/popup.nvim :lazy true} ;; Dependency, loaded when needed
  {1 :rafamadriz/friendly-snippets :event :InsertEnter}
  {1 :RRethy/vim-illuminate :event :BufReadPost}
- {1 :stevearc/quicker.nvim :event :QuickFixCmdPost}
+ {1 :stevearc/quicker.nvim :ft :qf :opts {}}
+ {1 :stevearc/overseer.nvim
+  :cmd [:OverseerOpen
+        :OverseerClose
+        :OverseerToggle
+        :OverseerRun
+        :OverseerShell
+        :OverseerTaskAction]
+  :opts {:dap true
+         :task_list {:direction :bottom}}
+  :keys [{1 :<leader>or 2 :<cmd>OverseerRun<cr> :desc "Overseer: Run task"}
+         {1 :<leader>ot 2 :<cmd>OverseerToggle<cr> :desc "Overseer: Toggle tasks"}
+         {1 :<leader>oa 2 :<cmd>OverseerTaskAction<cr> :desc "Overseer: Task action"}]}
  ;; Git plugins
  {1 :sindrets/diffview.nvim :cmd [:DiffviewOpen :DiffviewFileHistory]}
  {:url "https://codeberg.org/trevorhauter/gitportal.nvim"}

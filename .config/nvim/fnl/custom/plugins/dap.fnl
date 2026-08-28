@@ -1,15 +1,13 @@
 {1 :mfussenegger/nvim-dap
-  :dependencies [{1 :rcarriga/nvim-dap-ui :opts {}}
-                 :nvim-neotest/nvim-nio
-                 {1 :theHamsta/nvim-dap-virtual-text :opts {}}
-                 :igorlfs/nvim-dap-view
+  :dependencies [{1 :igorlfs/nvim-dap-view
+                  :opts {:auto_toggle true}}
                  :nvim-telescope/telescope-dap.nvim
                   {1 :mxsdev/nvim-dap-vscode-js
                    :dependencies [{1 :microsoft/vscode-js-debug
                                    :build "curl -L https://github.com/microsoft/vscode-js-debug/releases/download/v1.117.0/js-debug-dap-v1.117.0.tar.gz -o js-debug-dap.tar.gz && rm -rf out && tar -xzf js-debug-dap.tar.gz && mv js-debug out && rm js-debug-dap.tar.gz"}]}]
   :config (fn []
             (let [dap (require :dap)
-                  dapui (require :dapui)
+                  dap-view (require :dap-view)
                   dap-vscode-js (require :dap-vscode-js)
                   nearest-file (fn [name]
                                  (let [start (vim.fs.dirname (vim.api.nvim_buf_get_name 0))
@@ -20,13 +18,6 @@
                   nearest-root (fn [markers]
                                  (or (vim.fs.root (vim.api.nvim_buf_get_name 0) markers)
                                      (vim.fn.getcwd)))]
-             ;; Auto-open/close UI
-             (tset dap.listeners.before.event_terminated :dapui_config
-                   (fn [] (dapui.close)))
-             (tset dap.listeners.before.event_exited :dapui_config
-                   (fn [] (dapui.close)))
-             (tset dap.listeners.after.event_initialized :dapui_config
-                   (fn [] (dapui.open)))
               (dap-vscode-js.setup {:debugger_path (.. (vim.fn.stdpath :data)
                                                        :/lazy/vscode-js-debug)
                                     :debugger_cmd [:node
@@ -163,5 +154,5 @@
                              {:desc "DAP: Open REPL"})
              (vim.keymap.set :n :<leader>dl dap.run_last
                              {:desc "DAP: Run Last"})
-             (vim.keymap.set :n :<leader>dt dapui.toggle
+             (vim.keymap.set :n :<leader>dt dap-view.toggle
                              {:desc "DAP: Toggle UI"})))}

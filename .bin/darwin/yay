@@ -33,6 +33,18 @@ die() {
   exit 2
 }
 
+privileges_cli=/Applications/Privileges.app/Contents/Resources/PrivilegesCLI
+
+run_with_install_privileges() (
+  [ -x "$privileges_cli" ] || die "PrivilegesCLI is not installed or not executable"
+  "$privileges_cli" --add || exit $?
+  trap '"$privileges_cli" --remove' EXIT
+  trap 'exit 129' HUP
+  trap 'exit 130' INT
+  trap 'exit 143' TERM
+  run_for_packages install
+)
+
 command -v brew >/dev/null 2>&1 || die "Homebrew is not installed or not in PATH"
 
 operation=
@@ -156,7 +168,7 @@ run_for_packages() {
 
 case "$operation" in
   -S)
-    run_for_packages install
+    run_with_install_privileges
     ;;
   -R|-Rs|-Rns)
     if [ "$operation" != -R ]; then

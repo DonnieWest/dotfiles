@@ -4,6 +4,7 @@
  :dependencies [:nvim-neotest/neotest-jest
                  :marilari88/neotest-vitest
                  :rcasia/neotest-java
+                 :nvim-neotest/nvim-nio
                  :nvim-lua/plenary.nvim
                  :nvim-treesitter/nvim-treesitter]
  :config (fn []

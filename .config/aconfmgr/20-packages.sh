@@ -33,6 +33,7 @@ AddPackage bluez-cups # CUPS printer backend for Bluetooth printers
 AddPackage bluez-tools # A set of tools to manage Bluetooth devices for Linux
 AddPackage bluez-utils # Development and debugging utilities for the bluetooth protocol stack
 AddPackage bolt # Thunderbolt 3 device manager
+AddPackage brother-hll2350dw # Brother HL-L2350DW CUPS driver
 AddPackage brightnessctl # Lightweight brightness control tool
 AddPackage btop # A monitor of system resources, bpytop ported to C++
 AddPackage btrfs-progs # Btrfs filesystem utilities
@@ -168,14 +169,15 @@ AddPackage jujutsu # Git-compatible VCS that is both simple and powerful
 AddPackage jwt-cli # A super fast CLI tool to decode and encode JWTs
 AddPackage kanshi # Dynamic output configuration for Wayland WMs
 AddPackage --foreign keybase
+AddPackage --foreign lib32-pcre # A library that implements Perl 5-style regular expressions (32-bit)
+AddPackage --foreign lib32-sdl12-compat # SDL 1.2 runtime compatibility library using SDL 2.0
 AddPackage khal # CLI calendar application built around CalDAV
 AddPackage khard # Console address book manager
 AddPackage kmonad # Advanced keyboard remapping utility
+AddPackage ktlint
 AddPackage lf # A terminal file manager inspired by ranger
 AddPackage lhasa # Free LZH/LHA archive tool
 AddPackage lib32-libva-intel-driver # VA-API implementation for Intel G45 and HD Graphics family (32-bit)
-AddPackage lib32-pcre # A library that implements Perl 5-style regular expressions (32-bit)
-AddPackage lib32-sdl12-compat # SDL 1.2 runtime compatibility library using SDL 2.0
 AddPackage lib32-vulkan-intel # Open-source Vulkan driver for Intel GPUs - 32-bit
 AddPackage libao # Cross-platform audio output library and plugins
 AddPackage libcdio-paranoia # Compact Disc Digital Audio (CDDA) extraction tool using libcdio for CDROM access
@@ -201,6 +203,7 @@ AddPackage linux-zen # The Linux ZEN kernel and modules
 AddPackage linux-zen-headers # Headers and scripts for building modules for the Linux ZEN kernel
 AddPackage logiops # An unofficial driver for Logitech HID++>2.0 mice and keyboard
 AddPackage lsof # Lists open files for running Unix processes
+AddPackage llama-cpp # LLM inference in C/C++
 AddPackage luanti # Multiplayer infinite-world block sandbox game
 AddPackage luarocks # Deployment and management system for Lua modules
 AddPackage lxc # Linux Containers
@@ -241,6 +244,8 @@ AddPackage ollama-vulkan # Create, run and share large language models (LLMs) wi
 AddPackage omnisharp-roslyn # OmniSharp server (STDIO) based on Roslyn workspaces
 AddPackage openssh # SSH protocol implementation for remote login, command execution and file transfer
 AddPackage opencode # The AI coding agent built for the terminal.
+AddPackage ocrmypdf # A tool to add an OCR text layer to scanned PDF files, allowing them to be searched
+AddPackage openai-codex # OpenAIs lightweight coding agent that runs in your terminal
 AddPackage opusfile # Library for opening, seeking, and decoding .opus files
 AddPackage otf-font-awesome-4 # Iconic font designed for Bootstrap (version 4.x)
 AddPackage pam-u2f # Universal 2nd Factor (U2F) PAM authentication module from Yubico
@@ -288,6 +293,7 @@ AddPackage qt5-wayland # Provides APIs for Wayland
 AddPackage qt6-wayland # Provides APIs for Wayland
 AddPackage qt6ct # Qt 6 Configuration Utility
 AddPackage qutebrowser-git # A keyboard-driven, vim-like browser based on PyQt
+AddPackage quickjs-ng # A mighty JavaScript engine
 AddPackage rate-mirrors # Everyday-use client-side map-aware mirror ranking tool
 AddPackage rbw # Unofficial Bitwarden CLI
 AddPackage remmina # Remote desktop client written in GTK+
@@ -343,6 +349,7 @@ AddPackage thunar-volman # Automatic management of removable drives and media fo
 AddPackage tig # Text-mode interface for Git.
 AddPackage tmux # Terminal multiplexer
 AddPackage tree-sitter # Incremental parsing library
+AddPackage tree-sitter-cli
 AddPackage ttf-cascadia-code # A monospaced font by Microsoft that includes programming ligatures
 AddPackage ttf-courier-prime # Monospace Courier font alternative. It’s Courier, just better
 AddPackage ttf-dejavu # Font family based on the Bitstream Vera Fonts with a wider range of characters
@@ -376,6 +383,7 @@ AddPackage virt-manager # Desktop user interface for managing virtual machines
 AddPackage virt-viewer # A lightweight interface for interacting with the graphical display of virtualized guest OS.
 AddPackage vit # Terminal interface for Taskwarrior with Vim key bindings and colorization
 AddPackage vpl-gpu-rt # Intel VPL runtime implementation for Intel GPUs (Tiger Lake and newer)
+AddPackage vulkan-mesa-layers
 AddPackage vulkan-intel # Open-source Vulkan driver for Intel GPUs
 AddPackage vulkan-tools # Vulkan tools and utilities
 AddPackage w3m # Text-based Web browser as well as pager
@@ -392,6 +400,7 @@ AddPackage wf-recorder # Screen recorder for wlroots-based compositors such as s
 AddPackage wget # Network utility to retrieve files from the web
 AddPackage whisper-cpp-git # Port of OpenAI's Whisper model in C/C++
 AddPackage winetricks # Script to install various redistributable runtime libraries in Wine.
+AddPackage wireless-regdb
 AddPackage wireless_tools # Tools allowing to manipulate the Wireless Extensions
 AddPackage wireplumber # Session / policy manager implementation for PipeWire
 AddPackage wireshark-qt # Network traffic and protocol analyzer/sniffer - Qt GUI
@@ -403,6 +412,7 @@ AddPackage woff2-font-awesome # Iconic font designed for Bootstrap - woff2 forma
 AddPackage wofi # launcher for wlroots-based wayland compositors
 AddPackage wpa_supplicant # A utility providing key negotiation for WPA wireless networks
 AddPackage xarchiver # GTK frontend to various command line archivers
+AddPackage xdg-desktop-portal-gtk
 AddPackage xdg-desktop-portal-wlr # xdg-desktop-portal backend for wlroots
 AddPackage xdg-user-dirs # Manage user directories like ~/Desktop and ~/Music
 AddPackage xdotool # Command-line X11 automation tool
@@ -445,7 +455,6 @@ AddPackage --foreign antigravity-cli # Google's agentic development platform (CL
 AddPackage --foreign arc-gtk-theme # A flat theme with transparent elements for GTK 2,3,4 and Gnome-Shell
 AddPackage --foreign arc-icon-theme # Arc icon theme. Official releases only.
 AddPackage --foreign aspnet-runtime-2.1 # The ASP.NET Core runtime binary version 2.1
-AddPackage --foreign brother-hll2350dw # Brother HL-L2350DW CUPS driver
 AddPackage --foreign browserstack-local-x64 # BrowserStack Local Testing binary - 64bit
 AddPackage --foreign bugwarrior # Pull github, bitbucket, and trac issues into taskwarrior
 AddPackage --foreign chatgpt.sh # Wrapper for ChatGPT, STT, and TTS. Features Ollama, Gemini, Anthropic, and more
@@ -465,9 +474,11 @@ AddPackage --foreign i7z # A better i7 (and now i3, i5) reporting tool for Linux
 AddPackage --foreign java-debug # The debug server implementation for Java.
 AddPackage --foreign jdk21-jetbrains-bin # OpenJDK development kit with some fixes and enhancements by JetBrains
 AddPackage --foreign jdtls # Eclipse Java language server
+AddPackage --foreign lib32-pcre # A library that implements Perl 5-style regular expressions (32-bit)
+AddPackage --foreign lib32-sdl12-compat # SDL 1.2 runtime compatibility library using SDL 2.0
 AddPackage --foreign lazysql # A cross-platform TUI database management tool written in Go
+AddPackage --foreign llmfit-bin
 AddPackage --foreign lyrus-git # A Python curses lyrics player primarily for cmus, with playerctl as a fallback
-AddPackage --foreign llama-cpp # LLM inference in C/C++
 AddPackage --foreign maestro-dev # End-to-end testing for Mobile and Web apps
 AddPackage --foreign mbrola # A phoneme-to-audio converter used by many TTS (Text-to-speech) programs
 AddPackage --foreign mbrola-voices-us1 # An American English female voice for the MBROLA synthesizer
@@ -479,13 +490,12 @@ AddPackage --foreign mvnd # Maven Deamon, which aims at providing faster Maven b
 AddPackage --foreign ntfysh-bin # Send push notifications to your phone or desktop using PUT/POST
 AddPackage --foreign oauth2ms-git # XOAUTH2 compatible O365 token fetcher
 AddPackage --foreign odin4-cli # an Odin4 binary for flashing Samsung firmware
-AddPackage --foreign ocrmypdf # A tool to add an OCR text layer to scanned PDF files, allowing them to be searched
 AddPackage --foreign openconnect-sso # Wrapper script for OpenConnect supporting Azure AD (SAMLv2) authentication
-AddPackage --foreign openai-codex # OpenAIs lightweight coding agent that runs in your terminal
 AddPackage --foreign openssl-1.0 # The Open Source toolkit for Secure Sockets Layer and Transport Layer Security
 AddPackage --foreign pass-import # A pass extension for importing data from most existing password managers.
+AddPackage --foreign pi-coding-agent
 AddPackage --foreign ponymix-git # CLI PulseAudio Volume Control
-AddPackage --foreign quickjs-ng # Small and embeddable JavaScript engine
+AddPackage --foreign reactotron
 AddPackage --foreign maplemononl-otf # Open source monospace font with round corner, ligatures and Nerd-Font for IDE and command line
 AddPackage --foreign maplemononl-ttf-autohint # Open source monospace font with round corner, ligatures and Nerd-Font for IDE and command line
 AddPackage --foreign rvm # RVM is a command-line tool which allows to display images in the terminal, written in C++
@@ -499,6 +509,7 @@ AddPackage --foreign ttf-victor-mono # Unoffical Victor Mono(TTF) AUR package
 AddPackage --foreign urlview # A curses URL parser for text files
 AddPackage --foreign usql # A universal command-line interface for SQL databases
 AddPackage --foreign verapdf # purpose-built, open source, file-format validator covering all PDF/A parts and conformance levels
+AddPackage --foreign vieb-bin
 AddPackage --foreign vpn-slice # vpnc-script replacement for easy and secure split-tunnel VPN setup
 AddPackage --foreign wayland-pipewire-idle-inhibit # Inhibit wayland idle when computer is playing sound
 AddPackage --foreign whisper.cpp-model-large-v3-turbo # This is an autogenerated file, please see https://github.com/hrehfeld/archlinux-whisper.cpp-model

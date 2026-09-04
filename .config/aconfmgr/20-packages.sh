@@ -35,6 +35,7 @@ AddPackage bolt # Thunderbolt 3 device manager
 AddPackage brightnessctl # Lightweight brightness control tool
 AddPackage btop # A monitor of system resources, bpytop ported to C++
 AddPackage btrfs-progs # Btrfs filesystem utilities
+AddPackage bun # JavaScript runtime, bundler, test runner, and package manager
 AddPackage caddy # Fast web server with automatic HTTPS
 AddPackage calcurse # A text-based personal organizer
 AddPackage calibre
@@ -84,7 +85,6 @@ AddPackage faad2 # Freeware Advanced Audio (AAC) Decoder
 AddPackage fd # Simple, fast and user-friendly alternative to find
 AddPackage fennel # A Lua Lisp language
 AddPackage ffmpeg # Complete solution to record, convert and stream audio and video
-AddPackage ffnvcodec-headers # FFmpeg version of headers required to interface with Nvidias codec APIs
 AddPackage file-roller # Create and modify archives
 AddPackage firefox-developer-edition # Fast, Private & Safe Web Browser (Developer Edition)
 AddPackage fish # Smart and user friendly shell intended mostly for interactive use
@@ -242,6 +242,7 @@ AddPackage ollama # Create, run and share large language models (LLMs)
 AddPackage ollama-vulkan # Create, run and share large language models (LLMs) with Vulkan
 AddPackage omnisharp-roslyn # OmniSharp server (STDIO) based on Roslyn workspaces
 AddPackage openssh # SSH protocol implementation for remote login, command execution and file transfer
+AddPackage opencode # The AI coding agent built for the terminal.
 AddPackage opusfile # Library for opening, seeking, and decoding .opus files
 AddPackage otf-font-awesome-4 # Iconic font designed for Bootstrap (version 4.x)
 AddPackage pam-u2f # Universal 2nd Factor (U2F) PAM authentication module from Yubico
@@ -446,10 +447,8 @@ AddPackage --foreign aspnet-runtime-2.1 # The ASP.NET Core runtime binary versio
 AddPackage --foreign brother-hll2350dw # Brother HL-L2350DW CUPS driver
 AddPackage --foreign browserstack-local-x64 # BrowserStack Local Testing binary - 64bit
 AddPackage --foreign bugwarrior # Pull github, bitbucket, and trac issues into taskwarrior
-AddPackage --foreign bun-bin # All-in-one JavaScript runtime built for speed, with bundler, transpiler, test runner, and package manager. Includes bunx, shell completions and support for baseline CPUs
 AddPackage --foreign chatgpt.sh # Wrapper for ChatGPT, STT, and TTS. Features Ollama, Gemini, Anthropic, and more
 AddPackage --foreign chruby # Changes the current ruby. Supports both zsh and bash.
-AddPackage --foreign claude-code # An agentic coding tool that lives in your terminal
 AddPackage --foreign cloudflared-bin # Cloudflare Tunnel client (formerly Argo Tunnel)
 AddPackage --foreign corrupter-bin # Simple image glitcher for producing nice i3lock backgrounds - Binary version
 AddPackage --foreign cpufreqctl # A intel_pstate CPU freq controller for regular user (extracted from extension 'CPU Power Manager for Gnome')
@@ -457,7 +456,7 @@ AddPackage --foreign cpulimit # Limit cpu usage of a process in percentage. Actu
 AddPackage --foreign cyrus-sasl-xoauth2-git # XOAUTH2 mechanism plugin for cyrus-sasl
 AddPackage --foreign db2-odbc-cli # IBM Data Server Driver for ODBC and CLI
 AddPackage --foreign elinks-git # An advanced and well-established feature-rich text mode web browser. Git version, JavaScript disabled.
-AddPackage --foreign fennel-ls-git # Language Server for Fennel
+AddPackage --foreign fennel-ls # Language Server for Fennel
 AddPackage --foreign freerdp2 # Free implementation of the Remote Desktop Protocol (RDP)
 AddPackage --foreign frpc-bin # A fast reverse proxy to help you expose a local server behind a NAT or firewall to the internet. (Client)
 AddPackage --foreign google-java-format  # Reformats Java source code to comply with Google Java Style
@@ -479,15 +478,12 @@ AddPackage --foreign mvnd # Maven Deamon, which aims at providing faster Maven b
 AddPackage --foreign ntfysh-bin # Send push notifications to your phone or desktop using PUT/POST
 AddPackage --foreign oauth2ms-git # XOAUTH2 compatible O365 token fetcher
 AddPackage --foreign odin4-cli # an Odin4 binary for flashing Samsung firmware
-AddPackage --foreign opencode-bin # The AI coding agent built for the terminal.
-AddPackage --foreign opencode-desktop-bin # OpenCode desktop client
 AddPackage --foreign openconnect-sso # Wrapper script for OpenConnect supporting Azure AD (SAMLv2) authentication
 AddPackage --foreign openssl-1.0 # The Open Source toolkit for Secure Sockets Layer and Transport Layer Security
 AddPackage --foreign pass-import # A pass extension for importing data from most existing password managers.
 AddPackage --foreign pidgin # Multi-protocol instant messaging client
 AddPackage --foreign ponymix-git # CLI PulseAudio Volume Control
 AddPackage --foreign python-faster-whisper # Faster Whisper transcription with CTranslate2
-AddPackage --foreign qt6-webengine-widevine # A browser plugin designed for the viewing of premium video content (E.g. Spotify)
 AddPackage --foreign quickjs-ng # Small and embeddable JavaScript engine
 AddPackage --foreign maplemononl-otf # Open source monospace font with round corner, ligatures and Nerd-Font for IDE and command line
 AddPackage --foreign maplemononl-ttf-autohint # Open source monospace font with round corner, ligatures and Nerd-Font for IDE and command line
@@ -496,7 +492,6 @@ AddPackage --foreign sauceconnect # Sauce Connect untility for Sauce Labs testin
 AddPackage --foreign smug # A session manager for tmux written in Go
 AddPackage --foreign snitch-bin # a friendlier ss/netstat for humans
 AddPackage --foreign spell # A clone of the standard Unix program of the same name, implemented as a wrapper for Ispell
-AddPackage --foreign sway-nvidia # Helper files to make sway a better experience for us poor NVIDIA users.
 AddPackage --foreign tinty-git # A base16 and base24 color scheme manager
 AddPackage --foreign ttf-juliamono # JuliaMono is a monospace typeface designed for programming in Julia.
 AddPackage --foreign ttf-victor-mono # Unoffical Victor Mono(TTF) AUR package
@@ -598,7 +593,6 @@ CreateLink /etc/fonts/conf.d/80-delicious.conf /usr/share/fontconfig/conf.defaul
 CreateLink /etc/fonts/conf.d/90-synthetic.conf /usr/share/fontconfig/conf.default/90-synthetic.conf
 CopyFile /etc/fuse.conf
 CopyFile /etc/fwupd/fwupd.conf
-CopyFile /etc/group
 CopyFile /etc/haproxy/haproxy.cfg
 CreateFile /etc/hostsctl/disabled.hosts > /dev/null
 CreateFile /etc/hostsctl/enabled.hosts > /dev/null
@@ -606,12 +600,6 @@ CopyFile /etc/hostsctl/orig.hosts
 CopyFile /etc/hostsctl/remote.hosts
 CreateDir /etc/httpd/conf/vhosts
 CreateDir /etc/iwd
-CreateLink /etc/libvirt/qemu/networks/autostart/default.xml /etc/libvirt/qemu/networks/default.xml
-CopyFile /etc/libvirt/qemu/win11.xml 600
-CreateLink /etc/libvirt/storage/autostart/default.xml /etc/libvirt/storage/default.xml
-CreateLink /etc/libvirt/storage/autostart/Downloads.xml /etc/libvirt/storage/Downloads.xml
-CopyFile /etc/libvirt/storage/default.xml 600
-CopyFile /etc/libvirt/storage/Downloads.xml 600
 CopyFile /etc/locale.conf
 CopyFile /etc/locale.gen
 CreateLink /etc/localtime /usr/share/zoneinfo/America/Chicago
@@ -621,7 +609,6 @@ CopyFile /etc/makepkg.conf.d/fortran.conf
 CopyFile /etc/makepkg.conf.d/rust.conf
 CopyFile /etc/mkinitcpio.conf
 CopyFile /etc/mkinitcpio.d/linux-zen.preset
-CopyFile /etc/modprobe.d/blacklist.conf
 CopyFile /etc/modprobe.d/i915.conf
 CreateLink /etc/netns/bypass/resolv.conf /run/systemd/resolve/stub-resolv.conf
 CopyFile /etc/netns/warp-ns/resolv.conf
@@ -634,7 +621,6 @@ CopyFile /etc/pacman.conf
 CopyFile /etc/pam.d/sudo
 CopyFile /etc/pam.d/sudo
 CopyFile /etc/pam.d/swaylock
-CopyFile /etc/passwd
 CopyFile /etc/php/php.ini
 CopyFile /etc/power-options/config.toml
 CopyFile /etc/power-options/profiles/Balanced.toml
@@ -647,8 +633,6 @@ CreateLink /etc/resolv.conf.bak /run/systemd/resolve/stub-resolv.conf
 CopyFile /etc/resolv.conf.tail
 CopyFile /etc/security/limits.conf
 CopyFile /etc/speech-dispatcher/speechd.conf
-CopyFile /etc/subgid
-CopyFile /etc/subuid
 CopyFile /etc/sysctl.d/99-performance.conf
 CopyFile /etc/sysctl.d/99-swappiness.conf
 CopyFile /etc/systemd/resolved.conf
@@ -675,7 +659,6 @@ CreateLink /etc/systemd/system/multi-user.target.wants/earlyoom.service /usr/lib
 CreateLink /etc/systemd/system/multi-user.target.wants/home-igneo676-Music.automount /etc/systemd/system/home-igneo676-Music.automount
 CreateLink /etc/systemd/system/multi-user.target.wants/iwd.service /usr/lib/systemd/system/iwd.service
 CreateLink /etc/systemd/system/multi-user.target.wants/kmonad.service /etc/systemd/system/kmonad.service
-CreateLink /etc/systemd/system/multi-user.target.wants/libvirtd.service /usr/lib/systemd/system/libvirtd.service
 CreateLink /etc/systemd/system/multi-user.target.wants/lm_sensors.service /usr/lib/systemd/system/lm_sensors.service
 CreateLink /etc/systemd/system/multi-user.target.wants/ollama.service /usr/lib/systemd/system/ollama.service
 CreateLink /etc/systemd/system/multi-user.target.wants/power-options.service /usr/lib/systemd/system/power-options.service
@@ -691,14 +674,7 @@ CopyFile /etc/systemd/system/powersave.service
 CopyFile /etc/systemd/system/rtkit-daemon.service.d/override.conf
 CreateLink /etc/systemd/system/sockets.target.wants/avahi-daemon.socket /usr/lib/systemd/system/avahi-daemon.socket
 CreateLink /etc/systemd/system/sockets.target.wants/cups.socket /usr/lib/systemd/system/cups.socket
-CreateLink /etc/systemd/system/sockets.target.wants/libvirtd-admin.socket /usr/lib/systemd/system/libvirtd-admin.socket
-CreateLink /etc/systemd/system/sockets.target.wants/libvirtd-ro.socket /usr/lib/systemd/system/libvirtd-ro.socket
-CreateLink /etc/systemd/system/sockets.target.wants/libvirtd.socket /usr/lib/systemd/system/libvirtd.socket
 CreateLink /etc/systemd/system/sockets.target.wants/pcscd.socket /usr/lib/systemd/system/pcscd.socket
-CreateLink /etc/systemd/system/sockets.target.wants/virtlockd-admin.socket /usr/lib/systemd/system/virtlockd-admin.socket
-CreateLink /etc/systemd/system/sockets.target.wants/virtlockd.socket /usr/lib/systemd/system/virtlockd.socket
-CreateLink /etc/systemd/system/sockets.target.wants/virtlogd-admin.socket /usr/lib/systemd/system/virtlogd-admin.socket
-CreateLink /etc/systemd/system/sockets.target.wants/virtlogd.socket /usr/lib/systemd/system/virtlogd.socket
 CreateLink /etc/systemd/system/sysinit.target.wants/systemd-resolved.service /usr/lib/systemd/system/systemd-resolved.service
 CreateLink /etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service /usr/lib/systemd/system/systemd-timesyncd.service
 CreateLink /etc/systemd/system/timers.target.wants/fstrim.timer /usr/lib/systemd/system/fstrim.timer
@@ -735,4 +711,3 @@ SetFileProperty /data owner igneo676
 SetFileProperty /data/gitolite group igneo676
 SetFileProperty /data/gitolite mode 777
 SetFileProperty /data/gitolite owner igneo676
-

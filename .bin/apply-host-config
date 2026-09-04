@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+host=${HOSTNAME%%.*}
+if [[ -z "$host" ]]; then
+  host=$(/usr/bin/hostname -s)
+fi
+case "$host" in
+  roc|phoenix) ;;
+  *)
+    printf 'Unsupported host: %s\n' "$host" >&2
+    exit 1
+    ;;
+esac
+
+root=${XDG_CACHE_HOME:-$HOME/.cache}/igneo676-host-config
+mkdir -p "$root"
+source "$HOME/.config/host-config/$host.conf"
+
+cat > "$root/sway.conf" <<EOF
+set \$host_cursor_size $HOST_CURSOR_SIZE
+set \$host_gtk_font $HOST_GTK_FONT
+set \$host_bar_font $HOST_BAR_FONT
+set \$host_wallpaper $HOST_WALLPAPER
+EOF
+
+sed -e "s/^font_size[[:space:]].*/font_size        $HOST_KITTY_FONT_SIZE/" \
+    -e '/^include ~\/\.cache\/igneo676-host-config\/kitty.conf$/d' \
+  "$HOME/.config/kitty/kitty.conf" > "$root/kitty.conf"
+
+sed -e "s/^font-size = .*/font-size = $HOST_GHOSTTY_FONT_SIZE/" \
+    -e '/^config-file = ?\/home\/igneo676\/\.cache\/igneo676-host-config\/ghostty.conf$/d' \
+  "$HOME/.config/ghostty/config" > "$root/ghostty.conf"
+
+sed -e "s/^font=.*/font=$HOST_MAKO_FONT/" \
+  "$HOME/.config/mako/config" > "$root/mako.conf"
+
+sed -e "s/^rofi.font:.*/rofi.font: $HOST_ROFI_FONT/" \
+  "$HOME/.config/rofi/config" > "$root/rofi.conf"
+
+sed -e "s/^  font-size: .*/  font-size: $HOST_WOFI_FONT_SIZE/" \
+  "$HOME/.config/wofi/style.css" > "$root/wofi.css"
+
+cp "$HOME/.gtkrc-2.0" "$root/gtkrc-2.0"
+printf '\ngtk-font-name="%s"\ngtk-cursor-theme-size=%s\n' \
+  "$HOST_GTK_FONT" "$HOST_CURSOR_SIZE" >> "$root/gtkrc-2.0"
+
+cat > "$root/mpv.conf" <<EOF
+${HOST_MPV_PROFILE:-}
+${HOST_MPV_GPU_API:-}
+gpu-context=$HOST_MPV_CONTEXT
+hwdec=$HOST_MPV_HWDEC
+${HOST_MPV_SCALE:-}
+${HOST_MPV_CSCALE:-}
+${HOST_MPV_DEBAND:-}
+${HOST_MPV_VIDEO_SYNC:-}
+${HOST_MPV_INTERPOLATION:-}
+$HOST_MPV_INTEROP
+$HOST_MPV_FAST
+EOF
+
+cat > "$root/chromium-flags.conf" <<EOF
+--force-device-scale-factor=$HOST_CHROMIUM_SCALE
+EOF
+
+cat > "$root/electron-flags.conf" <<EOF
+--force-device-scale-factor=$HOST_CHROMIUM_SCALE
+EOF
+
+printf '%s\n' "$root"

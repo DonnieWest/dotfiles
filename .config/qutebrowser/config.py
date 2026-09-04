@@ -10,6 +10,7 @@
 #   qute://help/configuring.html
 #   qute://help/settings.html
 import sys
+import socket
 
 import qutebrowser.api.interceptor
 
@@ -75,7 +76,8 @@ if sys.platform.startswith("linux"):
 # Type: Dict
 c.qt.environ = {
     "NODE_PATH": "~/.config/n/lib/node_modules",
-    "XCURSOR_SIZE": "25",
+    "QT_SCALE_FACTOR": "1.0" if socket.gethostname() == "roc" else "1",
+    "XCURSOR_SIZE": "17" if socket.gethostname() == "roc" else "25",
 }
 
 # Force a Qt platform to use. This sets the `QT_QPA_PLATFORM`
@@ -662,7 +664,23 @@ c.fonts.default_family = "Victor Mono SemiBold"
 # either a float value with a "pt" suffix, or an integer value with a
 # "px" suffix.
 # Type: String
-c.fonts.default_size = "12pt"
+_qute_font_size = "10pt" if socket.gethostname() == "roc" else "12pt"
+c.fonts.default_size = _qute_font_size
+_qute_ui_font = f"{_qute_font_size} Victor Mono SemiBold"
+
+# Keep page rendering unchanged while shrinking qutebrowser chrome.
+c.fonts.completion.entry = f"{c.fonts.default_size} Victor Mono SemiBold"
+c.fonts.completion.category = _qute_ui_font
+c.fonts.debug_console = _qute_ui_font
+c.fonts.downloads = _qute_ui_font
+c.fonts.keyhint = _qute_ui_font
+c.fonts.messages.error = _qute_ui_font
+c.fonts.messages.info = _qute_ui_font
+c.fonts.messages.warning = _qute_ui_font
+c.fonts.prompts = _qute_ui_font
+c.fonts.statusbar = _qute_ui_font
+c.fonts.tabs.selected = _qute_ui_font
+c.fonts.tabs.unselected = _qute_ui_font
 
 # Font rendering hints - disable hinting for smoothest rendering on HiDPI
 # Type: String

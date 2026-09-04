@@ -1,5 +1,8 @@
 # Source profile (sway startup logic)
 if test (uname) = Linux; and test (tty) = "/dev/tty1"
+    $HOME/.bin/apply-host-config
+    set -gx GTK2_RC_FILES "$HOME/.cache/igneo676-host-config/gtkrc-2.0"
+    fish_add_path --prepend $HOME/.bin
     exec sway
 end
 
@@ -586,3 +589,7 @@ if status is-interactive
         source /usr/share/doc/pkgfile/command-not-found.fish
     end
 end
+
+
+# Added by Antigravity CLI installer
+set -gx PATH "/home/igneo676/.local/bin" $PATH

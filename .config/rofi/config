@@ -15,4 +15,4 @@ rofi.bw: 0
 rofi.terminal: kitty
 rofi.glob: true
 rofi.tokenize: false
-rofi.font: Victor Mono SemiBold 30
+rofi.font: Victor Mono SemiBold 20

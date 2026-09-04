@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+root=${XDG_CACHE_HOME:-$HOME/.cache}/igneo676-host-config
+exec /usr/bin/wofi --style "$root/wofi.css" "$@"

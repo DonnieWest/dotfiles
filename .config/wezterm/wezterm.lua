@@ -1,7 +1,8 @@
 local wezterm = require 'wezterm'
 local config = {}
+local is_roc = wezterm.hostname() == 'roc'
 config.font = wezterm.font 'Victor Mono SemiBold'
-config.font_size = 22.0
+config.font_size = is_roc and 20.0 or 22.0
 config.enable_wayland = true
 config.enable_tab_bar = false
 config.default_cursor_style = 'BlinkingBar'
@@ -66,4 +67,3 @@ config.colors = {
   quick_select_match_fg = { Color = '#ffffff' },
 }
 return config
-

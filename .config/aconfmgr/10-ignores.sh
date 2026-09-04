@@ -8,6 +8,8 @@ IgnorePath '/var/lib/ollama/*'
 IgnorePath '/var/lib/libvirt/images/*'
 IgnorePath '/var/lib/libvirt/boot/*'
 IgnorePath '/var/lib/libvirt/qemu/*'
+IgnorePath '/var/lib/libvirt/secrets/*'
+IgnorePath '/etc/libvirt/*'
 
 # Zephyr SDK (Large SDK)
 IgnorePath '/opt/zephyr-sdk/*'
@@ -17,6 +19,7 @@ IgnorePath '/var/lib/postgres/*'
 
 # Container Storage (Podman/Buildah)
 IgnorePath '/var/lib/containers/*'
+IgnorePath '/var/lib/powersave/*'
 
 # Waydroid Images
 IgnorePath '/var/lib/waydroid/*'
@@ -273,3 +276,8 @@ IgnorePath '/etc/gshadow*'
 IgnorePath '/etc/subuid*'
 IgnorePath '/etc/subgid*'
 IgnorePath '/etc/crypttab'
+IgnorePath '/etc/systemd/system/autovt@.service'
+IgnorePath '/etc/systemd/system/bluetooth.service.d/*'
+IgnorePath '/etc/iwd/main.conf'
+IgnorePath '/usr/lib/vlc/plugins/plugins.dat'
+IgnorePath '/usr/local/bin/android'

@@ -1,19 +1,20 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $gnome-schema org.gnome.desktop.interface
+include /home/igneo676/.cache/igneo676-host-config/sway.conf
 
 exec_always {
     gsettings set $gnome-schema gtk-theme 'Arc-Dark'
     gsettings set $gnome-schema icon-theme 'bloom-classic-dark'
     gsettings set $gnome-schema cursor-theme 'Paper'
-    gsettings set $gnome-schema cursor-size 50
-    gsettings set $gnome-schema font-name 'Victor Mono SemiBold 20'
+    gsettings set $gnome-schema cursor-size $host_cursor_size
+    gsettings set $gnome-schema font-name '$host_gtk_font'
     gsettings set $gnome-schema font-antialiasing 'rgba'
     gsettings set $gnome-schema font-hinting 'none'
     gsettings set $gnome-schema font-rgba-order 'rgb'
 }
 
-seat seat0 xcursor_theme Paper 50
+seat seat0 xcursor_theme Paper $host_cursor_size
 
 set $mod Mod4
 set $alt Mod1
@@ -43,7 +44,7 @@ exec swayidle \
     before-sleep '~/.bin/swaylock-wrapper'
 
 # output * bg ~/Wallpapers/armed_society_wallpaper.png fill
-output * bg ~/Wallpapers/ghibli-fire-girl.jpg fill
+output * bg $host_wallpaper fill
 # output * bg ~/Wallpapers/the_big_one_by_grivetart-d7mrqvp.jpg fill
 # output * bg ~/Wallpapers/Dragon_Fire_Fantasy_4813x4018.jpg fill
 # output * bg ~/Wallpapers/PlasmaNoir.png fill
@@ -374,7 +375,7 @@ bindsym $mod+Control+Left resize shrink width 5 px or 5 ppt
 bar {
   position top
   status_command i3status-rs
-  font pango:Victor Mono SemiBold 26
+  font pango:$host_bar_font
   pango_markup enabled
   # strip_workspace_numbers yes
 
@@ -394,7 +395,7 @@ bar {
 # exec rescuetime
 # exec blueman-applet
 # exec eventd
-exec mako
+exec mako --config /home/igneo676/.cache/igneo676-host-config/mako.conf
 exec tasksync start -D
 exec sudo -u igneo676 udiskie
 exec nextcloud

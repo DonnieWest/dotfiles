@@ -1,5 +1,0 @@
-# ClamAV on-access scanner - heavy background I/O, deprioritize
-# clamd already has a rule but clamonacc does not
-{ "name": "clamonacc", "type": "BG_CPUIO" }
-{ "name": "freshclam", "type": "BG_CPUIO" }
-{ "name": "fangfrisch", "type": "BG_CPUIO" }

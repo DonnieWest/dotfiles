@@ -13,6 +13,7 @@ AddPackage android-sdk-platform-tools # Platform-Tools for Google Android SDK (a
 AddPackage android-studio # The official Android IDE (Stable branch)
 AddPackage android-udev # Udev rules to connect Android devices to your linux box
 AddPackage antiword # A free MS Word reader for Linux and RISC OS
+AddPackage aria2 # Download utility that supports HTTP(S), FTP, BitTorrent, and Metalink
 AddPackage arj # Free and portable clone of the ARJ archiver
 AddPackage aspell # A spell checker designed to eventually replace Ispell
 AddPackage aspell-en # English dictionary for aspell
@@ -166,15 +167,12 @@ AddPackage jre8-openjdk # OpenJDK Java 8 full runtime environment
 AddPackage jujutsu # Git-compatible VCS that is both simple and powerful
 AddPackage jwt-cli # A super fast CLI tool to decode and encode JWTs
 AddPackage kanshi # Dynamic output configuration for Wayland WMs
-AddPackage keybase
+AddPackage --foreign keybase
 AddPackage khal # CLI calendar application built around CalDAV
 AddPackage khard # Console address book manager
 AddPackage kmonad # Advanced keyboard remapping utility
 AddPackage lf # A terminal file manager inspired by ranger
 AddPackage lhasa # Free LZH/LHA archive tool
-AddPackage lib32-gst-plugins-base # Multimedia graph framework (32-bit) - base plugins
-AddPackage lib32-gst-plugins-base-libs # Multimedia graph framework (32-bit) - base
-AddPackage lib32-gst-plugins-good # Multimedia graph framework (32-bit) - good plugins
 AddPackage lib32-libva-intel-driver # VA-API implementation for Intel G45 and HD Graphics family (32-bit)
 AddPackage lib32-pcre # A library that implements Perl 5-style regular expressions (32-bit)
 AddPackage lib32-sdl12-compat # SDL 1.2 runtime compatibility library using SDL 2.0
@@ -333,6 +331,7 @@ AddPackage taskwarrior-tui
 AddPackage tcpdump # Powerful command-line packet analyzer
 AddPackage telegram-desktop # Official Telegram Desktop client
 AddPackage termdown # Countdown timer and stopwatch in your terminal
+AddPackage tesseract-data-eng # Tesseract OCR data (eng)
 AddPackage texlive-bin # TeX Live binaries
 AddPackage texlive-binextra # TeX Live - TeX auxiliary programs
 AddPackage thermald # The Linux Thermal Daemon program from 01.org
@@ -363,6 +362,7 @@ AddPackage tumbler # Thumbnail service implementing the thumbnail management D-B
 AddPackage ty # Extremely fast Python type checker and language server, written in Rust
 AddPackage udiskie # Removable disk automounter using udisks
 AddPackage ueberzugpp # Command line utility which allows to display images in the terminal, written in C++
+AddPackage umu-launcher # The Unified Launcher for Windows Games on Linux, to run Proton with fixes outside of Steam
 AddPackage unace # An extraction tool for the proprietary ace archive format
 AddPackage unrar # The RAR uncompression program
 AddPackage upterm # Secure Terminal Sharing, an alternative to tmate
@@ -441,6 +441,7 @@ AddPackage read-edid # Program that can get information from a PNP monitor
 
 AddPackage --foreign aider-install # A streamlined installer for the Aider AI coding assistant
 AddPackage --foreign android-studio-beta
+AddPackage --foreign antigravity-cli # Google's agentic development platform (CLI companion)
 AddPackage --foreign arc-gtk-theme # A flat theme with transparent elements for GTK 2,3,4 and Gnome-Shell
 AddPackage --foreign arc-icon-theme # Arc icon theme. Official releases only.
 AddPackage --foreign aspnet-runtime-2.1 # The ASP.NET Core runtime binary version 2.1
@@ -449,7 +450,7 @@ AddPackage --foreign browserstack-local-x64 # BrowserStack Local Testing binary 
 AddPackage --foreign bugwarrior # Pull github, bitbucket, and trac issues into taskwarrior
 AddPackage --foreign chatgpt.sh # Wrapper for ChatGPT, STT, and TTS. Features Ollama, Gemini, Anthropic, and more
 AddPackage --foreign chruby # Changes the current ruby. Supports both zsh and bash.
-AddPackage --foreign cloudflared-bin # Cloudflare Tunnel client (formerly Argo Tunnel)
+AddPackage cloudflared # Cloudflare Tunnel client
 AddPackage --foreign corrupter-bin # Simple image glitcher for producing nice i3lock backgrounds - Binary version
 AddPackage --foreign cpufreqctl # A intel_pstate CPU freq controller for regular user (extracted from extension 'CPU Power Manager for Gnome')
 AddPackage --foreign cpulimit # Limit cpu usage of a process in percentage. Actually sends SIGSTOP/SIGCONT POSIX signals to processes
@@ -457,7 +458,6 @@ AddPackage --foreign cyrus-sasl-xoauth2-git # XOAUTH2 mechanism plugin for cyrus
 AddPackage --foreign db2-odbc-cli # IBM Data Server Driver for ODBC and CLI
 AddPackage --foreign elinks-git # An advanced and well-established feature-rich text mode web browser. Git version, JavaScript disabled.
 AddPackage --foreign fennel-ls # Language Server for Fennel
-AddPackage --foreign freerdp2 # Free implementation of the Remote Desktop Protocol (RDP)
 AddPackage --foreign frpc-bin # A fast reverse proxy to help you expose a local server behind a NAT or firewall to the internet. (Client)
 AddPackage --foreign google-java-format  # Reformats Java source code to comply with Google Java Style
 AddPackage --foreign hostsctl # block advertisements, trackers, and other malicious activity by manipulating /etc/hosts
@@ -467,6 +467,7 @@ AddPackage --foreign jdk21-jetbrains-bin # OpenJDK development kit with some fix
 AddPackage --foreign jdtls # Eclipse Java language server
 AddPackage --foreign lazysql # A cross-platform TUI database management tool written in Go
 AddPackage --foreign lyrus-git # A Python curses lyrics player primarily for cmus, with playerctl as a fallback
+AddPackage --foreign llama-cpp # LLM inference in C/C++
 AddPackage --foreign maestro-dev # End-to-end testing for Mobile and Web apps
 AddPackage --foreign mbrola # A phoneme-to-audio converter used by many TTS (Text-to-speech) programs
 AddPackage --foreign mbrola-voices-us1 # An American English female voice for the MBROLA synthesizer
@@ -478,17 +479,17 @@ AddPackage --foreign mvnd # Maven Deamon, which aims at providing faster Maven b
 AddPackage --foreign ntfysh-bin # Send push notifications to your phone or desktop using PUT/POST
 AddPackage --foreign oauth2ms-git # XOAUTH2 compatible O365 token fetcher
 AddPackage --foreign odin4-cli # an Odin4 binary for flashing Samsung firmware
+AddPackage --foreign ocrmypdf # A tool to add an OCR text layer to scanned PDF files, allowing them to be searched
 AddPackage --foreign openconnect-sso # Wrapper script for OpenConnect supporting Azure AD (SAMLv2) authentication
+AddPackage --foreign openai-codex # OpenAIs lightweight coding agent that runs in your terminal
 AddPackage --foreign openssl-1.0 # The Open Source toolkit for Secure Sockets Layer and Transport Layer Security
 AddPackage --foreign pass-import # A pass extension for importing data from most existing password managers.
-AddPackage --foreign pidgin # Multi-protocol instant messaging client
 AddPackage --foreign ponymix-git # CLI PulseAudio Volume Control
-AddPackage --foreign python-faster-whisper # Faster Whisper transcription with CTranslate2
 AddPackage --foreign quickjs-ng # Small and embeddable JavaScript engine
 AddPackage --foreign maplemononl-otf # Open source monospace font with round corner, ligatures and Nerd-Font for IDE and command line
 AddPackage --foreign maplemononl-ttf-autohint # Open source monospace font with round corner, ligatures and Nerd-Font for IDE and command line
 AddPackage --foreign rvm # RVM is a command-line tool which allows to display images in the terminal, written in C++
-AddPackage --foreign sauceconnect # Sauce Connect untility for Sauce Labs testing
+AddPackage --foreign sdkman-bin # The Software Development Kit Manager Command Line Interface
 AddPackage --foreign smug # A session manager for tmux written in Go
 AddPackage --foreign snitch-bin # a friendlier ss/netstat for humans
 AddPackage --foreign spell # A clone of the standard Unix program of the same name, implemented as a wrapper for Ispell
@@ -497,6 +498,7 @@ AddPackage --foreign ttf-juliamono # JuliaMono is a monospace typeface designed 
 AddPackage --foreign ttf-victor-mono # Unoffical Victor Mono(TTF) AUR package
 AddPackage --foreign urlview # A curses URL parser for text files
 AddPackage --foreign usql # A universal command-line interface for SQL databases
+AddPackage --foreign verapdf # purpose-built, open source, file-format validator covering all PDF/A parts and conformance levels
 AddPackage --foreign vpn-slice # vpnc-script replacement for easy and secure split-tunnel VPN setup
 AddPackage --foreign wayland-pipewire-idle-inhibit # Inhibit wayland idle when computer is playing sound
 AddPackage --foreign whisper.cpp-model-large-v3-turbo # This is an autogenerated file, please see https://github.com/hrehfeld/archlinux-whisper.cpp-model
@@ -504,10 +506,8 @@ AddPackage --foreign whisper.cpp-model-medium.en # This is an autogenerated file
 AddPackage --foreign whisper.cpp-model-small.en # This is an autogenerated file, please see https://github.com/hrehfeld/archlinux-whisper.cpp-model
 AddPackage --foreign wl-clip-persist-git # Keep Wayland clipboard even after programs close
 AddPackage --foreign wlinhibit # Simple, stupid idle inhibitor for wayland.
-AddPackage --foreign youtube-dl # A command-line program to download videos from YouTube.com and a few more sites
 AddPackage --foreign yubikey-manager-qt # Cross-platform application for configuring any YubiKey over all USB transports
 AddPackage --foreign zeal-git # Offline documentation browser
-AddPackage --foreign zephyr-sdk-bin # SDK for Zephyr real-time operating system
 
 
 # Files

@@ -1,7 +1,7 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $gnome-schema org.gnome.desktop.interface
-include /home/igneo676/.cache/igneo676-host-config/sway.conf
+include ~/.cache/igneo676-host-config/sway.conf
 
 exec_always {
     gsettings set $gnome-schema gtk-theme 'Arc-Dark'
@@ -395,7 +395,7 @@ bar {
 # exec rescuetime
 # exec blueman-applet
 # exec eventd
-exec mako --config /home/igneo676/.cache/igneo676-host-config/mako.conf
+exec mako --config ~/.cache/igneo676-host-config/mako.conf
 exec tasksync start -D
 exec sudo -u igneo676 udiskie
 exec nextcloud

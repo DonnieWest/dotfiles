@@ -18,6 +18,19 @@ root=${XDG_CACHE_HOME:-$HOME/.cache}/igneo676-host-config
 mkdir -p "$root"
 source "$HOME/.config/host-config/$host.conf"
 
+: "${HOST_CURSOR_SIZE:?}"
+: "${HOST_GTK_FONT:?}"
+: "${HOST_BAR_FONT:?}"
+: "${HOST_WALLPAPER:?}"
+: "${HOST_KITTY_FONT_SIZE:?}"
+: "${HOST_GHOSTTY_FONT_SIZE:?}"
+: "${HOST_MAKO_FONT:?}"
+: "${HOST_ROFI_FONT:?}"
+: "${HOST_WOFI_FONT_SIZE:?}"
+: "${HOST_MPV_CONTEXT:?}"
+: "${HOST_MPV_HWDEC:?}"
+: "${HOST_CHROMIUM_SCALE:?}"
+
 cat > "$root/sway.conf" <<EOF
 set \$host_cursor_size $HOST_CURSOR_SIZE
 set \$host_gtk_font $HOST_GTK_FONT
@@ -30,7 +43,11 @@ sed -e "s/^font_size[[:space:]].*/font_size        $HOST_KITTY_FONT_SIZE/" \
   "$HOME/.config/kitty/kitty.conf" > "$root/kitty.conf"
 
 sed -e "s/^font-size = .*/font-size = $HOST_GHOSTTY_FONT_SIZE/" \
-    -e '/^config-file = ?\/home\/igneo676\/\.cache\/igneo676-host-config\/ghostty.conf$/d' \
+    -e '/^config-file = .*igneo676-host-config\/ghostty.conf$/d' \
+    -e '/^font-codepoint-map = U+F0000-U+FFFFD=Slack Custom Emoji$/d' \
+    -e '/^macos-option-as-alt = /d' \
+    -e '/^keybind = ctrl+v=paste_from_clipboard$/d' \
+    -e '/^keybind = option+arrow_/d' \
   "$HOME/.config/ghostty/config" > "$root/ghostty.conf"
 
 sed -e "s/^font=.*/font=$HOST_MAKO_FONT/" \

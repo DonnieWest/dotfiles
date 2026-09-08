@@ -14,6 +14,8 @@ import socket
 
 import qutebrowser.api.interceptor
 
+IS_WORK_MAC = sys.platform == "darwin" and socket.gethostname() == "KXQGH3YDCX"
+
 
 def rewrite(request: qutebrowser.api.interceptor.Request):
     if request.request_url.host() in ("medium.com", "www.medium.com"):
@@ -68,6 +70,10 @@ c.qt.args = [
     "disable-font-subpixel-positioning",
     "enable-font-antialiasing",
 ]
+if IS_WORK_MAC:
+    # Okta Verify FastPass needs loopback access to communicate with the app.
+    c.qt.args.append("disable-features=LocalNetworkAccessChecks")
+c.qt.workarounds.disable_accessibility = "always"
 if sys.platform.startswith("linux"):
     c.qt.args.extend(["use-gl=egl", "enable-webrtc-pipewire-capturer"])
 
@@ -103,6 +109,7 @@ c.qt.highdpi = True
 # `session.default_name` setting.
 # Type: Bool
 c.auto_save.session = True
+c.session.lazy_restore = True
 
 # Which cookies to accept. With QtWebEngine, this setting also controls
 # other features with tracking capabilities similar to those of cookies;
@@ -490,7 +497,7 @@ c.url.searchengines = {"DEFAULT": "https://search.brave.com/search?q={}"}
 # Hide the window decoration.  This setting requires a restart on
 # Wayland.
 # Type: Bool
-c.window.hide_decoration = False
+c.window.hide_decoration = sys.platform == "darwin"
 
 # Default zoom level.
 # Type: Perc

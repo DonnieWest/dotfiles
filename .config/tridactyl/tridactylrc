@@ -39,7 +39,7 @@ bind <C-Delete> tabclose
 unbind d
 bind dd tabclose
 bind x tabclose
-bind t tabopen moz-extension://e299a8c1-4153-4f09-bfef-24ace6695d3e/static/newtab.html
+bind t tabopen
 
 " Match the faster qutebrowser scroll feel.
 bind j scrollline 30

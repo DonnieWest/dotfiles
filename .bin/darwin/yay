@@ -5,6 +5,9 @@ set -u
 usage() {
   cat <<'EOF'
 Usage: yay OPERATION [OPTIONS] [PACKAGE...]
+       yay [--formula|--cask] PACKAGE
+
+Without an operation, search for PACKAGE and choose a result to install.
 
 Supported operations on macOS:
   -S                 Install packages
@@ -100,7 +103,10 @@ while [ "$#" -gt 0 ]; do
   shift
 done
 
-[ -n "$operation" ] || { usage >&2; exit 2; }
+if [ -z "$operation" ]; then
+  [ -n "$packages" ] || { usage >&2; exit 2; }
+  operation=search-install
+fi
 
 run_for_packages() {
   action=$1
@@ -166,7 +172,74 @@ run_for_packages() {
   return "$status"
 }
 
+search_and_install() {
+  old_ifs=$IFS
+  IFS='
+'
+  set -- $packages
+  IFS=$old_ifs
+  [ "$#" -eq 1 ] || die "interactive install accepts one search term"
+  query=$1
+
+  formulae=
+  casks=
+  if [ "$kind" != cask ]; then
+    formulae=$(brew search --formula "$query" 2>/dev/null || true)
+  fi
+  if [ "$kind" != formula ]; then
+    casks=$(brew search --cask "$query" 2>/dev/null || true)
+  fi
+
+  choices=
+  choice_count=0
+  IFS='
+'
+  for package in $formulae; do
+    choice_count=$((choice_count + 1))
+    printf '%3d) %-8s %s\n' "$choice_count" formula "$package"
+    choices="${choices}${choices:+
+}formula:$package"
+  done
+  for package in $casks; do
+    choice_count=$((choice_count + 1))
+    printf '%3d) %-8s %s\n' "$choice_count" cask "$package"
+    choices="${choices}${choices:+
+}cask:$package"
+  done
+  IFS=$old_ifs
+
+  [ "$choice_count" -gt 0 ] || die "no Homebrew packages found for: $query"
+  printf 'Select a package to install [1-%d, q to cancel]: ' "$choice_count"
+  IFS= read -r selection || return 1
+  case "$selection" in
+    ''|q|Q) return 0 ;;
+    *[!0-9]*) die "invalid selection: $selection" ;;
+  esac
+  [ "$selection" -ge 1 ] 2>/dev/null && [ "$selection" -le "$choice_count" ] ||
+    die "selection must be between 1 and $choice_count"
+
+  selected=
+  current=0
+  IFS='
+'
+  for choice in $choices; do
+    current=$((current + 1))
+    if [ "$current" -eq "$selection" ]; then
+      selected=$choice
+      break
+    fi
+  done
+  IFS=$old_ifs
+
+  kind=${selected%%:*}
+  packages=${selected#*:}
+  run_with_install_privileges
+}
+
 case "$operation" in
+  search-install)
+    search_and_install
+    ;;
   -S)
     run_with_install_privileges
     ;;

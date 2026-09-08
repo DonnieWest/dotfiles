@@ -76,4 +76,4 @@
  {1 :microsoft/vscode-gradle
   :ft [:kotlin :java :gradle :groovy]
   :build "for home in $(/usr/libexec/java_home -v 21 2>/dev/null) $(/usr/libexec/java_home -v 17 2>/dev/null) /opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home /opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home; do [ -x \"$home/bin/java\" ] || continue; major=$(\"$home/bin/java\" -version 2>&1 | sed -n 's/.* version \"\\([0-9][0-9]*\\).*/\\1/p' | head -1); case \"$major\" in 21|17) JAVA_HOME=$home; break;; esac; done; if [ -z \"$JAVA_HOME\" ]; then echo 'vscode-gradle requires JDK 21 or 17 to build; install one with: brew install openjdk@21' >&2; exit 1; fi; export JAVA_HOME; ./gradlew :gradle-language-server:installDist"}
- {1 :idelice/jls :ft :java :build "mvn package -DskipTests"}]
+ {1 :idelice/jls :ft :java :build "./scripts/build.sh"}]

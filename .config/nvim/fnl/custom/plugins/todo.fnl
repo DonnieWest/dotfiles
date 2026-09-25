@@ -27,7 +27,7 @@
                                       :pattern ".*<(KEYWORDS)\\s*:"
                                       :comments_only true
                                       :max_line_len 400}})))
- :keys [{1 :<leader>td 2 :<cmd>TodoTelescope<cr> :desc "Todo list (Telescope)"}
+ :keys [{1 :<leader>tt 2 :<cmd>TodoTelescope<cr> :desc "Todo list (Telescope)"}
         {1 "]t"
          2 (fn []
              (let [todo (require :todo-comments)]

@@ -1,12 +1,19 @@
 ;; Neotest - Testing framework integration
 ;; Provides inline test running with virtual text results
 {1 :nvim-neotest/neotest
+ :keys [:<leader>tn
+        :<leader>tf
+        :<leader>td
+        :<leader>ts
+        :<leader>to
+        :<leader>tO
+        :<leader>tx]
  :dependencies [:nvim-neotest/neotest-jest
-                 :marilari88/neotest-vitest
-                 :rcasia/neotest-java
-                 :nvim-neotest/nvim-nio
-                 :nvim-lua/plenary.nvim
-                 :nvim-treesitter/nvim-treesitter]
+                :marilari88/neotest-vitest
+                :rcasia/neotest-java
+                :nvim-neotest/nvim-nio
+                :nvim-lua/plenary.nvim
+                :nvim-treesitter/nvim-treesitter]
  :config (fn []
            (let [neotest (require :neotest)]
              (neotest.setup {:adapters [(require :neotest-jest)
@@ -23,9 +30,13 @@
              (let [map (fn [lhs rhs desc]
                          (vim.keymap.set :n lhs rhs {: desc}))]
                (map :<leader>tn #(neotest.run.run) "Test nearest")
-               (map :<leader>tf #(neotest.run.run (vim.fn.expand :%)) "Test file")
-               (map :<leader>td #(neotest.run.run {:strategy :dap}) "Debug nearest test")
+               (map :<leader>tf #(neotest.run.run (vim.fn.expand "%"))
+                    "Test file")
+               (map :<leader>td #(neotest.run.run {:strategy :dap})
+                    "Debug nearest test")
                (map :<leader>ts #(neotest.summary.toggle) "Toggle test summary")
-               (map :<leader>to #(neotest.output.open {:enter true}) "Open test output")
-               (map :<leader>tO #(neotest.output_panel.toggle) "Toggle test output panel")
+               (map :<leader>to #(neotest.output.open {:enter true})
+                    "Open test output")
+               (map :<leader>tO #(neotest.output_panel.toggle)
+                    "Toggle test output panel")
                (map :<leader>tx #(neotest.run.stop) "Stop test"))))}

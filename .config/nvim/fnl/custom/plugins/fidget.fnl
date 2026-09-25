@@ -1,1 +1,1 @@
-{1 :j-hui/fidget.nvim :opts {}}
+{1 :j-hui/fidget.nvim :event :LspAttach :opts {}}

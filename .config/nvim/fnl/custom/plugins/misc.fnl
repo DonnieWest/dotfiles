@@ -5,7 +5,8 @@
  {1 :tpope/vim-abolish :event :VeryLazy}
  {1 :kaymmm/bullets.nvim :ft [:markdown :text] :opts {}}
  ;; VIM Quirks fixes
- :lervag/file-line ;; Must load early for file:line opening to work
+ :lervag/file-line
+ ;; Must load early for file:line opening to work
  {1 :eugen0329/vim-esearch
   :keys [{1 :<leader>ff 2 "<cmd>call esearch#init()<cr>"}]}
  {1 :Valloric/ListToggle :cmd [:LToggle :QToggle]}
@@ -14,11 +15,20 @@
  ;; UI
  {1 :catgoose/nvim-colorizer.lua
   :event :BufReadPre
+  :ft [:css
+       :scss
+       :less
+       :html
+       :javascript
+       :javascriptreact
+       :typescript
+       :typescriptreact]
   :opts {:user_default_options {:suppress_deprecation true}}}
  {1 :blueyed/vim-diminactive :event :WinEnter}
  ;; Generic IDE features
  {1 :rhysd/clever-f.vim :keys [:f :F :t :T]}
- {1 :nvim-lua/popup.nvim :lazy true} ;; Dependency, loaded when needed
+ {1 :nvim-lua/popup.nvim :lazy true}
+ ;; Dependency, loaded when needed
  {1 :rafamadriz/friendly-snippets :event :InsertEnter}
  {1 :RRethy/vim-illuminate :event :BufReadPost}
  {1 :stevearc/quicker.nvim :ft :qf :opts {}}
@@ -29,11 +39,14 @@
         :OverseerRun
         :OverseerShell
         :OverseerTaskAction]
-  :opts {:dap true
-         :task_list {:direction :bottom}}
+  :opts {:dap true :task_list {:direction :bottom}}
   :keys [{1 :<leader>or 2 :<cmd>OverseerRun<cr> :desc "Overseer: Run task"}
-         {1 :<leader>ot 2 :<cmd>OverseerToggle<cr> :desc "Overseer: Toggle tasks"}
-         {1 :<leader>oa 2 :<cmd>OverseerTaskAction<cr> :desc "Overseer: Task action"}]}
+         {1 :<leader>ot
+          2 :<cmd>OverseerToggle<cr>
+          :desc "Overseer: Toggle tasks"}
+         {1 :<leader>oa
+          2 :<cmd>OverseerTaskAction<cr>
+          :desc "Overseer: Task action"}]}
  ;; Git plugins
  {1 :sindrets/diffview.nvim :cmd [:DiffviewOpen :DiffviewFileHistory]}
  {:url "https://codeberg.org/trevorhauter/gitportal.nvim"}
@@ -69,6 +82,7 @@
  {1 :Olical/fennel.vim :ft :fennel}
  {1 :tris203/precognition.nvim
   :version :v1.2.0
+  :event :VeryLazy
   :opts {:startVisible true :disabled_fts [:startify]}}
  {1 :fwcd/kotlin-language-server
   :ft :kotlin
@@ -76,4 +90,4 @@
  {1 :microsoft/vscode-gradle
   :ft [:kotlin :java :gradle :groovy]
   :build "for home in $(/usr/libexec/java_home -v 21 2>/dev/null) $(/usr/libexec/java_home -v 17 2>/dev/null) /opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home /opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home; do [ -x \"$home/bin/java\" ] || continue; major=$(\"$home/bin/java\" -version 2>&1 | sed -n 's/.* version \"\\([0-9][0-9]*\\).*/\\1/p' | head -1); case \"$major\" in 21|17) JAVA_HOME=$home; break;; esac; done; if [ -z \"$JAVA_HOME\" ]; then echo 'vscode-gradle requires JDK 21 or 17 to build; install one with: brew install openjdk@21' >&2; exit 1; fi; export JAVA_HOME; ./gradlew :gradle-language-server:installDist"}
- {1 :idelice/jls :ft :java :build "./scripts/build.sh"}]
+ {1 :idelice/jls :ft :java :build :./scripts/build.sh}]

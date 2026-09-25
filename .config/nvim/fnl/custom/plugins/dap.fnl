@@ -1,82 +1,97 @@
 {1 :mfussenegger/nvim-dap
-  :dependencies [{1 :igorlfs/nvim-dap-view
-                  :opts {:auto_toggle true}}
-                 :nvim-telescope/telescope-dap.nvim
-                  {1 :mxsdev/nvim-dap-vscode-js
-                   :dependencies [{1 :microsoft/vscode-js-debug
-                                   :build "curl -L https://github.com/microsoft/vscode-js-debug/releases/download/v1.117.0/js-debug-dap-v1.117.0.tar.gz -o js-debug-dap.tar.gz && rm -rf out && tar -xzf js-debug-dap.tar.gz && mv js-debug out && rm js-debug-dap.tar.gz"}]}]
-  :config (fn []
-            (let [dap (require :dap)
-                  dap-view (require :dap-view)
-                  dap-vscode-js (require :dap-vscode-js)
-                  nearest-file (fn [name]
-                                 (let [start (vim.fs.dirname (vim.api.nvim_buf_get_name 0))
-                                       matches (vim.fs.find name {:path start
-                                                                  :upward true
-                                                                  :type :file})]
-                                   (. matches 1)))
-                  nearest-root (fn [markers]
-                                 (or (vim.fs.root (vim.api.nvim_buf_get_name 0) markers)
-                                     (vim.fn.getcwd)))]
-              (dap-vscode-js.setup {:debugger_path (.. (vim.fn.stdpath :data)
-                                                       :/lazy/vscode-js-debug)
-                                    :debugger_cmd [:node
-                                                   (.. (vim.fn.stdpath :data)
-                                                       :/lazy/vscode-js-debug/out/src/dapDebugServer.js)]
-                                    :adapters [:pwa-node
-                                               :pwa-chrome
-                                               :node-terminal
-                                               :pwa-extensionHost]})
-              ;; Configurations for JavaScript/TypeScript/Vite
-              (set dap.configurations.javascript
-                   [{:type :pwa-node
-                     :request :launch
-                     :name "Launch current file"
-                     :program "${file}"
-                     :cwd "${workspaceFolder}"
-                     :console :integratedTerminal
-                     :sourceMaps true
-                     :skipFiles ["<node_internals>/**" "node_modules/**"]}
-                    {:type :pwa-node
-                     :request :attach
-                     :name "Attach to Node process"
-                     :processId (fn [] ((. (require :dap.utils) :pick_process)))
-                     :cwd "${workspaceFolder}"
-                     :sourceMaps true
-                     :skipFiles ["<node_internals>/**" "node_modules/**"]}
-                    {:type :pwa-chrome
-                     :request :attach
-                     :name "Attach to Chrome (Vite)"
-                     :port 9222
-                     :url "http://localhost:5173"
-                     :webRoot "${workspaceFolder}"
-                     :sourceMaps true}
-                    {:type :pwa-node
-                     :request :launch
-                     :name "Debug Vitest current file"
-                     :runtimeExecutable :node
-                     :runtimeArgs (fn []
-                                    [:--inspect-brk
-                                     (assert (nearest-file :node_modules/vitest/vitest.mjs)
-                                             "Could not find vitest/vitest.mjs")
-                                     :run
-                                     "${file}"
-                                     :--no-file-parallelism])
-                     :cwd (fn []
-                            (nearest-root [:vitest.config.ts
-                                           :vitest.config.js
-                                           :vite.config.ts
-                                           :vite.config.js]))
-                     :console :integratedTerminal
-                     :sourceMaps true
-                     :skipFiles ["<node_internals>/**" "node_modules/**"]}])
+ :keys [:<F5>
+        :<F10>
+        :<F11>
+        :<F12>
+        :<leader>dc
+        :<leader>dv
+        :<leader>di
+        :<leader>do
+        :<leader>db
+        :<leader>dB
+        :<leader>dr
+        :<leader>dl
+        :<leader>dt]
+ :dependencies [{1 :igorlfs/nvim-dap-view :opts {:auto_toggle true}}
+                :nvim-telescope/telescope-dap.nvim
+                {1 :mxsdev/nvim-dap-vscode-js
+                 :dependencies [{1 :microsoft/vscode-js-debug
+                                 :build "curl -L https://github.com/microsoft/vscode-js-debug/releases/download/v1.117.0/js-debug-dap-v1.117.0.tar.gz -o js-debug-dap.tar.gz && rm -rf out && tar -xzf js-debug-dap.tar.gz && mv js-debug out && rm js-debug-dap.tar.gz"}]}]
+ :config (fn []
+           (let [dap (require :dap)
+                 dap-view (require :dap-view)
+                 dap-vscode-js (require :dap-vscode-js)
+                 nearest-file (fn [name]
+                                (let [start (vim.fs.dirname (vim.api.nvim_buf_get_name 0))
+                                      matches (vim.fs.find name
+                                                           {:path start
+                                                            :upward true
+                                                            :type :file})]
+                                  (. matches 1)))
+                 nearest-root (fn [markers]
+                                (or (vim.fs.root (vim.api.nvim_buf_get_name 0)
+                                                 markers)
+                                    (vim.fn.getcwd)))]
+             (dap-vscode-js.setup {:debugger_path (.. (vim.fn.stdpath :data)
+                                                      :/lazy/vscode-js-debug)
+                                   :debugger_cmd [:node
+                                                  (.. (vim.fn.stdpath :data)
+                                                      :/lazy/vscode-js-debug/out/src/dapDebugServer.js)]
+                                   :adapters [:pwa-node
+                                              :pwa-chrome
+                                              :node-terminal
+                                              :pwa-extensionHost]})
+             ;; Configurations for JavaScript/TypeScript/Vite
+             (set dap.configurations.javascript
+                  [{:type :pwa-node
+                    :request :launch
+                    :name "Launch current file"
+                    :program "${file}"
+                    :cwd "${workspaceFolder}"
+                    :console :integratedTerminal
+                    :sourceMaps true
+                    :skipFiles [:<node_internals>/** :node_modules/**]}
+                   {:type :pwa-node
+                    :request :attach
+                    :name "Attach to Node process"
+                    :processId (fn []
+                                 ((. (require :dap.utils) :pick_process)))
+                    :cwd "${workspaceFolder}"
+                    :sourceMaps true
+                    :skipFiles [:<node_internals>/** :node_modules/**]}
+                   {:type :pwa-chrome
+                    :request :attach
+                    :name "Attach to Chrome (Vite)"
+                    :port 9222
+                    :url "http://localhost:5173"
+                    :webRoot "${workspaceFolder}"
+                    :sourceMaps true}
+                   {:type :pwa-node
+                    :request :launch
+                    :name "Debug Vitest current file"
+                    :runtimeExecutable :node
+                    :runtimeArgs (fn []
+                                   [:--inspect-brk
+                                    (assert (nearest-file :node_modules/vitest/vitest.mjs)
+                                            "Could not find vitest/vitest.mjs")
+                                    :run
+                                    "${file}"
+                                    :--no-file-parallelism])
+                    :cwd (fn []
+                           (nearest-root [:vitest.config.ts
+                                          :vitest.config.js
+                                          :vite.config.ts
+                                          :vite.config.js]))
+                    :console :integratedTerminal
+                    :sourceMaps true
+                    :skipFiles [:<node_internals>/** :node_modules/**]}])
              ;; TypeScript/React use same configs
              (set dap.configurations.typescript dap.configurations.javascript)
              (set dap.configurations.typescriptreact
                   dap.configurations.javascript)
              (set dap.configurations.javascriptreact
                   dap.configurations.javascript)
-              ;; Java debugging (requires: JDTLS running with java-debug plugin)
+             ;; Java debugging (requires: JDTLS running with java-debug plugin)
              ;; The adapter will be configured by nvim-java/JDTLS
              ;; Java configurations for Maven and Gradle projects
              (set dap.configurations.java

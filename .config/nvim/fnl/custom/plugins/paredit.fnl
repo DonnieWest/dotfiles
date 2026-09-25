@@ -1,1 +1,3 @@
-{1 :julienvincent/nvim-paredit :opts {:indent {:enabled true}}}
+{1 :julienvincent/nvim-paredit
+ :ft [:clojure :fennel :lisp :scheme]
+ :opts {:indent {:enabled true}}}

@@ -1,4 +1,12 @@
 {1 :NickvanDyke/opencode.nvim
+ :cmd [:OpencodeConnect]
+ :keys [{1 :<C-a> :mode [:n :x]}
+        {1 :<C-x> :mode [:n :x]}
+        {1 :<C-.> :mode [:n :t]}
+        {1 :go :mode [:n :x]}
+        {1 :goo :mode :n}
+        {1 :<S-C-u> :mode :n}
+        {1 :<S-C-d> :mode :n}]
  :dependencies [:folke/snacks.nvim]
  :config (fn []
            ;; Configuration options
@@ -24,18 +32,19 @@
                                              {:title :opencode})
                                  (let [server-mod (require :opencode.server)
                                        promise (server-mod.new url)
-                                       connected-promise (promise:next (fn [server] (server:connect)))
-                                       notified-promise (connected-promise:next
-                                                         (fn [server]
-                                                           (vim.notify (.. "Connected to opencode at "
-                                                                           (server:display_name))
-                                                                       vim.log.levels.INFO
-                                                                       {:title :opencode})))]
-                                   (notified-promise:catch
-                                    (fn [err]
-                                      (vim.notify (or err (.. "Failed to connect to opencode at " url))
-                                                  vim.log.levels.ERROR
-                                                  {:title :opencode})))))))]
+                                       connected-promise (promise:next (fn [server]
+                                                                         (server:connect)))
+                                       notified-promise (connected-promise:next (fn [server]
+                                                                                  (vim.notify (.. "Connected to opencode at "
+                                                                                                  (server:display_name))
+                                                                                              vim.log.levels.INFO
+                                                                                              {:title :opencode})))]
+                                   (notified-promise:catch (fn [err]
+                                                             (vim.notify (or err
+                                                                             (.. "Failed to connect to opencode at "
+                                                                                 url))
+                                                                         vim.log.levels.ERROR
+                                                                         {:title :opencode})))))))]
              (vim.api.nvim_create_user_command :OpencodeConnect
                                                (fn [opts] (connect opts.args))
                                                {:nargs 1}))
@@ -58,9 +67,4 @@
                            {:desc "Scroll opencode up"})
            (vim.keymap.set :n :<S-C-d>
                            (fn [] (oc.command :session.half.page.down))
-                           {:desc "Scroll opencode down"})
-           ;; Re-mapping default increment/decrement
-           (vim.keymap.set :n "+" :<C-a>
-                           {:desc "Increment under cursor" :noremap true})
-           (vim.keymap.set :n "_" :<C-x>
-                           {:desc "Decrement under cursor" :noremap true}))}
+                           {:desc "Scroll opencode down"}))}

@@ -1,23 +1,29 @@
+(local root-cache {})
+
 (fn update-root []
   (let [buf (vim.api.nvim_get_current_buf)
         bt (vim.api.nvim_get_option_value :buftype {: buf})
         name (vim.api.nvim_buf_get_name buf)]
     (when (and (= bt "") (not= name ""))
       (let [path (vim.fs.normalize name)
-            root (vim.fs.root path
-                              [:.git
-                               :package.json
-                               :tsconfig.json
-                               :pyproject.toml
-                               :build.gradle
-                               :build.gradle.kts
-                               :settings.gradle
-                               :settings.gradle.kts
-                               :pom.xml
-                               :Cargo.toml
-                               :go.mod
-                               :deps.edn
-                               :project.clj])]
+            directory (vim.fs.dirname path)
+            root (or (. root-cache directory)
+                     (vim.fs.root path
+                                  [:.git
+                                   :package.json
+                                   :tsconfig.json
+                                   :pyproject.toml
+                                   :build.gradle
+                                   :build.gradle.kts
+                                   :settings.gradle
+                                   :settings.gradle.kts
+                                   :pom.xml
+                                   :Cargo.toml
+                                   :go.mod
+                                   :deps.edn
+                                   :project.clj]))]
+        (when root
+          (tset root-cache directory root))
         (when (and root (not= root (vim.fn.getcwd -1 0)))
           (vim.cmd.lcd (vim.fn.fnameescape root)))))))
 

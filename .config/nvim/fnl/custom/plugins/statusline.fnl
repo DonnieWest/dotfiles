@@ -10,7 +10,7 @@
 
 (fn attached_lsp []
   (let [servers {}]
-    (each [_ v (pairs (vim.lsp.get_clients))]
+    (each [_ v (pairs (vim.lsp.get_clients {:bufnr 0}))]
       (table.insert servers v.name))
     (table.concat servers " ")))
 
@@ -55,12 +55,10 @@
   (vim.lsp.status))
 
 {1 :nvim-lualine/lualine.nvim
- :dependencies [:SmiteshP/nvim-navic :stevearc/aerial.nvim]
+ :dependencies [:SmiteshP/nvim-navic]
  :opts {:always_show_tabline true
         :options {: theme}
-        :sections {:lualine_c [{1 :aerial :dense true :depth -1}
-                               attached_lsp
-                               lsp_progress]}
+        :sections {:lualine_c [breadcrumb attached_lsp lsp_progress]}
         :tabline {:lualine_a [:buffers]
                   :lualine_b []
                   :lualine_c []

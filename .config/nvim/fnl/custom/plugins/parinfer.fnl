@@ -1,4 +1,5 @@
 {1 :gpanders/nvim-parinfer
+ :ft [:clojure :fennel :lisp :scheme]
  :init (fn []
          (set vim.g.parinfer_enabled true)
          (set vim.g.parinfer_mode :smart)

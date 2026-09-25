@@ -1,1 +1,1 @@
-{1 :mhinz/vim-grepper}
+{1 :mhinz/vim-grepper :cmd :Grepper}

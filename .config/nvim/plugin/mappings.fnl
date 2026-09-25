@@ -15,6 +15,10 @@
 (keymap.set :n ";" ":")
 (keymap.set :n :U ":redo<CR>")
 
+;; Keep increment/decrement available before opencode loads.
+(keymap.set :n "+" :<C-a> {:desc "Increment under cursor" :noremap true})
+(keymap.set :n "_" :<C-x> {:desc "Decrement under cursor" :noremap true})
+
 ;; Window management
 (keymap.set :n :<Leader>v ":vsp<CR>")
 (keymap.set :n :<Leader>h ":sp<CR>")

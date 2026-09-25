@@ -1,1 +1,1 @@
-{1 :fabridamicelli/cronex.nvim :opts {}}
+{1 :fabridamicelli/cronex.nvim :ft :cron :opts {}}

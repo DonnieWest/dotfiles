@@ -1,4 +1,5 @@
 {1 :barrett-ruth/import-cost.nvim
+ :ft [:javascript :javascriptreact :typescript :typescriptreact :svelte]
  :config (fn []
            (set vim.g.import_cost
                 {:filetypes [:javascript

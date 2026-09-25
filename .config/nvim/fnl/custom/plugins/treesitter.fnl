@@ -71,13 +71,13 @@
 
 {1 :nvim-treesitter/nvim-treesitter
  :branch :main
+ :event [:BufReadPost :BufNewFile]
  :build ":TSUpdate"
  :dependencies [:RRethy/nvim-treesitter-endwise]
  :init (fn []
          (colorscheme-fixes)
          (vim.api.nvim_create_autocmd [:ColorScheme]
-                                      {:callback colorscheme-fixes})
-         (vim.api.nvim_create_autocmd :FileType {:callback enable-treesitter}))
+                                      {:callback colorscheme-fixes}))
  :config (fn []
            (let [ts (require :nvim-treesitter)
                  parsers [:lua
@@ -103,4 +103,7 @@
                           :diff
                           :regex]]
              (ts.setup {})
-             (install-parsers parsers)))}
+             (install-parsers parsers)
+             (vim.api.nvim_create_autocmd :FileType
+                                          {:callback enable-treesitter})
+             (enable-treesitter {:buf (vim.api.nvim_get_current_buf)})))}

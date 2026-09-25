@@ -1,4 +1,4 @@
 {1 :mhinz/vim-sayonara
- :init (fn []
-         (vim.keymap.set :n :<C-Del> ":Sayonara<CR>")
-         (vim.keymap.set :n "<ESC>[M" ":Sayonara<CR>"))}
+ :cmd :Sayonara
+ :keys [{1 :<C-Del> 2 :<cmd>Sayonara<cr> :desc "Close buffer"}
+        {1 "<ESC>[M" 2 :<cmd>Sayonara<cr> :desc "Close buffer"}]}

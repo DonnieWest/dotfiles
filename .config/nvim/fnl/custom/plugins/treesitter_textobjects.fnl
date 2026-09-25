@@ -1,5 +1,6 @@
 {1 :nvim-treesitter/nvim-treesitter-textobjects
  :branch :main
+ :event :BufReadPost
  :config (fn []
            (let [textobjects (require :nvim-treesitter-textobjects)
                  move (require :nvim-treesitter-textobjects.move)

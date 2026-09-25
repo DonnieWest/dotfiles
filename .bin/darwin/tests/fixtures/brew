@@ -1,0 +1,66 @@
+#!/bin/sh
+
+printf 'brew' >>"$YAY_TEST_LOG"
+for argument in "$@"; do
+  printf ' <%s>' "$argument" >>"$YAY_TEST_LOG"
+done
+printf '\n' >>"$YAY_TEST_LOG"
+
+command=${1:-}
+shift || true
+
+case "$command" in
+  --version)
+    printf 'Homebrew test-version\n'
+    ;;
+  info)
+    kind=$1
+    package=$2
+    case "$kind:$package" in
+      --formula:foo|--formula:alpha|--formula:alpine) exit 0 ;;
+      --cask:beta-app|--cask:alpha-app|--cask:alpine-app) exit 0 ;;
+      *) exit 1 ;;
+    esac
+    ;;
+  list)
+    kind=$1
+    case "$kind" in
+      --formula)
+        if [ "$#" -gt 1 ] && [ "$2" != --versions ]; then
+          case "$2" in
+            --installed-on-request) printf 'foo\n' ;;
+            --no-installed-on-request) printf 'libfoo\n' ;;
+            foo|libfoo) ;;
+            *) exit 1 ;;
+          esac
+        elif [ "${2:-}" = --versions ]; then
+          case " $* " in
+            *' foo '*) printf 'foo 1.0\n' ;;
+            *' libfoo '*) printf 'libfoo 1.0\n' ;;
+            *) printf 'foo 1.0\nlibfoo 1.0\n' ;;
+          esac
+        else
+          printf 'foo\nlibfoo\n'
+        fi
+        ;;
+      --cask)
+        if [ "$#" -gt 1 ] && [ "$2" != --versions ]; then
+          [ "$2" = beta-app ] || exit 1
+        elif [ "${2:-}" = --versions ]; then
+          printf 'beta-app 2.0\n'
+        else
+          printf 'beta-app\n'
+        fi
+        ;;
+    esac
+    ;;
+  search)
+    case "$1" in
+      --formula) printf 'alpha\nalpine\n' ;;
+      --cask) printf 'alpha-app\nalpine-app\n' ;;
+    esac
+    ;;
+  autoremove)
+    [ "${1:-}" != --dry-run ] || printf 'libfoo\n'
+    ;;
+esac

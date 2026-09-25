@@ -1,0 +1,5 @@
+complete -c notify-send -s a -l app-name -x -d 'Set application subtitle'
+complete -c notify-send -s t -l expire-time -x -d 'Accept ignored expiry time'
+complete -c notify-send -s i -l icon -r -d 'Accept ignored icon'
+complete -c notify-send -s u -l urgency -x -a 'low normal critical' -d 'Accept ignored urgency'
+complete -c notify-send -s h -l help -d 'Show help'

@@ -3,34 +3,66 @@
 local context state state_descr line
 typeset -A opt_args
 
+local -a operations
+operations=(
+  -S -Su -Sy -Syu -Syyu -Ss -Si -Sw -Sc -Scc
+  -R -Rs -Rns
+  -Q -Qe -Qd -Qdt -Qs -Qi -Ql -Qu
+  -Yc -Gp -V
+)
+
 _arguments -s -S \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-S[install packages]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-R[uninstall packages]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Rs[uninstall named packages]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Rns[uninstall named packages]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Ss[search packages]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Si[show package information]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Qi[show installed package information]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Q[list installed packages]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Qe[list explicitly installed packages]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Qu[list outdated packages]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Sy[update Homebrew metadata]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Syu[update metadata and upgrade packages]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Syyu[update metadata and upgrade packages]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Sc[remove stale packages and downloads]' \
-  '(-S -R -Rs -Rns -Ss -Si -Qi -Q -Qe -Qu -Sy -Syu -Syyu -Sc -Scc)-Scc[remove all cached downloads]' \
+  "(${operations[*]})-S[install packages]" \
+  "(${operations[*]})-Su[upgrade installed packages]" \
+  "(${operations[*]})-Sy[update Homebrew metadata]" \
+  "(${operations[*]})-Syu[update metadata and upgrade packages]" \
+  "(${operations[*]})-Syyu[force metadata update and upgrade packages]" \
+  "(${operations[*]})-Ss[search packages]" \
+  "(${operations[*]})-Si[show package information]" \
+  "(${operations[*]})-Sw[download packages]" \
+  "(${operations[*]})-Sc[remove stale packages and downloads]" \
+  "(${operations[*]})-Scc[remove all cached downloads]" \
+  "(${operations[*]})-R[uninstall packages]" \
+  "(${operations[*]})-Rs[uninstall packages and orphaned formulae]" \
+  "(${operations[*]})-Rns[uninstall packages and orphaned formulae]" \
+  "(${operations[*]})-Q[list installed packages]" \
+  "(${operations[*]})-Qe[list explicitly installed packages]" \
+  "(${operations[*]})-Qd[list dependency-installed formulae]" \
+  "(${operations[*]})-Qdt[list orphaned formulae]" \
+  "(${operations[*]})-Qs[search installed packages]" \
+  "(${operations[*]})-Qi[show installed package information]" \
+  "(${operations[*]})-Ql[list installed package files]" \
+  "(${operations[*]})-Qu[list outdated packages]" \
+  "(${operations[*]})-Yc[remove orphaned formulae]" \
+  "(${operations[*]})-Gp[print a formula or cask definition]" \
+  "(${operations[*]} --version)-V[show wrapper and Homebrew versions]" \
   '(--cask --formula)--cask[treat packages as casks]' \
   '(--cask --formula)--formula[treat packages as formulae]' \
-  '--noconfirm[do not ask for confirmation]' \
+  '--asdeps[mark installed formulae as dependencies]' \
+  '(-w --downloadonly)'{-w,--downloadonly}'[download packages instead of installing]' \
+  '--needed[do not reinstall current packages]' \
+  '(--confirm)--noconfirm[do not ask for confirmation]' \
+  '(--noconfirm)--confirm[ask for confirmation]' \
+  '(-q --quiet)'{-q,--quiet}'[reduce Homebrew output]' \
+  '(-v --verbose)'{-v,--verbose}'[increase Homebrew output]' \
+  '--debug[show Homebrew debugging output]' \
+  "(${operations[*]} -V)--version[show wrapper and Homebrew versions]" \
   '(-h --help)'{-h,--help}'[show help]' \
   '*:package:->packages'
 
 if [[ $state == packages ]]; then
-  local operation=${${words[(r)-S|-R|-Rs|-Rns|-Ss|-Si|-Qi|-Q|-Qe|-Qu|-Sy|-Syu|-Syyu|-Sc|-Scc]}:-}
+  local operation word
   local -a packages
 
+  for word in $words; do
+    if (( $operations[(Ie)$word] )); then
+      operation=$word
+      break
+    fi
+  done
+
   case $operation in
-    -R|-Rs|-Rns|-Qi)
+    -R|-Rs|-Rns|-Qi|-Ql|-Qu)
       if (( $words[(I)--cask] )); then
         packages=(${(f)"$(brew list --cask 2>/dev/null)"})
       elif (( $words[(I)--formula] )); then
@@ -40,7 +72,7 @@ if [[ $state == packages ]]; then
       fi
       _describe -t packages 'installed package' packages
       ;;
-    -S|-Si)
+    -S|-Syu|-Syyu|-Si|-Sw|-Sc|-Scc|-Gp)
       if (( $words[(I)--cask] )); then
         packages=(${(f)"$(brew casks 2>/dev/null)"})
       elif (( $words[(I)--formula] )); then
@@ -50,7 +82,10 @@ if [[ $state == packages ]]; then
       fi
       _describe -t packages 'Homebrew package' packages
       ;;
-    -Ss)
+    -Ss|-Qs)
+      _message 'search term'
+      ;;
+    '')
       _message 'search term'
       ;;
   esac

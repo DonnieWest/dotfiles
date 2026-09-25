@@ -1,5 +1,42 @@
-# Source profile (sway startup logic)
-if test (uname) = Linux; and test (tty) = "/dev/tty1"
+# Homebrew environment (PATH, prefix, manual pages, and info pages)
+# PATH may be inherited from another shell, so discard paths from the old Linux home.
+set -q __fish_config_os; or set -g __fish_config_os (uname)
+set -g fish_user_paths
+set -l clean_path
+for directory in $PATH
+    if not string match -q '/home/igneo676*' -- $directory
+        set -a clean_path $directory
+    end
+end
+set -gx PATH $clean_path
+
+if test -x /opt/homebrew/bin/brew
+    set -gx HOMEBREW_PREFIX /opt/homebrew
+    set -gx HOMEBREW_CELLAR /opt/homebrew/Cellar
+    set -gx HOMEBREW_REPOSITORY /opt/homebrew
+    fish_add_path --global --prepend --move /opt/homebrew/bin /opt/homebrew/sbin
+    set -gx MANPATH (string replace -r '^:*(.*?):*$' ':$1' -- "$MANPATH")
+    set -q INFOPATH; or set -gx INFOPATH ''
+    set -gx INFOPATH /opt/homebrew/share/info $INFOPATH
+else if test -x /usr/local/bin/brew
+    set -gx HOMEBREW_PREFIX /usr/local
+    set -gx HOMEBREW_CELLAR /usr/local/Cellar
+    set -gx HOMEBREW_REPOSITORY /usr/local/Homebrew
+    fish_add_path --global --prepend --move /usr/local/bin /usr/local/sbin
+    set -gx MANPATH (string replace -r '^:*(.*?):*$' ':$1' -- "$MANPATH")
+    set -q INFOPATH; or set -gx INFOPATH ''
+    set -gx INFOPATH /usr/local/share/info $INFOPATH
+end
+
+# Source profile equivalents (Java, browser, and sway startup logic)
+set -gx SDKMAN_DIR $HOME/.sdkman
+if test -d $SDKMAN_DIR/candidates/java/current
+    set -gx JAVA_HOME $SDKMAN_DIR/candidates/java/current
+else if test $__fish_config_os = Darwin; and test -d /opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home
+    set -gx JAVA_HOME /opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home
+end
+
+if test $__fish_config_os = Linux; and test (tty) = "/dev/tty1"
     $HOME/.bin/apply-host-config
     set -gx GTK2_RC_FILES "$HOME/.cache/igneo676-host-config/gtkrc-2.0"
     fish_add_path --prepend $HOME/.bin
@@ -24,16 +61,11 @@ set -gx GRAALVM_HOME $HOME/.config/graalvm-ce
 set -gx JDTLS_JVM_ARGS "-javaagent:$HOME/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar"
 set -gx FZF_DEFAULT_COMMAND 'fd --type f --hidden --follow --exclude .git'
 
-switch (uname)
+switch $__fish_config_os
     case Darwin
         set -gx BROWSER open
         set -gx ANDROID_HOME $HOME/Library/Android/sdk
-        fish_add_path /opt/homebrew/bin
-        fish_add_path /opt/homebrew/sbin
-        if test -x /usr/libexec/java_home
-            set -gx JAVA_HOME (/usr/libexec/java_home 2>/dev/null)
-            set -gx STUDIO_JDK $JAVA_HOME
-        end
+        set -gx STUDIO_JDK $JAVA_HOME
     case Linux
         set -gx ANDROID_HOME $HOME/.android-sdk-linux
         set -gx JAVA_HOME /usr/lib/jvm/default
@@ -45,41 +77,48 @@ end
 set -gx PYENV_ROOT $HOME/.pyenv
 
 ## PATH Setup
-fish_add_path /usr/local/games
-fish_add_path /usr/games
-fish_add_path $GRADLE_HOME/bin
-fish_add_path $HOME/.cabal/bin
-fish_add_path /usr/bin/core_perl
-fish_add_path $ANDROID_HOME/emulator
-fish_add_path $ANDROID_HOME/platform-tools
-fish_add_path $ANDROID_HOME/tools/bin
-fish_add_path $ANDROID_HOME/cmdline-tools/latest/bin
-fish_add_path $GRAALVM_HOME/bin
-fish_add_path $HOME/.local/bin
-fish_add_path $HOME/.config/n/bin
-fish_add_path $HOME/.config/npm/bin
-fish_add_path $HOME/bin
-fish_add_path $HOME/.bin
-fish_add_path $HOME/.npm-global/bin
-fish_add_path $HOME/.pub-cache/bin
-fish_add_path $HOME/.cargo/bin
-fish_add_path $HOME/.dotnet/tools
-fish_add_path $HOME/go/bin
-fish_add_path $HOME/.luarocks/bin
-fish_add_path $HOME/.deno/bin
-fish_add_path $HOME/.babashka/bbin/bin
-fish_add_path $HOME/.tmux/plugins/tmuxifier/bin
-fish_add_path $PYENV_ROOT/bin
+test -n "$JAVA_HOME"; and fish_add_path --global --prepend --move $JAVA_HOME/bin
+fish_add_path --global --prepend --move \
+    $HOME/.tmux/plugins/tmuxifier/bin \
+    $HOME/.babashka/bbin/bin \
+    $HOME/.deno/bin \
+    $HOME/.luarocks/bin
+if test $__fish_config_os = Darwin
+    fish_add_path --global --prepend --move \
+        $HOME/.bin/darwin \
+        $HOME/.rustup/toolchains/stable-aarch64-apple-darwin/bin
+else
+    fish_add_path --global --prepend --move $HOME/.bin/linux
+end
+fish_add_path --global --prepend --move \
+    $HOME/.bin \
+    $HOME/bin \
+    $HOME/.bun/bin \
+    $HOME/.config/npm/bin \
+    $HOME/.config/n/bin \
+    $ANDROID_HOME/cmdline-tools/latest/bin \
+    $ANDROID_HOME/tools/bin \
+    $ANDROID_HOME/platform-tools \
+    $ANDROID_HOME/emulator \
+    $HOME/.local/bin \
+    $GRAALVM_HOME/bin \
+    $PYENV_ROOT/bin
+fish_add_path --global --append --move \
+    /usr/local/games \
+    /usr/games \
+    $GRADLE_HOME/bin \
+    $HOME/.cabal/bin \
+    /usr/bin/core_perl \
+    $HOME/.npm-global/bin \
+    $HOME/.pub-cache/bin \
+    $HOME/.cargo/bin \
+    $HOME/.dotnet/tools \
+    $HOME/go/bin
 
 ## GPG Agent
 set -e SSH_AGENT_PID
-if test (uname) = Linux; and test "$gnupg_SSH_AUTH_SOCK_by" != "$fish_pid"
-    set -gx SSH_AUTH_SOCK /run/user/$UID/gnupg/S.gpg-agent.ssh
-end
-
-# Start the gpg-agent if not already running
-if command -v gpg-connect-agent >/dev/null 2>&1; and not pgrep -x -u $USER gpg-agent >/dev/null 2>&1
-    gpg-connect-agent /bye >/dev/null 2>&1
+if command -q gpgconf
+    set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
 end
 
 # Set GPG TTY
@@ -98,7 +137,7 @@ ulimit -n 2048
 ## Aliases
 
 alias history='history --max=500000'
-if test (uname) = Linux
+if test $__fish_config_os = Linux
     alias docker='podman'
     alias docker-compose='podman-compose'
 end
@@ -115,6 +154,10 @@ alias ll='eza --git -l'
 alias la='eza --git -la'
 alias tree='eza --tree'
 alias ssh='TERM=xterm-256color ssh'
+alias dh='dirh'
+if test $__fish_config_os = Darwin
+    alias weechat='caffeinate -i weechat'
+end
 alias filpidcat='pidcat -i EGL_emulation -i HostConnection -i GnssHAL_GnssInterface -i android.os.Debug -i netmgr -i Phenix -i chatty -i WorkerManager -i ResolverController -i AppOps -i wifi_forwarder -i KeyguardClockSwitch -i memtrack -i GCoreFlp -i audio_hw_generic -i BeaconBle -i InputReader -i gralloc_ranchu'
 alias sedremovespace="sed -E '/^[[:space:]]*\$/d;s/^[[:space:]]+//;s/[[:space:]]+\$//'"
 if test -f /etc/arch-release
@@ -567,6 +610,8 @@ if status is-interactive
         source ~/.config/fish/fzf.fish
     end
 
+    fish_user_key_bindings
+
     # Pyenv
     if command -v pyenv >/dev/null
         pyenv init - | source
@@ -589,7 +634,3 @@ if status is-interactive
         source /usr/share/doc/pkgfile/command-not-found.fish
     end
 end
-
-
-# Added by Antigravity CLI installer
-set -gx PATH "/home/igneo676/.local/bin" $PATH

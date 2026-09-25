@@ -3,75 +3,93 @@ function fish_right_prompt
     set_color white
     echo -n (prompt_pwd --full-length-dirs 2)
 
-    # Git prompt (matching zsh git-prompt.zsh style)
-    if command -sq git; and git rev-parse --git-dir >/dev/null 2>&1
-        set -l git_dir (git rev-parse --git-dir 2>/dev/null)
+    # Parse the same porcelain-v2 fields as git-prompt.zsh.
+    if command -sq git
+        set -l git_status (command git -c core.quotepath=false status --show-stash --branch --porcelain=v2 2>/dev/null)
+        if test $pipestatus[1] -eq 0
+            set -l oid
+            set -l branch
+            set -l upstream
+            set -l ahead 0
+            set -l behind 0
+            set -l unmerged 0
+            set -l staged 0
+            set -l unstaged 0
+            set -l untracked 0
+            set -l stashed 0
 
-        # Get branch name
-        set -l branch (git symbolic-ref --short HEAD 2>/dev/null)
-        if test -z "$branch"
-            set branch (git describe --contains --all HEAD 2>/dev/null; or echo "detached")
-        end
-
-        # Branch name in cyan
-        set_color cyan
-        echo -n "  $branch"
-
-        # Get ahead/behind counts
-        set -l upstream (git rev-parse --abbrev-ref @{upstream} 2>/dev/null)
-        if test -n "$upstream"
-            git rev-list --left-right --count HEAD...$upstream 2>/dev/null | read -l ahead behind
-            if test -n "$ahead" -a "$ahead" -gt 0
-                set_color cyan
-                echo -n "↑"
+            for line in $git_status
+                if string match -rq '^# branch\.oid ' -- $line
+                    set oid (string replace -r '^# branch\.oid ' '' -- $line)
+                else if string match -rq '^# branch\.head ' -- $line
+                    set branch (string replace -r '^# branch\.head ' '' -- $line)
+                else if string match -rq '^# branch\.upstream ' -- $line
+                    set upstream (string replace -r '^# branch\.upstream ' '' -- $line)
+                else if string match -rq '^# branch\.ab ' -- $line
+                    set -l tracking (string split ' ' -- $line)
+                    set ahead (string trim -l -c + -- $tracking[3])
+                    set behind (string trim -l -c - -- $tracking[4])
+                else if string match -rq '^# stash ' -- $line
+                    set stashed (string replace -r '^# stash ' '' -- $line)
+                else if string match -rq '^\? ' -- $line
+                    set untracked (math $untracked + 1)
+                else if string match -rq '^u ' -- $line
+                    set unmerged (math $unmerged + 1)
+                else if string match -rq '^[12] ' -- $line
+                    set -l fields (string split -m2 ' ' -- $line)
+                    set -l xy $fields[2]
+                    test (string sub -s1 -l1 -- $xy) = .; or set staged (math $staged + 1)
+                    test (string sub -s2 -l1 -- $xy) = .; or set unstaged (math $unstaged + 1)
+                end
             end
-            if test -n "$behind" -a "$behind" -gt 0
-                set_color cyan
-                echo -n "↓"
+
+            echo -n "  "
+            set_color cyan
+            if test "$branch" = '(detached)'
+                echo -n ":"(string sub -l7 -- $oid)
+            else
+                echo -n "$branch"
             end
-        end
 
-        # Get git status
-        set -l porcelain_status (git status --porcelain 2>/dev/null | string sub -l2)
+            if test -n "$upstream"
+                set_color -o yellow
+                echo -n "⟳ "
+            end
+            if test $behind -gt 0
+                set_color cyan
+                echo -n "↓$behind"
+            end
+            if test $ahead -gt 0
+                set_color cyan
+                echo -n "↑$ahead"
+            end
 
-        # Add separator before status indicators
-        if test -n "$porcelain_status"
+            set_color normal
             echo -n " "
-        end
-
-        # Count and show unmerged
-        set -l unmerged_count (string match -r 'AA|DD|U' $porcelain_status | count)
-        if test $unmerged_count -gt 0
-            set_color red
-            echo -n "✖$unmerged_count"
-        end
-
-        # Count and show staged changes
-        set -l staged_count (string match -r '^[ACDMRT]' $porcelain_status | count)
-        if test $staged_count -gt 0
-            set_color green
-            echo -n "●$staged_count"
-        end
-
-        # Count and show unstaged changes
-        set -l unstaged_count (string match -r '^.[MD]' $porcelain_status | count)
-        if test $unstaged_count -gt 0
-            set_color red
-            echo -n "✚$unstaged_count"
-        end
-
-        # Count and show stashes
-        set -l stash_count (git rev-list --walk-reflogs --count refs/stash 2>/dev/null)
-        if test -n "$stash_count" -a "$stash_count" -gt 0
-            set_color blue
-            echo -n "⚑$stash_count"
-        end
-
-        # Show clean indicator if no changes
-        if test -z "$porcelain_status"
-            echo -n " "
-            set_color -o green
-            echo -n "✔"
+            if test $unmerged -gt 0
+                set_color red
+                echo -n "✖$unmerged"
+            end
+            if test $staged -gt 0
+                set_color green
+                echo -n "●$staged"
+            end
+            if test $unstaged -gt 0
+                set_color red
+                echo -n "✚$unstaged"
+            end
+            if test $untracked -gt 0
+                set_color normal
+                echo -n "…$untracked"
+            end
+            if test $stashed -gt 0
+                set_color blue
+                echo -n "⚑$stashed"
+            end
+            if test $unmerged -eq 0 -a $staged -eq 0 -a $unstaged -eq 0 -a $untracked -eq 0
+                set_color -o green
+                echo -n "✔"
+            end
         end
     end
 

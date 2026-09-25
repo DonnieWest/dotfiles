@@ -1,10 +1,10 @@
-source ~/.profile
-
 case ${ZSH_OS:-$OSTYPE} in
   Darwin|darwin*) typeset -gr ZSH_OS=Darwin ;;
   Linux|linux*)   typeset -gr ZSH_OS=Linux ;;
   *)              typeset -gr ZSH_OS=${OSTYPE%%-*} ;;
 esac
+source ~/.profile
+
 typeset -gr ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
 
 typeset -g ZSH_COMPLETION_DIR=${ZDOTDIR:-$HOME/.config/zsh}/completions
@@ -166,13 +166,17 @@ alias dh='dirs -v'
 ## GPG Agent
 
 unset SSH_AGENT_PID
-export GPG_TTY=$TTY
+if [[ -t 0 ]]; then
+  export GPG_TTY=$(tty)
+fi
 
-if command -v gpgconf >/dev/null 2>&1; then
+if [[ $ZSH_OS == Darwin ]]; then
+  export SSH_AUTH_SOCK="$HOME/.gnupg/S.gpg-agent.ssh"
+elif (( $+commands[gpgconf] )); then
   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 fi
 
-if command -v gpg-connect-agent >/dev/null 2>&1; then
+if [[ -t 0 ]] && (( $+commands[gpg-connect-agent] )); then
   gpg-connect-agent updatestartuptty /bye >/dev/null
 fi
 
@@ -185,6 +189,9 @@ ulimit -n 2048
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 alias ssh='TERM=xterm-256color ssh'
+if [[ $ZSH_OS == Darwin ]]; then
+  alias weechat='caffeinate -i weechat'
+fi
 # Use custom dircolors
 
 # Clone a plugin, identify its init file, source it, and add it to fpath.
@@ -238,7 +245,11 @@ typeset -gr ZSH_CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}/zsh
 [[ -d $ZSH_CACHE_DIR ]] || command mkdir -p "$ZSH_CACHE_DIR"
 typeset -gr zcompdump=$ZSH_CACHE_DIR/zcompdump-${ZSH_VERSION}-${ZSH_OS:l}
 autoload -Uz compinit
-compinit -d "$zcompdump"
+if [[ -f $zcompdump ]]; then
+  compinit -C -d "$zcompdump"
+else
+  compinit -d "$zcompdump"
+fi
 [[ $zcompdump.zwc -nt $zcompdump ]] || zcompile "$zcompdump"
 
 # These settings are read while their plugins are sourced.

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "${1:-}" = -Gn ]; then
+  if [ "${YAY_TEST_ADMIN:-false}" = true ]; then
+    printf 'staff admin\n'
+  else
+    printf 'staff\n'
+  fi
+  exit 0
+fi
+
+exec /usr/bin/id "$@"

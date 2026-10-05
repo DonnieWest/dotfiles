@@ -1,5 +1,5 @@
 {1 :hsanson/vim-android
- :ft [:kotlin]
+ :ft [:kotlin :java :groovy :xml]
  :config (fn []
-           (let [android (require :custom.android)]
-             (android.setup)))}
+           ((. (require :custom.android) :setup))
+           ((. (require :custom.compose-preview) :setup)))}

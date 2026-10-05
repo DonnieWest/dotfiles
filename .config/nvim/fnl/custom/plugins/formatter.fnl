@@ -28,4 +28,12 @@
                      :google-java-format {:command :google-java-format
                                           :args ["-"]
                                           :stdin true}
-                     :ktfmt {:command :ktfmt :args ["-"] :stdin true}}}}
+                     ;; Prefer Homebrew ktfmt over the legacy ~/.bin/ktfmt
+                     ;; wrapper (0.40 crashes on modern JDKs)
+                     :ktfmt {:command (fn []
+                                        (let [brew :/opt/homebrew/bin/ktfmt]
+                                          (if (= (vim.fn.executable brew) 1)
+                                              brew
+                                              :ktfmt)))
+                             :args ["-"]
+                             :stdin true}}}}

@@ -12,7 +12,19 @@
                  jls-script (lazy-path (if (= sysname :Darwin)
                                            :jls/dist/lang_server_mac.sh
                                            :jls/dist/lang_server_linux.sh))
-                 kotlin-ls (lazy-path :kotlin-language-server/server/build/install/server/bin/kotlin-language-server)
+                 ;; JetBrains kotlin-lsp: prefer `intellij-server` on PATH, otherwise
+                 ;; resolve it next to the (deprecated) `kotlin-lsp` launcher symlink.
+                 kotlin-lsp-cmd (let [direct (vim.fn.exepath :intellij-server)
+                                      launcher (vim.fn.exepath :kotlin-lsp)
+                                      real (and (not= launcher "")
+                                                (vim.uv.fs_realpath launcher))
+                                      bundled (and real
+                                                   (.. (vim.fs.dirname real)
+                                                       :/bin/intellij-server))]
+                                  (if (not= direct "") [direct :--stdio]
+                                      (and bundled (vim.uv.fs_stat bundled))
+                                      [bundled :--stdio]
+                                      [:intellij-server :--stdio]))
                  gradle-ls-bin (lazy-path :vscode-gradle/gradle-language-server/build/install/gradle-language-server/bin/gradle-language-server)
                  gradle-ls-wrapper (.. (vim.fn.stdpath :config)
                                        :/scripts/vscode-gradle-language-server-stdio.js)
@@ -47,17 +59,7 @@
                                                   :externalDependencies []
                                                   :trace {:server :off}}}
                                 :init_options {}}
-                          :kotlin_language_server {:cmd [kotlin-ls]
-                                                   :filetypes [:kotlin]
-                                                   :root_markers [:.git
-                                                                  :build.gradle
-                                                                  :build.gradle.kts
-                                                                  :settings.gradle
-                                                                  :settings.gradle.kts
-                                                                  :pom.xml]
-                                                   :settings {:kotlin {:compiler {:jvmTarget :1.8}}
-                                                              :hints {:parameterNames {:enabled true}
-                                                                      :typeHints {:enabled true}}}}
+                          :kotlin_lsp {:cmd kotlin-lsp-cmd}
                           ; IMPORTANT: For Android projects, ensure ANDROID_HOME is set
                           ; and the project has been built at least once with './gradlew build'
                           :gradle_ls {:cmd [gradle-ls-wrapper gradle-ls-bin]
@@ -89,7 +91,11 @@
                                                            :typescript.tsx]
                                                :handlers {[:textDocument/publishDiagnostics] (fn [])}}}
                  on-attach (fn [client bufnr]
-                             (navic.attach client bufnr))]
+                             ;; navic only supports one client per buffer and
+                             ;; needs documentSymbol support
+                             (when client.server_capabilities.documentSymbolProvider
+                               (navic.attach client bufnr)))]
+             (set vim.g.navic_silence true)
              (vim.diagnostic.config {:virtual_text false
                                      :virtual_lines {:current_line true}})
              (vim.api.nvim_create_autocmd :LspAttach
@@ -177,5 +183,6 @@
                (set config.capabilities
                     (cmp.get_lsp_capabilities config.capabilities))
                (vim.lsp.config server
-                               (vim.tbl_extend :force config {: on-attach}))
+                               (vim.tbl_extend :force config
+                                               {:on_attach on-attach}))
                (vim.lsp.enable server))))}

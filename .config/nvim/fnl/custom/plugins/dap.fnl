@@ -91,57 +91,70 @@
                   dap.configurations.javascript)
              (set dap.configurations.javascriptreact
                   dap.configurations.javascript)
-             ;; Java debugging (requires: JDTLS running with java-debug plugin)
-             ;; The adapter will be configured by nvim-java/JDTLS
-             ;; Java configurations for Maven and Gradle projects
-             (set dap.configurations.java
-                  [{:type :java
-                    :request :launch
-                    :name "Launch Current File"
-                    :mainClass "${file}"}
-                   {:type :java
-                    :request :launch
-                    :name "Launch with Arguments"
-                    :mainClass (fn []
-                                 (vim.fn.input "Main class: "))
-                    :args (fn []
-                            (let [args (vim.fn.input "Arguments: ")]
-                              (if (= args "")
-                                  []
-                                  (vim.split args " +"))))}
-                   {:type :java
-                    :request :attach
-                    :name "Attach to Remote JVM"
-                    :hostName :localhost
-                    :port (fn []
-                            (or (vim.fn.input "Port: ") :5005))}
-                   {:type :java
-                    :request :launch
-                    :name "Maven Test (Current File)"
-                    :mainClass ""
-                    :projectName (fn []
-                                   (vim.fn.fnamemodify (vim.fn.getcwd) ":t"))
-                    :cwd (vim.fn.getcwd)
-                    :console :integratedTerminal
-                    :args [:-Dtest= "${fileBasenameNoExtension}"]}
-                   {:type :java
-                    :request :launch
-                    :name "Gradle Test (Current File)"
-                    :mainClass ""
-                    :projectName (fn []
-                                   (vim.fn.fnamemodify (vim.fn.getcwd) ":t"))
-                    :cwd (vim.fn.getcwd)
-                    :console :integratedTerminal
-                    :args [:--tests "${fileBasenameNoExtension}"]}
-                   {:type :java
-                    :request :launch
-                    :name "Android App (Debug)"
-                    :mainClass ""
-                    :projectName (fn []
-                                   (vim.fn.fnamemodify (vim.fn.getcwd) ":t"))
-                    :cwd (vim.fn.getcwd)
-                    :console :integratedTerminal
-                    :android true}])
+             ;; Java/Android debugging via the jls debug adapter (attach only)
+             (let [sysname (. (vim.uv.os_uname) :sysname)
+                   adapter (.. (vim.fn.stdpath :data) :/lazy/jls/dist/
+                               (if (= sysname :Darwin)
+                                   :debug_adapter_mac.sh
+                                   :debug_adapter_linux.sh))
+                   gradle-root (fn []
+                                 (nearest-root [:settings.gradle
+                                                :settings.gradle.kts
+                                                :pom.xml
+                                                :.git]))
+                   source-roots (fn []
+                                  (let [root (gradle-root)]
+                                    (vim.fn.glob (.. root
+                                                     "/**/src/*/{java,kotlin}")
+                                                 false true)))
+                   ask-port (fn []
+                              (let [port (vim.fn.input "Port: " :5005)]
+                                (or (tonumber port) 5005)))
+                   guess-app-id (fn []
+                                  (let [root (gradle-root)
+                                        files (vim.fn.glob (.. root
+                                                               "/*/build.gradle{,.kts}")
+                                                           false true)]
+                                    (var found nil)
+                                    (each [_ file (ipairs files) &until found]
+                                      (each [_ line (ipairs (vim.fn.readfile file))
+                                             &until found]
+                                        (set found
+                                             (line:match "applicationId%s*=?%s*[\"']([%w%._]+)[\"']"))))
+                                    (or found "")))
+                   adb (fn [args]
+                         (let [out (vim.fn.system (vim.list_extend [:adb] args))]
+                           (when (not= vim.v.shell_error 0)
+                             (error (.. "adb " (table.concat args " ")
+                                        " failed: " out)))
+                           (vim.trim out)))
+                   android-port (fn []
+                                  (assert (= (vim.fn.executable :adb) 1)
+                                          "adb not found; install the Android SDK platform-tools")
+                                  (let [app-id (vim.fn.input "Application id: "
+                                                             (guess-app-id))
+                                        pid (adb [:shell :pidof :-s app-id])
+                                        port 5005]
+                                    (assert (not= pid "")
+                                            (.. app-id
+                                                " is not running (is it a debuggable build?)"))
+                                    (adb [:forward
+                                          (.. "tcp:" port)
+                                          (.. "jdwp:" pid)])
+                                    port))]
+               (set dap.adapters.java {:type :executable :command adapter})
+               (set dap.configurations.java
+                    [{:type :java
+                      :request :attach
+                      :name "Attach to JVM (port)"
+                      :port ask-port
+                      :sourceRoots source-roots}
+                     {:type :java
+                      :request :attach
+                      :name "Attach to Android app (adb jdwp)"
+                      :port android-port
+                      :sourceRoots source-roots}])
+               (set dap.configurations.kotlin dap.configurations.java))
              ;; Keybindings
              ;; F-keys for debugging
              (vim.keymap.set :n :<F5> dap.continue {:desc "DAP: Continue"})

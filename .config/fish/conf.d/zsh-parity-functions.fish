@@ -8,25 +8,29 @@ function b-pass
     end
 end
 
+# ncu refuses to upgrade global packages itself, so use it to find upgrades and let npm install them.
 function update_npm
-    echo 'Checking NPM global packages'
-    set -l output (ncu -g)
-    printf '%s\n' $output
+    set -l ncu_opts --global --packageManager npm --cache
 
-    set -l last_line (string join \n $output | tail -2 | head -1 | string trim)
-    if test "$last_line" != 'All global packages are up-to-date :)'
-        read --nchars 1 --prompt-str 'Do you wish to update these packages? [Y/n] ' input
+    echo 'Checking NPM global packages'
+    ncu $ncu_opts --color; or return # colored table straight to the terminal
+    set -l json (ncu $ncu_opts --jsonUpgraded); or return # cached, so no second registry round-trip
+    set -l pkgs (printf '%s\n' $json | jq -r 'to_entries[] | "\(.key)@\(.value)"')
+    test (count $pkgs) -gt 0; or return 0
+
+    while true
+        read --nchars 1 --prompt-str 'Do you wish to update these packages? [Y/n] ' input; or return 1
         echo
         switch $input
-            case Y y
+            case Y y ''
                 echo 'Updating...'
-                eval $last_line
+                npm install -g $pkgs
+                return
             case N n
                 echo 'Aborting...'
                 return 1
             case '*'
-                echo 'Invalid choice. Please press Y or N.'
-                return 1
+                echo 'Invalid choice.'
         end
     end
 end

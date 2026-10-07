@@ -397,32 +397,48 @@ bunx() {
   bun x "$@"
 }
 
+# ncu refuses to upgrade global packages itself, so use it to find upgrades and let npm install them.
 update_npm() {
+  emulate -L zsh
+  local -a ncu_opts=(--global --packageManager npm --cache)
+  local json input
+  local -a pkgs
+
   echo "Checking NPM global packages"
-  output=$(ncu -g)
-  lastLine=$(echo -n $output | tail -2 | head | tr -d "\n")
-  echo $output
-  if [ "$lastLine" != "All global packages are up-to-date :)" ]; then
-    read -rsqk "input?Do you wish to update these packages? [Y/n]" 
-    case "$input" in
-      [Yy]) echo "\nUpdating..."; $(echo $lastLine); return 0 ;;  # Proceed with action
-      [Nn]) echo "\nAborting..."; return 1 ;;   # Abort action
-      *) echo -n " Invalid choice. Please press Y or N: " ;;
+  ncu $ncu_opts --color || return                 # colored table straight to the terminal
+  json=$(ncu $ncu_opts --jsonUpgraded) || return  # cached, so no second registry round-trip
+  pkgs=(${(f)"$(jq -r 'to_entries[] | "\(.key)@\(.value)"' <<<"$json")"})
+  (( ${#pkgs} )) || return 0
+
+  while true; do
+    read -rsk1 "input?Do you wish to update these packages? [Y/n] " || return 1
+    case $input in
+      [Yy]|$'\n') echo "\nUpdating..."; npm install -g $pkgs; return ;;
+      [Nn])       echo "\nAborting...";  return 1 ;;
+      *)          echo "\nInvalid choice." ;;
     esac
-  fi
+  done
 }
 
 killport() {
-  if [[ $pid ]]; then
-    kill $pid
-    echo killed process $pid
+  emulate -L zsh
+  local port=$1
+  local -a pids
+  [[ -n $port ]] || { echo "usage: killport <port>"; return 1 }
+  pids=(${(f)"$(lsof -ti tcp:$port)"})
+  if (( ${#pids} )); then
+    kill $pids && echo "killed process(es) $pids on port $port"
   else
-    echo no process is listening on port $port
+    echo "no process is listening on port $port"
+    return 1
   fi
 }
 
 refresh_node() {
-  npm install -g $(ls $(npm root -g))
+  emulate -L zsh
+  local -a pkgs=(${(f)"$(npm ls -g --depth=0 --json | jq -r '.dependencies // {} | keys[]')"})
+  (( ${#pkgs} )) || { echo "no global packages found"; return 1 }
+  npm install -g $pkgs
 }
 
 

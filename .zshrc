@@ -573,20 +573,7 @@ pomo() {
 }
 
 get-youtube-subtitles() {
-  DIRECTORY=$(mktemp -d)
-
-  pushd $DIRECTORY
-
-  yt-dlp --quiet --write-sub --sub-format vtt --skip-download $1
-
-  if [ "$(command ls -A ./)" ]; then
-  else
-    yt-dlp --quiet --write-auto-sub --sub-format vtt --skip-download $1
-  fi
-
-  cat * | grep : -v | awk '!seen[$0]++' | grep -v "^WEBVTT\|^Kind: cap\|^Language" | tr '\n' ' '
-
-  popd
+  yt-transcribe --format txt "$@"
 }
 
 fix-punctuation() {

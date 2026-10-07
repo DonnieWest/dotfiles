@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: yt-transcribe [options] URL
+
+Options:
+  --parakeet       Download audio and transcribe locally with Parakeet
+  --diarize        Run Parakeet speaker diarization (implies --parakeet)
+  --subs-only      Never download audio; use English YouTube subtitles
+  --no-auto-subs   Do not use YouTube auto-generated subtitles
+  --format FORMAT  txt, srt, vtt, or json (default: txt)
+  --output-dir DIR Write the result under DIR (default: current directory)
+  -h, --help       Show this help
+EOF
+}
+
+parakeet=false
+diarize=false
+subs_only=false
+auto_subs=true
+format=txt
+output_dir=.
+url=
+
+while (($#)); do
+  case "$1" in
+    --parakeet|--local) parakeet=true ;;
+    --diarize) parakeet=true; diarize=true ;;
+    --subs-only) subs_only=true ;;
+    --no-auto-subs) auto_subs=false ;;
+    --format) format=${2:?--format requires txt, srt, vtt, or json}; shift ;;
+    --output-dir) output_dir=${2:?--output-dir requires a directory}; shift ;;
+    -h|--help) usage; exit 0 ;;
+    -*) printf 'yt-transcribe: unknown option: %s\n' "$1" >&2; usage >&2; exit 2 ;;
+    *)
+      [[ -z "$url" ]] || { printf 'yt-transcribe: only one URL is supported\n' >&2; exit 2; }
+      url=$1
+      ;;
+  esac
+  shift
+done
+
+[[ -n "$url" ]] || { usage >&2; exit 2; }
+[[ "$format" =~ ^(txt|srt|vtt|json)$ ]] || {
+  printf 'yt-transcribe: invalid format: %s\n' "$format" >&2
+  exit 2
+}
+[[ "$diarize" == false || "$format" == json || "$format" == srt ]] || {
+  printf 'yt-transcribe: --diarize requires --format json or --format srt\n' >&2
+  exit 2
+}
+
+command -v yt-dlp >/dev/null || { printf 'yt-transcribe: yt-dlp is required\n' >&2; exit 127; }
+command -v ffmpeg >/dev/null || { printf 'yt-transcribe: ffmpeg is required\n' >&2; exit 127; }
+
+mkdir -p "$output_dir"
+tmpdir=$(mktemp -d "${TMPDIR:-/tmp}/yt-transcribe.XXXXXX")
+trap 'rm -rf "$tmpdir"' EXIT
+
+safe_name() {
+  printf '%s' "$1" | tr '/:' '__' | tr -d '\000' | sed 's/[[:space:]]\+/ /g; s/^\.\+//; s/[[:space:]]\+$//'
+}
+
+base_name=$(yt-dlp --quiet --no-warnings --print '%(title)s [%(id)s]' --skip-download "$url" | head -n 1)
+base_name=$(safe_name "$base_name")
+[[ -n "$base_name" ]] || base_name=transcript
+
+subtitle_to_text() {
+  local input=$1 output=$2
+  awk '
+    /^WEBVTT/ || /^Kind:/ || /^Language:/ || /^[[:space:]]*$/ { next }
+    /^[0-9]+$/ || /-->/ { next }
+    { gsub(/<[^>]*>/, ""); if ($0 != previous) print; previous=$0 }
+  ' "$input" >"$output"
+}
+
+if [[ "$parakeet" == false && "$subs_only" == false ]]; then
+  manual_dir="$tmpdir/manual"
+  mkdir "$manual_dir"
+  yt-dlp --quiet --no-warnings --skip-download \
+    --write-subs --sub-langs 'en.*,en' --sub-format vtt \
+    -o "$manual_dir/%(title).200s [%(id)s].%(ext)s" "$url" || true
+  [[ -n "$(find "$manual_dir" -type f -name '*.vtt' -print -quit)" ]] || parakeet=true
+fi
+
+if [[ "$parakeet" == false ]]; then
+  sub_file=$(find "$manual_dir" -type f -name '*.vtt' -print -quit)
+  if [[ -z "$sub_file" && "$auto_subs" == true ]]; then
+    auto_dir="$tmpdir/auto"
+    mkdir "$auto_dir"
+    yt-dlp --quiet --no-warnings --skip-download \
+      --write-auto-subs --sub-langs 'en.*,en' --sub-format vtt \
+      -o "$auto_dir/%(title).200s [%(id)s].%(ext)s" "$url" || true
+    sub_file=$(find "$auto_dir" -type f -name '*.vtt' -print -quit)
+  fi
+  [[ -n "$sub_file" ]] || {
+    printf 'yt-transcribe: no English subtitles found; use --parakeet or allow auto subtitles\n' >&2
+    exit 1
+  }
+
+  case "$format" in
+    vtt) cp "$sub_file" "$output_dir/$base_name.vtt" ;;
+    srt) ffmpeg -loglevel error -y -i "$sub_file" "$output_dir/$base_name.srt" ;;
+    txt|json)
+      [[ "$format" == txt ]] || { printf 'yt-transcribe: JSON is only available with --parakeet\n' >&2; exit 2; }
+      subtitle_to_text "$sub_file" "$output_dir/$base_name.txt"
+      ;;
+  esac
+  printf '%s\n' "$output_dir/$base_name.$format"
+  exit 0
+fi
+
+command -v nemo-speech >/dev/null || {
+  printf 'yt-transcribe: nemo-speech is required for Parakeet\n' >&2
+  exit 127
+}
+
+audio_file="$tmpdir/audio.wav"
+yt-dlp --quiet --no-warnings --extract-audio --audio-format wav \
+  --postprocessor-args 'ffmpeg:-ar 16000 -ac 1' \
+  -o "$audio_file" "$url"
+
+output_file="$output_dir/$base_name.$format"
+args=(transcribe "$audio_file" --model parakeet-tdt --device cpu --language en --format "$format" -o "$output_file")
+[[ "$diarize" == true ]] && args+=(--diarize)
+nemo-speech "${args[@]}"
+printf '%s\n' "$output_file"

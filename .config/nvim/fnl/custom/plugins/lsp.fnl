@@ -74,13 +74,13 @@
                                                                   :json :schemas))
                                                      :validate {:enable true}}}}
                           :tsc {:handlers {[:textDocument/publishDiagnostics] filter-ts7016}
-                                :settings {:js/ts {:inlayHints {:parameterNames {:enabled :all
-                                                                                 :suppressWhenArgumentMatchesName false}
-                                                                :parameterTypes {:enabled true}
-                                                                :variableTypes {:enabled true}
-                                                                :propertyDeclarationTypes {:enabled true}
+                                :settings {:js/ts {:inlayHints {:parameterNames {:enabled :literals
+                                                                                 :suppressWhenArgumentMatchesName true}
+                                                                :parameterTypes {:enabled false}
+                                                                :variableTypes {:enabled false}
+                                                                :propertyDeclarationTypes {:enabled false}
                                                                 :functionLikeReturnTypes {:enabled true}
-                                                                :enumMemberValues {:enabled true}}}
+                                                                :enumMemberValues {:enabled false}}}
                                            :typescript {:preferences {:importModuleSpecifier :relative}}}}
                           :custom_elements_ls {:filetypes [:html
                                                            :javascript
@@ -96,6 +96,13 @@
                              (when client.server_capabilities.documentSymbolProvider
                                (navic.attach client bufnr)))]
              (set vim.g.navic_silence true)
+             (let [set-inlay-hint-highlight (fn []
+                                              (vim.api.nvim_set_hl 0
+                                                                   :LspInlayHint
+                                                                   {:fg "#245361"}))]
+               (vim.api.nvim_create_autocmd :ColorScheme
+                                            {:callback set-inlay-hint-highlight})
+               (set-inlay-hint-highlight))
              (vim.diagnostic.config {:virtual_text false
                                      :virtual_lines {:current_line true}})
              (vim.api.nvim_create_autocmd :LspAttach

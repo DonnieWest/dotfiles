@@ -1,4 +1,4 @@
-{1 :barrett-ruth/import-cost.nvim
+{1 "https://forge.barrettruth.com/barrettruth/import-cost.nvim"
  :ft [:javascript :javascriptreact :typescript :typescriptreact :svelte]
  :config (fn []
            (set vim.g.import_cost

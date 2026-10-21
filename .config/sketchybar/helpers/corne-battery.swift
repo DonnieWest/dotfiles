@@ -4,14 +4,18 @@ import Darwin
 
 final class Reader: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var central: CBCentralManager!
-    private var peripheral: CBPeripheral?
     private let batteryService = CBUUID(string: "180F")
     private let hidService = CBUUID(string: "1812")
     private let batteryLevel = CBUUID(string: "2A19")
-    private var services: [CBService] = []
-    private var characteristicIndexes: [ObjectIdentifier: Int] = [:]
-    private var results: [Int: Int] = [:]
+    private var peripherals: [UUID: CBPeripheral] = [:]
+    private var connectedIDs = Set<UUID>()
+    private var completedIDs = Set<UUID>()
+    private var servicesByPeripheral: [UUID: [CBService]] = [:]
+    private var completedServices: [UUID: Set<Int>] = [:]
+    private var results: [UUID: [Int: Int]] = [:]
+    private var characteristicIndexes: [ObjectIdentifier: (peripheralID: UUID, serviceIndex: Int)] = [:]
     private var done = false
+    private var printed = false
 
     func run(timeout: TimeInterval = 3) {
         central = CBCentralManager(delegate: self, queue: DispatchQueue.main)
@@ -19,6 +23,10 @@ final class Reader: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         let deadline = Date().addingTimeInterval(timeout)
         while !done && Date() < deadline {
             RunLoop.main.run(mode: .default, before: Date().addingTimeInterval(0.1))
+        }
+
+        if !printed {
+            printResults()
         }
     }
 
@@ -28,15 +36,26 @@ final class Reader: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             return
         }
 
-        let connected = central.retrieveConnectedPeripherals(withServices: [batteryService]) + central.retrieveConnectedPeripherals(withServices: [hidService])
-        guard let corne = connected.first(where: { ($0.name ?? "").localizedCaseInsensitiveContains("corne") }) else {
+        let connected = central.retrieveConnectedPeripherals(withServices: [batteryService])
+            + central.retrieveConnectedPeripherals(withServices: [hidService])
+        let cornes = Dictionary(
+            connected
+                .filter { ($0.name ?? "").localizedCaseInsensitiveContains("corne") }
+                .map { ($0.identifier, $0) },
+            uniquingKeysWith: { first, _ in first }
+        )
+
+        guard !cornes.isEmpty else {
             done = true
             return
         }
 
-        peripheral = corne
-        corne.delegate = self
-        central.connect(corne, options: nil)
+        peripherals = cornes
+        connectedIDs = Set(cornes.keys)
+        for corne in cornes.values {
+            corne.delegate = self
+            central.connect(corne, options: nil)
+        }
     }
 
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
@@ -44,18 +63,20 @@ final class Reader: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
 
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        done = true
+        completePeripheral(peripheral.identifier)
     }
 
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        let identifier = peripheral.identifier
         guard error == nil else {
-            done = true
+            completePeripheral(identifier)
             return
         }
 
-        services = (peripheral.services ?? []).filter { $0.uuid == batteryService }
+        let services = (peripheral.services ?? []).filter { $0.uuid == batteryService }
+        servicesByPeripheral[identifier] = services
         guard !services.isEmpty else {
-            done = true
+            completePeripheral(identifier)
             return
         }
 
@@ -65,32 +86,68 @@ final class Reader: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
 
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        guard error == nil,
-              let index = services.firstIndex(where: { $0 === service }),
+        let identifier = peripheral.identifier
+        guard let index = servicesByPeripheral[identifier]?.firstIndex(where: { $0 === service }),
+              error == nil,
               let characteristic = service.characteristics?.first(where: { $0.uuid == batteryLevel }) else {
-            done = true
+            if let index = servicesByPeripheral[identifier]?.firstIndex(where: { $0 === service }) {
+                completeService(identifier, index: index)
+            }
             return
         }
 
-        characteristicIndexes[ObjectIdentifier(characteristic)] = index
+        characteristicIndexes[ObjectIdentifier(characteristic)] = (identifier, index)
         peripheral.readValue(for: characteristic)
     }
 
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        guard error == nil,
-              let index = characteristicIndexes[ObjectIdentifier(characteristic)],
-              let value = characteristic.value?.first else {
-            done = true
+        guard let (identifier, index) = characteristicIndexes.removeValue(forKey: ObjectIdentifier(characteristic)) else {
             return
         }
 
-        results[index] = Int(value)
-        if results.count == services.count {
-            let label = results.keys.sorted().map { String(results[$0]!) }.joined(separator: "/")
-            print(label)
-            fflush(stdout)
-            central.cancelPeripheralConnection(peripheral)
+        if error == nil, let value = characteristic.value?.first {
+            results[identifier, default: [:]][index] = Int(value)
+        }
+        completeService(identifier, index: index)
+    }
+
+    private func completeService(_ identifier: UUID, index: Int) {
+        completedServices[identifier, default: []].insert(index)
+        if completedServices[identifier]?.count == servicesByPeripheral[identifier]?.count {
+            completePeripheral(identifier)
+        }
+    }
+
+    private func completePeripheral(_ identifier: UUID) {
+        completedIDs.insert(identifier)
+        if completedIDs == connectedIDs {
             done = true
+            printResults()
+            for peripheral in peripherals.values {
+                central.cancelPeripheralConnection(peripheral)
+            }
+        }
+    }
+
+    private func printResults() {
+        guard !printed else { return }
+        printed = true
+
+        let sortedIDs = connectedIDs.sorted { lhs, rhs in
+            let leftName = peripherals[lhs]?.name ?? ""
+            let rightName = peripherals[rhs]?.name ?? ""
+            if leftName.localizedCaseInsensitiveCompare(rightName) != .orderedSame {
+                return leftName.localizedCaseInsensitiveCompare(rightName) == .orderedAscending
+            }
+            return lhs.uuidString < rhs.uuidString
+        }
+        let levels = sortedIDs.flatMap { identifier in
+            (results[identifier] ?? [:]).keys.sorted().compactMap { results[identifier]?[$0] }
+        }
+
+        if !levels.isEmpty {
+            print(levels.map(String.init).joined(separator: "/"))
+            fflush(stdout)
         }
     }
 }

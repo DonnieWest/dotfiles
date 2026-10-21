@@ -32,6 +32,8 @@
                ;; Replace Mode
                :visual "#edb443"})
 
+(vim.api.nvim_set_hl 0 :NavicText {:fg colors.fg :bg colors.bg})
+
 ;; Visual Mode
 
 (local theme {:normal {:a {:fg colors.bg :bg colors.normal}
@@ -57,7 +59,8 @@
 {1 :nvim-lualine/lualine.nvim
  :dependencies [:SmiteshP/nvim-navic]
  :opts {:always_show_tabline true
-        :options {: theme}
+        :options {: theme
+                   :section_separators {:left "" :right ""}}
         :sections {:lualine_c [breadcrumb attached_lsp lsp_progress]}
         :tabline {:lualine_a [:buffers]
                   :lualine_b []

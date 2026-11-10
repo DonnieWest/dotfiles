@@ -1,0 +1,36 @@
+{
+  "toolDescriptionMode": "compact",
+  "inlineToolDisplay": "rich",
+  "asyncByDefault": false,
+  "fleetView": true,
+  "fleetViewPlacement": "belowEditor",
+  "asyncWidget": true,
+  "timeoutMs": 1800000,
+  "toolTimeoutMs": 600000,
+  "maxSubagentSpawnsPerSession": 20,
+  "maxSubagentSpawnsPerRun": 8,
+  "maxActiveAsyncRunsPerSession": 2,
+  "maxSubagentDepth": 1,
+  "parallel": {
+    "maxTasks": 6,
+    "concurrency": 3
+  },
+  "scheduledRuns": {
+    "enabled": false,
+    "maxPending": 10
+  },
+  "missions": {
+    "enabled": false,
+    "globalIndex": false,
+    "retainTerminal": 50
+  },
+  "artifactDir": "session",
+  "authorityPolicy": {
+    "discardWorktree": "confirm",
+    "destructiveCleanup": "confirm",
+    "spawnBudgetGrant": "confirm",
+    "scheduleCreate": "forbid",
+    "stopRun": "auto",
+    "steerRun": "auto"
+  }
+}

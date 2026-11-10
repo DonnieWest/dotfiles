@@ -1,0 +1,32 @@
+{
+  "default": {
+    "provider": "github-copilot",
+    "model": "gpt-5.6-sol",
+    "thinking": "medium"
+  },
+  "fast": {
+    "provider": "github-copilot",
+    "model": "gpt-5.6-sol",
+    "thinking": "low"
+  },
+  "deep": {
+    "provider": "github-copilot",
+    "model": "gpt-5.6-sol",
+    "thinking": "max"
+  },
+  "plan": {
+    "provider": "github-copilot",
+    "model": "gpt-5.6-sol",
+    "thinking": "high"
+  },
+  "review": {
+    "provider": "github-copilot",
+    "model": "gpt-5.6-sol",
+    "thinking": "high"
+  },
+  "advisor": {
+    "provider": "github-copilot",
+    "model": "gpt-5.6-sol",
+    "thinking": "high"
+  }
+}

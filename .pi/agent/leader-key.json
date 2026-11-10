@@ -1,0 +1,14 @@
+{
+  "leaderKey": "ctrl+x",
+  "leaderTimeoutMs": 2000,
+  "bindings": {
+    "n": { "command": "/new" },
+    "l": { "command": "/resume" },
+    "m": { "command": "/model" },
+    "c": { "action": "compact" },
+    "y": { "command": "/copy" },
+    "x": { "command": "/export" },
+    "s": { "command": "/session" },
+    "q": { "action": "shutdown" }
+  }
+}

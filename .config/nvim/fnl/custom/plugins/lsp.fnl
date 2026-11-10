@@ -97,12 +97,14 @@
                                (navic.attach client bufnr)))]
              (set vim.g.navic_silence true)
              (let [set-inlay-hint-highlight (fn []
-                                              (let [base02 (. (vim.api.nvim_get_hl 0
-                                                                                   {:name :VertSplit})
-                                                              :fg)]
+                                              (let [comment-fg (. (vim.api.nvim_get_hl 0
+                                                                                       {:name :Comment
+                                                                                        :link false})
+                                                                  :fg)]
                                                 (vim.api.nvim_set_hl 0
                                                                      :LspInlayHint
-                                                                     {:fg base02})))]
+                                                                     {:fg comment-fg
+                                                                      :italic true})))]
                (vim.api.nvim_create_autocmd :ColorScheme
                                             {:callback set-inlay-hint-highlight})
                (set-inlay-hint-highlight))

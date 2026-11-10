@@ -1,3 +1,0 @@
-#!/bin/sh
-
-printf 'privileges <%s>\n' "$1" >>"$YAY_TEST_LOG"

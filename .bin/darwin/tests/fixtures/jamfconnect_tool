@@ -1,0 +1,3 @@
+#!/bin/sh
+
+printf 'jamfconnect_tool <%s>\n' "$*" >>"$YAY_TEST_LOG"

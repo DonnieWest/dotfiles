@@ -10,7 +10,7 @@ mkdir -p "$tmp"
 trap 'rm -rf "$tmp"' EXIT HUP INT TERM
 
 export PATH="$fixtures:/usr/bin:/bin"
-export PRIVILEGES_CLI="$fixtures/privileges"
+export JAMFCONNECT_TOOL="$fixtures/jamfconnect_tool"
 export YAY_TEST_LOG="$tmp/log"
 
 failures=0
@@ -58,11 +58,11 @@ run_test() {
 
 test_bare_upgrade() {
   "$yay" >"$stdout" 2>"$stderr"
-  assert_log 'privileges <--add>
+  assert_log 'jamfconnect_tool <acc-promo --elevate>
 brew <update>
 brew <upgrade> <--formula>
 brew <upgrade> <--cask>
-privileges <--remove>'
+jamfconnect_tool <acc-promo --demote>'
 }
 
 test_existing_admin() {
@@ -92,33 +92,33 @@ brew <list> <--cask> <--versions>'
 
 test_recursive_remove() {
   "$yay" -Rs foo >"$stdout" 2>"$stderr"
-  assert_log 'privileges <--add>
+  assert_log 'jamfconnect_tool <acc-promo --elevate>
 brew <list> <--formula> <foo>
 brew <uninstall> <--formula> <foo>
 brew <autoremove>
-privileges <--remove>'
+jamfconnect_tool <acc-promo --demote>'
 }
 
 test_forced_upgrade_target() {
   "$yay" -Syyu --noconfirm beta-app >"$stdout" 2>"$stderr"
-  assert_log 'privileges <--add>
+  assert_log 'jamfconnect_tool <acc-promo --elevate>
 brew <update> <--force>
 brew <upgrade> <--formula> <--yes>
 brew <upgrade> <--cask> <--yes>
 brew <info> <--formula> <beta-app>
 brew <info> <--cask> <beta-app>
 brew <install> <--cask> <--yes> <beta-app>
-privileges <--remove>'
+jamfconnect_tool <acc-promo --demote>'
 }
 
 test_interactive_ranges() {
   printf '1 3-4\n' | "$yay" alpha >"$stdout" 2>"$stderr"
   assert_log 'brew <search> <--formula> <alpha>
 brew <search> <--cask> <alpha>
-privileges <--add>
+jamfconnect_tool <acc-promo --elevate>
 brew <install> <--formula> <alpha>
 brew <install> <--cask> <alpha-app> <alpine-app>
-privileges <--remove>'
+jamfconnect_tool <acc-promo --demote>'
 }
 
 test_orphans() {

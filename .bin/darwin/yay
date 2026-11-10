@@ -52,21 +52,21 @@ warn() {
   printf 'yay: %s\n' "$*" >&2
 }
 
-privileges_cli=${PRIVILEGES_CLI:-/Applications/Privileges.app/Contents/Resources/PrivilegesCLI}
+jamfconnect_tool=${JAMFCONNECT_TOOL:-/Applications/Self Service+.app/Contents/MacOS/Jamf Connect.app/Contents/MacOS/jamfconnect_tool}
 
 run_with_privileges() (
   acquired_privileges=false
   case " $(id -Gn) " in
     *' admin '*) ;;
     *)
-      [ -x "$privileges_cli" ] || die "PrivilegesCLI is not installed or not executable"
-      "$privileges_cli" --add || exit $?
+      [ -x "$jamfconnect_tool" ] || die "Jamf Connect CLI is not installed or not executable"
+      "$jamfconnect_tool" acc-promo --elevate || exit $?
       acquired_privileges=true
       ;;
   esac
 
   cleanup_privileges() {
-    [ "$acquired_privileges" = false ] || "$privileges_cli" --remove
+    [ "$acquired_privileges" = false ] || "$jamfconnect_tool" acc-promo --demote
   }
 
   trap cleanup_privileges EXIT

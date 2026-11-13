@@ -43,6 +43,11 @@ command = "/home/igneo676/.config/i3status-rust/check-vpn"
 interval = 5
 
 [[block]]
+block = "custom"
+command = "/home/igneo676/.config/i3status-rust/nape-status.sh"
+interval = 2
+
+[[block]]
 block = "github"
 format = "$icon $total | $icon $mention | $icon $review_requested"
 info = ["total"]
